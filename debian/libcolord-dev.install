@@ -1,0 +1,3 @@
+usr/lib/*/libcolord.so
+usr/lib/*/pkgconfig
+usr/include

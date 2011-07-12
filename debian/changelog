@@ -1,0 +1,5 @@
+colord (0.1.10-1) unstable; urgency=low
+
+  * Initial release (Closes: #633518, LP: #741448)
+
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Thu, 30 Jun 2011 16:01:11 +0100

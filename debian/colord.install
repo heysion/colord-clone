@@ -1,0 +1,6 @@
+debian/tmp/etc/
+lib/udev/rules.d/
+usr/bin/
+usr/share/
+usr/lib/*/colord
+usr/lib/*/colord-sensors
