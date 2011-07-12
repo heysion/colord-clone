@@ -3,7 +3,16 @@ Priority: optional
 Maintainer: Christopher James Halse Rogers <raof@ubuntu.com>
 Build-Depends: 
  debhelper (>= 8.1.3),
- autotools-dev
+ autotools-dev,
+ intltool,
+ libglib2.0-dev,
+ liblcms2-dev,
+ libgudev-1.0-dev,
+ libsqlite3-dev,
+ docbook-utils,
+ libusb-1.0-0-dev,
+ libpolkit-gobject-1-dev,
+ libsane-dev,
 Standards-Version: 3.9.2
 Section: graphics
 Homepage: http://www.freedesktop.org/software/colord/
