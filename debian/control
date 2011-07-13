@@ -59,6 +59,7 @@ Architecture: any
 Depends:
  ${shlibs:Depends},
  ${misc:Depends},
+Recommends: shared-color-profiles
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: foreign
 Description: system service to manage device colour profiles -- system daemon
