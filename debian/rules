@@ -23,5 +23,8 @@ override_dh_auto_configure:
 override_dh_auto_test:
 	@echo "TODO: Test suite disabled - requires running dbus daemon, currently fails"
 
+override_dh_makeshlibs:
+	dh_makeshlibs -- -c4
+
 %:
 	dh $@
