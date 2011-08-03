@@ -39,8 +39,10 @@ build_triplet = @build@
 host_triplet = @host@
 check_PROGRAMS = cd-self-test$(EXEEXT)
 TESTS = cd-self-test$(EXEEXT)
+@HAVE_INTROSPECTION_TRUE@am__append_1 = $(gir_DATA) $(typelib_DATA)
+@HAVE_INTROSPECTION_TRUE@@HAVE_VAPIGEN_TRUE@am__append_2 = $(dist_vapi_DATA)
 subdir = libcolord
-DIST_COMMON = $(libcolord_include_HEADERS) \
+DIST_COMMON = $(am__dist_vapi_DATA_DIST) $(libcolord_include_HEADERS) \
 	$(libcolordbase_include_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/cd-version.h.in \
 	$(srcdir)/colord.pc.in
@@ -48,12 +50,13 @@ ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
 	$(top_srcdir)/m4/gtk-doc.m4 $(top_srcdir)/m4/iconv.m4 \
 	$(top_srcdir)/m4/intlmacosx.m4 $(top_srcdir)/m4/intltool.m4 \
-	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
-	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/libtool.m4 \
-	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
-	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
-	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
-	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/introspection.m4 $(top_srcdir)/m4/lib-ld.m4 \
+	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
+	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/nls.m4 \
+	$(top_srcdir)/m4/po.m4 $(top_srcdir)/m4/progtest.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -94,8 +97,9 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pkgconfigdir)" \
-	"$(DESTDIR)$(libcolord_includedir)" \
+am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(vapidir)" \
+	"$(DESTDIR)$(girdir)" "$(DESTDIR)$(pkgconfigdir)" \
+	"$(DESTDIR)$(typelibdir)" "$(DESTDIR)$(libcolord_includedir)" \
 	"$(DESTDIR)$(libcolordbase_includedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
@@ -146,7 +150,8 @@ SOURCES = $(libcolordprivate_a_SOURCES) $(libcolord_la_SOURCES) \
 	$(cd_self_test_SOURCES)
 DIST_SOURCES = $(libcolordprivate_a_SOURCES) $(libcolord_la_SOURCES) \
 	$(cd_self_test_SOURCES)
-DATA = $(pkgconfig_DATA)
+am__dist_vapi_DATA_DIST = colord.vapi
+DATA = $(dist_vapi_DATA) $(gir_DATA) $(pkgconfig_DATA) $(typelib_DATA)
 HEADERS = $(libcolord_include_HEADERS) \
 	$(libcolordbase_include_HEADERS)
 ETAGS = etags
@@ -214,6 +219,14 @@ INTLTOOL_MERGE = @INTLTOOL_MERGE@
 INTLTOOL_PERL = @INTLTOOL_PERL@
 INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
 INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
+INTROSPECTION_CFLAGS = @INTROSPECTION_CFLAGS@
+INTROSPECTION_COMPILER = @INTROSPECTION_COMPILER@
+INTROSPECTION_GENERATE = @INTROSPECTION_GENERATE@
+INTROSPECTION_GIRDIR = @INTROSPECTION_GIRDIR@
+INTROSPECTION_LIBS = @INTROSPECTION_LIBS@
+INTROSPECTION_MAKEFILE = @INTROSPECTION_MAKEFILE@
+INTROSPECTION_SCANNER = @INTROSPECTION_SCANNER@
+INTROSPECTION_TYPELIBDIR = @INTROSPECTION_TYPELIBDIR@
 LCMS_CFLAGS = @LCMS_CFLAGS@
 LCMS_LIBS = @LCMS_LIBS@
 LD = @LD@
@@ -269,6 +282,7 @@ STRIP = @STRIP@
 USB_CFLAGS = @USB_CFLAGS@
 USB_LIBS = @USB_LIBS@
 USE_NLS = @USE_NLS@
+VAPIGEN = @VAPIGEN@
 VERSION = @VERSION@
 WARNINGFLAGS_C = @WARNINGFLAGS_C@
 XGETTEXT = @XGETTEXT@
@@ -329,6 +343,9 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+@HAVE_INTROSPECTION_TRUE@INTROSPECTION_GIRS = Colord-1.0.gir
+@HAVE_INTROSPECTION_TRUE@INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir)
+@HAVE_INTROSPECTION_TRUE@INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 INCLUDES = \
 	$(GLIB_CFLAGS)						\
 	-I$(top_srcdir)						\
@@ -410,7 +427,30 @@ EXTRA_DIST = \
 MAINTAINERCLEANFILES = \
 	$(noinst_LIBRARIES)
 
-CLEANFILES = $(BUILT_SOURCES)
+CLEANFILES = $(BUILT_SOURCES) $(am__append_1) $(am__append_2)
+@HAVE_INTROSPECTION_TRUE@introspection_sources = \
+@HAVE_INTROSPECTION_TRUE@	$(libcolord_la_SOURCES)					\
+@HAVE_INTROSPECTION_TRUE@	$(libcolordbase_include_HEADERS)
+
+@HAVE_INTROSPECTION_TRUE@Colord_1_0_gir_INCLUDES = GObject-2.0 Gio-2.0
+@HAVE_INTROSPECTION_TRUE@Colord_1_0_gir_CFLAGS = $(INCLUDES)
+@HAVE_INTROSPECTION_TRUE@Colord_1_0_gir_SCANNERFLAGS = --identifier-prefix=Cd \
+@HAVE_INTROSPECTION_TRUE@				--symbol-prefix=cd_ \
+@HAVE_INTROSPECTION_TRUE@				--warn-all \
+@HAVE_INTROSPECTION_TRUE@				--add-include-path=$(srcdir) \
+@HAVE_INTROSPECTION_TRUE@				--c-include="colord.h"
+
+@HAVE_INTROSPECTION_TRUE@Colord_1_0_gir_EXPORT_PACKAGES = colord
+@HAVE_INTROSPECTION_TRUE@Colord_1_0_gir_LIBS = libcolord.la
+@HAVE_INTROSPECTION_TRUE@Colord_1_0_gir_FILES = $(introspection_sources)
+@HAVE_INTROSPECTION_TRUE@girdir = $(datadir)/gir-1.0
+@HAVE_INTROSPECTION_TRUE@gir_DATA = $(INTROSPECTION_GIRS)
+@HAVE_INTROSPECTION_TRUE@typelibdir = $(libdir)/girepository-1.0
+@HAVE_INTROSPECTION_TRUE@typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
+@HAVE_INTROSPECTION_TRUE@@HAVE_VAPIGEN_TRUE@vapidir = $(datadir)/vala/vapi
+@HAVE_INTROSPECTION_TRUE@@HAVE_VAPIGEN_TRUE@dist_vapi_DATA = \
+@HAVE_INTROSPECTION_TRUE@@HAVE_VAPIGEN_TRUE@	colord.vapi
+
 all: all-am
 
 .SUFFIXES:
@@ -679,6 +719,46 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
+install-dist_vapiDATA: $(dist_vapi_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(vapidir)" || $(MKDIR_P) "$(DESTDIR)$(vapidir)"
+	@list='$(dist_vapi_DATA)'; test -n "$(vapidir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(vapidir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(vapidir)" || exit $$?; \
+	done
+
+uninstall-dist_vapiDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_vapi_DATA)'; test -n "$(vapidir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(vapidir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(vapidir)" && rm -f $$files
+install-girDATA: $(gir_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(girdir)" || $(MKDIR_P) "$(DESTDIR)$(girdir)"
+	@list='$(gir_DATA)'; test -n "$(girdir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(girdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(girdir)" || exit $$?; \
+	done
+
+uninstall-girDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(gir_DATA)'; test -n "$(girdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(girdir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(girdir)" && rm -f $$files
 install-pkgconfigDATA: $(pkgconfig_DATA)
 	@$(NORMAL_INSTALL)
 	test -z "$(pkgconfigdir)" || $(MKDIR_P) "$(DESTDIR)$(pkgconfigdir)"
@@ -699,6 +779,26 @@ uninstall-pkgconfigDATA:
 	test -n "$$files" || exit 0; \
 	echo " ( cd '$(DESTDIR)$(pkgconfigdir)' && rm -f" $$files ")"; \
 	cd "$(DESTDIR)$(pkgconfigdir)" && rm -f $$files
+install-typelibDATA: $(typelib_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(typelibdir)" || $(MKDIR_P) "$(DESTDIR)$(typelibdir)"
+	@list='$(typelib_DATA)'; test -n "$(typelibdir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(typelibdir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(typelibdir)" || exit $$?; \
+	done
+
+uninstall-typelibDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(typelib_DATA)'; test -n "$(typelibdir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(typelibdir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(typelibdir)" && rm -f $$files
 install-libcolord_includeHEADERS: $(libcolord_include_HEADERS)
 	@$(NORMAL_INSTALL)
 	test -z "$(libcolord_includedir)" || $(MKDIR_P) "$(DESTDIR)$(libcolord_includedir)"
@@ -920,7 +1020,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(DATA) $(HEADERS)
 installdirs:
-	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pkgconfigdir)" "$(DESTDIR)$(libcolord_includedir)" "$(DESTDIR)$(libcolordbase_includedir)"; do \
+	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(vapidir)" "$(DESTDIR)$(girdir)" "$(DESTDIR)$(pkgconfigdir)" "$(DESTDIR)$(typelibdir)" "$(DESTDIR)$(libcolord_includedir)" "$(DESTDIR)$(libcolordbase_includedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -973,8 +1073,10 @@ info: info-am
 
 info-am:
 
-install-data-am: install-libcolord_includeHEADERS \
-	install-libcolordbase_includeHEADERS install-pkgconfigDATA
+install-data-am: install-dist_vapiDATA install-girDATA \
+	install-libcolord_includeHEADERS \
+	install-libcolordbase_includeHEADERS install-pkgconfigDATA \
+	install-typelibDATA
 
 install-dvi: install-dvi-am
 
@@ -1020,9 +1122,10 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-libLTLIBRARIES \
-	uninstall-libcolord_includeHEADERS \
-	uninstall-libcolordbase_includeHEADERS uninstall-pkgconfigDATA
+uninstall-am: uninstall-dist_vapiDATA uninstall-girDATA \
+	uninstall-libLTLIBRARIES uninstall-libcolord_includeHEADERS \
+	uninstall-libcolordbase_includeHEADERS uninstall-pkgconfigDATA \
+	uninstall-typelibDATA
 
 .MAKE: check-am install-am install-strip
 
@@ -1032,19 +1135,32 @@ uninstall-am: uninstall-libLTLIBRARIES \
 	distclean distclean-compile distclean-generic \
 	distclean-libtool distclean-tags distdir dvi dvi-am html \
 	html-am info info-am install install-am install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-libLTLIBRARIES \
-	install-libcolord_includeHEADERS \
+	install-data-am install-dist_vapiDATA install-dvi \
+	install-dvi-am install-exec install-exec-am install-girDATA \
+	install-html install-html-am install-info install-info-am \
+	install-libLTLIBRARIES install-libcolord_includeHEADERS \
 	install-libcolordbase_includeHEADERS install-man install-pdf \
 	install-pdf-am install-pkgconfigDATA install-ps install-ps-am \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	pdf pdf-am ps ps-am tags uninstall uninstall-am \
+	install-strip install-typelibDATA installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-compile mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am tags uninstall \
+	uninstall-am uninstall-dist_vapiDATA uninstall-girDATA \
 	uninstall-libLTLIBRARIES uninstall-libcolord_includeHEADERS \
-	uninstall-libcolordbase_includeHEADERS uninstall-pkgconfigDATA
+	uninstall-libcolordbase_includeHEADERS uninstall-pkgconfigDATA \
+	uninstall-typelibDATA
 
+@HAVE_INTROSPECTION_TRUE@-include $(INTROSPECTION_MAKEFILE)
+
+@HAVE_INTROSPECTION_TRUE@Colord-1.0.gir: libcolord.la
+
+@HAVE_INTROSPECTION_TRUE@@HAVE_VAPIGEN_TRUE@colord.vapi: Colord-1.0.gir
+@HAVE_INTROSPECTION_TRUE@@HAVE_VAPIGEN_TRUE@	$(MAKE) $(AM_MAKEFLAGS) Colord-1.0.gir
+@HAVE_INTROSPECTION_TRUE@@HAVE_VAPIGEN_TRUE@	$(AM_V_GEN)$(VAPIGEN) $(VAPIGENFLAGS)			\
+@HAVE_INTROSPECTION_TRUE@@HAVE_VAPIGEN_TRUE@		--library colord \
+@HAVE_INTROSPECTION_TRUE@@HAVE_VAPIGEN_TRUE@		--pkg gio-2.0					\
+@HAVE_INTROSPECTION_TRUE@@HAVE_VAPIGEN_TRUE@		Colord-1.0.gir
+@HAVE_INTROSPECTION_TRUE@@HAVE_VAPIGEN_TRUE@	touch $@
 
 clean-local:
 	rm -f *~

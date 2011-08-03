@@ -39,12 +39,13 @@ ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/gettext.m4 \
 	$(top_srcdir)/m4/gtk-doc.m4 $(top_srcdir)/m4/iconv.m4 \
 	$(top_srcdir)/m4/intlmacosx.m4 $(top_srcdir)/m4/intltool.m4 \
-	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
-	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/libtool.m4 \
-	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
-	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
-	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
-	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/introspection.m4 $(top_srcdir)/m4/lib-ld.m4 \
+	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
+	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/nls.m4 \
+	$(top_srcdir)/m4/po.m4 $(top_srcdir)/m4/progtest.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -145,6 +146,14 @@ INTLTOOL_MERGE = @INTLTOOL_MERGE@
 INTLTOOL_PERL = @INTLTOOL_PERL@
 INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
 INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
+INTROSPECTION_CFLAGS = @INTROSPECTION_CFLAGS@
+INTROSPECTION_COMPILER = @INTROSPECTION_COMPILER@
+INTROSPECTION_GENERATE = @INTROSPECTION_GENERATE@
+INTROSPECTION_GIRDIR = @INTROSPECTION_GIRDIR@
+INTROSPECTION_LIBS = @INTROSPECTION_LIBS@
+INTROSPECTION_MAKEFILE = @INTROSPECTION_MAKEFILE@
+INTROSPECTION_SCANNER = @INTROSPECTION_SCANNER@
+INTROSPECTION_TYPELIBDIR = @INTROSPECTION_TYPELIBDIR@
 LCMS_CFLAGS = @LCMS_CFLAGS@
 LCMS_LIBS = @LCMS_LIBS@
 LD = @LD@
@@ -200,6 +209,7 @@ STRIP = @STRIP@
 USB_CFLAGS = @USB_CFLAGS@
 USB_LIBS = @USB_LIBS@
 USE_NLS = @USE_NLS@
+VAPIGEN = @VAPIGEN@
 VERSION = @VERSION@
 WARNINGFLAGS_C = @WARNINGFLAGS_C@
 XGETTEXT = @XGETTEXT@
@@ -260,14 +270,19 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+man_MANS_DIST = \
+	colormgr.1					\
+	cd-create-profile.1				\
+	cd-fix-profile.1
+
 EXTRA_DIST = \
 	colormgr.sgml					\
 	cd-create-profile.sgml				\
-	cd-fix-profile.sgml
+	cd-fix-profile.sgml				\
+	$(man_MANS_DIST)
 
 @HAVE_DOCBOOK2MAN_TRUE@man_MANS = \
-@HAVE_DOCBOOK2MAN_TRUE@	colormgr.1					\
-@HAVE_DOCBOOK2MAN_TRUE@	cd-create-profile.1
+@HAVE_DOCBOOK2MAN_TRUE@	$(man_MANS_DIST)
 
 MAINTAINERCLEANFILES = \
 	manpage.links					\
@@ -517,7 +532,6 @@ uninstall-man: uninstall-man1
 	mostlyclean mostlyclean-generic mostlyclean-libtool pdf pdf-am \
 	ps ps-am uninstall uninstall-am uninstall-man uninstall-man1
 
-@HAVE_DOCBOOK2MAN_TRUE@	cd-fix-profile.1
 
 @HAVE_DOCBOOK2MAN_TRUE@colormgr.1: colormgr.sgml
 @HAVE_DOCBOOK2MAN_TRUE@	docbook2man $? > /dev/null

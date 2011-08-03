@@ -1,6 +1,338 @@
+commit 6bc5f76a26c653404b2fc5a5df5fa69c3ed4ee5a
+Author: Richard Hughes <richard@hughsie.com>
+Date:   2011-08-01
+
+    Release colord 0.1.11
+
+M	NEWS
+M	configure.ac
+M	doc/website/download.html
+
+commit b7b0448acb9beaa098d05c1e3923ac4b3bdcc9e7
+Author: Owen W. Taylor <otaylor@fishsoup.net>
+Date:	2011-07-28
+
+    Honor ACLOCAL_FLAGS when running autoreconf
+
+    autoreconf doesn't understand ACLOCAL_FLAGS, just ACLOCAL, so to work
+    correctly in a jhbuild environment and pick up jhbuild-built .m4
+    files like introspection.m4 we need to force the issue.
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	autogen.sh
+
+commit 91aae6bc4e51926c9dbd1495907cac06255b84c1
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-07-26
+
+    trivial: ensure we distcheck with gobject-introspection
+
+M	Makefile.am
+
+commit a86cf44829437e3e8a63d3015ab146c431e60c7d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-07-26
+
+    trivial: don't use the hideously confusing g_variant_iter_loop
+
+M	src/cd-main.c
+
+commit d0945c4be75d366007c3e2e33455519ee3f34d4c
+Author: Alexandre Prokoudine <alexandre.prokoudine@gmail.com>
+Date:	2011-07-20
+
+    Updated Russian translation
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	po/ru.po
+
+commit fb61c9f02430d59b29bc79bddef9649330cd766c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-07-20
+
+    trivial: Pull all the pending translations from Transifex
+
+A	.tx/config
+M	Makefile.am
+M	po/LINGUAS
+C050	po/ja.po	po/as.po
+C050	po/ja.po	po/bg.po
+A	po/bn_IN.po
+C050	po/ja.po	po/ca.po
+C050	po/ja.po	po/cs.po
+C050	po/ja.po	po/da.po
+A	po/de.po
+C050	po/ja.po	po/el.po
+M	po/en_GB.po
+C050	po/ja.po	po/eo.po
+C050	po/ja.po	po/es.po
+C050	po/ja.po	po/eu.po
+C050	po/ja.po	po/fi.po
+C050	po/ja.po	po/fr.po
+C050	po/ja.po	po/gl.po
+C050	po/ja.po	po/gu.po
+C050	po/ja.po	po/he.po
+C050	po/ja.po	po/hi.po
+C050	po/ja.po	po/hu.po
+C050	po/ja.po	po/id.po
+C050	po/ja.po	po/it.po
+C050	po/ja.po	po/it_IT.po
+M	po/ja.po
+C050	po/ja.po	po/kn.po
+C050	po/ja.po	po/lt.po
+A	po/ml.po
+C050	po/ja.po	po/mr.po
+C050	po/ja.po	po/ms.po
+C050	po/ja.po	po/nb.po
+C050	po/ja.po	po/nl.po
+A	po/or.po
+A	po/pa.po
+C050	po/ja.po	po/pl.po
+C050	po/ja.po	po/pt.po
+C050	po/ja.po	po/pt_BR.po
+C050	po/ja.po	po/ro.po
+M	po/ru.po
+C050	po/ja.po	po/sk.po
+C050	po/ja.po	po/sl.po
+C050	po/ja.po	po/sr.po
+C050	po/ja.po	po/sr@latin.po
+C050	po/ja.po	po/sv.po
+A	po/ta.po
+A	po/te.po
+C050	po/ja.po	po/th.po
+C050	po/ja.po	po/tr.po
+C050	po/ja.po	po/uk.po
+A	po/update-linguas.sh
+C050	po/ja.po	po/zh_CN.po
+C050	po/ja.po	po/zh_TW.po
+
+commit fd1ebc86cf5ab2b4d2d35b498ed304d14b787721
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-07-20
+
+    trivial: fix up two translation comments
+
+M	client/cd-util.c
+
+commit 5110de9982a25b7bad07407e3a59e190e9ff7e93
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-07-20
+
+    trivial: use 'Type' rather than 'Kind' as it's easier to translate
+
+M	client/cd-util.c
+
+commit 3d2db713a319cd25a8832d82c68306b7bf8b9d5a
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-07-20
+
+    trivial: ensure the translator comment is always on the prior line
+    to the _()
+
+M	client/cd-util.c
+
+commit 47b4f12e927ea886667c8e7676c921bba4d062e8
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-07-20
+
+    Fix up some translatable strings
+
+M	client/cd-create-profile.c
+M	client/cd-fix-profile.c
+
+commit af57b215bfc2f3e7479979c535f6bdb03eb01503
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-07-20
+
+    trivial: g_dbus_connection_emit_signal() can't fail
+
+M	src/cd-device.c
+M	src/cd-main.c
+M	src/cd-profile.c
+M	src/cd-sensor.c
+
+commit 3eb6ad162a49e41e7617f4be95d952139560152b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-07-18
+
+    Use the const formatter when unwrapping GVariants to reduce memory
+    allocation
+
+M	src/cd-device.c
+M	src/cd-main.c
+M	src/cd-profile.c
+M	src/cd-sensor.c
+
+commit b2fdb547a2aa8b4f9c7a4db693f28bb02aaefe16
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-07-18
+
+    trivial: make some code modular to reduce file size
+
+M	src/cd-main.c
+
+commit 2a07fd394bab8dc11116c86a932c592277e59269
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-07-12
+
+    Fix the licence headers in colord.h and cd-color.h
+
+    Many thanks to Christopher James Halse Rogers for spotting the
+    problem.
+    Fixes https://bugs.freedesktop.org/show_bug.cgi?id=39153
+
+M	libcolord/cd-color.h
+M	libcolord/colord.h
+
+commit c208cca6da584d2160a22000d5bed4b963bedfca
+Author: Christopher James Halse Rogers <chalserogers@gmail.com>
+Date:	2011-07-12
+
+    trivial: fix a spelling error
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	NEWS
+M	README
+M	src/cd-main.c
+
+commit b36a84a7fde571664dc7e241f5dcc4285f59fd9d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-07-11
+
+    Fix the bugzilla and mailing list links on the webpage. Fixes #39129
+
+M	doc/website/bugs.html
+
+commit 281fbc8a81de7e404a0e686a43908af04564e788
+Author: Vincent Untz <vuntz@gnome.org>
+Date:	2011-07-11
+
+    build: Ship generated man pages in tarballs
+
+    This significantly reduces the build dependencies on tarballs, as
+    docbook2man actually brings a lot with it.
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	configure.ac
+M	man/Makefile.am
+
+commit 8b57f44276941813052e0a8d6f5a4f4f719c2885
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-07-10
+
+    trivial: fix the include path in the GIR file
+
+M	libcolord/Makefile.am
+
+commit 844510eab033e538da654096266c3d404001fc20
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-07-08
+
+    Move the project home to freedesktop.org
+
+M	RELEASE
+M	contrib/colord.spec.in
+M	doc/website/download.html
+M	doc/website/using.html
+
+commit e91a97ffb97acfa0f91300e5bc84f1c0d2acf8a2
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-07-07
+
+    trivial: add a note saying that colord is probably already installed
+
+M	doc/website/download.html
+
+commit c68f927a64aff558212d0b4e4e88580da52c267f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-07-07
+
+    Generate the Vala API binding from the GObject Introspection GIR
+
+M	configure.ac
+M	contrib/colord.spec.in
+M	libcolord/Makefile.am
+
+commit 70da9582dde3aeac20f5e7438c6d6112ea433b41
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-07-07
+
+    trivial: add BR gobject-introspection-devel to the example spec file
+
+M	contrib/colord.spec.in
+
+commit 5b93016928d171695d95dd150db565956270eff2
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-07-07
+
+    Add all of the required GObject Introspection annotations required
+
+M	libcolord/cd-client-sync.c
+M	libcolord/cd-client.c
+M	libcolord/cd-device-sync.c
+M	libcolord/cd-device.c
+M	libcolord/cd-enum.h
+M	libcolord/cd-profile-sync.c
+M	libcolord/cd-profile.c
+M	libcolord/cd-sensor-sync.c
+M	libcolord/cd-sensor.c
+M	libcolord/cd-version.h.in
+M	src/cd-common.h
+M	src/cd-sensor.c
+
+commit 58968ac2c7e3aacfe23a8efaeda8ada15aa1246d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-07-07
+
+    Enable GObject introspection generation on libcolord
+
+M	configure.ac
+M	contrib/colord.spec.in
+M	libcolord/Makefile.am
+
+commit bf669098ce2009381ad68b79cce41d9cf7218d25
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-07-07
+
+    Allow FindDeviceByProperty() to match on model, vendor and serial
+    number
+
+M	src/cd-device.c
+M	src/cd-main.c
+
+commit 56c790a539d823f016af26e197222650f2c9c96d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-07-07
+
+    Don't crash the example program if there is no default profile
+    assigned
+
+M	examples/cd-libcolord-find-device-by-property.c
+
+commit 68a157f47504f67afd49be7fb46e3f022a9e216d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-07-07
+
+    trivial: fix the compile invocation line in one of the examples
+
+M	examples/cd-libcolord-find-device-by-property.c
+
+commit a83248f9034394e401e1120c9ac50283e54f8ac2
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-07-06
+
+    trivial: post release version bump
+
+M	RELEASE
+M	configure.ac
+
 commit b8bc0514393481b220d75e000331b6e99d6bd497
 Author: Richard Hughes <richard@hughsie.com>
-Date:   2011-07-06
+Date:	2011-07-06
 
     Release colord 0.1.10
 

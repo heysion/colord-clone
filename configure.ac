@@ -3,7 +3,7 @@ AC_PREREQ(2.63)
 
 m4_define([cd_major_version], [0])
 m4_define([cd_minor_version], [1])
-m4_define([cd_micro_version], [10])
+m4_define([cd_micro_version], [11])
 m4_define([cd_version],
           [cd_major_version.cd_minor_version.cd_micro_version])
 
@@ -13,6 +13,8 @@ AM_INIT_AUTOMAKE([1.9 no-dist-gzip dist-xz tar-ustar])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 AC_PROG_LIBTOOL
+
+GOBJECT_INTROSPECTION_CHECK([0.9.8])
 
 # set up gtk-doc
 GTK_DOC_CHECK(1.9)
@@ -35,7 +37,7 @@ AC_SUBST(CD_MICRO_VERSION)
 # REVISION	If the API and ABI remains the same, but bugs are fixed.
 # AGE		Don't use.
 LT_CURRENT=1
-LT_REVISION=2
+LT_REVISION=3
 LT_AGE=0
 AC_SUBST(LT_CURRENT)
 AC_SUBST(LT_REVISION)
@@ -155,7 +157,7 @@ dnl - Is docbook2man available?
 dnl ---------------------------------------------------------------------------
 AC_PATH_PROG(DOCBOOK2MAN, docbook2man, no)
 if test "$DOCBOOK2MAN" = "no" ; then
-	AC_MSG_WARN([docbook2man not found, will not be able to build man documentation])
+	AC_MSG_WARN([docbook2man not found, will not be able to build man documentation (if tarball, pre-generated documentation will be installed)])
 fi
 AM_CONDITIONAL(HAVE_DOCBOOK2MAN, [test "$DOCBOOK2MAN" != "no"])
 
@@ -213,6 +215,23 @@ if test x$has_sane = xyes; then
 	AC_DEFINE(HAVE_SANE,1,[Use SANE support for detecting scanners])
 fi
 
+dnl ---------------------------------------------------------------------------
+dnl - Build VALA support
+dnl ---------------------------------------------------------------------------
+if test x$found_introspection != xno; then
+	AC_PATH_PROG([VAPIGEN], [vapigen], [])
+	if test "x$VAPIGEN" = "x"; then
+		has_vapigen="no"
+		AC_MSG_WARN([vapigen not found, will not build Vala binding])
+	else
+		has_vapigen="yes"
+	fi
+else
+	has_vapigen="no"
+	AC_MSG_WARN([Not introspection found, will not build Vala binding])
+fi
+AM_CONDITIONAL(HAVE_VAPIGEN, [test "x$has_vapigen" = "xyes"])
+
 # udev rules go in /lib, not /usr/lib
 if test "$prefix" = "/usr" -o "$prefix" = "/usr/local" ; then
   slashlibdir=/lib
@@ -259,11 +278,13 @@ echo "
         compiler:                  ${CC}
         cflags:                    ${CFLAGS}
         cppflags:                  ${CPPFLAGS}
+        gobject-introspection:     ${found_introspection}
         PolicyKit support:         ${enable_polkit}
         Reverse engineering tools: ${enable_reverse}
         SANE support:              ${has_sane}
         GUDEV support:             ${enable_gudev}
         LCMS2 DICT support:        ${has_new_lcms}
+        Vala API generator:        ${has_vapigen}
 "
 
 

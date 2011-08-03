@@ -20,6 +20,8 @@ SUBDIRS = 						\
 snapshot:
 	$(MAKE) dist distdir=$(PACKAGE)-$(VERSION)-`date +"%Y%m%d"`
 
+DISTCHECK_CONFIGURE_FLAGS = --enable-introspection
+
 EXTRA_DIST =						\
 	COPYING						\
 	MAINTAINERS					\
@@ -55,6 +57,9 @@ MAINTAINERCLEANFILES =					\
 	$(srcdir)/ChangeLog				\
 	$(srcdir)/colord-*.tar.*			\
 	`find "$(srcdir)" -type f -name Makefile.in -print`
+
+GITIGNOREFILES =					\
+	.tx
 
 distclean-local:
 	if test $(srdcir) = .; then :; else \
