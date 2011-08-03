@@ -26,5 +26,9 @@ override_dh_auto_test:
 override_dh_makeshlibs:
 	dh_makeshlibs -- -c4
 
+override_dh_gencontrol:
+	dh_girepository
+	dh_gencontrol
+
 %:
 	dh $@

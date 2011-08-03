@@ -1,6 +1,10 @@
 debian/tmp/etc/
 lib/udev/rules.d/
 usr/bin/
-usr/share/
 usr/lib/*/colord
 usr/lib/*/colord-sensors
+usr/share/color
+usr/share/dbus-1
+usr/share/locale
+usr/share/man
+usr/share/polkit-1
