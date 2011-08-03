@@ -67,7 +67,6 @@ cd_main_profile_removed (CdProfile *profile)
 	gboolean ret;
 	gchar *object_path_tmp;
 	CdDevice *device_tmp;
-	GError *error = NULL;
 	GPtrArray *devices;
 	guint i;
 
@@ -91,18 +90,14 @@ cd_main_profile_removed (CdProfile *profile)
 
 	/* emit signal */
 	g_debug ("CdMain: Emitting ProfileRemoved(%s)", object_path_tmp);
-	ret = g_dbus_connection_emit_signal (connection,
-					     NULL,
-					     COLORD_DBUS_PATH,
-					     COLORD_DBUS_INTERFACE,
-					     "ProfileRemoved",
-					     g_variant_new ("(o)",
+	g_dbus_connection_emit_signal (connection,
+				       NULL,
+				       COLORD_DBUS_PATH,
+				       COLORD_DBUS_INTERFACE,
+				       "ProfileRemoved",
+				       g_variant_new ("(o)",
 							    object_path_tmp),
-					     &error);
-	if (!ret) {
-		g_warning ("CdMain: failed to send signal %s", error->message);
-		g_error_free (error);
-	}
+				       NULL);
 	g_free (object_path_tmp);
 	g_ptr_array_unref (devices);
 }
@@ -149,18 +144,14 @@ cd_main_device_removed (CdDevice *device)
 
 	/* emit signal */
 	g_debug ("CdMain: Emitting DeviceRemoved(%s)", object_path_tmp);
-	ret = g_dbus_connection_emit_signal (connection,
-					     NULL,
-					     COLORD_DBUS_PATH,
-					     COLORD_DBUS_INTERFACE,
-					     "DeviceRemoved",
-					     g_variant_new ("(o)",
+	g_dbus_connection_emit_signal (connection,
+				       NULL,
+				       COLORD_DBUS_PATH,
+				       COLORD_DBUS_INTERFACE,
+				       "DeviceRemoved",
+				       g_variant_new ("(o)",
 							    object_path_tmp),
-					     &error);
-	if (!ret) {
-		g_warning ("CdMain: failed to send signal %s", error->message);
-		g_error_free (error);
-	}
+				       &error);
 	g_free (object_path_tmp);
 }
 
@@ -230,11 +221,11 @@ cd_main_create_profile (const gchar *sender,
 		/* setup DBus watcher */
 		cd_profile_watch_sender (profile_tmp, sender);
 	} else if ((scope & CD_OBJECT_SCOPE_DISK) > 0) {
-		g_debug ("CdMain: persistant profile");
+		g_debug ("CdMain: persistent profile");
 		g_set_error_literal (error,
 				     CD_MAIN_ERROR,
 				     CD_MAIN_ERROR_FAILED,
-				     "persistant profiles are no yet supported");
+				     "persistent profiles are no yet supported");
 		goto out;
 	} else {
 		g_warning ("CdMain: Unsupported scope kind: %i", scope);
@@ -320,14 +311,14 @@ cd_main_device_register_on_bus (CdDevice *device,
 	/* emit signal */
 	g_debug ("CdMain: Emitting DeviceAdded(%s)",
 		 cd_device_get_object_path (device));
-	ret = g_dbus_connection_emit_signal (connection,
-					     NULL,
-					     COLORD_DBUS_PATH,
-					     COLORD_DBUS_INTERFACE,
-					     "DeviceAdded",
-					     g_variant_new ("(o)",
-							    cd_device_get_object_path (device)),
-					     error);
+	g_dbus_connection_emit_signal (connection,
+				       NULL,
+				       COLORD_DBUS_PATH,
+				       COLORD_DBUS_INTERFACE,
+				       "DeviceAdded",
+				       g_variant_new ("(o)",
+						      cd_device_get_object_path (device)),
+				       NULL);
 out:
 	return ret;
 }
@@ -350,7 +341,7 @@ cd_main_device_add (CdDevice *device,
 	/* different persistent scope */
 	scope = cd_device_get_scope (device);
 	if (scope == CD_OBJECT_SCOPE_DISK && sender != NULL) {
-		g_debug ("CdMain: persistant device");
+		g_debug ("CdMain: persistent device");
 
 		/* add to the device database */
 		ret = cd_device_db_add (device_db,
@@ -583,14 +574,14 @@ cd_main_profile_register_on_bus (CdProfile *profile,
 	/* emit signal */
 	g_debug ("CdMain: Emitting ProfileAdded(%s)",
 		 cd_profile_get_object_path (profile));
-	ret = g_dbus_connection_emit_signal (connection,
-					     NULL,
-					     COLORD_DBUS_PATH,
-					     COLORD_DBUS_INTERFACE,
-					     "ProfileAdded",
-					     g_variant_new ("(o)",
+	g_dbus_connection_emit_signal (connection,
+				       NULL,
+				       COLORD_DBUS_PATH,
+				       COLORD_DBUS_INTERFACE,
+				       "ProfileAdded",
+				       g_variant_new ("(o)",
 							    cd_profile_get_object_path (profile)),
-					     error);
+				       NULL);
 out:
 	return ret;
 }
@@ -658,17 +649,16 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 	const gchar *prop_value;
 	gboolean register_on_bus = TRUE;
 	gboolean ret;
-	gchar *device_id = NULL;
-	gchar *object_path_tmp = NULL;
-	gchar *scope_tmp = NULL;
+	const gchar *device_id = NULL;
+	const gchar *scope_tmp = NULL;
 	GError *error = NULL;
 	GPtrArray *array = NULL;
 	GVariantIter *iter = NULL;
 	GVariant *tuple = NULL;
 	GVariant *value = NULL;
 	gint fd = -1;
-	gchar *metadata_key = NULL;
-	gchar *metadata_value = NULL;
+	const gchar *metadata_key = NULL;
+	const gchar *metadata_value = NULL;
 	GDBusMessage *message;
 	GUnixFDList *fd_list;
 
@@ -701,8 +691,9 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 	if (g_strcmp0 (method_name, "GetDevicesByKind") == 0) {
 
 		/* get all the devices that match this type */
-		g_variant_get (parameters, "(s)", &device_id);
-		g_debug ("CdMain: %s:GetDevicesByKind(%s)", sender, device_id);
+		g_variant_get (parameters, "(&s)", &device_id);
+		g_debug ("CdMain: %s:GetDevicesByKind(%s)",
+			 sender, device_id);
 		array = cd_device_array_get_by_kind (devices_array,
 						     device_id);
 
@@ -717,7 +708,7 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 	if (g_strcmp0 (method_name, "GetProfilesByKind") == 0) {
 
 		/* get all the devices that match this type */
-		g_variant_get (parameters, "(s)", &scope_tmp);
+		g_variant_get (parameters, "(&s)", &scope_tmp);
 		g_debug ("CdMain: %s:GetProfilesByKind(%s)",
 			 sender, scope_tmp);
 		array = cd_profile_array_get_by_kind (profiles_array,
@@ -733,8 +724,9 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 	/* return 'o' */
 	if (g_strcmp0 (method_name, "FindDeviceById") == 0) {
 
-		g_variant_get (parameters, "(s)", &device_id);
-		g_debug ("CdMain: %s:FindDeviceById(%s)", sender, device_id);
+		g_variant_get (parameters, "(&s)", &device_id);
+		g_debug ("CdMain: %s:FindDeviceById(%s)",
+			 sender, device_id);
 		device = cd_device_array_get_by_id (devices_array, device_id);
 		if (device == NULL) {
 			g_dbus_method_invocation_return_error (invocation,
@@ -754,8 +746,9 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 	/* return 'o' */
 	if (g_strcmp0 (method_name, "FindDeviceByProperty") == 0) {
 
-		g_variant_get (parameters, "(ss)",
-			       &metadata_key, &metadata_value);
+		g_variant_get (parameters, "(&s&s)",
+			       &metadata_key,
+			       &metadata_value);
 		g_debug ("CdMain: %s:FindDeviceByProperty(%s=%s)",
 			 sender, metadata_key, metadata_value);
 		device = cd_device_array_get_by_property (devices_array,
@@ -765,7 +758,7 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 			g_dbus_method_invocation_return_error (invocation,
 							       CD_MAIN_ERROR,
 							       CD_MAIN_ERROR_FAILED,
-							       "prperty match '%s'='%s' does not exist",
+							       "property match '%s'='%s' does not exist",
 							       metadata_key,
 							       metadata_value);
 			goto out;
@@ -780,8 +773,9 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 	/* return 'o' */
 	if (g_strcmp0 (method_name, "FindProfileById") == 0) {
 
-		g_variant_get (parameters, "(s)", &device_id);
-		g_debug ("CdMain: %s:FindProfileById(%s)", sender, device_id);
+		g_variant_get (parameters, "(&s)", &device_id);
+		g_debug ("CdMain: %s:FindProfileById(%s)",
+			 sender, device_id);
 		profile = cd_profile_array_get_by_id (profiles_array, device_id);
 		if (profile == NULL) {
 			g_dbus_method_invocation_return_error (invocation,
@@ -801,8 +795,9 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 	/* return 'o' */
 	if (g_strcmp0 (method_name, "GetStandardSpace") == 0) {
 
-		g_variant_get (parameters, "(s)", &device_id);
-		g_debug ("CdMain: %s:GetStandardSpace(%s)", sender, device_id);
+		g_variant_get (parameters, "(&s)", &device_id);
+		g_debug ("CdMain: %s:GetStandardSpace(%s)",
+			 sender, device_id);
 
 		/* first search overrides */
 		profile = cd_main_get_standard_space_override (device_id);
@@ -826,7 +821,7 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 	/* return 'o' */
 	if (g_strcmp0 (method_name, "FindProfileByFilename") == 0) {
 
-		g_variant_get (parameters, "(s)", &device_id);
+		g_variant_get (parameters, "(&s)", &device_id);
 		g_debug ("CdMain: %s:FindProfileByFilename(%s)",
 			 sender, device_id);
 		profile = cd_profile_array_get_by_filename (profiles_array,
@@ -868,7 +863,7 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 			goto out;
 
 		/* does already exist */
-		g_variant_get (parameters, "(ssa{ss})",
+		g_variant_get (parameters, "(&s&sa{ss})",
 			       &device_id,
 			       &scope_tmp,
 			       &iter);
@@ -902,7 +897,7 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 		}
 
 		/* set the properties */
-		while (g_variant_iter_loop (iter, "{ss}",
+		while (g_variant_iter_next (iter, "{&s&s}",
 					    &prop_key, &prop_value)) {
 			ret = cd_device_set_property_internal (device,
 							       prop_key,
@@ -948,8 +943,9 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 			goto out;
 
 		/* does already exist */
-		g_variant_get (parameters, "(o)", &device_id);
-		g_debug ("CdMain: %s:DeleteDevice(%s)", sender, device_id);
+		g_variant_get (parameters, "(&o)", &device_id);
+		g_debug ("CdMain: %s:DeleteDevice(%s)",
+			 sender, device_id);
 		device = cd_device_array_get_by_id (devices_array, device_id);
 		if (device == NULL) {
 			/* fall back to checking the object path */
@@ -983,8 +979,9 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 			goto out;
 
 		/* does already exist */
-		g_variant_get (parameters, "(o)", &device_id);
-		g_debug ("CdMain: %s:DeleteProfile(%s)", sender, device_id);
+		g_variant_get (parameters, "(&o)", &device_id);
+		g_debug ("CdMain: %s:DeleteProfile(%s)",
+			 sender, device_id);
 		profile = cd_profile_array_get_by_object_path (profiles_array, device_id);
 		if (profile == NULL) {
 			/* fall back to checking the object path */
@@ -1018,7 +1015,7 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 			goto out;
 
 		/* does already exist */
-		g_variant_get (parameters, "(ssa{ss})",
+		g_variant_get (parameters, "(&s&sa{ss})",
 			       &device_id,
 			       &scope_tmp,
 			       &iter);
@@ -1071,7 +1068,7 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 		}
 
 		/* set the properties */
-		while (g_variant_iter_loop (iter, "{ss}",
+		while (g_variant_iter_next (iter, "{&s&s}",
 					    &prop_key, &prop_value)) {
 			ret = cd_profile_set_property_internal (profile,
 								prop_key,
@@ -1108,10 +1105,6 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 	/* we suck */
 	g_critical ("failed to process method %s", method_name);
 out:
-	g_free (metadata_key);
-	g_free (metadata_value);
-	g_free (scope_tmp);
-	g_free (object_path_tmp);
 	if (iter != NULL)
 		g_variant_iter_free (iter);
 	if (array != NULL)
@@ -1317,14 +1310,14 @@ cd_main_sensor_register_on_bus (CdSensor *sensor,
 	/* emit signal */
 	g_debug ("CdMain: Emitting SensorAdded(%s)",
 		 cd_sensor_get_object_path (sensor));
-	ret = g_dbus_connection_emit_signal (connection,
-					     NULL,
-					     COLORD_DBUS_PATH,
-					     COLORD_DBUS_INTERFACE,
-					     "SensorAdded",
-					     g_variant_new ("(o)",
-							    cd_sensor_get_object_path (sensor)),
-					     error);
+	g_dbus_connection_emit_signal (connection,
+				       NULL,
+				       COLORD_DBUS_PATH,
+				       COLORD_DBUS_INTERFACE,
+				       "SensorAdded",
+				       g_variant_new ("(o)",
+						      cd_sensor_get_object_path (sensor)),
+				       NULL);
 out:
 	return ret;
 }
@@ -1597,27 +1590,17 @@ cd_main_client_sensor_removed_cb (CdUdevClient *udev_client_,
 				  CdSensor *sensor,
 				  gpointer user_data)
 {
-	GError *error = NULL;
-	gboolean ret;
-
 	/* emit signal */
 	g_debug ("CdMain: Emitting SensorRemoved(%s)",
 		 cd_sensor_get_object_path (sensor));
-	ret = g_dbus_connection_emit_signal (connection,
-					     NULL,
-					     COLORD_DBUS_PATH,
-					     COLORD_DBUS_INTERFACE,
-					     "SensorRemoved",
-					     g_variant_new ("(o)",
-							    cd_sensor_get_object_path (sensor)),
-					     &error);
-	if (!ret) {
-		g_warning ("CdMain: failed to emit SensorRemoved: %s",
-			   error->message);
-		g_error_free (error);
-		goto out;
-	}
-out:
+	g_dbus_connection_emit_signal (connection,
+				       NULL,
+				       COLORD_DBUS_PATH,
+				       COLORD_DBUS_INTERFACE,
+				       "SensorRemoved",
+				       g_variant_new ("(o)",
+						      cd_sensor_get_object_path (sensor)),
+				       NULL);
 	g_ptr_array_remove (sensors, sensor);
 }
 #endif
@@ -1633,6 +1616,34 @@ cd_main_timed_exit_cb (gpointer user_data)
 }
 
 /**
+ * cd_main_load_introspection:
+ **/
+static GDBusNodeInfo *
+cd_main_load_introspection (const gchar *filename, GError **error)
+{
+	gboolean ret;
+	gchar *data = NULL;
+	GDBusNodeInfo *info = NULL;
+	GFile *file;
+
+	/* load file */
+	file = g_file_new_for_path (filename);
+	ret = g_file_load_contents (file, NULL, &data,
+				    NULL, NULL, error);
+	if (!ret)
+		goto out;
+
+	/* build introspection from XML */
+	info = g_dbus_node_info_new_for_xml (data, error);
+	if (info == NULL)
+		goto out;
+out:
+	g_object_unref (file);
+	g_free (data);
+	return info;
+}
+
+/**
  * main:
  **/
 int
@@ -1645,14 +1656,6 @@ main (int argc, char *argv[])
 	gboolean timed_exit = FALSE;
 	guint owner_id = 0;
 	guint retval = 1;
-	GFile *file_daemon = NULL;
-	GFile *file_device = NULL;
-	GFile *file_profile = NULL;
-	GFile *file_sensor = NULL;
-	gchar *introspection_daemon_data = NULL;
-	gchar *introspection_device_data = NULL;
-	gchar *introspection_profile_data = NULL;
-	gchar *introspection_sensor_data = NULL;
 	const GOptionEntry options[] = {
 		{ "timed-exit", '\0', 0, G_OPTION_ARG_NONE, &timed_exit,
 		  /* TRANSLATORS: exit after we've started up, used for user profiling */
@@ -1741,74 +1744,36 @@ main (int argc, char *argv[])
 	}
 
 	/* load introspection from file */
-	file_daemon = g_file_new_for_path (DATADIR "/dbus-1/interfaces/"
-					   COLORD_DBUS_INTERFACE ".xml");
-	ret = g_file_load_contents (file_daemon, NULL,
-				    &introspection_daemon_data,
-				    NULL, NULL, &error);
-	if (!ret) {
-		g_warning ("CdMain: failed to load introspection: %s", error->message);
-		g_error_free (error);
-		goto out;
-	}
-	file_device = g_file_new_for_path (DATADIR "/dbus-1/interfaces/"
-					   COLORD_DBUS_INTERFACE_DEVICE ".xml");
-	ret = g_file_load_contents (file_device, NULL,
-				    &introspection_device_data,
-				    NULL, NULL, &error);
-	if (!ret) {
-		g_warning ("CdMain: failed to load introspection: %s", error->message);
-		g_error_free (error);
-		goto out;
-	}
-	file_profile = g_file_new_for_path (DATADIR "/dbus-1/interfaces/"
-					    COLORD_DBUS_INTERFACE_PROFILE ".xml");
-	ret = g_file_load_contents (file_profile, NULL,
-				    &introspection_profile_data,
-				    NULL, NULL, &error);
-	if (!ret) {
-		g_warning ("CdMain: failed to load introspection: %s", error->message);
-		g_error_free (error);
-		goto out;
-	}
-	file_sensor = g_file_new_for_path (DATADIR "/dbus-1/interfaces/"
-					    COLORD_DBUS_INTERFACE_SENSOR ".xml");
-	ret = g_file_load_contents (file_sensor, NULL,
-				    &introspection_sensor_data,
-				    NULL, NULL, &error);
-	if (!ret) {
-		g_warning ("CdMain: failed to load introspection: %s", error->message);
-		g_error_free (error);
-		goto out;
-	}
-
-	/* build introspection from XML */
-	introspection_daemon = g_dbus_node_info_new_for_xml (introspection_daemon_data,
-							     &error);
+	introspection_daemon = cd_main_load_introspection (DATADIR "/dbus-1/interfaces/"
+							   COLORD_DBUS_INTERFACE ".xml",
+							   &error);
 	if (introspection_daemon == NULL) {
 		g_warning ("CdMain: failed to load daemon introspection: %s",
 			   error->message);
 		g_error_free (error);
 		goto out;
 	}
-	introspection_device = g_dbus_node_info_new_for_xml (introspection_device_data,
-							     &error);
+	introspection_device = cd_main_load_introspection (DATADIR "/dbus-1/interfaces/"
+							   COLORD_DBUS_INTERFACE_DEVICE ".xml",
+							   &error);
 	if (introspection_device == NULL) {
 		g_warning ("CdMain: failed to load device introspection: %s",
 			   error->message);
 		g_error_free (error);
 		goto out;
 	}
-	introspection_profile = g_dbus_node_info_new_for_xml (introspection_profile_data,
-							     &error);
+	introspection_profile = cd_main_load_introspection (DATADIR "/dbus-1/interfaces/"
+							   COLORD_DBUS_INTERFACE_PROFILE ".xml",
+							   &error);
 	if (introspection_profile == NULL) {
 		g_warning ("CdMain: failed to load profile introspection: %s",
 			   error->message);
 		g_error_free (error);
 		goto out;
 	}
-	introspection_sensor = g_dbus_node_info_new_for_xml (introspection_sensor_data,
-							     &error);
+	introspection_sensor = cd_main_load_introspection (DATADIR "/dbus-1/interfaces/"
+							   COLORD_DBUS_INTERFACE_SENSOR ".xml",
+							   &error);
 	if (introspection_sensor == NULL) {
 		g_warning ("CdMain: failed to load sensor introspection: %s",
 			   error->message);
@@ -1839,10 +1804,6 @@ main (int argc, char *argv[])
 	/* success */
 	retval = 0;
 out:
-	g_free (introspection_daemon_data);
-	g_free (introspection_device_data);
-	g_free (introspection_profile_data);
-	g_free (introspection_sensor_data);
 	g_ptr_array_unref (sensors);
 	g_hash_table_destroy (standard_spaces);
 #ifdef HAVE_GUDEV
@@ -1863,14 +1824,6 @@ out:
 		g_object_unref (devices_array);
 	if (profiles_array != NULL)
 		g_object_unref (profiles_array);
-	if (file_daemon != NULL)
-		g_object_unref (file_daemon);
-	if (file_device != NULL)
-		g_object_unref (file_device);
-	if (file_profile != NULL)
-		g_object_unref (file_profile);
-	if (file_sensor != NULL)
-		g_object_unref (file_sensor);
 	if (owner_id > 0)
 		g_bus_unown_name (owner_id);
 	if (connection != NULL)

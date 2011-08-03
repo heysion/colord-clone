@@ -26,6 +26,7 @@
 #include <sys/time.h>
 #include <gmodule.h>
 
+#include "cd-common.h"
 #include "cd-sensor.h"
 #include "cd-enum.h"
 
@@ -157,7 +158,6 @@ cd_sensor_dbus_emit_property_changed (CdSensor *sensor,
 				      const gchar *property_name,
 				      GVariant *property_value)
 {
-	GError *error_local = NULL;
 	GVariantBuilder builder;
 	GVariantBuilder invalidated_builder;
 
@@ -182,8 +182,7 @@ cd_sensor_dbus_emit_property_changed (CdSensor *sensor,
 				       COLORD_DBUS_INTERFACE_SENSOR,
 				       &builder,
 				       &invalidated_builder),
-				       &error_local);
-	g_assert_no_error (error_local);
+				       NULL);
 }
 
 /**
@@ -194,9 +193,6 @@ cd_sensor_dbus_emit_property_changed (CdSensor *sensor,
 void
 cd_sensor_button_pressed (CdSensor *sensor)
 {
-	gboolean ret;
-	GError *error_local = NULL;
-
 	/* not yet connected */
 	if (sensor->priv->connection == NULL)
 		return;
@@ -204,18 +200,13 @@ cd_sensor_button_pressed (CdSensor *sensor)
 	/* emit signal */
 	g_debug ("CdSensor: emit ButtonPressed on %s",
 		 sensor->priv->object_path);
-	ret = g_dbus_connection_emit_signal (sensor->priv->connection,
-					     NULL,
-					     sensor->priv->object_path,
-					     COLORD_DBUS_INTERFACE_SENSOR,
-					     "ButtonPressed",
-					     NULL,
-					     &error_local);
-	if (!ret) {
-		g_warning ("CdSensor: failed to send signal %s",
-			   error_local->message);
-		g_error_free (error_local);
-	}
+	g_dbus_connection_emit_signal (sensor->priv->connection,
+				       NULL,
+				       sensor->priv->object_path,
+				       COLORD_DBUS_INTERFACE_SENSOR,
+				       "ButtonPressed",
+				       NULL,
+				       NULL);
 }
 
 /**
@@ -579,7 +570,7 @@ cd_sensor_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 	CdSensorPrivate *priv = sensor->priv;
 	CdSensorCap cap;
 	gboolean ret;
-	gchar *cap_tmp = NULL;
+	const gchar *cap_tmp = NULL;
 	GVariant *result = NULL;
 
 	/* return '' */
@@ -729,7 +720,7 @@ cd_sensor_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 		}
 
 		/* get the type */
-		g_variant_get (parameters, "(s)", &cap_tmp);
+		g_variant_get (parameters, "(&s)", &cap_tmp);
 		cap = cd_sensor_cap_from_string (cap_tmp);
 		if (cap == CD_SENSOR_CAP_UNKNOWN) {
 			g_dbus_method_invocation_return_error (invocation,
@@ -754,7 +745,6 @@ cd_sensor_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 out:
 	if (result != NULL)
 		g_variant_unref (result);
-	g_free (cap_tmp);
 }
 
 /**

@@ -218,7 +218,6 @@ cd_device_dbus_emit_property_changed (CdDevice *device,
 				      const gchar *property_name,
 				      GVariant *property_value)
 {
-	GError *error_local = NULL;
 	GVariantBuilder builder;
 	GVariantBuilder invalidated_builder;
 
@@ -242,8 +241,7 @@ cd_device_dbus_emit_property_changed (CdDevice *device,
 				       COLORD_DBUS_INTERFACE_DEVICE,
 				       &builder,
 				       &invalidated_builder),
-				       &error_local);
-	g_assert_no_error (error_local);
+				       NULL);
 }
 
 /**
@@ -252,9 +250,6 @@ cd_device_dbus_emit_property_changed (CdDevice *device,
 static void
 cd_device_dbus_emit_device_changed (CdDevice *device)
 {
-	gboolean ret;
-	GError *error_local = NULL;
-
 	/* not yet connected */
 	if (device->priv->connection == NULL)
 		return;
@@ -262,32 +257,24 @@ cd_device_dbus_emit_device_changed (CdDevice *device)
 	/* emit signal */
 	g_debug ("CdDevice: emit Changed on %s",
 		 cd_device_get_object_path (device));
-	ret = g_dbus_connection_emit_signal (device->priv->connection,
-					     NULL,
-					     cd_device_get_object_path (device),
-					     COLORD_DBUS_INTERFACE_DEVICE,
-					     "Changed",
-					     NULL,
-					     &error_local);
-	if (!ret) {
-		g_warning ("CdDevice: failed to send signal %s", error_local->message);
-		g_error_free (error_local);
-	}
+	g_dbus_connection_emit_signal (device->priv->connection,
+				       NULL,
+				       cd_device_get_object_path (device),
+				       COLORD_DBUS_INTERFACE_DEVICE,
+				       "Changed",
+				       NULL,
+				       NULL);
 
 	/* emit signal */
 	g_debug ("CdDevice: emit Changed");
-	ret = g_dbus_connection_emit_signal (device->priv->connection,
-					     NULL,
-					     COLORD_DBUS_PATH,
-					     COLORD_DBUS_INTERFACE,
-					     "DeviceChanged",
-					     g_variant_new ("(o)",
+	g_dbus_connection_emit_signal (device->priv->connection,
+				       NULL,
+				       COLORD_DBUS_PATH,
+				       COLORD_DBUS_INTERFACE,
+				       "DeviceChanged",
+				       g_variant_new ("(o)",
 							    cd_device_get_object_path (device)),
-					     &error_local);
-	if (!ret) {
-		g_warning ("CdDevice: failed to send signal %s", error_local->message);
-		g_error_free (error_local);
-	}
+				       NULL);
 }
 
 /**
@@ -815,6 +802,12 @@ cd_device_set_property_internal (CdDevice *device,
 const gchar *
 cd_device_get_metadata (CdDevice *device, const gchar *key)
 {
+	if (g_strcmp0 (key, CD_DEVICE_PROPERTY_MODEL) == 0)
+		return device->priv->model;
+	if (g_strcmp0 (key, CD_DEVICE_PROPERTY_VENDOR) == 0)
+		return device->priv->vendor;
+	if (g_strcmp0 (key, CD_DEVICE_PROPERTY_SERIAL) == 0)
+		return device->priv->serial;
 	return g_hash_table_lookup (device->priv->metadata, key);
 }
 
@@ -902,16 +895,16 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 	CdProfile *profile = NULL;
 	const gchar *id;
 	gboolean ret;
-	gchar **devices = NULL;
-	gchar *profile_object_path = NULL;
-	gchar *property_name = NULL;
-	gchar *property_value = NULL;
+	const gchar *profile_object_path = NULL;
+	const gchar *property_name = NULL;
+	const gchar *property_value = NULL;
 	gchar **regexes = NULL;
 	GError *error = NULL;
 	guint i = 0;
 	GVariantIter *iter = NULL;
 	GVariant *tuple = NULL;
 	GVariant *value = NULL;
+	gchar *tmp;
 	CdDeviceRelation relation = CD_DEVICE_RELATION_UNKNOWN;
 
 	/* return '' */
@@ -925,7 +918,7 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 			goto out;
 
 		/* check the profile_object_path exists */
-		g_variant_get (parameters, "(so)",
+		g_variant_get (parameters, "(&s&o)",
 			       &property_value,
 			       &profile_object_path);
 		g_debug ("CdDevice %s:AddProfile(%s)",
@@ -994,7 +987,7 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 			goto out;
 
 		/* try to remove */
-		g_variant_get (parameters, "(o)",
+		g_variant_get (parameters, "(&o)",
 			       &profile_object_path);
 		g_debug ("CdDevice %s:RemoveProfile(%s)",
 			 sender, profile_object_path);
@@ -1060,18 +1053,13 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 	if (g_strcmp0 (method_name, "GetProfileForQualifiers") == 0) {
 
 		/* find the profile by the qualifier search string */
-		g_variant_get (parameters, "(as)", &iter);
-		regexes = g_new0 (gchar *,
-				  g_variant_iter_n_children (iter) + 1);
-		while (g_variant_iter_loop (iter, "s",
-					    &property_value)) {
-			regexes[i++] = g_strdup (property_value);
-		}
+		g_variant_get (parameters, "(^a&s)", &regexes);
 
 		/* show all the qualifiers */
-		property_name = g_strjoinv (",", regexes);
+		tmp = g_strjoinv (",", regexes);
 		g_debug ("CdDevice %s:GetProfileForQualifiers(%s)",
-			 sender, property_name);
+			 sender, tmp);
+		g_free (tmp);
 
 		/* are we profiling? */
 		ret = cd_inhibit_valid (priv->inhibit);
@@ -1124,7 +1112,7 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 			goto out;
 
 		/* check the profile_object_path exists */
-		g_variant_get (parameters, "(o)",
+		g_variant_get (parameters, "(&o)",
 			       &profile_object_path);
 		g_debug ("CdDevice %s:MakeProfileDefault(%s)",
 			 sender, profile_object_path);
@@ -1175,7 +1163,7 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 			goto out;
 
 		/* set, and parse */
-		g_variant_get (parameters, "(ss)",
+		g_variant_get (parameters, "(&s&s)",
 			       &property_name,
 			       &property_value);
 		g_debug ("CdDevice %s:SetProperty(%s,%s)",
@@ -1251,11 +1239,6 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 out:
 	if (iter != NULL)
 		g_variant_iter_free (iter);
-	g_free (profile_object_path);
-	g_free (property_name);
-	g_free (property_value);
-	g_strfreev (regexes);
-	g_strfreev (devices);
 }
 
 /**
