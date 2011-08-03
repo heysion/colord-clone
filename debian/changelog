@@ -1,4 +1,4 @@
-colord (0.1.10-1) unstable; urgency=low
+colord (0.1.11-1) unstable; urgency=low
 
   * Initial release (Closes: #633518, LP: #741448)
 
