@@ -25,8 +25,7 @@ override_dh_autoreconf:
 override_dh_auto_configure:
 	dh_auto_configure -- --libexecdir=/usr/lib/$(DEB_HOST_MULTIARCH)/colord \
 		--enable-gudev --enable-polkit --enable-sane --disable-static \
-		--disable-fd-fallback --disable-volume-search \
-		--with-daemon-user=colord
+		--disable-volume-search --with-daemon-user=colord
 
 override_dh_auto_test:
 	@echo "TODO: Test suite disabled - requires running dbus daemon, currently fails"

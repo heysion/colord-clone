@@ -1,8 +1,5 @@
 colord (0.1.11-1ubuntu1) oneiric; urgency=low
 
-  * debian/patches/01_add_enable_fd_fallback.diff:
-    - Cherry-pick from upstream, adding an option to prevent the daemon from
-      opening files on behalf of the user.
   * debian/patches/02_add_enable_volume_search.diff
     - Cherry-pick from upstream, adding an option to prevent the daemon from
       automatically attempting to import colour profiles on removable media.

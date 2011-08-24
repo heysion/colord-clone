@@ -7,12 +7,12 @@ Date:   Sat Aug 13 19:08:54 2011 +0200
     This allows distros to disable the external-volume probing, which may be
     slightly more secure at the expense of some 'just-workingness'.
 
-diff --git a/configure.ac b/configure.ac
-index 933b7e7..8fbfe55 100644
---- a/configure.ac
-+++ b/configure.ac
-@@ -222,6 +222,16 @@ if test x$enable_fd_fallback != xno; then
- 	AC_DEFINE(HAVE_FD_FALLBACK,1,[Use FD fallback])
+Index: colord/configure.ac
+===================================================================
+--- colord.orig/configure.ac	2011-08-24 13:44:15.000000000 +1000
++++ colord/configure.ac	2011-08-24 13:47:57.166591324 +1000
+@@ -215,6 +215,16 @@
+ 	AC_DEFINE(HAVE_SANE,1,[Use SANE support for detecting scanners])
  fi
  
 +dnl **** Daemon is allowed to do search external volumes for profiles ****
@@ -28,18 +28,18 @@ index 933b7e7..8fbfe55 100644
  dnl ---------------------------------------------------------------------------
  dnl - Build VALA support
  dnl ---------------------------------------------------------------------------
-@@ -289,6 +299,7 @@ echo "
+@@ -281,6 +291,7 @@
+         gobject-introspection:     ${found_introspection}
          PolicyKit support:         ${enable_polkit}
          Reverse engineering tools: ${enable_reverse}
-         File descriptor fallback:  ${enable_fd_fallback}
 +        External volume searching: ${enable_volume_search}
          SANE support:              ${has_sane}
          GUDEV support:             ${enable_gudev}
          LCMS2 DICT support:        ${has_new_lcms}
-diff --git a/etc/Makefile.am b/etc/Makefile.am
-index 460f08d..b3ec91f 100644
---- a/etc/Makefile.am
-+++ b/etc/Makefile.am
+Index: colord/etc/Makefile.am
+===================================================================
+--- colord.orig/etc/Makefile.am	2011-08-24 13:44:15.000000000 +1000
++++ colord/etc/Makefile.am	2011-08-24 13:47:19.956590931 +1000
 @@ -1,7 +1,14 @@
  configdir = $(sysconfdir)
 -config_DATA = colord.conf
@@ -58,11 +58,10 @@ index 460f08d..b3ec91f 100644
 +	colord.conf
  
  -include $(top_srcdir)/git.mk
-diff --git a/etc/colord.conf b/etc/colord.conf
-deleted file mode 100644
-index 6d60d29..0000000
---- a/etc/colord.conf
-+++ /dev/null
+Index: colord/etc/colord.conf
+===================================================================
+--- colord.orig/etc/colord.conf	2011-08-24 13:44:15.000000000 +1000
++++ /dev/null	1970-01-01 00:00:00.000000000 +0000
 @@ -1,24 +0,0 @@
 -[colord]
 -
@@ -88,11 +87,10 @@ index 6d60d29..0000000
 -#
 -# default=
 -StandardSpaces=adobe-rgb:/usr/share/color/icc/Argyll/ClayRGB1998.icm;srgb:/usr/share/color/icc/Argyll/sRGB.icm;prophoto-rgb:/usr/share/color/icc/Argyll/ProPhotoRGB.icc
-diff --git a/etc/colord.conf.in b/etc/colord.conf.in
-new file mode 100644
-index 0000000..1864f8a
---- /dev/null
-+++ b/etc/colord.conf.in
+Index: colord/etc/colord.conf.in
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ colord/etc/colord.conf.in	2011-08-24 13:47:19.956590931 +1000
 @@ -0,0 +1,24 @@
 +[colord]
 +
