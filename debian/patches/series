@@ -2,3 +2,4 @@
 02_add_enable_volume_search.diff
 03_enable_running_as_system_user.diff
 04_udev_sensor_acls.diff
+05_adapt_fallbacks_to_icc_profiles.diff

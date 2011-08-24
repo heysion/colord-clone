@@ -21,6 +21,9 @@ colord (0.1.11-1ubuntu1) oneiric; urgency=low
     - Recommend icc-profiles-free so that we have some colour spaces by default
   * debian/gbp.conf:
     - Point at ubuntu branch.
+  * debian/patches/05_adapt_fallbacks_to_icc_profiles.diff:
+    - Adapt the StandardSpaces mapping to match the profiles found in
+      icc-profiles-free.
 
  -- Christopher James Halse Rogers <raof@ubuntu.com>  Wed, 24 Aug 2011 10:44:21 +1000
 
