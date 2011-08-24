@@ -17,6 +17,8 @@ colord (0.1.11-1ubuntu1) oneiric; urgency=low
   * debian/patches/04_udev_sensor_acls.diff
     - Add an acl to the colourimetry sensors to allow the daemon to access them
       now that it's not running as root.
+  * debian/control:
+    - Recommend icc-profiles-free so that we have some colour spaces by default
 
  -- Christopher James Halse Rogers <raof@ubuntu.com>  Wed, 24 Aug 2011 10:44:21 +1000
 

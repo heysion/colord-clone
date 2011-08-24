@@ -66,6 +66,7 @@ Depends:
  ${misc:Depends},
  adduser,
  acl,
+Recommends: icc-profiles-free
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: foreign
 Description: system service to manage device colour profiles -- system daemon
