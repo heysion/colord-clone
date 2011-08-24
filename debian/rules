@@ -11,14 +11,22 @@
 
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
+# Being for the benefit of autoreconf
+export AUTOPOINT=intltoolize --automake --copy --force
+
 override_dh_install:
 	# The .la file(s) are entirely useless; kill them with fire.
 	find debian/tmp -name '*.la' -delete
 	dh_install --fail-missing
 
+override_dh_autoreconf:
+	dh_autoreconf --as-needed
+
 override_dh_auto_configure:
 	dh_auto_configure -- --libexecdir=/usr/lib/$(DEB_HOST_MULTIARCH)/colord \
-		--enable-gudev --enable-polkit --enable-sane --disable-static
+		--enable-gudev --enable-polkit --enable-sane --disable-static \
+		--disable-fd-fallback --disable-volume-search \
+		--with-daemon-user=colord
 
 override_dh_auto_test:
 	@echo "TODO: Test suite disabled - requires running dbus daemon, currently fails"
@@ -31,4 +39,4 @@ override_dh_gencontrol:
 	dh_gencontrol
 
 %:
-	dh $@
+	dh $@ --with autoreconf

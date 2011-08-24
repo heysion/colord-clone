@@ -1,0 +1,78 @@
+commit 7f3514b4e6057f678f50fe67455eecbdf6eb89d3
+Author: Richard Hughes <richard@hughsie.com>
+Date:   Sat Aug 13 18:41:22 2011 +0200
+
+    Add a configure argument of --enable-fd-fallback
+    
+    This defaults to true, and allows distros to disable opening of the user
+    profiles from the daemon.
+    
+    This in theory is a little safer, and does not upset frameworks like SELinux.
+    
+    The downside is that testing is made much harder and all clients have to support
+    FD-passing in DBus messages.
+
+diff --git a/Makefile.am b/Makefile.am
+index 257a03c..c4a7bf4 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -20,7 +20,9 @@ SUBDIRS = 						\
+ snapshot:
+ 	$(MAKE) dist distdir=$(PACKAGE)-$(VERSION)-`date +"%Y%m%d"`
+ 
+-DISTCHECK_CONFIGURE_FLAGS = --enable-introspection
++DISTCHECK_CONFIGURE_FLAGS =				\
++	--enable-introspection				\
++	--enable-fd-fallback
+ 
+ EXTRA_DIST =						\
+ 	COPYING						\
+diff --git a/configure.ac b/configure.ac
+index fede541..933b7e7 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -215,6 +215,13 @@ if test x$has_sane = xyes; then
+ 	AC_DEFINE(HAVE_SANE,1,[Use SANE support for detecting scanners])
+ fi
+ 
++dnl **** Daemon is allowed to do FD fallback  ****
++AC_ARG_ENABLE(fd_fallback, AS_HELP_STRING([--enable-fd-fallback],[Enable file descriptor fallback]),
++	      enable_fd_fallback=$enableval, enable_fd_fallback=yes)
++if test x$enable_fd_fallback != xno; then
++	AC_DEFINE(HAVE_FD_FALLBACK,1,[Use FD fallback])
++fi
++
+ dnl ---------------------------------------------------------------------------
+ dnl - Build VALA support
+ dnl ---------------------------------------------------------------------------
+@@ -281,6 +288,7 @@ echo "
+         gobject-introspection:     ${found_introspection}
+         PolicyKit support:         ${enable_polkit}
+         Reverse engineering tools: ${enable_reverse}
++        File descriptor fallback:  ${enable_fd_fallback}
+         SANE support:              ${has_sane}
+         GUDEV support:             ${enable_gudev}
+         LCMS2 DICT support:        ${has_new_lcms}
+diff --git a/src/cd-profile.c b/src/cd-profile.c
+index af4e86b..d747c25 100644
+--- a/src/cd-profile.c
++++ b/src/cd-profile.c
+@@ -944,6 +944,18 @@ cd_profile_set_filename (CdProfile *profile,
+ 		g_debug ("profile '%s' already set",
+ 			 priv->object_path);
+ 		goto out;
++	} else {
++#ifndef HAVE_FD_FALLBACK
++		/* we're not allowing the dameon to open the file */
++		ret = FALSE;
++		g_set_error (error,
++			     CD_MAIN_ERROR,
++			     CD_MAIN_ERROR_FAILED,
++			     "Failed to open %s as client did not send FD and "
++			     "daemon is not compiled with --enable-fd-fallback",
++			     filename);
++		goto out;
++#endif
+ 	}
+ 
+ 	/* parse the ICC file */

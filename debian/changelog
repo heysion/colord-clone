@@ -1,3 +1,25 @@
+colord (0.1.11-1ubuntu1) oneiric; urgency=low
+
+  * debian/patches/01_add_enable_fd_fallback.diff:
+    - Cherry-pick from upstream, adding an option to prevent the daemon from
+      opening files on behalf of the user.
+  * debian/patches/02_add_enable_volume_search.diff
+    - Cherry-pick from upstream, adding an option to prevent the daemon from
+      automatically attempting to import colour profiles on removable media.
+  * debian/patches/03_enable_running_as_system_user.diff
+    - Cherry-pick from upstream, adding an option to run the daemon as a system
+      user rather than root.
+  * debian/rules:
+  * debian/control:
+  * debian/colord.postinst:
+    - Enable the above options, and run the daemon as the 'colord' user.
+      Resolves security concerns from MIR (bug 823185).
+  * debian/patches/04_udev_sensor_acls.diff
+    - Add an acl to the colourimetry sensors to allow the daemon to access them
+      now that it's not running as root.
+
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Wed, 24 Aug 2011 10:44:21 +1000
+
 colord (0.1.11-1) unstable; urgency=low
 
   * Initial release (Closes: #633518, LP: #741448)

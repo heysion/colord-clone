@@ -1,0 +1,120 @@
+commit 3a693ef7d5a949796274f42c7c5e67b933d6ed8f
+Author: Richard Hughes <richard@hughsie.com>
+Date:   Sat Aug 13 19:08:54 2011 +0200
+
+    Add a configure argument --enable-volume-search
+    
+    This allows distros to disable the external-volume probing, which may be
+    slightly more secure at the expense of some 'just-workingness'.
+
+diff --git a/configure.ac b/configure.ac
+index 933b7e7..8fbfe55 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -222,6 +222,16 @@ if test x$enable_fd_fallback != xno; then
+ 	AC_DEFINE(HAVE_FD_FALLBACK,1,[Use FD fallback])
+ fi
+ 
++dnl **** Daemon is allowed to do search external volumes for profiles ****
++AC_ARG_ENABLE(volume_search, AS_HELP_STRING([--enable-volume-search],[Enable profile volume search]),
++	      enable_volume_search=$enableval, enable_volume_search=yes)
++tmp="false"
++if test x$enable_volume_search != xno; then
++	tmp="true"
++fi
++AC_DEFINE_UNQUOTED(ENABLE_VOLUME_SEARCH, "$tmp", [enable volume search])
++AC_SUBST(ENABLE_VOLUME_SEARCH, "$tmp")
++
+ dnl ---------------------------------------------------------------------------
+ dnl - Build VALA support
+ dnl ---------------------------------------------------------------------------
+@@ -289,6 +299,7 @@ echo "
+         PolicyKit support:         ${enable_polkit}
+         Reverse engineering tools: ${enable_reverse}
+         File descriptor fallback:  ${enable_fd_fallback}
++        External volume searching: ${enable_volume_search}
+         SANE support:              ${has_sane}
+         GUDEV support:             ${enable_gudev}
+         LCMS2 DICT support:        ${has_new_lcms}
+diff --git a/etc/Makefile.am b/etc/Makefile.am
+index 460f08d..b3ec91f 100644
+--- a/etc/Makefile.am
++++ b/etc/Makefile.am
+@@ -1,7 +1,14 @@
+ configdir = $(sysconfdir)
+-config_DATA = colord.conf
++config_in_files = colord.conf.in
++config_DATA = $(config_in_files:.conf.in=.conf)
+ 
+-EXTRA_DIST =						\
+-	$(config_DATA)
++$(config_DATA): $(config_in_files) Makefile
++	@sed -e "s|\@enablevolumesearch\@|$(ENABLE_VOLUME_SEARCH)|" $< > $@
++
++EXTRA_DIST =							\
++	$(config_in_files)
++
++CLEANFILES =							\
++	colord.conf
+ 
+ -include $(top_srcdir)/git.mk
+diff --git a/etc/colord.conf b/etc/colord.conf
+deleted file mode 100644
+index 6d60d29..0000000
+--- a/etc/colord.conf
++++ /dev/null
+@@ -1,24 +0,0 @@
+-[colord]
+-
+-# This controls whether we search external volumes for color profiles.
+-#
+-# default=true
+-SearchVolumes=true
+-
+-# If we should use SANE to add scanner and camera devices.
+-#
+-# default=true
+-UseSANE=true
+-
+-# If we should create a dummy sensor for testing
+-#
+-# default=false
+-CreateDummySensor=false
+-
+-# Known profiles are specific colorspaces that applications may request,
+-# e.g. 'AdobeRGB' or 'sRGB'.
+-# This key sets up any manual overrides that are not automatically added
+-# using the profile dictionary metadata.
+-#
+-# default=
+-StandardSpaces=adobe-rgb:/usr/share/color/icc/Argyll/ClayRGB1998.icm;srgb:/usr/share/color/icc/Argyll/sRGB.icm;prophoto-rgb:/usr/share/color/icc/Argyll/ProPhotoRGB.icc
+diff --git a/etc/colord.conf.in b/etc/colord.conf.in
+new file mode 100644
+index 0000000..1864f8a
+--- /dev/null
++++ b/etc/colord.conf.in
+@@ -0,0 +1,24 @@
++[colord]
++
++# This controls whether we search external volumes for color profiles.
++#
++# default=@enablevolumesearch@
++SearchVolumes=@enablevolumesearch@
++
++# If we should use SANE to add scanner and camera devices.
++#
++# default=true
++UseSANE=true
++
++# If we should create a dummy sensor for testing
++#
++# default=false
++CreateDummySensor=false
++
++# Known profiles are specific colorspaces that applications may request,
++# e.g. 'AdobeRGB' or 'sRGB'.
++# This key sets up any manual overrides that are not automatically added
++# using the profile dictionary metadata.
++#
++# default=
++StandardSpaces=adobe-rgb:/usr/share/color/icc/Argyll/ClayRGB1998.icm;srgb:/usr/share/color/icc/Argyll/sRGB.icm;prophoto-rgb:/usr/share/color/icc/Argyll/ProPhotoRGB.icc

@@ -1,0 +1,168 @@
+commit 75c7028157e8c8abeea0e510445a86bbcf166ee0
+Author: Richard Hughes <richard@hughsie.com>
+Date:   Tue Aug 23 21:44:34 2011 +1000
+
+    Allow the daemon to run with a different user
+    
+    Signed-off-by: Christopher James Halse Rogers <raof@ubuntu.com>
+
+diff --git a/configure.ac b/configure.ac
+index 9d0e9b2..6ea95a2 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -235,6 +235,17 @@ fi
+ AC_DEFINE_UNQUOTED(ENABLE_VOLUME_SEARCH, "$tmp", [enable volume search])
+ AC_SUBST(ENABLE_VOLUME_SEARCH, "$tmp")
+ 
++# custom daemon user
++AC_ARG_WITH(
++    [daemon_user],
++    AC_HELP_STRING([--with-daemon-user],
++                   [User for running the colord daemon (root)]),
++    [daemon_user=$withval],
++    [daemon_user=root]
++)
++AC_SUBST(daemon_user)
++AC_DEFINE_UNQUOTED([DAEMON_USER], ["$daemon_user"], [Daemon user])
++
+ dnl ---------------------------------------------------------------------------
+ dnl - Build VALA support
+ dnl ---------------------------------------------------------------------------
+@@ -276,6 +287,7 @@ doc/api/Makefile
+ doc/api/dbus/Makefile
+ doc/api/version.xml
+ data/Makefile
++data/org.freedesktop.ColorManager.conf
+ data/tests/Makefile
+ policy/Makefile
+ rules/Makefile
+@@ -307,6 +319,7 @@ echo "
+         GUDEV support:             ${enable_gudev}
+         LCMS2 DICT support:        ${has_new_lcms}
+         Vala API generator:        ${has_vapigen}
++        Daemon user:               ${daemon_user}
+ "
+ 
+ 
+diff --git a/data/Makefile.am b/data/Makefile.am
+index 2731a22..6573e52 100644
+--- a/data/Makefile.am
++++ b/data/Makefile.am
+@@ -12,10 +12,12 @@ servicemaindir = $(datadir)/dbus-1/system-services
+ servicemain_in_files = org.freedesktop.ColorManager.service.in
+ servicemain_DATA     = $(servicemain_in_files:.service.in=.service)
+ $(servicemain_DATA): $(servicemain_in_files) Makefile
+-	@sed -e "s|\@servicedir\@|$(libexecdir)|" $< > $@
++	@sed -e "s|\@servicedir\@|$(libexecdir)|" $< | \
++	sed -e "s|\@daemon_user\@|$(daemon_user)|" > $@
+ 
+ EXTRA_DIST =						\
+-	$(servicemain_in_files)
++	$(servicemain_in_files)				\
++	org.freedesktop.ColorManager.conf.in
+ 
+ x11-colors.icc:
+ 	$(top_builddir)/client/cd-create-profile --output $@ --srgb-palette ./x11-colors.csv --nc-prefix="X11" -d "X11 Colors" -c "No copyright" -n "Richard Hughes"
+diff --git a/data/org.freedesktop.ColorManager.conf b/data/org.freedesktop.ColorManager.conf
+deleted file mode 100644
+index 2a7a9eb..0000000
+--- a/data/org.freedesktop.ColorManager.conf
++++ /dev/null
+@@ -1,33 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?> <!-- -*- XML -*- -->
+-
+-<!DOCTYPE busconfig PUBLIC
+- "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN"
+- "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
+-<busconfig>
+-
+-  <!-- This configuration file specifies the required security policies
+-       for the ColorManager to work. -->
+-
+-  <!-- Only user root can own the ColorManager service -->
+-  <policy user="root">
+-    <allow own="org.freedesktop.ColorManager"/>
+-  </policy>
+-
+- <!-- Allow anyone to call into the service - we'll reject callers using PolicyKit -->
+-  <policy context="default">
+-    <allow send_destination="org.freedesktop.ColorManager"
+-           send_interface="org.freedesktop.ColorManager"/>
+-    <allow send_destination="org.freedesktop.ColorManager"
+-           send_interface="org.freedesktop.ColorManager.Profile"/>
+-    <allow send_destination="org.freedesktop.ColorManager"
+-           send_interface="org.freedesktop.ColorManager.Device"/>
+-    <allow send_destination="org.freedesktop.ColorManager"
+-           send_interface="org.freedesktop.ColorManager.Sensor"/>
+-    <allow send_destination="org.freedesktop.ColorManager"
+-           send_interface="org.freedesktop.DBus.Properties"/>
+-    <allow send_destination="org.freedesktop.ColorManager"
+-           send_interface="org.freedesktop.DBus.Introspectable"/>
+-  </policy>
+-
+-</busconfig>
+-
+diff --git a/data/org.freedesktop.ColorManager.conf.in b/data/org.freedesktop.ColorManager.conf.in
+new file mode 100644
+index 0000000..62a24b6
+--- /dev/null
++++ b/data/org.freedesktop.ColorManager.conf.in
+@@ -0,0 +1,36 @@
++<?xml version="1.0" encoding="UTF-8"?> <!-- -*- XML -*- -->
++
++<!DOCTYPE busconfig PUBLIC
++ "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN"
++ "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
++<busconfig>
++
++  <!-- This configuration file specifies the required security policies
++       for the ColorManager to work. -->
++
++  <!-- Only user root or user @daemon_user@ can own the colord service -->
++  <policy user="root">
++    <allow own="org.freedesktop.ColorManager"/>
++  </policy>
++  <policy user="@daemon_user@">
++    <allow own="org.freedesktop.ColorManager"/>
++  </policy>
++
++ <!-- Allow anyone to call into the service - we'll reject callers using PolicyKit -->
++  <policy context="default">
++    <allow send_destination="org.freedesktop.ColorManager"
++           send_interface="org.freedesktop.ColorManager"/>
++    <allow send_destination="org.freedesktop.ColorManager"
++           send_interface="org.freedesktop.ColorManager.Profile"/>
++    <allow send_destination="org.freedesktop.ColorManager"
++           send_interface="org.freedesktop.ColorManager.Device"/>
++    <allow send_destination="org.freedesktop.ColorManager"
++           send_interface="org.freedesktop.ColorManager.Sensor"/>
++    <allow send_destination="org.freedesktop.ColorManager"
++           send_interface="org.freedesktop.DBus.Properties"/>
++    <allow send_destination="org.freedesktop.ColorManager"
++           send_interface="org.freedesktop.DBus.Introspectable"/>
++  </policy>
++
++</busconfig>
++
+diff --git a/data/org.freedesktop.ColorManager.service.in b/data/org.freedesktop.ColorManager.service.in
+index 18ca2df..aecf7d3 100644
+--- a/data/org.freedesktop.ColorManager.service.in
++++ b/data/org.freedesktop.ColorManager.service.in
+@@ -1,4 +1,4 @@
+ [D-BUS Service]
+ Name=org.freedesktop.ColorManager
+ Exec=@servicedir@/colord
+-User=root
++User=@daemon_user@
+diff --git a/libcolord/colord.pc.in b/libcolord/colord.pc.in
+index dc5345a..428556d 100644
+--- a/libcolord/colord.pc.in
++++ b/libcolord/colord.pc.in
+@@ -2,6 +2,7 @@ prefix=@prefix@
+ exec_prefix=@exec_prefix@
+ libdir=@libdir@
+ includedir=@includedir@
++daemon_user=@daemon_user@
+ 
+ Name: colord
+ Description: colord is a system daemon for managing color devices

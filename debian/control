@@ -16,6 +16,8 @@ Build-Depends:
  valac,
  gobject-introspection,
  libgirepository1.0-dev,
+ dh-autoreconf,
+ intltool,
 Standards-Version: 3.9.2
 Section: graphics
 Homepage: http://www.freedesktop.org/software/colord/
@@ -62,6 +64,8 @@ Architecture: any
 Depends:
  ${shlibs:Depends},
  ${misc:Depends},
+ adduser,
+ acl,
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: foreign
 Description: system service to manage device colour profiles -- system daemon
