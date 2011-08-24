@@ -19,6 +19,8 @@ colord (0.1.11-1ubuntu1) oneiric; urgency=low
       now that it's not running as root.
   * debian/control:
     - Recommend icc-profiles-free so that we have some colour spaces by default
+  * debian/gbp.conf:
+    - Point at ubuntu branch.
 
  -- Christopher James Halse Rogers <raof@ubuntu.com>  Wed, 24 Aug 2011 10:44:21 +1000
 
