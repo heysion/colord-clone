@@ -1,3 +1,18 @@
+colord (0.1.11-1ubuntu2) oneiric; urgency=low
+
+  * debian/patches/06_use_dbus_security_for_permissions.diff:
+    - Patch to allow root and at_console access to access the colord service.
+      This matches the default PolicyKit rules.
+  * debian/patches/07_fix_disable_polkit_build.diff:
+    - Fix the build when passing --disable-polkit
+  * debian/rules:
+  * debian/control:
+    - Disable PolicyKit support, in favour of the dbus security introduced
+      above.  PolicyKit is not usable as access control to a non-root service.
+      (LP: #837851)
+  
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Fri, 02 Sep 2011 17:09:42 +1000
+
 colord (0.1.11-1ubuntu1) oneiric; urgency=low
 
   * debian/patches/02_add_enable_volume_search.diff

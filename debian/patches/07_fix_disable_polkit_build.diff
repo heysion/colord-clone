@@ -1,0 +1,12 @@
+--- colord-0.1.11.orig/src/cd-common.c
++++ colord-0.1.11/src/cd-common.c
+@@ -21,7 +21,9 @@
+ 
+ #include "config.h"
+ 
++#ifdef USE_POLKIT
+ #include <polkit/polkit.h>
++#endif
+ 
+ #include "cd-common.h"
+ 
