@@ -35,6 +35,7 @@ libcolord.so.1 libcolord1 #MINVER#
  cd_client_get_devices_by_kind_sync@Base 0.1.10
  cd_client_get_devices_finish@Base 0.1.10
  cd_client_get_devices_sync@Base 0.1.10
+ cd_client_get_has_server@Base 0.1.12
  cd_client_get_profiles@Base 0.1.10
  cd_client_get_profiles_finish@Base 0.1.10
  cd_client_get_profiles_sync@Base 0.1.10
@@ -45,6 +46,9 @@ libcolord.so.1 libcolord1 #MINVER#
  cd_client_get_standard_space_finish@Base 0.1.10
  cd_client_get_standard_space_sync@Base 0.1.10
  cd_client_get_type@Base 0.1.10
+ cd_client_import_profile@Base 0.1.12
+ cd_client_import_profile_finish@Base 0.1.12
+ cd_client_import_profile_sync@Base 0.1.12
  cd_client_new@Base 0.1.10
  cd_color_clear_xyz@Base 0.1.10
  cd_color_convert_rgb8_to_rgb@Base 0.1.10
