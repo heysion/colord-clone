@@ -1,6 +1,349 @@
+commit e481a509923ac406b4322d4e504140e47eb2dc3d
+Author: Richard Hughes <richard@hughsie.com>
+Date:   2011-08-30
+
+    Release colord 0.1.12
+
+M	NEWS
+M	RELEASE
+M	configure.ac
+M	doc/website/download.html
+
+commit 8cf64eddcf79882358e90ca74835a030fad19f0d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-30
+
+    trivial: fix the self test program
+
+M	src/cd-self-test.c
+
+commit 0d3ba837aabb8f43dd829d2238c4d4ede06307e4
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-26
+
+    trivial: fix up the printf qualifiers in an error path
+
+M	src/cd-device.c
+
+commit f31ef9a3521a2e827c820423644ce2095173f797
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-25
+
+    trivial: Unfuck gobject-introspection by killing the sedding of
+    libtool in the Fedora spec file
+
+M	contrib/colord.spec.in
+
+commit c6a10deb3410b187e47d56a3334cf9eab67fa185
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-25
+
+    trivial: update RELEASE with the signing instructions
+
+M	RELEASE
+
+commit ca044e2ca60b1bafeba974ebb8e982bd0ddba9ee
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-25
+
+    Ensure the profiles are sorted by thier timestamp during login
+
+    This fixes the failing self check check added in
+    a327f24395d3ac9ff535148ad9fe9328cd7840f7.
+
+M	src/cd-device.c
+M	src/cd-device.h
+M	src/cd-main.c
+M	src/cd-mapping-db.c
+
+commit 98749c483c1cf6f0841edf8090a3efdaf6204f3a
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-25
+
+    trivial: just reimplement g_get_real_time() for old versions of GLib
+
+M	src/cd-device.c
+
+commit a327f24395d3ac9ff535148ad9fe9328cd7840f7
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-25
+
+    Add functionality to test profile ordering
+
+    When a device is added and has profiles added to it, each
+    profile<->device
+    mapping has a timestamp so that we can order the profiles by the
+    most recent
+    first.
+
+    If we add the profile2 and then profile1 to a device, and then
+    remove the
+    profiles (like on session exit) we expect profile1 to always be
+    first in the list.
+    The profiles are currently being added to the device from the database
+    in the
+    correct order, but if the profiles are added in the wrong order,
+    the last
+    profile created on the next session login gets promoted into the
+    first place.
+
+    This means we sometimes get profile2,profile1 on the session restart
+    rather than
+    the desired profile1,profile2.
+
+    This test currently fails, and the daemon needs to be fixed.
+
+M	libcolord/cd-self-test.c
+
+commit d5361835c788d7d1ecd95b6a4bc3902056b3c688
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-25
+
+    trivial: add cd_mapping_db_get_timestamp() so we can access the time
+    the profile was added
+
+M	src/cd-mapping-db.c
+M	src/cd-mapping-db.h
+
+commit 814b84fa4f00e827dec116df9e7cf3dd453dc925
+Author: Christopher James Halse Rogers <raof@ubuntu.com>
+Date:	2011-08-24
+
+    rules: Add daemon_user to acl of sensor devices.
+
+    This ensures that the colord daemon can access the sensors when
+    running as a
+    system user rather than root.
+
+    Signed-off-by: Christopher James Halse Rogers <raof@ubuntu.com>
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	configure.ac
+R097	rules/69-cd-sensors.rules	rules/69-cd-sensors.rules.in
+M	rules/Makefile.am
+
+commit 9c04f40f7c6718af14d8520b97c59e867504d179
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-24
+
+    trivial: add some more g_return_if_fail() checks
+
+    This will cause an early critical warning rather than a crash in
+    the client program.
+
+M	libcolord/cd-client.c
+M	libcolord/cd-device.c
+M	libcolord/cd-profile.c
+M	libcolord/cd-sensor.c
+
+commit e3d70784b7dabe68d5b9ab771fc72a797f5193f6
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-24
+
+    Exit with an error when trying to connect to a device or profile
+    that does not exist
+
+M	libcolord/cd-device.c
+M	libcolord/cd-profile.c
+M	libcolord/cd-self-test.c
+
+commit b583110d2fdca4944b56e83c178667177a6bf938
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-23
+
+    Check if a file is really an ICC profile before importing it
+
+M	libcolord/cd-client.c
+M	libcolord/cd-client.h
+M	libcolord/cd-self-test.c
+
+commit 75c7028157e8c8abeea0e510445a86bbcf166ee0
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-23
+
+    Allow the daemon to run with a different user
+
+    Signed-off-by: Christopher James Halse Rogers <raof@ubuntu.com>
+
+M	configure.ac
+M	data/Makefile.am
+R088	data/org.freedesktop.ColorManager.conf
+data/org.freedesktop.ColorManager.conf.in
+M	data/org.freedesktop.ColorManager.service.in
+M	libcolord/colord.pc.in
+
+commit 4e13fad8754a5cfd776edf91ba17c86ff4be7cb8
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-22
+
+    Add cd_client_import_profile() to be able to easily import a GFile
+
+    This is actually pretty tricky to do as we have to:
+
+    1. Check if the profile already exists
+    2. Copy the profile into the home directory
+    3. Wait for the session process to notice
+    4. Wait for the daemon to add the profile
+    5. Create a local CdProfile instance
+
+M	libcolord/cd-client-sync.c
+M	libcolord/cd-client-sync.h
+M	libcolord/cd-client.c
+M	libcolord/cd-client.h
+M	libcolord/cd-self-test.c
+
+commit 46621cfe82ea5e51b342d7faaf2e98cfebe0a26a
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-22
+
+    trivial: add a check-valgrind makefile entry to make my life easier
+
+A	libcolord/.valgrind-suppressions
+M	libcolord/Makefile.am
+
+commit d0c480f06badc873829699517928ff7070d45ff0
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-17
+
+    Try harder to use the ICC profile checksum rather than generating
+    the md5 sum ourselves
+
+M	src/cd-profile.c
+
+commit a3de1746cbd6739acbf5d569a0b2afd79fdceb6d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-17
+
+    Ensure the volume-sourced profiles are not marked as systemwide
+    profiles
+
+M	src/cd-main.c
+M	src/cd-profile-store.c
+M	src/cd-profile.c
+
+commit 2a599edd9c2d86cbcef6ddd89f92f20756a727ac
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-17
+
+    trivial: fix the self tests to actually run
+
+M	libcolord/cd-self-test.c
+
+commit b4838cd7bc2fad25ca6b6837bc63b937b5b745f1
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-16
+
+    Detect libusb_strerror in configure rather than relying on the version
+
+    Do not use the libusb1 version number, as a git snapshot of libusb1
+    will
+    confuse things and lead to compile failures.
+
+M	configure.ac
+
+commit 3a693ef7d5a949796274f42c7c5e67b933d6ed8f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-13
+
+    Add a configure argument --enable-volume-search
+
+    This allows distros to disable the external-volume probing, which
+    may be
+    slightly more secure at the expense of some 'just-workingness'.
+
+M	configure.ac
+M	etc/Makefile.am
+R090	etc/colord.conf etc/colord.conf.in
+
+commit 7f3514b4e6057f678f50fe67455eecbdf6eb89d3
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-13
+
+    Add a configure argument of --enable-fd-fallback
+
+    This defaults to true, and allows distros to disable opening of
+    the user
+    profiles from the daemon.
+
+    This in theory is a little safer, and does not upset frameworks
+    like SELinux.
+
+    The downside is that testing is made much harder and all clients
+    have to support
+    FD-passing in DBus messages.
+
+M	Makefile.am
+M	configure.ac
+M	src/cd-profile.c
+
+commit 5c3eb18c0010a55992e877c34dda5a6694c1ef71
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-13
+
+    Add lcms2 to Requires.private
+
+    In libcolord we use lcms2, but do not put it in the API or ABI.
+
+M	libcolord/colord.pc.in
+
+commit 80f5c8032b9545770875197b2c7e554f4767ca1c
+Author: Alban Browaeys <prahal@yahoo.com>
+Date:	2011-08-11
+
+    libcolord: Remove duplicate call to complete
+
+    Cd client calls complete of g_simple_async_result twice.
+    This leads to segfault when the caller reads the error
+    (if there was an error to connect) as Cd client finish handler
+    free the error.
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	libcolord/cd-client.c
+
+commit 8731cbe24422db8e313936b000685899376a18ad
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-01
+
+    trivial: add another couple of files to the gitignore logic
+
+M	Makefile.am
+M	doc/api/Makefile.am
+
+commit 8427df9adbd7b9261e3cd89a10409f301a3f7b9b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-01
+
+    Do not fail make check if there is no available local colord process
+    to use
+
+    This should fix the make check warnings in jhbuild to go away.
+
+M	libcolord/cd-client.c
+M	libcolord/cd-client.h
+M	libcolord/cd-self-test.c
+
+commit 4300211eaa9a3614fedcb70339de0044c78f495d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-01
+
+    trivial: fix the release website link
+
+M	RELEASE
+M	doc/website/download.html
+
+commit 9a887d144b2533964915c72554ab146b8d6c977c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-01
+
+    trivial: post release version bump
+
+M	RELEASE
+M	configure.ac
+
 commit 6bc5f76a26c653404b2fc5a5df5fa69c3ed4ee5a
 Author: Richard Hughes <richard@hughsie.com>
-Date:   2011-08-01
+Date:	2011-08-01
 
     Release colord 0.1.11
 

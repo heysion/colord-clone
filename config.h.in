@@ -1,8 +1,14 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* Daemon user */
+#undef DAEMON_USER
+
 /* Define to 1 if translation of program messages to the user's native
    language is requested. */
 #undef ENABLE_NLS
+
+/* enable volume search */
+#undef ENABLE_VOLUME_SEARCH
 
 /* foo */
 #undef GETTEXT_PACKAGE
@@ -21,6 +27,9 @@
 
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #undef HAVE_DLFCN_H
+
+/* Use FD fallback */
+#undef HAVE_FD_FALLBACK
 
 /* Define if the GNU gettext() function is already present or preinstalled. */
 #undef HAVE_GETTEXT
