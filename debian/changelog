@@ -6,7 +6,14 @@ colord (0.1.12-1) UNRELEASED; urgency=low
   * debian/rules:
     + Run colord daemon as a system user, rather than root.  It only needs
       write access to /var/lib/colord and access to scanner devices, which
-      is handled by udev.      
+      is handled by udev.
+  * debian/rules:
+  * debian/patches/07_fix_disable_polkit_build.diff:
+  * debian/patches/06_use_dbus_security_for_permissions.diff:
+    + Use DBus' at_console context to regulate access to the colord daemon.
+      PolicyKit doesn't allow non-root processes to query whether a different
+      a user is authorised to perform an action.  DBus' at_console context
+      duplicates the existing PolicyKit policy.
 
  -- Christopher James Halse Rogers <raof@ubuntu.com>  Mon, 05 Sep 2011 10:38:16 +1000
 

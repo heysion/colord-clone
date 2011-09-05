@@ -17,8 +17,12 @@ override_dh_install:
 	dh_install --fail-missing
 
 override_dh_auto_configure:
+	# Pass --disable-polkit because PolicyKit doesn't (currently) allow
+	# checking for authorisation as a non-root user.
+	# 
+	# Instead we use dbus policy to restrict access to the daemon.
 	dh_auto_configure -- --libexecdir=/usr/lib/$(DEB_HOST_MULTIARCH)/colord \
-		--enable-gudev --enable-polkit --enable-sane --disable-static \
+		--enable-gudev --disable-polkit --enable-sane --disable-static \
 		--disable-volume-search --with-daemon-user=colord
 
 override_dh_auto_test:
