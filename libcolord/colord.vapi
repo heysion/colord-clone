@@ -32,12 +32,15 @@ namespace Cd {
 		public async GLib.GenericArray<Cd.Device> get_devices_by_kind (Cd.DeviceKind kind, GLib.Cancellable? cancellable) throws GLib.Error;
 		public GLib.GenericArray<void*> get_devices_by_kind_sync (Cd.DeviceKind kind, GLib.Cancellable? cancellable) throws GLib.Error;
 		public GLib.GenericArray<void*> get_devices_sync (GLib.Cancellable? cancellable) throws GLib.Error;
+		public bool get_has_server ();
 		public async GLib.GenericArray<Cd.Profile> get_profiles (GLib.Cancellable? cancellable) throws GLib.Error;
 		public GLib.GenericArray<void*> get_profiles_sync (GLib.Cancellable? cancellable) throws GLib.Error;
 		public async GLib.GenericArray<Cd.Sensor> get_sensors (GLib.Cancellable? cancellable) throws GLib.Error;
 		public GLib.GenericArray<void*> get_sensors_sync (GLib.Cancellable? cancellable) throws GLib.Error;
 		public async Cd.Profile get_standard_space (Cd.StandardSpace standard_space, GLib.Cancellable? cancellable) throws GLib.Error;
 		public Cd.Profile get_standard_space_sync (Cd.StandardSpace standard_space, GLib.Cancellable? cancellable) throws GLib.Error;
+		public async Cd.Profile import_profile (GLib.File file, GLib.Cancellable? cancellable) throws GLib.Error;
+		public Cd.Profile import_profile_sync (GLib.File file, GLib.Cancellable? cancellable) throws GLib.Error;
 		public string connected { get; }
 		public string daemon_version { get; }
 		public virtual signal void changed ();
@@ -277,6 +280,8 @@ namespace Cd {
 	[CCode (cprefix = "CD_CLIENT_ERROR_", cheader_filename = "colord.h")]
 	public enum ClientError {
 		FAILED,
+		ALREADY_EXISTS,
+		FILE_INVALID,
 		LAST
 	}
 	[CCode (cprefix = "CD_COLORSPACE_", cheader_filename = "colord.h")]

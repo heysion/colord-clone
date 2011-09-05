@@ -1,9 +1,15 @@
 /* config.h.  Generated from config.h.in by configure.  */
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* Daemon user */
+#define DAEMON_USER "root"
+
 /* Define to 1 if translation of program messages to the user's native
    language is requested. */
 #define ENABLE_NLS 1
+
+/* enable volume search */
+#define ENABLE_VOLUME_SEARCH "true"
 
 /* foo */
 #define GETTEXT_PACKAGE "colord"
@@ -22,6 +28,9 @@
 
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #define HAVE_DLFCN_H 1
+
+/* Use FD fallback */
+#define HAVE_FD_FALLBACK 1
 
 /* Define if the GNU gettext() function is already present or preinstalled. */
 #define HAVE_GETTEXT 1
@@ -42,7 +51,7 @@
 #define HAVE_NEW_LCMS 1
 
 /* Got new libusb */
-/* #undef HAVE_NEW_USB */
+#define HAVE_NEW_USB 1
 
 /* Use SANE support for detecting scanners */
 #define HAVE_SANE 1
@@ -85,7 +94,7 @@
 #define PACKAGE_NAME "colord"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "colord 0.1.11"
+#define PACKAGE_STRING "colord 0.1.12"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "colord"
@@ -94,7 +103,7 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "0.1.11"
+#define PACKAGE_VERSION "0.1.12"
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
@@ -103,4 +112,4 @@
 #define USE_POLKIT 1
 
 /* Version number of package */
-#define VERSION "0.1.11"
+#define VERSION "0.1.12"

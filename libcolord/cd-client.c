@@ -57,7 +57,7 @@ static void	cd_client_finalize	(GObject	*object);
 #define CD_CLIENT_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), CD_TYPE_CLIENT, CdClientPrivate))
 
 #define CD_CLIENT_MESSAGE_TIMEOUT	15000 /* ms */
-
+#define CD_CLIENT_IMPORT_DAEMON_TIMEOUT	5000 /* ms */
 #define COLORD_DBUS_SERVICE		"org.freedesktop.ColorManager"
 #define COLORD_DBUS_PATH		"/org/freedesktop/ColorManager"
 #define COLORD_DBUS_INTERFACE		"org.freedesktop.ColorManager"
@@ -150,6 +150,40 @@ cd_client_get_connected (CdClient *client)
 	return client->priv->proxy != NULL;
 }
 
+/**
+ * cd_client_get_has_server:
+ * @client: a #CdClient instance.
+ *
+ * Gets if the colord server is currently running.
+ *
+ * Return value: %TRUE if the colord process is running
+ *
+ * Since: 0.1.12
+ **/
+gboolean
+cd_client_get_has_server (CdClient *client)
+{
+	gboolean connected = FALSE;
+	gchar *name_owner = NULL;
+
+	g_return_val_if_fail (CD_IS_CLIENT (client), FALSE);
+
+	/* not yet connected */
+	if (client->priv->proxy == NULL)
+		goto out;
+
+	/* get name owner */
+	name_owner = g_dbus_proxy_get_name_owner (client->priv->proxy);
+	if (name_owner == NULL)
+		goto out;
+
+	/* just assume it's ready for use */
+	connected = TRUE;
+out:
+	g_free (name_owner);
+	return connected;
+}
+
 /**********************************************************************/
 
 /**
@@ -239,8 +273,6 @@ cd_client_owner_notify_cb (GObject *object,
 
 /**********************************************************************/
 
-/**********************************************************************/
-
 /**
  * cd_client_connect_finish:
  * @client: a #CdClient instance.
@@ -311,10 +343,10 @@ cd_client_connect_cb (GObject *source_object,
 
 	/* success */
 	g_simple_async_result_set_op_res_gboolean (res_source, TRUE);
+	g_simple_async_result_complete_in_idle (res_source);
 out:
 	if (daemon_version != NULL)
 		g_variant_unref (daemon_version);
-	g_simple_async_result_complete_in_idle (res_source);
 	g_object_unref (res_source);
 }
 
@@ -338,6 +370,7 @@ cd_client_connect (CdClient *client,
 	GSimpleAsyncResult *res;
 
 	g_return_if_fail (CD_IS_CLIENT (client));
+	g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 
 	res = g_simple_async_result_new (G_OBJECT (client),
 					 callback,
@@ -464,6 +497,7 @@ cd_client_create_device (CdClient *client,
 	GList *list, *l;
 
 	g_return_if_fail (CD_IS_CLIENT (client));
+	g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 	g_return_if_fail (client->priv->proxy != NULL);
 
 	res = g_simple_async_result_new (G_OBJECT (client),
@@ -624,6 +658,10 @@ cd_client_create_profile (CdClient *client,
 	GVariantBuilder builder;
 	GSimpleAsyncResult *res;
 
+	g_return_if_fail (CD_IS_CLIENT (client));
+	g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
+	g_return_if_fail (id != NULL);
+
 	res = g_simple_async_result_new (G_OBJECT (client),
 					 callback,
 					 user_data,
@@ -710,6 +748,327 @@ out:
 /**********************************************************************/
 
 /**
+ * cd_client_import_get_profile_destination:
+ **/
+static GFile *
+cd_client_import_get_profile_destination (GFile *file)
+{
+	gchar *basename;
+	gchar *destination;
+	GFile *dest;
+
+	g_return_val_if_fail (file != NULL, NULL);
+
+	/* get destination filename for this source file */
+	basename = g_file_get_basename (file);
+	destination = g_build_filename (g_get_user_data_dir (), "icc", basename, NULL);
+	dest = g_file_new_for_path (destination);
+
+	g_free (basename);
+	g_free (destination);
+	return dest;
+}
+
+/**
+ * cd_client_import_mkdir_and_copy:
+ **/
+static gboolean
+cd_client_import_mkdir_and_copy (GFile *source,
+				 GFile *destination,
+				 GCancellable *cancellable,
+				 GError **error)
+{
+	gboolean ret;
+	GFile *parent;
+
+	g_return_val_if_fail (source != NULL, FALSE);
+	g_return_val_if_fail (destination != NULL, FALSE);
+
+	/* get parent */
+	parent = g_file_get_parent (destination);
+
+	/* create directory */
+	if (!g_file_query_exists (parent, cancellable)) {
+		ret = g_file_make_directory_with_parents (parent, cancellable, error);
+		if (!ret)
+			goto out;
+	}
+
+	/* do the copy */
+	ret = g_file_copy (source, destination,
+			   G_FILE_COPY_OVERWRITE,
+			   cancellable, NULL, NULL, error);
+	if (!ret)
+		goto out;
+out:
+	g_object_unref (parent);
+	return ret;
+}
+
+typedef struct {
+	CdClient		*client;
+	GCancellable		*cancellable;
+	GFile			*dest;
+	GFile			*file;
+	GSimpleAsyncResult	*res;
+	guint			 hangcheck_id;
+	guint			 profile_added_id;
+} CdClientImportHelper;
+
+/**
+ * cd_client_import_profile_finish:
+ * @client: a #CdClient instance.
+ * @res: the #GAsyncResult
+ * @error: A #GError or %NULL
+ *
+ * Gets the result from the asynchronous function.
+ *
+ * Return value: (transfer full): a #CdProfile or %NULL
+ *
+ * Since: 0.1.12
+ **/
+CdProfile *
+cd_client_import_profile_finish (CdClient *client,
+				 GAsyncResult *res,
+				 GError **error)
+{
+	GSimpleAsyncResult *simple;
+
+	g_return_val_if_fail (CD_IS_CLIENT (client), NULL);
+	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), NULL);
+	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+	simple = G_SIMPLE_ASYNC_RESULT (res);
+	if (g_simple_async_result_propagate_error (simple, error))
+		return NULL;
+
+	return g_object_ref (g_simple_async_result_get_op_res_gpointer (simple));
+}
+
+static void
+cd_client_import_free_helper (CdClientImportHelper *helper)
+{
+	g_object_unref (helper->file);
+	g_object_unref (helper->dest);
+	if (helper->cancellable != NULL)
+		g_object_unref (helper->cancellable);
+	if (helper->profile_added_id > 0)
+		g_signal_handler_disconnect (helper->client, helper->profile_added_id);
+	if (helper->hangcheck_id > 0)
+		g_source_remove (helper->hangcheck_id);
+	g_object_unref (helper->client);
+	g_object_unref (helper->res);
+	g_free (helper);
+}
+
+static void
+cd_client_import_profile_added_cb (CdClient *client,
+				   CdProfile *profile,
+				   gpointer user_data)
+{
+	CdClientImportHelper *helper = (CdClientImportHelper *) user_data;
+
+	/* success */
+	g_simple_async_result_set_op_res_gpointer (helper->res,
+						   g_object_ref (profile),
+						   (GDestroyNotify) g_object_unref);
+	g_simple_async_result_complete_in_idle (helper->res);
+	cd_client_import_free_helper (helper);
+}
+
+static gboolean
+cd_client_import_hangcheck_cb (gpointer user_data)
+{
+	CdClientImportHelper *helper = (CdClientImportHelper *) user_data;
+	g_simple_async_result_set_error (helper->res,
+					 CD_CLIENT_ERROR,
+					 CD_CLIENT_ERROR_FAILED,
+					 "The profile was not added in time");
+	g_simple_async_result_complete_in_idle (helper->res);
+	helper->hangcheck_id = 0;
+	cd_client_import_free_helper (helper);
+	return FALSE;
+}
+
+static void
+cd_client_import_profile_find_filename_cb (GObject *source_object,
+					   GAsyncResult *res,
+					   gpointer user_data)
+{
+	CdProfile *profile;
+	gboolean ret;
+	gchar *filename = NULL;
+	GError *error = NULL;
+	CdClientImportHelper *helper = (CdClientImportHelper *) user_data;
+
+	/* does the profile already exist */
+	profile = cd_client_find_profile_by_filename_finish (CD_CLIENT (source_object),
+							     res,
+							     &error);
+	if (profile != NULL) {
+		filename = g_file_get_path (helper->dest);
+		g_simple_async_result_set_error (helper->res,
+						 CD_CLIENT_ERROR,
+						 CD_CLIENT_ERROR_ALREADY_EXISTS,
+						 "The profile %s already exists",
+						 filename);
+		g_simple_async_result_complete_in_idle (helper->res);
+		cd_client_import_free_helper (helper);
+		goto out;
+	}
+	if (error->domain != CD_CLIENT_ERROR ||
+	    error->code != CD_CLIENT_ERROR_FAILED) {
+		g_simple_async_result_set_error (helper->res,
+						 CD_CLIENT_ERROR,
+						 CD_CLIENT_ERROR_FAILED,
+						 "Failed to import: %s",
+						 error->message);
+		g_simple_async_result_complete_in_idle (helper->res);
+		cd_client_import_free_helper (helper);
+		g_error_free (error);
+		goto out;
+	}
+
+	/* reset the error */
+	g_clear_error (&error);
+
+	/* watch for a new profile to be detected and added,
+	 * but time out after a couple of seconds */
+	helper->hangcheck_id = g_timeout_add (CD_CLIENT_IMPORT_DAEMON_TIMEOUT,
+					      cd_client_import_hangcheck_cb,
+					      helper);
+	helper->profile_added_id = g_signal_connect (helper->client, "profile-added",
+						     G_CALLBACK (cd_client_import_profile_added_cb),
+						     helper);
+
+	/* copy profile to the correct place */
+	ret = cd_client_import_mkdir_and_copy (helper->file,
+					       helper->dest,
+					       helper->cancellable,
+					       &error);
+	if (!ret) {
+		g_simple_async_result_set_error (helper->res,
+						 CD_CLIENT_ERROR,
+						 CD_CLIENT_ERROR_FAILED,
+						 "Failed to copy: %s",
+						 error->message);
+		g_error_free (error);
+		g_simple_async_result_complete_in_idle (helper->res);
+		cd_client_import_free_helper (helper);
+		goto out;
+	}
+out:
+	g_free (filename);
+	if (profile != NULL)
+		g_object_unref (profile);
+}
+
+static void
+cd_client_import_profile_query_info_cb (GObject *source_object,
+					GAsyncResult *res,
+					gpointer user_data)
+{
+	const gchar *type;
+	gchar *filename = NULL;
+	GError *error = NULL;
+	GFileInfo *info;
+	CdClientImportHelper *helper = (CdClientImportHelper *) user_data;
+
+	/* get the file info */
+	filename = g_file_get_path (helper->dest);
+	info = g_file_query_info_finish (G_FILE (source_object),
+					 res,
+					 &error);
+	if (info == NULL) {
+		g_simple_async_result_set_error (helper->res,
+						 CD_CLIENT_ERROR,
+						 CD_CLIENT_ERROR_FAILED,
+						 "Cannot get content type for %s: %s",
+						 filename,
+						 error->message);
+		g_error_free (error);
+		g_simple_async_result_complete_in_idle (helper->res);
+		cd_client_import_free_helper (helper);
+		goto out;
+	}
+
+	/* check the content type */
+	type = g_file_info_get_attribute_string (info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE);
+	if (g_strcmp0 (type, "application/vnd.iccprofile") != 0) {
+		g_simple_async_result_set_error (helper->res,
+						 CD_CLIENT_ERROR,
+						 CD_CLIENT_ERROR_FILE_INVALID,
+						 "Incorrect content type for %s, got %s",
+						 filename, type);
+		g_simple_async_result_complete_in_idle (helper->res);
+		cd_client_import_free_helper (helper);
+		goto out;
+	}
+
+	/* does this profile already exist? */
+	cd_client_find_profile_by_filename (helper->client,
+					    filename,
+					    helper->cancellable,
+					    cd_client_import_profile_find_filename_cb,
+					    helper);
+out:
+	if (info != NULL)
+		g_object_unref (info);
+	g_free (filename);
+}
+
+/**
+ * cd_client_import_profile:
+ * @client: a #CdClient instance.
+ * @file: a #GFile
+ * @cancellable: a #GCancellable, or %NULL
+ * @callback: the function to run on completion
+ * @user_data: the data to pass to @callback
+ *
+ * Imports a color profile into the users home directory.
+ *
+ * If the profile should be accessable for all users, then call
+ * cd_profile_install_system_wide() on the result.
+ *
+ * Since: 0.1.12
+ **/
+void
+cd_client_import_profile (CdClient *client,
+			  GFile *file,
+			  GCancellable *cancellable,
+			  GAsyncReadyCallback callback,
+			  gpointer user_data)
+{
+	CdClientImportHelper *helper;
+
+	g_return_if_fail (CD_IS_CLIENT (client));
+	g_return_if_fail (G_IS_FILE (file));
+	g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
+
+	helper = g_new0 (CdClientImportHelper, 1);
+	helper->client = g_object_ref (client);
+	helper->res = g_simple_async_result_new (G_OBJECT (client),
+						 callback,
+						 user_data,
+						 cd_client_import_profile);
+	helper->file = g_object_ref (file);
+	helper->dest = cd_client_import_get_profile_destination (file);
+	if (cancellable != NULL)
+		helper->cancellable = g_object_ref (cancellable);
+
+	/* check the file really is an ICC file */
+	g_file_query_info_async (helper->file,
+				 G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+				 G_FILE_QUERY_INFO_NONE,
+				 G_PRIORITY_DEFAULT,
+				 helper->cancellable,
+				 cd_client_import_profile_query_info_cb,
+				 helper);
+}
+
+/**********************************************************************/
+
+/**
  * cd_client_delete_device_finish:
  * @client: a #CdClient instance.
  * @res: the #GAsyncResult
@@ -791,6 +1150,8 @@ cd_client_delete_device (CdClient *client,
 	GSimpleAsyncResult *res;
 
 	g_return_if_fail (CD_IS_CLIENT (client));
+	g_return_if_fail (CD_IS_DEVICE (device));
+	g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 	g_return_if_fail (client->priv->proxy != NULL);
 
 	res = g_simple_async_result_new (G_OBJECT (client),
@@ -892,6 +1253,8 @@ cd_client_delete_profile (CdClient *client,
 	GSimpleAsyncResult *res;
 
 	g_return_if_fail (CD_IS_CLIENT (client));
+	g_return_if_fail (CD_IS_PROFILE (profile));
+	g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 	g_return_if_fail (client->priv->proxy != NULL);
 
 	res = g_simple_async_result_new (G_OBJECT (client),
@@ -1004,6 +1367,8 @@ cd_client_find_device (CdClient *client,
 	GSimpleAsyncResult *res;
 
 	g_return_if_fail (CD_IS_CLIENT (client));
+	g_return_if_fail (id != NULL);
+	g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 	g_return_if_fail (client->priv->proxy != NULL);
 
 	res = g_simple_async_result_new (G_OBJECT (client),
@@ -1117,6 +1482,8 @@ cd_client_find_device_by_property (CdClient *client,
 	GSimpleAsyncResult *res;
 
 	g_return_if_fail (CD_IS_CLIENT (client));
+	g_return_if_fail (key != NULL);
+	g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 	g_return_if_fail (client->priv->proxy != NULL);
 
 	res = g_simple_async_result_new (G_OBJECT (client),
@@ -1228,6 +1595,8 @@ cd_client_find_profile (CdClient *client,
 	GSimpleAsyncResult *res;
 
 	g_return_if_fail (CD_IS_CLIENT (client));
+	g_return_if_fail (id != NULL);
+	g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 	g_return_if_fail (client->priv->proxy != NULL);
 
 	res = g_simple_async_result_new (G_OBJECT (client),
@@ -1339,6 +1708,8 @@ cd_client_find_profile_by_filename (CdClient *client,
 	GSimpleAsyncResult *res;
 
 	g_return_if_fail (CD_IS_CLIENT (client));
+	g_return_if_fail (filename != NULL);
+	g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 	g_return_if_fail (client->priv->proxy != NULL);
 
 	res = g_simple_async_result_new (G_OBJECT (client),
@@ -1450,6 +1821,7 @@ cd_client_get_standard_space (CdClient *client,
 	GSimpleAsyncResult *res;
 
 	g_return_if_fail (CD_IS_CLIENT (client));
+	g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 	g_return_if_fail (client->priv->proxy != NULL);
 
 	res = g_simple_async_result_new (G_OBJECT (client),
@@ -1588,6 +1960,7 @@ cd_client_get_devices (CdClient *client,
 	GSimpleAsyncResult *res;
 
 	g_return_if_fail (CD_IS_CLIENT (client));
+	g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 	g_return_if_fail (client->priv->proxy != NULL);
 
 	res = g_simple_async_result_new (G_OBJECT (client),
@@ -1697,6 +2070,7 @@ cd_client_get_devices_by_kind (CdClient *client,
 	GSimpleAsyncResult *res;
 
 	g_return_if_fail (CD_IS_CLIENT (client));
+	g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 	g_return_if_fail (client->priv->proxy != NULL);
 
 	res = g_simple_async_result_new (G_OBJECT (client),
@@ -1835,6 +2209,7 @@ cd_client_get_profiles (CdClient *client,
 	GSimpleAsyncResult *res;
 
 	g_return_if_fail (CD_IS_CLIENT (client));
+	g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 	g_return_if_fail (client->priv->proxy != NULL);
 
 	res = g_simple_async_result_new (G_OBJECT (client),
@@ -1972,6 +2347,7 @@ cd_client_get_sensors (CdClient *client,
 	GSimpleAsyncResult *res;
 
 	g_return_if_fail (CD_IS_CLIENT (client));
+	g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
 	g_return_if_fail (client->priv->proxy != NULL);
 
 	res = g_simple_async_result_new (G_OBJECT (client),

@@ -3,7 +3,7 @@ AC_PREREQ(2.63)
 
 m4_define([cd_major_version], [0])
 m4_define([cd_minor_version], [1])
-m4_define([cd_micro_version], [11])
+m4_define([cd_micro_version], [12])
 m4_define([cd_version],
           [cd_major_version.cd_minor_version.cd_micro_version])
 
@@ -37,7 +37,7 @@ AC_SUBST(CD_MICRO_VERSION)
 # REVISION	If the API and ABI remains the same, but bugs are fixed.
 # AGE		Don't use.
 LT_CURRENT=1
-LT_REVISION=3
+LT_REVISION=4
 LT_AGE=0
 AC_SUBST(LT_CURRENT)
 AC_SUBST(LT_REVISION)
@@ -145,11 +145,14 @@ if test x$enable_gudev != xno; then
 fi
 AM_CONDITIONAL(HAVE_GUDEV, test x$enable_gudev = xyes)
 
-PKG_CHECK_MODULES(USB, libusb-1.0 >= 1.0.9, has_new_libusb=yes, has_new_libusb=no)
+dnl **** Check for libusb1 ****
+PKG_CHECK_MODULES(USB, libusb-1.0 >= 1.0.0)
+AC_CHECK_LIB(usb-1.0,
+	     libusb_strerror,
+	     has_new_libusb=yes,
+	     has_new_libusb=no)
 if test x$has_new_libusb = xyes; then
 	AC_DEFINE(HAVE_NEW_USB,1,[Got new libusb])
-else
-	PKG_CHECK_MODULES(USB, libusb-1.0 >= 1.0.0)
 fi
 
 dnl ---------------------------------------------------------------------------
@@ -215,6 +218,34 @@ if test x$has_sane = xyes; then
 	AC_DEFINE(HAVE_SANE,1,[Use SANE support for detecting scanners])
 fi
 
+dnl **** Daemon is allowed to do FD fallback  ****
+AC_ARG_ENABLE(fd_fallback, AS_HELP_STRING([--enable-fd-fallback],[Enable file descriptor fallback]),
+	      enable_fd_fallback=$enableval, enable_fd_fallback=yes)
+if test x$enable_fd_fallback != xno; then
+	AC_DEFINE(HAVE_FD_FALLBACK,1,[Use FD fallback])
+fi
+
+dnl **** Daemon is allowed to do search external volumes for profiles ****
+AC_ARG_ENABLE(volume_search, AS_HELP_STRING([--enable-volume-search],[Enable profile volume search]),
+	      enable_volume_search=$enableval, enable_volume_search=yes)
+tmp="false"
+if test x$enable_volume_search != xno; then
+	tmp="true"
+fi
+AC_DEFINE_UNQUOTED(ENABLE_VOLUME_SEARCH, "$tmp", [enable volume search])
+AC_SUBST(ENABLE_VOLUME_SEARCH, "$tmp")
+
+# custom daemon user
+AC_ARG_WITH(
+    [daemon_user],
+    AC_HELP_STRING([--with-daemon-user],
+                   [User for running the colord daemon (root)]),
+    [daemon_user=$withval],
+    [daemon_user=root]
+)
+AC_SUBST(daemon_user)
+AC_DEFINE_UNQUOTED([DAEMON_USER], ["$daemon_user"], [Daemon user])
+
 dnl ---------------------------------------------------------------------------
 dnl - Build VALA support
 dnl ---------------------------------------------------------------------------
@@ -256,9 +287,11 @@ doc/api/Makefile
 doc/api/dbus/Makefile
 doc/api/version.xml
 data/Makefile
+data/org.freedesktop.ColorManager.conf
 data/tests/Makefile
 policy/Makefile
 rules/Makefile
+rules/69-cd-sensors.rules
 po/Makefile.in
 src/Makefile
 client/Makefile
@@ -281,10 +314,13 @@ echo "
         gobject-introspection:     ${found_introspection}
         PolicyKit support:         ${enable_polkit}
         Reverse engineering tools: ${enable_reverse}
+        File descriptor fallback:  ${enable_fd_fallback}
+        External volume searching: ${enable_volume_search}
         SANE support:              ${has_sane}
         GUDEV support:             ${enable_gudev}
         LCMS2 DICT support:        ${has_new_lcms}
         Vala API generator:        ${has_vapigen}
+        Daemon user:               ${daemon_user}
 "
 
 
