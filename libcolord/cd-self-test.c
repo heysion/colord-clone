@@ -39,6 +39,8 @@
 #include "cd-sensor-sync.h"
 #include "cd-version.h"
 
+static gboolean has_colord_process = FALSE;
+
 /** ver:1.0 ***********************************************************/
 static GMainLoop *_test_loop = NULL;
 static guint _test_loop_timeout_id = 0;
@@ -114,6 +116,14 @@ colord_client_get_devices_cb (GObject *object,
 	_g_test_loop_quit ();
 }
 
+static gchar *
+colord_get_random_device_id (void)
+{
+	guint32 key;
+	key = g_random_int_range (0x00, 0xffff);
+	return g_strdup_printf ("self-test-%04x", key);
+}
+
 static void
 colord_client_random_func (void)
 {
@@ -147,6 +157,12 @@ colord_client_random_func (void)
 				     NULL};
 	const gchar *qualifier3[] = {"*.*.*",
 				     NULL};
+
+	/* no running colord to use */
+	if (!has_colord_process) {
+		g_print ("[DISABLED] ");
+		return;
+	}
 
 	key = g_random_int_range (0x00, 0xffff);
 	g_debug ("using random key %04x", key);
@@ -697,6 +713,12 @@ colord_icc_meta_dict_func (void)
 	CdProfile *profile;
 	CdClient *client;
 
+	/* no running colord to use */
+	if (!has_colord_process) {
+		g_print ("[DISABLED] ");
+		return;
+	}
+
 	/* create */
 	client = cd_client_new ();
 	g_assert (client != NULL);
@@ -791,6 +813,12 @@ colord_sensor_func (void)
 	GPtrArray *array;
 	CdColorXYZ *values;
 //	gdouble ambient = -2.0f;
+
+	/* no running colord to use */
+	if (!has_colord_process) {
+		g_print ("[DISABLED] ");
+		return;
+	}
 
 	client = cd_client_new ();
 	ret = cd_client_connect_sync (client, NULL, &error);
@@ -960,6 +988,9 @@ colord_client_func (void)
 	g_assert_no_error (error);
 	g_assert (ret);
 
+	/* is there a running colord instance? */
+	has_colord_process = cd_client_get_has_server (client);
+
 	version = cd_client_get_daemon_version (client);
 	version_str = g_strdup_printf ("%i.%i.%i",
 				       CD_MAJOR_VERSION,
@@ -984,6 +1015,12 @@ colord_device_mapping_func (void)
 	gint32 key;
 	gchar *profile_id1;
 	gchar *profile_id2;
+
+	/* no running colord to use */
+	if (!has_colord_process) {
+		g_print ("[DISABLED] ");
+		return;
+	}
 
 	key = g_random_int_range (0x00, 0xffff);
 	g_debug ("using random key %04x", key);
@@ -1162,6 +1199,12 @@ colord_client_fd_pass_func (void)
 	GError *error = NULL;
 	gchar full_path[PATH_MAX];
 
+	/* no running colord to use */
+	if (!has_colord_process) {
+		g_print ("[DISABLED] ");
+		return;
+	}
+
 	/* create */
 	client = cd_client_new ();
 	g_assert (client != NULL);
@@ -1188,6 +1231,124 @@ colord_client_fd_pass_func (void)
 	g_assert (profile != NULL);
 
 	g_hash_table_unref (profile_props);
+	g_object_unref (profile);
+	g_object_unref (client);
+}
+
+/**
+ * colord_get_profile_destination:
+ **/
+static GFile *
+colord_get_profile_destination (GFile *file)
+{
+	gchar *basename;
+	gchar *destination;
+	GFile *dest;
+
+	g_return_val_if_fail (file != NULL, NULL);
+
+	/* get destination filename for this source file */
+	basename = g_file_get_basename (file);
+	destination = g_build_filename (g_get_user_data_dir (), "icc", basename, NULL);
+	dest = g_file_new_for_path (destination);
+
+	g_free (basename);
+	g_free (destination);
+	return dest;
+}
+
+static void
+colord_client_import_func (void)
+{
+	CdClient *client;
+	CdProfile *profile;
+	CdProfile *profile2;
+	gboolean ret;
+	GFile *file;
+	GFile *invalid_file;
+	GFile *dest;
+	GError *error = NULL;
+	gchar full_path[PATH_MAX];
+	gchar *dest_path;
+
+	/* no running colord to use */
+	if (!has_colord_process) {
+		g_print ("[DISABLED] ");
+		return;
+	}
+
+	/* create */
+	client = cd_client_new ();
+	g_assert (client != NULL);
+
+	/* connect */
+	ret = cd_client_connect_sync (client, NULL, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	/* check we can't import random files */
+	realpath (TESTDATADIR "/Makefile.am", full_path);
+	invalid_file = g_file_new_for_path (full_path);
+	profile2 = cd_client_import_profile_sync (client,
+						  invalid_file,
+						  NULL,
+						  &error);
+	g_assert_error (error,
+			CD_CLIENT_ERROR,
+			CD_CLIENT_ERROR_FILE_INVALID);
+	g_assert (profile2 == NULL);
+	g_clear_error (&error);
+
+	/* create extra profile */
+	realpath (TESTDATADIR "/ibm-t61.icc", full_path);
+	file = g_file_new_for_path (full_path);
+
+	/* ensure it's deleted */
+	dest = colord_get_profile_destination (file);
+	if (g_file_query_exists (dest, NULL)) {
+		ret = g_file_delete (dest, NULL, &error);
+		g_assert_no_error (error);
+		g_assert (ret);
+
+		/* wait for daemon to DTRT */
+		_g_test_loop_run_with_timeout (2000);
+	}
+
+	/* import it */
+	profile = cd_client_import_profile_sync (client,
+						 file,
+						 NULL,
+						 &error);
+	g_assert_no_error (error);
+	g_assert (profile != NULL);
+
+	/* connect */
+	ret = cd_profile_connect_sync (profile, NULL, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	/* make sure it's now installed in the right place */
+	dest_path = g_file_get_path (dest);
+	g_assert_cmpstr (cd_profile_get_filename (profile), ==, dest_path);
+
+	/* make sure we can't import it again */
+	profile2 = cd_client_import_profile_sync (client,
+						  file,
+						  NULL,
+						  &error);
+	g_assert_error (error, CD_CLIENT_ERROR, CD_CLIENT_ERROR_ALREADY_EXISTS);
+	g_assert (profile2 == NULL);
+	g_clear_error (&error);
+
+	/* delete it */
+	ret = g_file_delete (dest, NULL, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	g_free (dest_path);
+	g_object_unref (invalid_file);
+	g_object_unref (file);
+	g_object_unref (dest);
 	g_object_unref (profile);
 	g_object_unref (client);
 }
@@ -1227,6 +1388,12 @@ colord_client_async_func (void)
 	GError *error = NULL;
 	CdClient *client;
 	CdProfile *profile;
+
+	/* no running colord to use */
+	if (!has_colord_process) {
+		g_print ("[DISABLED] ");
+		return;
+	}
 
 	client = cd_client_new ();
 
@@ -1286,6 +1453,12 @@ colord_device_async_func (void)
 	CdDevice *device;
 	CdDevice *device_tmp;
 
+	/* no running colord to use */
+	if (!has_colord_process) {
+		g_print ("[DISABLED] ");
+		return;
+	}
+
 	client = cd_client_new ();
 
 	/* connect */
@@ -1342,6 +1515,12 @@ colord_client_systemwide_func (void)
 	GError *error = NULL;
 	gchar full_path[PATH_MAX];
 
+	/* no running colord to use */
+	if (!has_colord_process) {
+		g_print ("[DISABLED] ");
+		return;
+	}
+
 	/* create */
 	client = cd_client_new ();
 	g_assert (client != NULL);
@@ -1386,6 +1565,26 @@ colord_client_systemwide_func (void)
 }
 
 static void
+colord_device_func (void)
+{
+	CdDevice *device;
+	gboolean ret;
+	GError *error = NULL;
+
+	/* create a device with an invlid object path */
+	device = cd_device_new_with_object_path ("/garbage");
+	g_assert (device != NULL);
+
+	/* connect */
+	ret = cd_device_connect_sync (device, NULL, &error);
+	g_assert_error (error, CD_DEVICE_ERROR, CD_DEVICE_ERROR_FAILED);
+	g_assert (!ret);
+	g_clear_error (&error);
+
+	g_object_unref (device);
+}
+
+static void
 colord_device_modified_func (void)
 {
 	CdClient *client;
@@ -1397,6 +1596,12 @@ colord_device_modified_func (void)
 	GError *error = NULL;
 	gchar full_path[PATH_MAX];
 	GPtrArray *array;
+
+	/* no running colord to use */
+	if (!has_colord_process) {
+		g_print ("[DISABLED] ");
+		return;
+	}
 
 	/* create */
 	client = cd_client_new ();
@@ -1492,6 +1697,192 @@ colord_device_modified_func (void)
 	g_object_unref (client);
 }
 
+/* when we re-add profiles, ensure they are sorted so the newest
+ * assigned profile is first, not the newest-added */
+static void
+colord_profile_ordering_func (void)
+{
+	CdClient *client;
+	CdDevice *device;
+	CdProfile *profile_tmp;
+	CdProfile *profile1;
+	CdProfile *profile2;
+	gboolean ret;
+	GError *error = NULL;
+	GPtrArray *array;
+	gchar *device_id;
+
+	/* no running colord to use */
+	if (!has_colord_process) {
+		g_print ("[DISABLED] ");
+		return;
+	}
+
+	/* create */
+	client = cd_client_new ();
+	g_assert (client != NULL);
+
+	/* create device */
+	device_id = colord_get_random_device_id ();
+	device = cd_client_create_device_sync (client,
+					       device_id,
+					       CD_OBJECT_SCOPE_TEMP,
+					       NULL,
+					       NULL,
+					       &error);
+	g_assert_no_error (error);
+	g_assert (device != NULL);
+
+	/* connect */
+	ret = cd_device_connect_sync (device, NULL, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	g_assert_cmpstr (cd_device_get_id (device), ==, device_id);
+
+	/* get new number of profiles */
+	array = cd_device_get_profiles (device);
+	g_assert (array != NULL);
+	g_assert_cmpint (array->len, ==, 0);
+	g_ptr_array_unref (array);
+
+	/* create older profile */
+	profile2 = cd_client_create_profile_sync (client,
+						  "profile2",
+						  CD_OBJECT_SCOPE_TEMP,
+						  NULL,
+						  NULL,
+						  &error);
+	g_assert_no_error (error);
+	g_assert (profile2 != NULL);
+
+	/* assign profile to device */
+	ret = cd_device_add_profile_sync (device,
+					  CD_DEVICE_RELATION_HARD,
+					  profile2,
+					  NULL,
+					  &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	/* create newer profile */
+	profile1 = cd_client_create_profile_sync (client,
+						  "profile1",
+						  CD_OBJECT_SCOPE_TEMP,
+						  NULL,
+						  NULL,
+						  &error);
+	g_assert_no_error (error);
+	g_assert (profile1 != NULL);
+
+	/* assign profile to device */
+	ret = cd_device_add_profile_sync (device,
+					  CD_DEVICE_RELATION_HARD,
+					  profile1,
+					  NULL,
+					  &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	/* wait for daemon */
+	_g_test_loop_run_with_timeout (50);
+	_g_test_loop_quit ();
+
+	/* get new number of profiles */
+	array = cd_device_get_profiles (device);
+	g_assert (array != NULL);
+	g_assert_cmpint (array->len, ==, 2);
+	profile_tmp = CD_PROFILE (g_ptr_array_index (array, 0));
+	g_assert_cmpstr (cd_profile_get_object_path (profile_tmp),
+			 ==,
+			 "/org/freedesktop/ColorManager/profiles/profile1");
+	profile_tmp = CD_PROFILE (g_ptr_array_index (array, 1));
+	g_assert_cmpstr (cd_profile_get_object_path (profile_tmp),
+			 ==,
+			 "/org/freedesktop/ColorManager/profiles/profile2");
+	g_ptr_array_unref (array);
+
+	/* delete profiles */
+	ret = cd_client_delete_profile_sync (client, profile1, NULL, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+	ret = cd_client_delete_profile_sync (client, profile2, NULL, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	/* wait for daemon */
+	_g_test_loop_run_with_timeout (50);
+	_g_test_loop_quit ();
+
+	/* get new number of profiles */
+	array = cd_device_get_profiles (device);
+	g_assert (array != NULL);
+	g_assert_cmpint (array->len, ==, 0);
+	g_ptr_array_unref (array);
+
+	/* done with profiles */
+	g_object_unref (profile1);
+	g_object_unref (profile2);
+
+	/* create newer profile */
+	profile1 = cd_client_create_profile_sync (client,
+						  "profile1",
+						  CD_OBJECT_SCOPE_TEMP,
+						  NULL,
+						  NULL,
+						  &error);
+	g_assert_no_error (error);
+	g_assert (profile1 != NULL);
+
+	/* wait for daemon */
+	_g_test_loop_run_with_timeout (50);
+	_g_test_loop_quit ();
+
+	/* get new number of profiles */
+	array = cd_device_get_profiles (device);
+	g_assert (array != NULL);
+	g_assert_cmpint (array->len, ==, 1);
+	profile_tmp = CD_PROFILE (g_ptr_array_index (array, 0));
+	g_assert_cmpstr (cd_profile_get_object_path (profile_tmp),
+			 ==,
+			 "/org/freedesktop/ColorManager/profiles/profile1");
+	g_ptr_array_unref (array);
+
+	/* create older profile */
+	profile2 = cd_client_create_profile_sync (client,
+						  "profile2",
+						  CD_OBJECT_SCOPE_TEMP,
+						  NULL,
+						  NULL,
+						  &error);
+	g_assert_no_error (error);
+	g_assert (profile2 != NULL);
+
+	/* wait for daemon */
+	_g_test_loop_run_with_timeout (50);
+	_g_test_loop_quit ();
+
+	/* get new number of profiles */
+	array = cd_device_get_profiles (device);
+	g_assert (array != NULL);
+	g_assert_cmpint (array->len, ==, 2);
+	profile_tmp = CD_PROFILE (g_ptr_array_index (array, 0));
+	g_assert_cmpstr (cd_profile_get_object_path (profile_tmp),
+			 ==,
+			 "/org/freedesktop/ColorManager/profiles/profile1");
+	profile_tmp = CD_PROFILE (g_ptr_array_index (array, 1));
+	g_assert_cmpstr (cd_profile_get_object_path (profile_tmp),
+			 ==,
+			 "/org/freedesktop/ColorManager/profiles/profile2");
+	g_ptr_array_unref (array);
+
+	g_free (device_id);
+	g_object_unref (profile1);
+	g_object_unref (profile2);
+	g_object_unref (device);
+	g_object_unref (client);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -1504,8 +1895,10 @@ main (int argc, char **argv)
 
 	/* tests go here */
 	g_test_add_func ("/colord/color", colord_color_func);
+	g_test_add_func ("/colord/device", colord_device_func);
 	g_test_add_func ("/colord/client", colord_client_func);
 	g_test_add_func ("/colord/profile-metadata", colord_icc_meta_dict_func);
+	g_test_add_func ("/colord/profile-ordering", colord_profile_ordering_func);
 	g_test_add_func ("/colord/device-mapping", colord_device_mapping_func);
 	g_test_add_func ("/colord/client-random", colord_client_random_func);
 	g_test_add_func ("/colord/sensor", colord_sensor_func);
@@ -1515,6 +1908,7 @@ main (int argc, char **argv)
 	if (g_test_thorough ())
 		g_test_add_func ("/colord/client-systemwide", colord_client_systemwide_func);
 	g_test_add_func ("/colord/client-fd-pass", colord_client_fd_pass_func);
+	g_test_add_func ("/colord/client-import", colord_client_import_func);
 	return g_test_run ();
 }
 

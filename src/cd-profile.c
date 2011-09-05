@@ -670,7 +670,9 @@ cd_profile_set_metadata_from_profile (CdProfile *profile,
 	/* does profile have metadata? */
 	dict = cmsReadTag (lcms_profile, cmsSigMetaTag);
 	if (dict == NULL) {
-		g_debug ("%s (%s) has no DICT tag", priv->id, priv->filename);
+		g_debug ("%s (%s) has no DICT tag",
+			 priv->id ? priv->id : "new profile",
+			 priv->filename);
 		return;
 	}
 
@@ -913,6 +915,42 @@ cd_profile_set_filename (CdProfile *profile,
 		}
 	}
 
+	/* check we're not already set using the fd */
+	if (priv->kind != CD_PROFILE_KIND_UNKNOWN) {
+		ret = TRUE;
+		g_debug ("profile '%s' already set",
+			 priv->object_path);
+		goto out;
+	} else if (!priv->is_system_wide) {
+#ifndef HAVE_FD_FALLBACK
+		/* we're not allowing the dameon to open the file */
+		ret = FALSE;
+		g_set_error (error,
+			     CD_MAIN_ERROR,
+			     CD_MAIN_ERROR_FAILED,
+			     "Failed to open %s as client did not send FD and "
+			     "daemon is not compiled with --enable-fd-fallback",
+			     filename);
+		goto out;
+#endif
+	}
+
+	/* parse the ICC file */
+	lcms_profile = cmsOpenProfileFromFile (filename, "r");
+	if (lcms_profile == NULL) {
+		g_set_error (error,
+			     CD_MAIN_ERROR,
+			     CD_MAIN_ERROR_FAILED,
+			     "failed to parse %s",
+			     filename);
+		goto out;
+	}
+
+	/* set the virtual profile from the lcms profile */
+	ret = cd_profile_set_from_profile (profile, lcms_profile, error);
+	if (!ret)
+		goto out;
+
 	/* try the metadata if available */
 	if (priv->checksum == NULL) {
 		tmp = g_hash_table_lookup (profile->priv->metadata,
@@ -937,30 +975,6 @@ cd_profile_set_filename (CdProfile *profile,
 							      (const guchar *) data,
 							      len);
 	}
-
-	/* check we're not already set using the fd */
-	if (priv->kind != CD_PROFILE_KIND_UNKNOWN) {
-		ret = TRUE;
-		g_debug ("profile '%s' already set",
-			 priv->object_path);
-		goto out;
-	}
-
-	/* parse the ICC file */
-	lcms_profile = cmsOpenProfileFromFile (filename, "r");
-	if (lcms_profile == NULL) {
-		g_set_error (error,
-			     CD_MAIN_ERROR,
-			     CD_MAIN_ERROR_FAILED,
-			     "failed to parse %s",
-			     filename);
-		goto out;
-	}
-
-	/* set the virtual profile from the lcms profile */
-	ret = cd_profile_set_from_profile (profile, lcms_profile, error);
-	if (!ret)
-		goto out;
 
 	/* emit all the things that could have changed */
 	cd_profile_emit_parsed_property_changed (profile);

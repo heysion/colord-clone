@@ -89,12 +89,15 @@ typedef struct
 /**
  * CdClientError:
  * @CD_CLIENT_ERROR_FAILED: the transaction failed for an unknown reason
+ * @CD_CLIENT_ERROR_ALREADY_EXISTS: the device or profile already exists
  *
  * Errors that can be thrown
  */
 typedef enum
 {
 	CD_CLIENT_ERROR_FAILED,
+	CD_CLIENT_ERROR_ALREADY_EXISTS,
+	CD_CLIENT_ERROR_FILE_INVALID,
 	CD_CLIENT_ERROR_LAST
 } CdClientError;
 
@@ -128,6 +131,14 @@ void		cd_client_create_profile		(CdClient	*client,
 							 GAsyncReadyCallback callback,
 							 gpointer	 user_data);
 CdProfile	*cd_client_create_profile_finish	(CdClient	*client,
+							 GAsyncResult	*res,
+							 GError		**error);
+void		cd_client_import_profile		(CdClient	*client,
+							 GFile		*file,
+							 GCancellable	*cancellable,
+							 GAsyncReadyCallback callback,
+							 gpointer	 user_data);
+CdProfile	*cd_client_import_profile_finish	(CdClient	*client,
 							 GAsyncResult	*res,
 							 GError		**error);
 void		 cd_client_delete_device		(CdClient	*client,
@@ -220,6 +231,7 @@ GPtrArray	*cd_client_get_sensors_finish		(CdClient	*client,
 
 /* getters */
 gboolean	 cd_client_get_connected		(CdClient	*client);
+gboolean	 cd_client_get_has_server		(CdClient	*client);
 const gchar	*cd_client_get_daemon_version		(CdClient	*client);
 
 G_END_DECLS
