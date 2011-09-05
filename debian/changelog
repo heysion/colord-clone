@@ -2,6 +2,11 @@ colord (0.1.12-1) UNRELEASED; urgency=low
 
   * New upstream release.
   * Update libcolord1 symbols for new upstream.
+  * debian/colord.postinst:
+  * debian/rules:
+    + Run colord daemon as a system user, rather than root.  It only needs
+      write access to /var/lib/colord and access to scanner devices, which
+      is handled by udev.      
 
  -- Christopher James Halse Rogers <raof@ubuntu.com>  Mon, 05 Sep 2011 10:38:16 +1000
 
