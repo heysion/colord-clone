@@ -32,7 +32,7 @@ Description: system service to manage device colour profiles -- development file
  colord is a system service that makes it easy to manage, install and generate
  colour profiles to accurately colour manage input and output devices.
  .
- It provides a DBus API for system frameworks to query, a persistent data
+ It provides a D-Bus API for system frameworks to query, a persistent data
  store, and a mechanism for session applications to set system policy.
  .
  This package contains the development files required to build programs against
@@ -51,10 +51,10 @@ Description: system service to manage device colour profiles -- runtime
  colord is a system service that makes it easy to manage, install and generate
  colour profiles to accurately colour manage input and output devices.
  .
- It provides a DBus API for system frameworks to query, a persistent data
+ It provides a D-Bus API for system frameworks to query, a persistent data
  store, and a mechanism for session applications to set system policy.
  .
- This package contains a gobject-based convienience library for programs to
+ This package contains a gobject-based convenience library for programs to
  interact with the colord system daemon.
 
 Package: colord
@@ -70,7 +70,7 @@ Description: system service to manage device colour profiles -- system daemon
  colord is a system service that makes it easy to manage, install and generate
  colour profiles to accurately colour manage input and output devices.
  .
- It provides a DBus API for system frameworks to query, a persistent data
+ It provides a D-Bus API for system frameworks to query, a persistent data
  store, and a mechanism for session applications to set system policy.
  .
  This package contains the dbus-activated colord system daemon.
@@ -83,7 +83,7 @@ Depends: ${gir:Depends},
          ${misc:Depends}
 Description: GObject introspection data for the colord library
  This package contains introspection data for libcolord, a gobject-based
- convienience library for programs to interact with the colord system daemon.
+ convenience library for programs to interact with the colord system daemon.
  .
  It can be used by packages using the GIRepository format to generate 
  dynamic bindings.

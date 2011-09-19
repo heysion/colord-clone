@@ -14,6 +14,8 @@ colord (0.1.12-1) UNRELEASED; urgency=low
       PolicyKit doesn't allow non-root processes to query whether a different
       a user is authorised to perform an action.  DBus' at_console context
       duplicates the existing PolicyKit policy.
+  * debian/control:
+    + Fix typo in package description.  (Closes: #640525)
 
  -- Christopher James Halse Rogers <raof@ubuntu.com>  Mon, 05 Sep 2011 10:38:16 +1000
 
