@@ -16,6 +16,9 @@ colord (0.1.12-1) UNRELEASED; urgency=low
       duplicates the existing PolicyKit policy.
   * debian/control:
     + Fix typo in package description.  (Closes: #640525)
+  * debian/control:
+    + Add missing liblcms2-dev, libdbus-1-dev, libglib2.0-dev dependencies to
+      libcolord-dev, to fix FTBFS of reverse dependencies.
 
  -- Christopher James Halse Rogers <raof@ubuntu.com>  Mon, 05 Sep 2011 10:38:16 +1000
 

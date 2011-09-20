@@ -27,6 +27,9 @@ Section: libdevel
 Architecture: any
 Depends: 
  libcolord1 (= ${binary:Version}),
+ liblcms2-dev,
+ libglib2.0-dev,
+ libdbus-1-dev,
  ${misc:Depends},
 Description: system service to manage device colour profiles -- development files
  colord is a system service that makes it easy to manage, install and generate
