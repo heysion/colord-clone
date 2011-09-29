@@ -1,6 +1,6 @@
 colord (0.1.12-1) UNRELEASED; urgency=low
 
-  * New upstream release.
+  * New upstream release. (Closes: #643724)
   * Update libcolord1 symbols for new upstream.
   * debian/colord.postinst:
   * debian/rules:
