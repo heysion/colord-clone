@@ -9,8 +9,8 @@ case "$1" in
 	addgroup --quiet --system scanner
 
 # create colord user if it isn't already there
-        adduser --system --ingroup colord --home /var/lib/colord colord \
-	    --group colord --gecos "colord colour management daemon"
+        adduser --system --group --home /var/lib/colord colord \
+	    --gecos "colord colour management daemon"
 
 # ensure /var/lib/colord has appropriate permissions
 	chown -R colord:colord /var/lib/colord
