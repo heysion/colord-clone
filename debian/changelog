@@ -1,5 +1,6 @@
-colord (0.1.12-1) UNRELEASED; urgency=low
+colord (0.1.13-1) UNRELEASED; urgency=low
 
+  [ Christopher James Halse Rogers ]
   * New upstream release. (Closes: #643724)
   * Update libcolord1 symbols for new upstream.
   * debian/colord.postinst:
@@ -20,7 +21,13 @@ colord (0.1.12-1) UNRELEASED; urgency=low
     + Add missing liblcms2-dev, libdbus-1-dev, libglib2.0-dev dependencies to
       libcolord-dev, to fix FTBFS of reverse dependencies.
 
- -- Christopher James Halse Rogers <raof@ubuntu.com>  Mon, 05 Sep 2011 10:38:16 +1000
+  [ Sjoerd Simons ]
+  * New upstream release (0.1.13) (Closes: #643724)
+  * debian/patches/07_fix_disable_polkit_build.diff:
+    + Removed, fixed upstream
+  * debian/libcolord1.symbols: Update symbols for 0.1.13
+
+ -- Sjoerd Simons <sjoerd@debian.org>  Tue, 25 Oct 2011 13:03:12 +0200
 
 colord (0.1.11-1) unstable; urgency=low
 

@@ -90,6 +90,7 @@ libcolord.so.1 libcolord1 #MINVER#
  cd_device_get_model@Base 0.1.10
  cd_device_get_modified@Base 0.1.10
  cd_device_get_object_path@Base 0.1.10
+ cd_device_get_owner@Base 0.1.13
  cd_device_get_profile_for_qualifiers@Base 0.1.10
  cd_device_get_profile_for_qualifiers_finish@Base 0.1.10
  cd_device_get_profile_for_qualifiers_sync@Base 0.1.10
@@ -153,10 +154,12 @@ libcolord.so.1 libcolord1 #MINVER#
  cd_profile_get_metadata@Base 0.1.10
  cd_profile_get_metadata_item@Base 0.1.10
  cd_profile_get_object_path@Base 0.1.10
+ cd_profile_get_owner@Base 0.1.13
  cd_profile_get_qualifier@Base 0.1.10
  cd_profile_get_scope@Base 0.1.10
  cd_profile_get_title@Base 0.1.10
  cd_profile_get_type@Base 0.1.10
+ cd_profile_has_access@Base 0.1.13
  cd_profile_install_system_wide@Base 0.1.10
  cd_profile_install_system_wide_finish@Base 0.1.10
  cd_profile_install_system_wide_sync@Base 0.1.10
