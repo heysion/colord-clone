@@ -58,6 +58,7 @@ struct _CdProfilePrivate
 	gboolean			 has_vcgt;
 	gboolean			 is_system_wide;
 	gint64				 created;
+	guint				 owner;
 };
 
 enum {
@@ -96,6 +97,16 @@ cd_profile_set_scope (CdProfile *profile, CdObjectScope object_scope)
 {
 	g_return_if_fail (CD_IS_PROFILE (profile));
 	profile->priv->object_scope = object_scope;
+}
+
+/**
+ * cd_profile_set_owner:
+ **/
+void
+cd_profile_set_owner (CdProfile *profile, guint owner)
+{
+	g_return_if_fail (CD_IS_PROFILE (profile));
+	profile->priv->owner = owner;
 }
 
 /**
@@ -427,7 +438,6 @@ cd_profile_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 
 		/* require auth */
 		ret = cd_main_sender_authenticated (invocation,
-						    sender,
 						    "org.freedesktop.color-manager.modify-profile");
 		if (!ret)
 			goto out;
@@ -461,7 +471,6 @@ cd_profile_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 		g_debug ("CdProfile %s:InstallSystemWide() on %s",
 			 sender, profile->priv->object_path);
 		ret = cd_main_sender_authenticated (invocation,
-						    sender,
 						    "org.freedesktop.color-manager.install-system-wide");
 		if (!ret)
 			goto out;
@@ -546,6 +555,10 @@ cd_profile_dbus_get_property (GDBusConnection *connection_, const gchar *sender,
 	}
 	if (g_strcmp0 (property_name, CD_PROFILE_PROPERTY_SCOPE) == 0) {
 		retval = g_variant_new_string (cd_object_scope_to_string (profile->priv->object_scope));
+		goto out;
+	}
+	if (g_strcmp0 (property_name, CD_PROFILE_PROPERTY_OWNER) == 0) {
+		retval = g_variant_new_uint32 (profile->priv->owner);
 		goto out;
 	}
 
