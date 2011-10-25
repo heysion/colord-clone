@@ -1,4 +1,4 @@
-colord (0.1.13-1) UNRELEASED; urgency=low
+colord (0.1.13-1) unstable; urgency=low
 
   [ Christopher James Halse Rogers ]
   * New upstream release. (Closes: #643724)
@@ -27,7 +27,7 @@ colord (0.1.13-1) UNRELEASED; urgency=low
     + Removed, fixed upstream
   * debian/libcolord1.symbols: Update symbols for 0.1.13
 
- -- Sjoerd Simons <sjoerd@debian.org>  Tue, 25 Oct 2011 13:03:12 +0200
+ -- Sjoerd Simons <sjoerd@debian.org>  Tue, 25 Oct 2011 16:21:20 +0200
 
 colord (0.1.11-1) unstable; urgency=low
 
