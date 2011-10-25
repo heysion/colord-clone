@@ -25,6 +25,7 @@
 #include <locale.h>
 #include <lcms2.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include "cd-color.h"
 #include "cd-common.h"
@@ -47,7 +48,7 @@ cd_fix_profile_error_cb (cmsContext ContextID,
 }
 
 static gboolean
-add_srgb_palette (cmsNAMEDCOLORLIST *nc2, const gchar *filename)
+add_nc_palette_srgb (cmsNAMEDCOLORLIST *nc2, const gchar *filename)
 {
 	CdColorRGB8 rgb;
 	cmsCIELab lab;
@@ -117,6 +118,188 @@ out:
 	return ret;
 }
 
+static gboolean
+add_nc_palette_lab (cmsNAMEDCOLORLIST *nc2, const gchar *filename)
+{
+	cmsCIELab lab;
+	cmsUInt16Number pcs[3];
+	gboolean ret;
+	gchar *data = NULL;
+	gchar **lines = NULL;
+	gchar *name;
+	gchar **split = NULL;
+	GError *error = NULL;
+	guint i;
+
+	ret = g_file_get_contents (filename, &data, NULL, &error);
+	if (!ret)
+		goto out;
+	lines = g_strsplit (data, "\n", -1);
+
+	for (i=0; lines[i] != NULL; i++) {
+		/* ignore blank lines */
+		if (lines[i][0] == '\0')
+			continue;
+		split = g_strsplit (lines[i], ",", -1);
+		if (g_strv_length (split) == 4) {
+			g_strdelimit (split[0], "\"", ' ');
+			name = g_strstrip (split[0]);
+			lab.L = atof (split[1]);
+			lab.a = atof (split[2]);
+			lab.b = atof (split[3]);
+
+			g_debug ("add %s, %f,%f,%f",
+				 name,
+				 lab.L,
+				 lab.a,
+				 lab.b);
+
+			/*
+			 * PCS = colours in PCS colour space CIE*Lab
+			 * Colorant = colours in device colour space
+			 */
+			cmsFloat2LabEncoded (pcs, &lab);
+			ret = cmsAppendNamedColor (nc2, name, pcs, pcs);
+			g_assert (ret);
+
+		} else {
+			g_warning ("invalid line: %s", lines[i]);
+		}
+		g_strfreev (split);
+	}
+out:
+	g_free (data);
+	g_strfreev (lines);
+	return ret;
+}
+
+/* create a Lab profile of named colors */
+static cmsHPROFILE
+create_nc_palette (const gchar *filename,
+		   const gchar *nc_prefix,
+		   const gchar *nc_suffix,
+		   const gchar *nc_type)
+{
+	cmsHPROFILE profile;
+	cmsNAMEDCOLORLIST *nc2 = NULL;
+
+	profile = cmsCreateNULLProfile ();
+	if (profile == NULL || lcms_error_code != 0) {
+		g_warning ("failed to open profile");
+		goto out;
+	}
+
+	cmsSetDeviceClass(profile, cmsSigNamedColorClass);
+	cmsSetPCS (profile, cmsSigLabData);
+	cmsSetColorSpace (profile, cmsSigLabData);
+	cmsSetProfileVersion (profile, 3.4);
+
+	/* create a named color structure */
+	nc2 = cmsAllocNamedColorList (NULL, 1, /* will realloc more as required */
+				      3,
+				      nc_prefix != NULL ? nc_prefix : "",
+				      nc_suffix != NULL ? nc_suffix : "");
+	if (g_strcmp0 (nc_type, "srgb") == 0)
+		add_nc_palette_srgb (nc2, filename);
+	else if (g_strcmp0 (nc_type, "lab") == 0)
+		add_nc_palette_lab (nc2, filename);
+	cmsWriteTag (profile, cmsSigNamedColor2Tag, nc2);
+out:
+	if (nc2 != NULL)
+		cmsFreeNamedColorList (nc2);
+	return profile;
+}
+
+static gboolean
+set_vcgt_from_data (cmsHPROFILE profile,
+		    const guint16 *red,
+		    const guint16 *green,
+		    const guint16 *blue,
+		    guint size)
+{
+	guint i;
+	gboolean ret = FALSE;
+	cmsToneCurve *vcgt_curve[3];
+
+	/* build tone curve */
+	vcgt_curve[0] = cmsBuildTabulatedToneCurve16 (NULL, size, red);
+	vcgt_curve[1] = cmsBuildTabulatedToneCurve16 (NULL, size, green);
+	vcgt_curve[2] = cmsBuildTabulatedToneCurve16 (NULL, size, blue);
+
+	/* smooth it */
+	for (i=0; i<3; i++)
+		cmsSmoothToneCurve (vcgt_curve[i], 5);
+
+	/* write the tag */
+	ret = cmsWriteTag (profile, cmsSigVcgtType, vcgt_curve);
+
+	/* free the tonecurves */
+	for (i=0; i<3; i++)
+		cmsFreeToneCurve (vcgt_curve[i]);
+	return ret;
+}
+
+/* create a Lab profile of named colors */
+static cmsHPROFILE
+create_xorg_gamma (const gchar *points_str)
+{
+	cmsHPROFILE profile = NULL;
+	gboolean ret;
+	gchar **points_split = NULL;
+	gdouble fraction;
+	gdouble points[3];
+	guint16 data[3][256];
+	guint i, j;
+
+	/* split into parts */
+	points_split = g_strsplit (points_str, ",", -1);
+	if (g_strv_length (points_split) != 3) {
+		g_warning ("incorrect points string");
+		goto out;
+	}
+
+	/* parse floats */
+	for (j=0; j<3; j++)
+		points[j] = atof (points_split[j]);
+
+	/* create a bog-standard sRGB profile */
+	profile = cmsCreate_sRGBProfile ();
+	if (profile == NULL || lcms_error_code != 0) {
+		g_warning ("failed to open profile");
+		goto out;
+	}
+
+	/* write header */
+	cmsSetDeviceClass (profile, cmsSigDisplayClass);
+	cmsSetPCS (profile, cmsSigXYZData);
+	cmsSetColorSpace (profile, cmsSigRgbData);
+	cmsSetProfileVersion (profile, 3.4);
+	cmsSetHeaderRenderingIntent (profile,
+				     INTENT_RELATIVE_COLORIMETRIC);
+
+	/* scale all the values by the floating point values */
+	for (i=0; i<256; i++) {
+		fraction = (gdouble)i / 256.0f;
+		for (j=0; j<3; j++) {
+			data[j][i] = pow (fraction, 1.0f / points[j]) * 0xffff;
+		}
+	}
+
+	/* write vcgt */
+	ret = set_vcgt_from_data (profile,
+				  data[0],
+				  data[1],
+				  data[2],
+				  256);
+	if (!ret) {
+		g_warning ("failed to write VCGT");
+		goto out;
+	}
+out:
+	g_strfreev (points_split);
+	return profile;
+}
+
 /*
  * main:
  */
@@ -124,7 +307,6 @@ int
 main (int argc, char **argv)
 {
 	cmsHPROFILE lcms_profile = NULL;
-	cmsNAMEDCOLORLIST *nc2 = NULL;
 	gboolean ret;
 	gchar *copyright = NULL;
 	gchar *description = NULL;
@@ -134,7 +316,9 @@ main (int argc, char **argv)
 	gchar *model = NULL;
 	gchar *nc_prefix = NULL;
 	gchar *nc_suffix = NULL;
-	gchar *srgb_palette = NULL;
+	gchar *nc_palette = NULL;
+	gchar *nc_type = NULL;
+	gchar *xorg_gamma = NULL;
 	GError *error = NULL;
 	GOptionContext *context;
 	guint retval = EXIT_FAILURE;
@@ -155,9 +339,15 @@ main (int argc, char **argv)
 		{ "output", 'o', 0, G_OPTION_ARG_STRING, &filename,
 		/* TRANSLATORS: command line option */
 		  _("Profile to create"), NULL },
-		{ "srgb-palette", '\0', 0, G_OPTION_ARG_STRING, &srgb_palette,
+		{ "named-color-palette", '\0', 0, G_OPTION_ARG_STRING, &nc_palette,
 		/* TRANSLATORS: command line option */
-		  _("sRGB CSV filename"), NULL },
+		  _("Named color CSV filename"), NULL },
+		{ "named-color-type", '\0', 0, G_OPTION_ARG_STRING, &nc_type,
+		/* TRANSLATORS: command line option */
+		  _("Named color type, e.g. 'lab' or 'srgb'"), NULL },
+		{ "xorg-gamma", '\0', 0, G_OPTION_ARG_STRING, &xorg_gamma,
+		/* TRANSLATORS: command line option */
+		  _("A gamma string, e.g. '0.8,0.8,0.6'"), NULL },
 		{ "nc-prefix", '\0', 0, G_OPTION_ARG_STRING, &nc_prefix,
 		/* TRANSLATORS: command line option */
 		  _("Named color prefix"), NULL },
@@ -200,25 +390,17 @@ main (int argc, char **argv)
 	/* setup LCMS */
 	cmsSetLogErrorHandler (cd_fix_profile_error_cb);
 
-	lcms_profile = cmsCreateNULLProfile ();
-	if (lcms_profile == NULL || lcms_error_code != 0) {
-		g_warning ("failed to open profile");
+	if (nc_palette != NULL) {
+		lcms_profile = create_nc_palette (nc_palette,
+						  nc_prefix,
+						  nc_suffix,
+						  nc_type);
+	} else if (xorg_gamma != NULL) {
+		lcms_profile = create_xorg_gamma (xorg_gamma);
+	} else {
+		/* TRANSLATORS: the user forgot to use an action */
+		g_print ("%s\n", _("No data to create profile"));
 		goto out;
-	}
-
-	cmsSetDeviceClass(lcms_profile, cmsSigNamedColorClass);
-	cmsSetPCS (lcms_profile, cmsSigLabData);
-	cmsSetColorSpace (lcms_profile, cmsSigLabData);
-	cmsSetProfileVersion (lcms_profile, 3.4);
-
-	if (srgb_palette != NULL) {
-		/* create a named color structure */
-		nc2 = cmsAllocNamedColorList (NULL, 1, /* will realloc more as required */
-					      3,
-					      nc_prefix != NULL ? nc_prefix : "",
-					      nc_suffix != NULL ? nc_suffix : "");
-		add_srgb_palette (nc2, srgb_palette);
-		cmsWriteTag (lcms_profile, cmsSigNamedColor2Tag, nc2);
 	}
 
 	if (description != NULL) {
@@ -281,8 +463,6 @@ main (int argc, char **argv)
 	retval = EXIT_SUCCESS;
 	cmsSaveProfileToFile (lcms_profile, filename);
 out:
-	if (nc2 != NULL)
-		cmsFreeNamedColorList (nc2);
 	if (lcms_profile != NULL)
 		cmsCloseProfile (lcms_profile);
 	g_free (description);
@@ -291,7 +471,9 @@ out:
 	g_free (manufacturer);
 	g_free (metadata);
 	g_free (filename);
-	g_free (srgb_palette);
+	g_free (nc_palette);
+	g_free (nc_type);
+	g_free (xorg_gamma);
 	g_free (nc_prefix);
 	g_free (nc_suffix);
 	return retval;

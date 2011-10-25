@@ -59,6 +59,9 @@ CdDevice	*cd_device_new				(void);
 CdObjectScope	 cd_device_get_scope			(CdDevice	*device);
 void		 cd_device_set_scope			(CdDevice	*device,
 							 CdObjectScope	 object_scope);
+void		 cd_device_set_owner			(CdDevice	*device,
+							 guint		 owner);
+CdDeviceMode	 cd_device_get_mode			(CdDevice	*device);
 void		 cd_device_set_mode			(CdDevice	*device,
 							 CdDeviceMode	 mode);
 const gchar	*cd_device_get_model			(CdDevice	*device);

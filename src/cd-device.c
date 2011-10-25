@@ -69,8 +69,10 @@ struct _CdDevicePrivate
 	guint				 watcher_id;
 	guint64				 created;
 	guint64				 modified;
+	gboolean			 require_modified_signal;
 	gboolean			 is_virtual;
 	GHashTable			*metadata;
+	guint				 owner;
 };
 
 enum {
@@ -125,6 +127,16 @@ cd_device_set_scope (CdDevice *device, CdObjectScope object_scope)
 }
 
 /**
+ * cd_device_set_owner:
+ **/
+void
+cd_device_set_owner (CdDevice *device, guint owner)
+{
+	g_return_if_fail (CD_IS_DEVICE (device));
+	device->priv->owner = owner;
+}
+
+/**
  * cd_device_mode_to_string:
  **/
 static const gchar *
@@ -138,6 +150,19 @@ _cd_device_mode_to_string (CdDeviceMode device_mode)
 }
 
 /**
+ * _cd_device_mode_from_string:
+ **/
+static CdDeviceMode
+_cd_device_mode_from_string (const gchar *device_mode)
+{
+	if (g_strcmp0 (device_mode, "physical") == 0)
+		return CD_DEVICE_MODE_PHYSICAL;
+	if (g_strcmp0 (device_mode, "virtual") == 0)
+		return CD_DEVICE_MODE_VIRTUAL;
+	return CD_DEVICE_MODE_UNKNOWN;
+}
+
+/**
  * cd_device_set_mode:
  **/
 void
@@ -146,6 +171,16 @@ cd_device_set_mode (CdDevice *device, CdDeviceMode mode)
 	g_return_if_fail (CD_IS_DEVICE (device));
 	g_free (device->priv->mode);
 	device->priv->mode = g_strdup (_cd_device_mode_to_string (mode));
+}
+
+/**
+ * cd_device_get_mode:
+ **/
+CdDeviceMode
+cd_device_get_mode (CdDevice *device)
+{
+	g_return_val_if_fail (CD_IS_DEVICE (device), CD_DEVICE_MODE_UNKNOWN);
+	return _cd_device_mode_from_string (device->priv->mode);
 }
 
 /**
@@ -219,9 +254,7 @@ cd_device_reset_modified (CdDevice *device)
 #if !GLIB_CHECK_VERSION (2, 25, 0)
 	device->priv->modified = g_get_real_time ();
 #endif
-	cd_device_dbus_emit_property_changed (device,
-					      "Modified",
-					      g_variant_new_uint64 (device->priv->modified));
+	device->priv->require_modified_signal = TRUE;
 }
 
 /**
@@ -246,6 +279,13 @@ cd_device_dbus_emit_property_changed (CdDevice *device,
 			       "{sv}",
 			       property_name,
 			       property_value);
+	if (device->priv->require_modified_signal) {
+		g_variant_builder_add (&builder,
+				       "{sv}",
+				       CD_DEVICE_PROPERTY_MODIFIED,
+				       g_variant_new_uint64 (device->priv->modified));
+		device->priv->require_modified_signal = FALSE;
+	}
 	g_dbus_connection_emit_signal (device->priv->connection,
 				       NULL,
 				       device->priv->object_path,
@@ -482,13 +522,13 @@ cd_device_remove_profile (CdDevice *device,
 	ret = g_ptr_array_remove (priv->profiles, item);
 	g_assert (ret);
 
+	/* reset modification time */
+	cd_device_reset_modified (device);
+
 	/* emit */
 	cd_device_dbus_emit_property_changed (device,
 					      "Profiles",
 					      cd_device_get_profiles_as_variant (device));
-
-	/* reset modification time */
-	cd_device_reset_modified (device);
 
 	/* emit global signal */
 	cd_device_dbus_emit_device_changed (device);
@@ -609,13 +649,13 @@ cd_device_add_profile (CdDevice *device,
 	g_ptr_array_sort (priv->profiles,
 			  cd_device_profile_item_sort_cb);
 
+	/* reset modification time */
+	cd_device_reset_modified (device);
+
 	/* emit */
 	cd_device_dbus_emit_property_changed (device,
 					      "Profiles",
 					      cd_device_get_profiles_as_variant (device));
-
-	/* reset modification time */
-	cd_device_reset_modified (device);
 
 	/* emit global signal */
 	cd_device_dbus_emit_device_changed (device);
@@ -797,8 +837,8 @@ cd_device_set_property_internal (CdDevice *device,
 				     g_strdup (property),
 				     g_strdup (value));
 		cd_device_dbus_emit_property_changed (device,
-						       CD_DEVICE_PROPERTY_METADATA,
-						       cd_device_get_metadata_as_variant (device));
+						      CD_DEVICE_PROPERTY_METADATA,
+						      cd_device_get_metadata_as_variant (device));
 	}
 
 	/* set this externally so we can add disk devices at startup
@@ -869,6 +909,9 @@ cd_device_make_default (CdDevice *device,
 		}
 	}
 
+	/* reset modification time */
+	cd_device_reset_modified (device);
+
 	/* emit */
 	cd_device_dbus_emit_property_changed (device,
 					      "Profiles",
@@ -914,7 +957,6 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 
 		/* require auth */
 		ret = cd_main_sender_authenticated (invocation,
-						    sender,
 						    "org.freedesktop.color-manager.modify-device");
 		if (!ret)
 			goto out;
@@ -984,7 +1026,6 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 
 		/* require auth */
 		ret = cd_main_sender_authenticated (invocation,
-						    sender,
 						    "org.freedesktop.color-manager.modify-device");
 		if (!ret)
 			goto out;
@@ -1111,7 +1152,6 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 
 		/* require auth */
 		ret = cd_main_sender_authenticated (invocation,
-						    sender,
 						    "org.freedesktop.color-manager.modify-device");
 		if (!ret)
 			goto out;
@@ -1162,7 +1202,6 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 
 		/* require auth */
 		ret = cd_main_sender_authenticated (invocation,
-						    sender,
 						    "org.freedesktop.color-manager.modify-device");
 		if (!ret)
 			goto out;
@@ -1195,7 +1234,6 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 
 		/* require auth */
 		ret = cd_main_sender_authenticated (invocation,
-						    sender,
 						    "org.freedesktop.color-manager.device-inhibit");
 		if (!ret)
 			goto out;
@@ -1350,6 +1388,10 @@ cd_device_dbus_get_property (GDBusConnection *connection_, const gchar *sender,
 	}
 	if (g_strcmp0 (property_name, CD_DEVICE_PROPERTY_SCOPE) == 0) {
 		retval = g_variant_new_string (cd_object_scope_to_string (priv->object_scope));
+		goto out;
+	}
+	if (g_strcmp0 (property_name, CD_DEVICE_PROPERTY_OWNER) == 0) {
+		retval = g_variant_new_uint32 (priv->owner);
 		goto out;
 	}
 

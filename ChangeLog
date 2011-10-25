@@ -1,6 +1,261 @@
+commit be27c70dcfe5b4503205e89616419754ca54b2d9
+Author: Richard Hughes <richard@hughsie.com>
+Date:   2011-10-03
+
+    Release colord 0.1.13
+
+M	NEWS
+M	RELEASE
+M	configure.ac
+M	doc/website/download.html
+
+commit 93de3a1d4043f0dfef9d4dbf95c544338b548105
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-10-03
+
+    Fix the --disable-polkit build
+
+    Resolves https://bugs.freedesktop.org/show_bug.cgi?id=41400
+
+M	src/cd-common.c
+
+commit bfb35b0de7cdbff13ea9aab1c6175a7b2f194063
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-10-03
+
+    colormgr only needs one argument for find-device
+
+    Resolves https://bugs.launchpad.net/ubuntu/+source/colord/+bug/845049
+
+M	client/cd-util.c
+
+commit db9a17fcc71ee7be0eb86463db2472717787238c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-09-30
+
+    Reduce the CPU load of clients when assigning profiles from the
+    session
+
+    By doing PropertiesChanged('Profiles') and
+    PropertiesChanged('Modified') as two
+    DBus signals causes any clients using CdDevice to be notified that
+    the device
+    has changed *twice*.
+
+    By pushing both property names inside a single PropertiesChanged()
+    signal
+    causes the CPU load in gnome-settings-daemon to be halved when
+    loading the
+    color plugin.
+
+M	src/cd-device.c
+
+commit 15021772781d46f879be478eda83b9842d0c65f8
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-09-28
+
+    Add the crayon named color palette
+
+M	client/cd-create-profile.c
+M	data/Makefile.am
+A	data/crayons.csv
+
+commit de81543cf9dd7308621e2e8178dbd9c45083273d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-09-14
+
+    trivial: Actually make the --xorg-gamma accept a gamma value
+
+M	client/cd-create-profile.c
+
+commit 353cf1bf9210da6b28d2ac94631d10ca28557502
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-09-13
+
+    Add --xorg-gamma to cd-create-profile to create custom gamma ramps
+
+    This allows power users to create a custom gamma curve using the
+    same values
+    and in the same format that was set in xorg.conf.
+
+    This of course isn't profiling the screen, but it allows people to
+    use a simple
+    color profile when they just want to use a fixed gamma scaling factor.
+
+M	client/cd-create-profile.c
+M	data/Makefile.am
+
+commit bc4f918369941c0ca8464ef46d9e21675b683a8c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-09-13
+
+    trivial: Make the named color profile more abstract
+
+    This means we can add other modes in the future.
+
+M	client/cd-create-profile.c
+
+commit a8ffa24fb64112d26fd17b5e5ff3681071fda934
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-09-13
+
+    Add cd_profile_has_access() to be able to filter profiles from other
+    user accounts
+
+M	libcolord/cd-profile.c
+M	libcolord/cd-profile.h
+
+commit a11b7ac3b39f93d5648384f3611bfe4458f549db
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-09-13
+
+    Return an error if a client tries to create a duplicate device
+
+    Before we just allowed the new client to overwrite the device,
+    which causes all sort
+    of ownership problems when doing fast user switching.
+
+M	libcolord/cd-client.c
+M	libcolord/cd-self-test.c
+M	src/cd-device.c
+M	src/cd-device.h
+M	src/cd-main.c
+
+commit 490c80cd0955649008ba53bfbf86e666f9b3c239
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-09-09
+
+    Return an error when trying to register a duplicate profile
+
+    Silently continuing for duplicate IDs isn't safe if the profiles
+    are not
+    actually identical, but share a common MD5. Per-user profiles are
+    supposed to
+    have a username suffix now, so this fixes properly the permissions
+    issue where
+    user A couldn't access profiles by user B.
+
+M	libcolord/cd-client.c
+M	libcolord/cd-self-test.c
+M	src/cd-common.c
+M	src/cd-common.h
+M	src/cd-main.c
+
+commit cfd2adff0472deab61cf26126bc8dc7db6cd6da5
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-09-12
+
+    Ensure remote DBus errors are registered at startup
+
+M	libcolord/cd-client.c
+
+commit 3d5311394f751c7fc07a879365e1e2b982fae86d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-09-09
+
+    Add an 'Owner' property on device and profile objects
+
+    This allows us to track which owner created which device.
+
+M	client/cd-util.c
+M	libcolord/cd-device.c
+M	libcolord/cd-device.h
+M	libcolord/cd-enum.h
+M	libcolord/cd-profile.c
+M	libcolord/cd-profile.h
+M	src/cd-common.c
+M	src/cd-common.h
+M	src/cd-device.c
+M	src/cd-device.h
+M	src/cd-main.c
+M	src/cd-profile.c
+M	src/cd-profile.h
+M	src/org.freedesktop.ColorManager.Device.xml
+M	src/org.freedesktop.ColorManager.Profile.xml
+
+commit afeee02bcbe84c1a270f2e4eb5d8e7c141b85ac7
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-09-09
+
+    Add a note in the naming specification about the username suffix
+    on profiles
+
+M	doc/device-and-profile-naming-spec.txt
+
+commit 90c06eb5077ebd4e9711cbf4a7f8f6da5db146ba
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-09-04
+
+    Fix a syntax error in configure if the distro does not ship a sane
+    .pc file
+
+    Resolves https://bugs.freedesktop.org/show_bug.cgi?id=40584
+
+M	configure.ac
+
+commit 06c6477831a6d4cb4297b6b9a6bff23f9477aa88
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-09-02
+
+    Ensure uid 0 can create devices and profiles even when not on the
+    active console
+
+    When colord is running as the root user then this magically works,
+    even though
+    daemons like cups are not on an active console.
+
+    If you switch colord to running as a private user then PolicyKit
+    no longer
+    implicitly grants the authorisation from the root user, and this
+    means that
+    printers cannot be registered with colord. By checking for the uid
+    we can grant
+    an implicit authorisation ourselves before asking PolicyKit.
+
+M	src/cd-common.c
+
+commit a2ae7436e794a3dbc87e5a91dbc07a1bfb53f164
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-09-02
+
+    trivial: Do not send the sender to cd_main_sender_authenticated(),
+    it's already in the invocation details
+
+M	src/cd-common.c
+M	src/cd-common.h
+M	src/cd-device.c
+M	src/cd-main.c
+M	src/cd-profile.c
+M	src/cd-sensor.c
+
+commit 2c32e9fcf1e08fbeeaf0ce6c4b27c741a1b90358
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-09-02
+
+    Fix up the documentation; cd_device_get_modified() returns
+    microseconds, not seconds
+
+M	libcolord/cd-device.c
+
+commit 18c7f5afa423e9b8ec5f7151b235c3943b6dd46b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-30
+
+    trivial: post release version bump
+
+M	RELEASE
+
+commit 9c1990ced5dc67f0df324c26d1aa890bc69691da
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-08-30
+
+    trivial: post release version bump
+
+M	configure.ac
+
 commit e481a509923ac406b4322d4e504140e47eb2dc3d
 Author: Richard Hughes <richard@hughsie.com>
-Date:   2011-08-30
+Date:	2011-08-30
 
     Release colord 0.1.12
 

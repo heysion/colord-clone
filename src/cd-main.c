@@ -671,6 +671,7 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 	GVariant *tuple = NULL;
 	GVariant *value = NULL;
 	gint fd = -1;
+	guint uid;
 	const gchar *metadata_key = NULL;
 	const gchar *metadata_value = NULL;
 	GDBusMessage *message;
@@ -871,7 +872,6 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 
 		/* require auth */
 		ret = cd_main_sender_authenticated (invocation,
-						    sender,
 						    "org.freedesktop.color-manager.create-device");
 		if (!ret)
 			goto out;
@@ -885,30 +885,51 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 		g_debug ("CdMain: %s:CreateDevice(%s)", sender, device_id);
 		scope = cd_object_scope_from_string (scope_tmp);
 		device = cd_device_array_get_by_id (devices_array, device_id);
-		if (device == NULL) {
-			device = cd_main_create_device (sender,
-							device_id,
-							scope,
-							CD_DEVICE_MODE_UNKNOWN,
-							&error);
-			if (device == NULL) {
-				g_warning ("CdMain: failed to create device: %s",
-					   error->message);
-				g_dbus_method_invocation_return_gerror (invocation,
-									error);
-				g_error_free (error);
-				goto out;
-			}
-		} else {
+		if (device != NULL) {
 			/* where we try to manually add an existing
 			 * virtual device, which means promoting it to
 			 * an actual physical device */
-			cd_device_set_mode (device,
-					    CD_DEVICE_MODE_PHYSICAL);
-
-			/* not new device */
-			register_on_bus = FALSE;
+			if (cd_device_get_mode (device) == CD_DEVICE_MODE_VIRTUAL) {
+				cd_device_set_mode (device,
+						    CD_DEVICE_MODE_PHYSICAL);
+				register_on_bus = FALSE;
+			} else {
+				g_dbus_method_invocation_return_error (invocation,
+								       CD_MAIN_ERROR,
+								       CD_MAIN_ERROR_ALREADY_EXISTS,
+								       "device id '%s' already exists",
+								       device_id);
+				goto out;
+			}
 		}
+
+		/* create device */
+		device = cd_main_create_device (sender,
+						device_id,
+						scope,
+						CD_DEVICE_MODE_UNKNOWN,
+						&error);
+		if (device == NULL) {
+			g_warning ("CdMain: failed to create device: %s",
+				   error->message);
+			g_dbus_method_invocation_return_gerror (invocation,
+								error);
+			g_error_free (error);
+			goto out;
+		}
+
+		/* set the owner */
+		uid = cd_main_get_sender_uid (invocation, &error);
+		if (uid == G_MAXUINT) {
+			g_dbus_method_invocation_return_error (invocation,
+							       CD_MAIN_ERROR,
+							       CD_MAIN_ERROR_FAILED,
+							       "failed to get owner: %s",
+							       error->message);
+			g_error_free (error);
+			goto out;
+		}
+		cd_device_set_owner (device, uid);
 
 		/* set the properties */
 		while (g_variant_iter_next (iter, "{&s&s}",
@@ -951,7 +972,6 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 
 		/* require auth */
 		ret = cd_main_sender_authenticated (invocation,
-						    sender,
 						    "org.freedesktop.color-manager.delete-device");
 		if (!ret)
 			goto out;
@@ -987,7 +1007,6 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 
 		/* require auth */
 		ret = cd_main_sender_authenticated (invocation,
-						    sender,
 						    "org.freedesktop.color-manager.create-profile");
 		if (!ret)
 			goto out;
@@ -1023,7 +1042,6 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 
 		/* require auth */
 		ret = cd_main_sender_authenticated (invocation,
-						    sender,
 						    "org.freedesktop.color-manager.create-profile");
 		if (!ret)
 			goto out;
@@ -1036,21 +1054,37 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 		g_debug ("CdMain: %s:CreateProfile(%s)", sender, device_id);
 		profile = cd_profile_array_get_by_id (profiles_array,
 						      device_id);
-		scope = cd_object_scope_from_string (scope_tmp);
-		if (profile == NULL) {
-			profile = cd_main_create_profile (sender,
-							  device_id,
-							  scope,
-							  &error);
-			if (profile == NULL) {
-				g_dbus_method_invocation_return_gerror (invocation,
-									error);
-				goto out;
-			}
-		} else {
-			/* not new profile */
-			register_on_bus = FALSE;
+		if (profile != NULL) {
+			g_dbus_method_invocation_return_error (invocation,
+							       CD_MAIN_ERROR,
+							       CD_MAIN_ERROR_ALREADY_EXISTS,
+							       "profile id '%s' already exists",
+							       device_id);
+			goto out;
 		}
+		scope = cd_object_scope_from_string (scope_tmp);
+		profile = cd_main_create_profile (sender,
+						  device_id,
+						  scope,
+						  &error);
+		if (profile == NULL) {
+			g_dbus_method_invocation_return_gerror (invocation,
+								error);
+			goto out;
+		}
+
+		/* set the owner */
+		uid = cd_main_get_sender_uid (invocation, &error);
+		if (uid == G_MAXUINT) {
+			g_dbus_method_invocation_return_error (invocation,
+							       CD_MAIN_ERROR,
+							       CD_MAIN_ERROR_FAILED,
+							       "failed to get owner: %s",
+							       error->message);
+			g_error_free (error);
+			goto out;
+		}
+		cd_profile_set_owner (profile, uid);
 
 		/* auto add profiles from the database */
 		cd_main_profile_auto_add_to_device (profile);
@@ -1099,14 +1133,12 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 		}
 
 		/* register on bus */
-		if (register_on_bus) {
-			ret = cd_main_profile_register_on_bus (profile, &error);
-			if (!ret) {
-				g_dbus_method_invocation_return_gerror (invocation,
-									error);
-				g_error_free (error);
-				goto out;
-			}
+		ret = cd_main_profile_register_on_bus (profile, &error);
+		if (!ret) {
+			g_dbus_method_invocation_return_gerror (invocation,
+								error);
+			g_error_free (error);
+			goto out;
 		}
 
 		/* format the value */
