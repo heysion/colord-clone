@@ -37,6 +37,9 @@
 /* Use GUDEV support for hardware */
 #undef HAVE_GUDEV
 
+/* whether gusb is available */
+#undef HAVE_GUSB
+
 /* Define if you have the iconv() function and it works. */
 #undef HAVE_ICONV
 

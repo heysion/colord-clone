@@ -38,6 +38,9 @@
 /* Use GUDEV support for hardware */
 #define HAVE_GUDEV 1
 
+/* whether gusb is available */
+#define HAVE_GUSB 1
+
 /* Define if you have the iconv() function and it works. */
 /* #undef HAVE_ICONV */
 
@@ -94,7 +97,7 @@
 #define PACKAGE_NAME "colord"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "colord 0.1.13"
+#define PACKAGE_STRING "colord 0.1.15"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "colord"
@@ -103,7 +106,7 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "0.1.13"
+#define PACKAGE_VERSION "0.1.15"
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
@@ -112,4 +115,4 @@
 #define USE_POLKIT 1
 
 /* Version number of package */
-#define VERSION "0.1.13"
+#define VERSION "0.1.15"

@@ -1,6 +1,479 @@
+commit 72ef4215b714638b8682630f15311b7cb43419dc
+Author: Richard Hughes <richard@hughsie.com>
+Date:   2011-11-26
+
+    Release colord 0.1.15
+
+M	NEWS
+M	configure.ac
+
+commit 01cd6dcd0a265f634aaca77102fafdb3d7446a3f
+Author: Ludwig Nussel <ludwig.nussel@suse.de>
+Date:	2011-11-25
+
+    make gusb optional
+
+M	configure.ac
+M	src/sensors/Makefile.am
+
+commit 6f664c27d2862216358533b3f215af53a0382815
+Author: Laurent Martelli <martellilaurent@gmail.com>
+Date:	2011-11-25
+
+    Documentation fixes and improvements
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	client/cd-util.c
+M	man/colormgr.sgml
+
+commit b45062683130fdae8390ba7b7c5756e48b215ffa
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-25
+
+    trivial: choose the correct calibration matrix for the ColorHug sensor
+
+M	src/sensors/cd-sensor-colorhug-private.c
+M	src/sensors/cd-sensor-colorhug-private.h
+M	src/sensors/cd-sensor-colorhug.c
+
+commit 6161465a1891c93799bfcf149dea64977183ddb1
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-25
+
+    Do not crash the daemon if adding the device to the device-db failed
+
+M	src/cd-main.c
+
+commit 36549e0ed255e7dfa7852d08a75dd5f00cbd270e
+Author: Ludwig Nussel <ludwig.nussel@suse.de>
+Date:	2011-11-25
+
+    fix more sql injections
+
+    https://bugs.freedesktop.org/show_bug.cgi?id=42904
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	src/cd-device-db.c
+
+commit 1e9272c663eb8a519f0b9bfbffbd00ac364582c1
+Author: Florian Höch <lists@hoech.org>
+Date:	2011-11-24
+
+    Fix some more bugs in colormgr
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	client/cd-util.c
+
+commit 55818a092fca87dccaa98dabe8ebbbca9feb0d76
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-24
+
+    trivial: fix a typo in the last patch
+
+M	src/sensors/cd-sensor-colorhug.c
+
+commit e8af626422f3dbab529be832003a9a7511075cbf
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-24
+
+    trivial: Use an async version of the command submitter to simplify
+    the colorhug driver
+
+M	src/sensors/Makefile.am
+A	src/sensors/cd-sensor-colorhug-private.c
+A	src/sensors/cd-sensor-colorhug-private.h
+M	src/sensors/cd-sensor-colorhug.c
+
+commit af30c00ff18ec3aeaed2643f8549d28cfe2edca1
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-24
+
+    Don't return obscure warnings when the user passes a device-id
+    to colormgr
+
+M	client/cd-util.c
+
+commit 98be7f484f5bc83765363ecf901eef626da93678
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-24
+
+    Fix several more colormgr commands where the device needs to be active
+
+M	client/cd-util.c
+
+commit 6b37e0785818301a5cd150fc35cd0c5c84ab5d0d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-24
+
+    Fix colormgr device-get-default-profile
+
+M	client/cd-util.c
+
+commit 94112541880d3af175e8146fb560e2b1e297486d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-19
+
+    trivial: Use the new floating point format from the ColorHug hardware
+    >= 0.0.4
+
+M	src/sensors/cd-sensor-colorhug.c
+
+commit f9433402fe684f9b9c3681687a068e828c1b9494
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-16
+
+    Flash the ColorHug LEDs when locking the sensor
+
+M	src/sensors/cd-sensor-colorhug.c
+
+commit e0acd737f1aa39d41f6ba6a3ac71542084b2976d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-16
+
+    trivial: the colorhug firmware 0.0.4 no longer uses floating point
+
+M	src/sensors/cd-sensor-colorhug.c
+
+commit 9dad91bda397eaa8260e2d9210f9511428809a81
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-16
+
+    trivial: fix spelling mistake in define name
+
+M	src/sensors/cd-sensor-colorhug.c
+
+commit f38d23fa5ffc5af99c4afcbec9d501272e496944
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-16
+
+    Lock the sensor before dumping it
+
+M	src/sensors/cd-sensor-dump.c
+
+commit 52cf1963b708242eefd64ac2f776de12af8540ce
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-16
+
+    Output the Huey calibration matrices when dumping the sensor
+
+M	src/sensors/cd-sensor-huey.c
+
+commit f4e6da13cde50f0c0573773333be18f4243b88aa
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-16
+
+    Add a utility function cd_mat33_scalar_multiply()
+
+M	libcolord/cd-math.c
+M	libcolord/cd-math.h
+
+commit 0737d6c06eda7ce331caa01cb8d397faf8c205aa
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-16
+
+    Add a utility function cd_vec3_squared_error()
+
+M	libcolord/cd-math.c
+M	libcolord/cd-math.h
+
+commit 2ebf8c27c3e455a704dab0b380103185f970e3b3
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-15
+
+    trivial: add a FIXME to solve when we can dep on a new enough
+    PolicyKit
+
+    See https://bugzilla.redhat.com/show_bug.cgi?id=752856 for details.
+
+M	rules/69-cd-sensors.rules.in
+
+commit 1fadd90afcb4bbc47513466ee9bb1e4a8632ac3b
+Author: Vincent Untz <vuntz@gnome.org>
+Date:	2011-11-14
+
+    Use sqlite3_mprintf() to avoid SQL injections
+
+    https://bugs.freedesktop.org/show_bug.cgi?id=42904
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	src/cd-mapping-db.c
+
+commit 17b9b432abb16427f7ee306f2ff342cc6ae87ef9
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-09
+
+    Export cd-math as three projects are now using it
+
+M	libcolord/Makefile.am
+R100	src/sensors/cd-math.c	libcolord/cd-math.c
+R100	src/sensors/cd-math.h	libcolord/cd-math.h
+M	libcolord/cd-self-test.c
+M	libcolord/colord.h
+M	src/sensors/Makefile.am
+M	src/sensors/cd-self-test.c
+
+commit d63269eeb382419752cf809aa84e70183878167c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-08
+
+    Add a native sensor driver for the Hughski ColorHug hardware
+
+M	src/sensors/Makefile.am
+A	src/sensors/cd-sensor-colorhug.c
+A	src/sensors/cd-sensor-colorhug.h
+
+commit a6b16c694505b6354ef9c4e73cc5d2e70e8d7c9f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-08
+
+    trivial: fix a critical warning when the native sensor sample fails
+
+M	client/cd-util.c
+
+commit 9b5ddd4705a0c1f45ce24b16a655b53815891f39
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-08
+
+    Do not match any sensor device with a kernel driver
+
+M	rules/69-cd-sensors.rules.in
+
+commit 5e37a5a91270ec02726897ae030b93860311ae7c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-08
+
+    Do not try to add the same sensor twice
+
+M	src/cd-main.c
+
+commit f87e3bfa245a0387059018cbe46af1afc868d7ce
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-08
+
+    Only use the udev USB helper if the PID and VID have matches
+
+M	src/cd-sensor.c
+
+commit a0b12c4f0cc9038a1b0312bc978a18e5d808b562
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-07
+
+    Add a mandatory build dependency of GUsb
+
+M	configure.ac
+M	contrib/colord.spec.in
+M	src/sensors/Makefile.am
+
+commit 842fe1b8ebe25e04f54b98aefdf7f29fc93bd82b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-07
+
+    Add defines for the Hughski ColorHug
+
+M	libcolord/cd-enum.c
+M	libcolord/cd-enum.h
+M	rules/69-cd-sensors.rules.in
+
+commit 3e86aefac6d8a149e5c62ca513a819630ea809cc
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-02
+
+    trivial: fix the last commit to actually compile
+
+M	src/sensors/cd-math.c
+
+commit e6d2dd3ff698b71cac2470b2b3f69ba85a3646fb
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-02
+
+    trivial: add some helper methods to the math helpers
+
+M	src/sensors/cd-math.c
+M	src/sensors/cd-math.h
+
+commit 482d1459e86550188cc3820793fbd6897be64708
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-02
+
+    Fix a tiny memory leak when getting properties from a device
+
+    Resolves https://bugs.freedesktop.org/show_bug.cgi?id=42512
+
+M	libcolord/cd-device.c
+
+commit 211a7d8c7a399a7e29217040e3f60847ab96df10
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-01
+
+    trivial: post release version bump
+
+M	RELEASE
+M	configure.ac
+
+commit 12afb21870acf24511f4e2af814126e53a40921b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-01
+
+    Release colord 0.1.14
+
+M	NEWS
+M	configure.ac
+M	doc/website/download.html
+
+commit c2fd5571f1e628028e287a4942af9bc19ce0d510
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-01
+
+    trivial: do not use g_thread_init() in the test program
+
+M	libcolord/cd-self-test.c
+
+commit afc753073a7dce2586f01c664f646fcc85775c25
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-10-20
+
+    Put the sensor plugin modules in src/plugins to reduce clutter
+
+M	configure.ac
+M	src/Makefile.am
+M	src/cd-self-test.c
+C065	src/Makefile.am src/sensors/Makefile.am
+R100	src/cd-buffer.c src/sensors/cd-buffer.c
+R100	src/cd-buffer.h src/sensors/cd-buffer.h
+R100	src/cd-huey-calculate-fudge.c
+src/sensors/cd-huey-calculate-fudge.c
+R100	src/cd-huey-dump-values.c	src/sensors/cd-huey-dump-values.c
+R100	src/cd-huey-parse.c	src/sensors/cd-huey-parse.c
+R100	src/cd-math.c	src/sensors/cd-math.c
+R100	src/cd-math.h	src/sensors/cd-math.h
+R100	src/cd-parse-beagle.c	src/sensors/cd-parse-beagle.c
+A	src/sensors/cd-self-test.c
+R100	src/cd-sensor-dummy.c	src/sensors/cd-sensor-dummy.c
+R100	src/cd-sensor-dummy.h	src/sensors/cd-sensor-dummy.h
+R100	src/cd-sensor-dump.c	src/sensors/cd-sensor-dump.c
+R100	src/cd-sensor-huey-private.c
+src/sensors/cd-sensor-huey-private.c
+R100	src/cd-sensor-huey-private.h
+src/sensors/cd-sensor-huey-private.h
+R100	src/cd-sensor-huey.c	src/sensors/cd-sensor-huey.c
+R100	src/cd-sensor-huey.h	src/sensors/cd-sensor-huey.h
+R100	src/cd-sensor-munki-private.c
+src/sensors/cd-sensor-munki-private.c
+R100	src/cd-sensor-munki-private.h
+src/sensors/cd-sensor-munki-private.h
+R100	src/cd-sensor-munki.c	src/sensors/cd-sensor-munki.c
+R100	src/cd-usb.c	src/sensors/cd-usb.c
+R100	src/cd-usb.h	src/sensors/cd-usb.h
+
+commit da22e3898dd0080a5f722db039667cad12b9a118
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-10-20
+
+    Split the sensor and device udev code, there's not any actual
+    shared code
+
+M	src/Makefile.am
+M	src/cd-main.c
+A	src/cd-sensor-client.c
+A	src/cd-sensor-client.h
+M	src/cd-udev-client.c
+M	src/cd-udev-client.h
+
+commit 0f1946b68c3308f7a6a3585151891f9b2a009999
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-10-13
+
+    Allow cd-fix-profile to append and edit new metadata
+
+M	client/cd-common.c
+
+commit cf090f9c522d494276e14539d9e733deea5e281a
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-10-13
+
+    trivial: Add some 'Since' values for the new enums
+
+M	libcolord/cd-enum.h
+
+commit 537cc199a15f69caeb2149dfae716ae3b9ef25af
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-10-13
+
+    Add two more DATA_source values to the specification
+
+M	doc/metadata-spec.txt
+M	libcolord/cd-enum.h
+
+commit 6a9096fe4a5c34d35300dd322219b6c18da91593
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-10-11
+
+    Align the output from colormgr get-devices and get-profiles
+
+M	client/cd-util.c
+
+commit 94b0a952ce863643656526e6f04f6320c185deda
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-10-11
+
+    trivial: add 'Requires: color-filesystem' to the Fedora spec file
+
+    Resolves https://bugzilla.redhat.com/show_bug.cgi?id=744914
+
+M	contrib/colord.spec.in
+
+commit a53db98bf530cc6bde836903949cf7a18431628b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-10-11
+
+    trivial: add a Since: line to CD_SENSOR_KIND_I1_DISPLAY3
+
+M	libcolord/cd-enum.h
+
+commit 07cbcd479066998e70e9f45b330672458555bb5d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-10-10
+
+    Ensure non-native device are added with no driver module installed
+
+    This makes all colorimeter device that are not Hueys work.
+
+M	src/cd-udev-client.c
+
+commit 1375c5043423fc9ca20a43d669ebd4987a955f04
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-10-05
+
+    Add defines for the i1 Display 3
+
+M	libcolord/cd-enum.c
+M	libcolord/cd-enum.h
+M	rules/69-cd-sensors.rules.in
+
+commit 03fec53c0b9018bf3d6f22e15309e913a2a461be
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-10-03
+
+    trivial: add a little upload script
+
+A	doc/website/upload.sh
+
+commit 1ea1ebb64c4b5ec7a3e93c981a5dcee617bcc6cc
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-10-03
+
+    trivial: post release version bump
+
+M	RELEASE
+M	configure.ac
+
 commit be27c70dcfe5b4503205e89616419754ca54b2d9
 Author: Richard Hughes <richard@hughsie.com>
-Date:   2011-10-03
+Date:	2011-10-03
 
     Release colord 0.1.13
 
