@@ -458,6 +458,42 @@ namespace Cd {
 		public uint8 G;
 		public uint8 B;
 	}
+	[CCode (cheader_filename = "colord.h")]
+	public struct Mat3x3 {
+		public double m00;
+		public double m01;
+		public double m02;
+		public double m10;
+		public double m11;
+		public double m12;
+		public double m20;
+		public double m21;
+		public double m22;
+	}
+	[CCode (cheader_filename = "colord.h")]
+	public struct Vec3 {
+		public double v0;
+		public double v1;
+		public double v2;
+		[CCode (cname = "cd_vec3_add")]
+		public void add (Cd.Vec3 src2, Cd.Vec3 dest);
+		[CCode (cname = "cd_vec3_clear")]
+		public void clear ();
+		[CCode (cname = "cd_vec3_copy")]
+		public void copy (Cd.Vec3 dest);
+		[CCode (cname = "cd_vec3_get_data")]
+		public double get_data ();
+		[CCode (cname = "cd_vec3_init")]
+		public void init (double v0, double v1, double v2);
+		[CCode (cname = "cd_vec3_scalar_multiply")]
+		public void scalar_multiply (double value, Cd.Vec3 dest);
+		[CCode (cname = "cd_vec3_squared_error")]
+		public double squared_error (Cd.Vec3 src2);
+		[CCode (cname = "cd_vec3_subtract")]
+		public void subtract (Cd.Vec3 src2, Cd.Vec3 dest);
+		[CCode (cname = "cd_vec3_to_string")]
+		public string to_string ();
+	}
 	[CCode (cheader_filename = "colord.h", cprefix = "CD_CLIENT_ERROR_")]
 	public enum ClientError {
 		FAILED,
@@ -575,6 +611,8 @@ namespace Cd {
 		SPECTRO_SCAN,
 		I1_PRO,
 		COLORIMTRE_HCFR,
+		I1_DISPLAY3,
+		COLORHUG,
 		LAST
 	}
 	[CCode (cheader_filename = "colord.h", cprefix = "CD_SENSOR_STATE_")]
@@ -643,6 +681,10 @@ namespace Cd {
 	public const string PROFILE_METADATA_DATA_SOURCE_CALIB;
 	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_DATA_SOURCE_EDID")]
 	public const string PROFILE_METADATA_DATA_SOURCE_EDID;
+	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_DATA_SOURCE_STANDARD")]
+	public const string PROFILE_METADATA_DATA_SOURCE_STANDARD;
+	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_DATA_SOURCE_TEST")]
+	public const string PROFILE_METADATA_DATA_SOURCE_TEST;
 	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_EDID_MD5")]
 	public const string PROFILE_METADATA_EDID_MD5;
 	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_EDID_MNFT")]
@@ -713,6 +755,24 @@ namespace Cd {
 	public static Cd.Colorspace colorspace_from_string (string colorspace);
 	[CCode (cheader_filename = "colord.h", cname = "cd_colorspace_to_string")]
 	public static unowned string colorspace_to_string (Cd.Colorspace colorspace);
+	[CCode (cheader_filename = "colord.h", cname = "cd_mat33_clear")]
+	public static void mat33_clear (Cd.Mat3x3 src);
+	[CCode (cheader_filename = "colord.h", cname = "cd_mat33_copy")]
+	public static void mat33_copy (Cd.Mat3x3 src, Cd.Mat3x3 dest);
+	[CCode (cheader_filename = "colord.h", cname = "cd_mat33_get_data")]
+	public static double mat33_get_data (Cd.Mat3x3 src);
+	[CCode (cheader_filename = "colord.h", cname = "cd_mat33_matrix_multiply")]
+	public static void mat33_matrix_multiply (Cd.Mat3x3 mat_src1, Cd.Mat3x3 mat_src2, Cd.Mat3x3 mat_dest);
+	[CCode (cheader_filename = "colord.h", cname = "cd_mat33_reciprocal")]
+	public static bool mat33_reciprocal (Cd.Mat3x3 src, Cd.Mat3x3 dest);
+	[CCode (cheader_filename = "colord.h", cname = "cd_mat33_scalar_multiply")]
+	public static void mat33_scalar_multiply (Cd.Mat3x3 mat_src, double value, Cd.Mat3x3 mat_dest);
+	[CCode (cheader_filename = "colord.h", cname = "cd_mat33_set_identity")]
+	public static void mat33_set_identity (Cd.Mat3x3 src);
+	[CCode (cheader_filename = "colord.h", cname = "cd_mat33_to_string")]
+	public static string mat33_to_string (Cd.Mat3x3 src);
+	[CCode (cheader_filename = "colord.h", cname = "cd_mat33_vector_multiply")]
+	public static void mat33_vector_multiply (Cd.Mat3x3 mat_src, Cd.Vec3 vec_src, Cd.Vec3 vec_dest);
 	[CCode (cheader_filename = "colord.h", cname = "cd_object_scope_from_string")]
 	public static Cd.ObjectScope object_scope_from_string (string object_scope);
 	[CCode (cheader_filename = "colord.h", cname = "cd_object_scope_to_string")]

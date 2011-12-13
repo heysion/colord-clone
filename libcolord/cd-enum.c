@@ -357,6 +357,10 @@ cd_sensor_kind_to_string (CdSensorKind sensor_kind)
 		return "i1-pro";
 	if (sensor_kind == CD_SENSOR_KIND_COLORIMTRE_HCFR)
 		return "colorimtre-hcfr";
+	if (sensor_kind == CD_SENSOR_KIND_I1_DISPLAY3)
+		return "i1-display3";
+	if (sensor_kind == CD_SENSOR_KIND_COLORHUG)
+		return "colorhug";
 	return "unknown";
 }
 
@@ -395,6 +399,10 @@ cd_sensor_kind_from_string (const gchar *sensor_kind)
 		return CD_SENSOR_KIND_I1_PRO;
 	if (g_strcmp0 (sensor_kind, "colorimtre-hcfr") == 0)
 		return CD_SENSOR_KIND_COLORIMTRE_HCFR;
+	if (g_strcmp0 (sensor_kind, "i1-display3") == 0)
+		return CD_SENSOR_KIND_I1_DISPLAY3;
+	if (g_strcmp0 (sensor_kind, "colorhug") == 0)
+		return CD_SENSOR_KIND_COLORHUG;
 	return CD_SENSOR_KIND_UNKNOWN;
 }
 
