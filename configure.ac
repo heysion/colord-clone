@@ -3,7 +3,7 @@ AC_PREREQ(2.63)
 
 m4_define([cd_major_version], [0])
 m4_define([cd_minor_version], [1])
-m4_define([cd_micro_version], [13])
+m4_define([cd_micro_version], [15])
 m4_define([cd_version],
           [cd_major_version.cd_minor_version.cd_micro_version])
 
@@ -37,7 +37,7 @@ AC_SUBST(CD_MICRO_VERSION)
 # REVISION	If the API and ABI remains the same, but bugs are fixed.
 # AGE		Don't use.
 LT_CURRENT=1
-LT_REVISION=5
+LT_REVISION=7
 LT_AGE=0
 AC_SUBST(LT_CURRENT)
 AC_SUBST(LT_REVISION)
@@ -126,6 +126,11 @@ dnl ---------------------------------------------------------------------------
 dnl - Check library dependencies
 dnl ---------------------------------------------------------------------------
 PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.28.0 gobject-2.0 gthread-2.0 gio-2.0 >= 2.25.9 gio-unix-2.0 gmodule-2.0)
+PKG_CHECK_MODULES(GUSB, gusb >= 0.1.1, have_gusb=yes, have_gusb=no)
+if test x$have_gusb = xyes; then
+	AC_DEFINE(HAVE_GUSB,1,[whether gusb is available])
+fi
+AM_CONDITIONAL(HAVE_GUSB, test x$have_gusb = xyes)
 
 PKG_CHECK_MODULES(LCMS, lcms2 >= 2.2, has_new_lcms=yes, has_new_lcms=no)
 if test x$has_new_lcms = xyes; then
@@ -294,6 +299,7 @@ rules/Makefile
 rules/69-cd-sensors.rules
 po/Makefile.in
 src/Makefile
+src/sensors/Makefile
 client/Makefile
 libcolord/cd-version.h
 libcolord/colord.pc

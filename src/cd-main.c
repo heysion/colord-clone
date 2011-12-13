@@ -37,6 +37,7 @@
 #include "cd-profile.h"
 #include "cd-profile-store.h"
 #include "cd-sane-client.h"
+#include "cd-sensor-client.h"
 #include "cd-udev-client.h"
 
 static GDBusConnection *connection = NULL;
@@ -52,6 +53,7 @@ static CdMappingDb *mapping_db = NULL;
 static CdDeviceDb *device_db = NULL;
 #ifdef HAVE_GUDEV
 static CdUdevClient *udev_client = NULL;
+static CdSensorClient *sensor_client = NULL;
 #endif
 static CdSaneClient *sane_client = NULL;
 static CdConfig *config = NULL;
@@ -373,12 +375,8 @@ cd_main_device_add (CdDevice *device,
 		ret = cd_device_db_add (device_db,
 					cd_device_get_id (device),
 					&error_local);
-		if (!ret) {
-			g_warning ("CdMain: failed to add device %s to db: %s",
-				   cd_device_get_object_path (device),
-				   error_local->message);
-			g_clear_error (&error_local);
-		}
+		if (!ret)
+			goto out;
 	}
 
 	/* profile is no longer valid */
@@ -391,7 +389,7 @@ cd_main_device_add (CdDevice *device,
 
 	/* auto add profiles from the database */
 	cd_main_device_auto_add_profiles (device);
-
+out:
 	return ret;
 }
 
@@ -917,6 +915,7 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 			g_error_free (error);
 			goto out;
 		}
+		cd_device_set_owner (device, uid);
 
 		/* set the owner */
 		uid = cd_main_get_sender_uid (invocation, &error);
@@ -1388,6 +1387,7 @@ cd_main_add_sensor (CdSensor *sensor)
 	/* register on bus */
 	ret = cd_main_sensor_register_on_bus (sensor, &error);
 	if (!ret) {
+		g_ptr_array_remove (sensors, sensor);
 		g_warning ("CdMain: failed to emit SensorAdded: %s",
 			   error->message);
 		g_error_free (error);
@@ -1521,6 +1521,9 @@ cd_main_on_name_acquired_cb (GDBusConnection *connection_,
 #ifdef HAVE_GUDEV
 	/* add GUdev devices */
 	cd_udev_client_coldplug (udev_client);
+
+	/* add sensor devices */
+	cd_sensor_client_coldplug (sensor_client);
 #endif
 
 	/* add dummy sensor */
@@ -1620,7 +1623,7 @@ cd_main_client_device_removed_cb (GObject *source,
  * cd_main_client_sensor_added_cb:
  **/
 static void
-cd_main_client_sensor_added_cb (CdUdevClient *udev_client_,
+cd_main_client_sensor_added_cb (CdSensorClient *sensor_client_,
 				CdSensor *sensor,
 				gpointer user_data)
 {
@@ -1631,7 +1634,7 @@ cd_main_client_sensor_added_cb (CdUdevClient *udev_client_,
  * cd_main_client_sensor_removed_cb:
  **/
 static void
-cd_main_client_sensor_removed_cb (CdUdevClient *udev_client_,
+cd_main_client_sensor_removed_cb (CdSensorClient *sensor_client_,
 				  CdSensor *sensor,
 				  gpointer user_data)
 {
@@ -1756,10 +1759,11 @@ main (int argc, char *argv[])
 	g_signal_connect (udev_client, "device-removed",
 			  G_CALLBACK (cd_main_client_device_removed_cb),
 			  NULL);
-	g_signal_connect (udev_client, "sensor-added",
+	sensor_client = cd_sensor_client_new ();
+	g_signal_connect (sensor_client, "sensor-added",
 			  G_CALLBACK (cd_main_client_sensor_added_cb),
 			  NULL);
-	g_signal_connect (udev_client, "sensor-removed",
+	g_signal_connect (sensor_client, "sensor-removed",
 			  G_CALLBACK (cd_main_client_sensor_removed_cb),
 			  NULL);
 #endif
@@ -1854,6 +1858,8 @@ out:
 #ifdef HAVE_GUDEV
 	if (udev_client != NULL)
 		g_object_unref (udev_client);
+	if (sensor_client != NULL)
+		g_object_unref (sensor_client);
 #endif
 	if (config != NULL)
 		g_object_unref (config);

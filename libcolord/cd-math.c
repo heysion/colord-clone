@@ -29,6 +29,7 @@
 #include "config.h"
 
 #include <math.h>
+#include <string.h>
 #include <glib-object.h>
 
 #include <cd-math.h>
@@ -81,6 +82,21 @@ cd_vec3_scalar_multiply (const CdVec3 *src, gdouble value, CdVec3 *dest)
 	dest->v0 = src->v0 * value;
 	dest->v1 = src->v1 * value;
 	dest->v2 = src->v2 * value;
+}
+
+/**
+ * cd_vec3_copy:
+ * @src: the source
+ * @dest: the destination
+ *
+ * Copies the vector into another vector.
+ * The arguments @src and @dest cannot be the same value.
+ **/
+void
+cd_vec3_copy (const CdVec3 *src, CdVec3 *dest)
+{
+	g_return_if_fail (src != dest);
+	memcpy (dest, src, sizeof (CdVec3));
 }
 
 /**
@@ -146,6 +162,25 @@ gdouble *
 cd_vec3_get_data (const CdVec3 *src)
 {
 	return (gdouble *) src;
+}
+
+/**
+ * cd_vec3_squared_error:
+ * @src1: the vector source
+ * @src1: another vector source
+ *
+ * Gets the mean squared error for a pair of vectors
+ *
+ * Return value: the floating point MSE.
+ **/
+gdouble
+cd_vec3_squared_error (const CdVec3 *src1, const CdVec3 *src2)
+{
+	CdVec3 tmp;
+	cd_vec3_subtract (src1, src2, &tmp);
+	return (tmp.v0 * tmp.v0) +
+	       (tmp.v1 * tmp.v1) +
+	       (tmp.v2 * tmp.v2);
 }
 
 /**
@@ -236,6 +271,29 @@ cd_mat33_vector_multiply (const CdMat3x3 *mat_src, const CdVec3 *vec_src, CdVec3
 }
 
 /**
+ * cd_mat33_scalar_multiply:
+ * @mat_src: the source
+ * @value: the scalar
+ * @mat_dest: the destination
+ *
+ * Multiplies a matrix with a scalar.
+ * The arguments @vec_src and @vec_dest can be the same value.
+ **/
+void
+cd_mat33_scalar_multiply (const CdMat3x3 *mat_src,
+			  gdouble value,
+			  CdMat3x3 *mat_dest)
+{
+	gdouble *tmp_src;
+	gdouble *tmp_dest;
+	guint i;
+	tmp_src = cd_mat33_get_data (mat_src);
+	tmp_dest = cd_mat33_get_data (mat_dest);
+	for (i = 0; i < 9; i++)
+		tmp_dest[i] = tmp_src[i] * value;
+}
+
+/**
  * cd_mat33_matrix_multiply:
  * @mat_src1: the matrix source
  * @mat_src2: the other matrix source
@@ -302,4 +360,21 @@ cd_mat33_reciprocal (const CdMat3x3 *src, CdMat3x3 *dest)
 	dest->m22 = (src->m00 * src->m11 - src->m01 * src->m10) / det;
 
 	return TRUE;
+}
+
+/**
+ * cd_mat33_copy:
+ * @src: the source
+ * @dest: the destination
+ *
+ * Copies the matrix.
+ * The arguments @src and @dest cannot be the same value.
+ *
+ * Return value: %FALSE if det is zero (singular).
+ **/
+void
+cd_mat33_copy (const CdMat3x3 *src, CdMat3x3 *dest)
+{
+	g_return_if_fail (src != dest);
+	memcpy (dest, src, sizeof (CdMat3x3));
 }
