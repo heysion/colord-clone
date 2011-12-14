@@ -1,3 +1,10 @@
+colord (0.1.15-2) UNRELEASED; urgency=low
+
+  * debian/control:
+    + Move gir package to Section: introspection
+
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Wed, 14 Dec 2011 22:01:40 +1100
+
 colord (0.1.15-1) unstable; urgency=low
 
   * New upstream release.
