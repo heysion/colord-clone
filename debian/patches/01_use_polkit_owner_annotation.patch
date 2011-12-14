@@ -1,0 +1,387 @@
+commit c7e5a8b0f15cd43e788ea9da145c4265a51b6899
+Author: Vincent Untz <vuntz@gnome.org>
+Date:   Tue Dec 6 13:47:25 2011 +0000
+
+    Add org.freedesktop.policykit.owner annotations to .policy file
+    
+    We only add those annotations when the daemon is configured to run as
+    non-root.
+    
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+diff --git a/configure.ac b/configure.ac
+index 4732921..a99ebc0 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -176,7 +176,7 @@ AC_ARG_ENABLE(polkit, AS_HELP_STRING([--enable-polkit],[enable PolicyKit]),
+ 	      enable_polkit=$enableval,enable_polkit=yes)
+ AM_CONDITIONAL(CD_BUILD_POLKIT, test x$enable_polkit = xyes)
+ if test x$enable_polkit = xyes; then
+-	PKG_CHECK_MODULES(POLKIT, polkit-gobject-1 >= 0.97)
++	PKG_CHECK_MODULES(POLKIT, polkit-gobject-1 >= 0.103)
+ 	AC_DEFINE(USE_POLKIT, 1, [if we should use PolicyKit])
+ fi
+ 
+index bc0ba7f..e46c7d1 100644
+--- a/po/POTFILES.in
++++ b/po/POTFILES.in
+@@ -1,6 +1,6 @@
+ client/cd-create-profile.c
+ client/cd-fix-profile.c
+ client/cd-util.c
+-policy/org.freedesktop.color.policy.in
++policy/org.freedesktop.color.policy.in.in
+ src/cd-debug.c
+ src/cd-main.c
+diff --git a/po/POTFILES.skip b/po/POTFILES.skip
+new file mode 100644
+index 0000000..855c79c
+--- /dev/null
++++ b/po/POTFILES.skip
+@@ -0,0 +1 @@
++policy/org.freedesktop.color.policy.in
+diff --git a/policy/Makefile.am b/policy/Makefile.am
+index 85e3ecc..272675b 100644
+--- a/policy/Makefile.am
++++ b/policy/Makefile.am
+@@ -1,9 +1,16 @@
++org.freedesktop.color.policy.in: org.freedesktop.color.policy.in.in Makefile.am
++	$(AM_V_GEN)if test "x$(daemon_user)" != "xroot"; then \
++		sed -e "s|<@ANNOTATE_OWNER@/>|<annotate key=\"org.freedesktop.policykit.owner\">unix-user:$(daemon_user)</annotate>|g" $< > $@ ; \
++	else \
++		sed -e "/^\s*<@ANNOTATE_OWNER@\/>\s*$$/d;s|<@ANNOTATE_OWNER@/>||g" $< > $@ ; \
++	fi
++
+ @INTLTOOL_POLICY_RULE@
+ polkit_policydir = $(datadir)/polkit-1/actions
+-dist_polkit_policy_DATA =					\
++polkit_policy_DATA =					\
+ 	org.freedesktop.color.policy
+ 
+-EXTRA_DIST = org.freedesktop.color.policy.in
+-DISTCLEANFILES = org.freedesktop.color.policy
++EXTRA_DIST = org.freedesktop.color.policy.in.in
++DISTCLEANFILES = org.freedesktop.color.policy org.freedesktop.color.policy.in
+ 
+ -include $(top_srcdir)/git.mk
+diff --git a/policy/org.freedesktop.color.policy.in b/policy/org.freedesktop.color.policy.in
+deleted file mode 100644
+index a5bcfaf..0000000
+--- a/policy/org.freedesktop.color.policy.in
++++ /dev/null
+@@ -1,150 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<!DOCTYPE policyconfig PUBLIC
+- "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+- "http://www.freedesktop.org/standards/PolicyKit/1.0/policyconfig.dtd">
+-<policyconfig>
+-
+-  <!--
+-    Policy definitions for System Color Manager actions.
+-    Copyright (c) 2010 Richard Hughes <richard@hughsie.com>
+-  -->
+-
+-  <vendor>System Color Manager</vendor>
+-  <vendor_url>http://www.freedesktop.org/projects/system-color-manager/</vendor_url>
+-  <icon_name>application-vnd.iccprofile</icon_name>
+-
+-  <action id="org.freedesktop.color-manager.create-device">
+-    <!-- SECURITY:
+-          - Normal users should not have to authenticate to add devices
+-     -->
+-    <_description>Create a color managed device</_description>
+-    <_message>Authentication is required to create a color managed device</_message>
+-    <icon_name>application-vnd.iccprofile</icon_name>
+-    <defaults>
+-      <allow_any>no</allow_any>
+-      <allow_inactive>no</allow_inactive>
+-      <allow_active>yes</allow_active>
+-    </defaults>
+-  </action>
+-
+-  <action id="org.freedesktop.color-manager.create-profile">
+-    <!-- SECURITY:
+-          - Normal users should not have to authenticate to add profiles
+-     -->
+-    <_description>Create a color profile</_description>
+-    <_message>Authentication is required to create a color profile</_message>
+-    <icon_name>application-vnd.iccprofile</icon_name>
+-    <defaults>
+-      <allow_any>no</allow_any>
+-      <allow_inactive>no</allow_inactive>
+-      <allow_active>yes</allow_active>
+-    </defaults>
+-  </action>
+-
+-  <action id="org.freedesktop.color-manager.delete-device">
+-    <!-- SECURITY:
+-          - Normal users should not have to authenticate to delete devices
+-     -->
+-    <_description>Remove a color managed device</_description>
+-    <_message>Authentication is required to remove a color managed device</_message>
+-    <icon_name>application-vnd.iccprofile</icon_name>
+-    <defaults>
+-      <allow_any>no</allow_any>
+-      <allow_inactive>no</allow_inactive>
+-      <allow_active>yes</allow_active>
+-    </defaults>
+-  </action>
+-
+-  <action id="org.freedesktop.color-manager.delete-profile">
+-    <!-- SECURITY:
+-          - Normal users should not have to authenticate to delete profiles
+-     -->
+-    <_description>Remove a color profile</_description>
+-    <_message>Authentication is required to remove a color profile</_message>
+-    <icon_name>application-vnd.iccprofile</icon_name>
+-    <defaults>
+-      <allow_any>no</allow_any>
+-      <allow_inactive>no</allow_inactive>
+-      <allow_active>yes</allow_active>
+-    </defaults>
+-  </action>
+-
+-  <action id="org.freedesktop.color-manager.modify-device">
+-    <!-- SECURITY:
+-          - Normal users should not have to authenticate to modify devices
+-     -->
+-    <_description>Modify color settings for a device</_description>
+-    <_message>Authentication is required to modify the color settings for a device</_message>
+-    <icon_name>application-vnd.iccprofile</icon_name>
+-    <defaults>
+-      <allow_any>no</allow_any>
+-      <allow_inactive>no</allow_inactive>
+-      <allow_active>yes</allow_active>
+-    </defaults>
+-  </action>
+-
+-  <action id="org.freedesktop.color-manager.modify-profile">
+-    <!-- SECURITY:
+-          - Normal users should not have to authenticate to modify profiles
+-     -->
+-    <_description>Modify a color profile</_description>
+-    <_message>Authentication is required to modify a color profile</_message>
+-    <icon_name>application-vnd.iccprofile</icon_name>
+-    <defaults>
+-      <allow_any>no</allow_any>
+-      <allow_inactive>no</allow_inactive>
+-      <allow_active>yes</allow_active>
+-    </defaults>
+-  </action>
+-
+-  <action id="org.freedesktop.color-manager.install-system-wide">
+-    <!-- SECURITY:
+-          - Normal users require admin authentication to install files system
+-            wide to apply color profiles for sessions that have not explicitly
+-            chosen profiles to apply.
+-          - This should not be set to 'yes' as unprivileged users could then
+-            set a profile set to all-white or all-black and thus make the
+-            other sessions unusable.
+-     -->
+-    <_description>Install system color profiles</_description>
+-    <_message>Authentication is required to install the color profile for all users</_message>
+-    <icon_name>application-vnd.iccprofile</icon_name>
+-    <defaults>
+-      <allow_any>no</allow_any>
+-      <allow_inactive>no</allow_inactive>
+-      <allow_active>auth_admin_keep</allow_active>
+-    </defaults>
+-  </action>
+-
+-  <action id="org.freedesktop.color-manager.device-inhibit">
+-    <!-- SECURITY:
+-          - Normal users should not have to authenticate to profile
+-            devices.
+-     -->
+-    <_description>Inhibit color profile selection</_description>
+-    <_message>Authentication is required to disable profile matching for a device</_message>
+-    <icon_name>application-vnd.iccprofile</icon_name>
+-    <defaults>
+-      <allow_any>no</allow_any>
+-      <allow_inactive>no</allow_inactive>
+-      <allow_active>yes</allow_active>
+-    </defaults>
+-  </action>
+-
+-  <action id="org.freedesktop.color-manager.sensor-lock">
+-    <!-- SECURITY:
+-          - Normal users should not have to authenticate to use the
+-            colorimeter device.
+-     -->
+-    <_description>Use color sensor</_description>
+-    <_message>Authentication is required to use the color sensor</_message>
+-    <icon_name>application-vnd.iccprofile</icon_name>
+-    <defaults>
+-      <allow_any>no</allow_any>
+-      <allow_inactive>no</allow_inactive>
+-      <allow_active>yes</allow_active>
+-    </defaults>
+-  </action>
+-
+-</policyconfig>
+-
+diff --git a/policy/org.freedesktop.color.policy.in.in b/policy/org.freedesktop.color.policy.in.in
+new file mode 100644
+index 0000000..4570f8f
+--- /dev/null
++++ b/policy/org.freedesktop.color.policy.in.in
+@@ -0,0 +1,159 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<!DOCTYPE policyconfig PUBLIC
++ "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
++ "http://www.freedesktop.org/standards/PolicyKit/1.0/policyconfig.dtd">
++<policyconfig>
++
++  <!--
++    Policy definitions for System Color Manager actions.
++    Copyright (c) 2010 Richard Hughes <richard@hughsie.com>
++  -->
++
++  <vendor>System Color Manager</vendor>
++  <vendor_url>http://www.freedesktop.org/projects/system-color-manager/</vendor_url>
++  <icon_name>application-vnd.iccprofile</icon_name>
++
++  <action id="org.freedesktop.color-manager.create-device">
++    <!-- SECURITY:
++          - Normal users should not have to authenticate to add devices
++     -->
++    <_description>Create a color managed device</_description>
++    <_message>Authentication is required to create a color managed device</_message>
++    <icon_name>application-vnd.iccprofile</icon_name>
++    <defaults>
++      <allow_any>no</allow_any>
++      <allow_inactive>no</allow_inactive>
++      <allow_active>yes</allow_active>
++    </defaults>
++    <@ANNOTATE_OWNER@/>
++  </action>
++
++  <action id="org.freedesktop.color-manager.create-profile">
++    <!-- SECURITY:
++          - Normal users should not have to authenticate to add profiles
++     -->
++    <_description>Create a color profile</_description>
++    <_message>Authentication is required to create a color profile</_message>
++    <icon_name>application-vnd.iccprofile</icon_name>
++    <defaults>
++      <allow_any>no</allow_any>
++      <allow_inactive>no</allow_inactive>
++      <allow_active>yes</allow_active>
++    </defaults>
++    <@ANNOTATE_OWNER@/>
++  </action>
++
++  <action id="org.freedesktop.color-manager.delete-device">
++    <!-- SECURITY:
++          - Normal users should not have to authenticate to delete devices
++     -->
++    <_description>Remove a color managed device</_description>
++    <_message>Authentication is required to remove a color managed device</_message>
++    <icon_name>application-vnd.iccprofile</icon_name>
++    <defaults>
++      <allow_any>no</allow_any>
++      <allow_inactive>no</allow_inactive>
++      <allow_active>yes</allow_active>
++    </defaults>
++    <@ANNOTATE_OWNER@/>
++  </action>
++
++  <action id="org.freedesktop.color-manager.delete-profile">
++    <!-- SECURITY:
++          - Normal users should not have to authenticate to delete profiles
++     -->
++    <_description>Remove a color profile</_description>
++    <_message>Authentication is required to remove a color profile</_message>
++    <icon_name>application-vnd.iccprofile</icon_name>
++    <defaults>
++      <allow_any>no</allow_any>
++      <allow_inactive>no</allow_inactive>
++      <allow_active>yes</allow_active>
++    </defaults>
++    <@ANNOTATE_OWNER@/>
++  </action>
++
++  <action id="org.freedesktop.color-manager.modify-device">
++    <!-- SECURITY:
++          - Normal users should not have to authenticate to modify devices
++     -->
++    <_description>Modify color settings for a device</_description>
++    <_message>Authentication is required to modify the color settings for a device</_message>
++    <icon_name>application-vnd.iccprofile</icon_name>
++    <defaults>
++      <allow_any>no</allow_any>
++      <allow_inactive>no</allow_inactive>
++      <allow_active>yes</allow_active>
++    </defaults>
++    <@ANNOTATE_OWNER@/>
++  </action>
++
++  <action id="org.freedesktop.color-manager.modify-profile">
++    <!-- SECURITY:
++          - Normal users should not have to authenticate to modify profiles
++     -->
++    <_description>Modify a color profile</_description>
++    <_message>Authentication is required to modify a color profile</_message>
++    <icon_name>application-vnd.iccprofile</icon_name>
++    <defaults>
++      <allow_any>no</allow_any>
++      <allow_inactive>no</allow_inactive>
++      <allow_active>yes</allow_active>
++    </defaults>
++    <@ANNOTATE_OWNER@/>
++  </action>
++
++  <action id="org.freedesktop.color-manager.install-system-wide">
++    <!-- SECURITY:
++          - Normal users require admin authentication to install files system
++            wide to apply color profiles for sessions that have not explicitly
++            chosen profiles to apply.
++          - This should not be set to 'yes' as unprivileged users could then
++            set a profile set to all-white or all-black and thus make the
++            other sessions unusable.
++     -->
++    <_description>Install system color profiles</_description>
++    <_message>Authentication is required to install the color profile for all users</_message>
++    <icon_name>application-vnd.iccprofile</icon_name>
++    <defaults>
++      <allow_any>no</allow_any>
++      <allow_inactive>no</allow_inactive>
++      <allow_active>auth_admin_keep</allow_active>
++    </defaults>
++    <@ANNOTATE_OWNER@/>
++  </action>
++
++  <action id="org.freedesktop.color-manager.device-inhibit">
++    <!-- SECURITY:
++          - Normal users should not have to authenticate to profile
++            devices.
++     -->
++    <_description>Inhibit color profile selection</_description>
++    <_message>Authentication is required to disable profile matching for a device</_message>
++    <icon_name>application-vnd.iccprofile</icon_name>
++    <defaults>
++      <allow_any>no</allow_any>
++      <allow_inactive>no</allow_inactive>
++      <allow_active>yes</allow_active>
++    </defaults>
++    <@ANNOTATE_OWNER@/>
++  </action>
++
++  <action id="org.freedesktop.color-manager.sensor-lock">
++    <!-- SECURITY:
++          - Normal users should not have to authenticate to use the
++            colorimeter device.
++     -->
++    <_description>Use color sensor</_description>
++    <_message>Authentication is required to use the color sensor</_message>
++    <icon_name>application-vnd.iccprofile</icon_name>
++    <defaults>
++      <allow_any>no</allow_any>
++      <allow_inactive>no</allow_inactive>
++      <allow_active>yes</allow_active>
++    </defaults>
++    <@ANNOTATE_OWNER@/>
++  </action>
++
++</policyconfig>
++

@@ -1,3 +1,24 @@
+colord (0.1.15-1) UNRELEASED; urgency=low
+
+  * New upstream release.
+    + Fixes sqlite injection vulnerability, preventing malicious applications
+      from corrupting colord's database (Closes: #650021).
+  * debian/patches/01_use_polkit_owner_annotation.patch:
+    + Cherry-pick from upstream, enabling use of the PolicyKit "owner"
+      annotation.
+  * debian/control:
+    + Add versioned Build-Depends on libpolkit-gobject-1-dev to ensure
+      configure detects a new enough PolicyKit to enable the "owner"
+      annotation.
+    + Add versioned Depends on policykit-1 to colord to ensure a new enough
+      PolicyKit to understand the "owner" annotation at runtime.
+  * debian/rules:
+    + Re-enable PolicyKit support now that the "owner" annotation is supported.
+  * debian/patches/06_use_dbus_security_for_permissions.diff:
+    + Drop; PolicyKit has been fixed.
+
+ -- Christopher James Halse Rogers <chris@cooperteam.net>  Wed, 14 Dec 2011 15:15:38 +1100
+
 colord (0.1.13-1) unstable; urgency=low
 
   [ Christopher James Halse Rogers ]

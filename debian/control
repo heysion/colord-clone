@@ -11,7 +11,7 @@ Build-Depends:
  libsqlite3-dev,
  docbook-utils,
  libusb-1.0-0-dev,
- libpolkit-gobject-1-dev,
+ libpolkit-gobject-1-dev (>= 0.103),
  libsane-dev,
  valac,
  gobject-introspection,
@@ -67,6 +67,7 @@ Depends:
  ${misc:Depends},
  adduser,
  acl,
+ policykit-1 (>= 0.103),
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: foreign
 Description: system service to manage device colour profiles -- system daemon

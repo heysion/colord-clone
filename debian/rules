@@ -22,7 +22,7 @@ override_dh_auto_configure:
 	# 
 	# Instead we use dbus policy to restrict access to the daemon.
 	dh_auto_configure -- --libexecdir=/usr/lib/$(DEB_HOST_MULTIARCH)/colord \
-		--enable-gudev --disable-polkit --enable-sane --disable-static \
+		--enable-gudev --enable-sane --disable-static \
 		--disable-volume-search --with-daemon-user=colord
 
 override_dh_auto_test:

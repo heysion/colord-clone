@@ -1,1 +1,1 @@
-06_use_dbus_security_for_permissions.diff
+01_use_polkit_owner_annotation.patch
