@@ -16,6 +16,7 @@ colord (0.1.15-1) UNRELEASED; urgency=low
     + Re-enable PolicyKit support now that the "owner" annotation is supported.
   * debian/patches/06_use_dbus_security_for_permissions.diff:
     + Drop; PolicyKit has been fixed.
+  * debian/libcolord1.symbols: Add new symbols in 0.1.14 and 0.1.15
 
  -- Christopher James Halse Rogers <raof@ubuntu.com>  Wed, 14 Dec 2011 15:25:41 +1100
 

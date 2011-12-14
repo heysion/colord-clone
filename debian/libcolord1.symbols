@@ -134,6 +134,15 @@ libcolord.so.1 libcolord1 #MINVER#
  cd_device_set_serial_sync@Base 0.1.10
  cd_device_set_vendor_sync@Base 0.1.10
  cd_device_to_string@Base 0.1.10
+ cd_mat33_clear@Base 0.1.15
+ cd_mat33_copy@Base 0.1.15
+ cd_mat33_get_data@Base 0.1.15
+ cd_mat33_matrix_multiply@Base 0.1.15
+ cd_mat33_reciprocal@Base 0.1.15
+ cd_mat33_scalar_multiply@Base 0.1.15
+ cd_mat33_set_identity@Base 0.1.15
+ cd_mat33_to_string@Base 0.1.15
+ cd_mat33_vector_multiply@Base 0.1.15
  cd_object_scope_from_string@Base 0.1.10
  cd_object_scope_to_string@Base 0.1.10
  cd_profile_connect@Base 0.1.10
@@ -214,3 +223,12 @@ libcolord.so.1 libcolord1 #MINVER#
  cd_sensor_unlock_sync@Base 0.1.10
  cd_standard_space_from_string@Base 0.1.10
  cd_standard_space_to_string@Base 0.1.10
+ cd_vec3_add@Base 0.1.15
+ cd_vec3_clear@Base 0.1.15
+ cd_vec3_copy@Base 0.1.15
+ cd_vec3_get_data@Base 0.1.15
+ cd_vec3_init@Base 0.1.15
+ cd_vec3_scalar_multiply@Base 0.1.15
+ cd_vec3_squared_error@Base 0.1.15
+ cd_vec3_subtract@Base 0.1.15
+ cd_vec3_to_string@Base 0.1.15
