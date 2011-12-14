@@ -1,4 +1,4 @@
-colord (0.1.15-1) UNRELEASED; urgency=low
+colord (0.1.15-1) unstable; urgency=low
 
   * New upstream release.
     + Fixes sqlite injection vulnerability, preventing malicious applications
