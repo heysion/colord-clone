@@ -17,7 +17,7 @@ colord (0.1.15-1) UNRELEASED; urgency=low
   * debian/patches/06_use_dbus_security_for_permissions.diff:
     + Drop; PolicyKit has been fixed.
 
- -- Christopher James Halse Rogers <chris@cooperteam.net>  Wed, 14 Dec 2011 15:15:38 +1100
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Wed, 14 Dec 2011 15:25:41 +1100
 
 colord (0.1.13-1) unstable; urgency=low
 
