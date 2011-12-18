@@ -11,19 +11,24 @@
 
 DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
 
+ifeq ($(DEB_HOST_ARCH_OS),linux)
+	confflags = --enable-gudev --enable-sane
+else
+	confflags = --disable-gudev --disable-sane
+endif
+
 override_dh_install:
 	# The .la file(s) are entirely useless; kill them with fire.
 	find debian/tmp -name '*.la' -delete
 	dh_install --fail-missing
 
 override_dh_auto_configure:
-	# Pass --disable-polkit because PolicyKit doesn't (currently) allow
-	# checking for authorisation as a non-root user.
-	# 
-	# Instead we use dbus policy to restrict access to the daemon.
-	dh_auto_configure -- --libexecdir=/usr/lib/$(DEB_HOST_MULTIARCH)/colord \
-		--enable-gudev --enable-sane --disable-static \
-		--disable-volume-search --with-daemon-user=colord
+	dh_auto_configure -- \
+		--libexecdir=/usr/lib/$(DEB_HOST_MULTIARCH)/colord \
+		--disable-static \
+		--disable-volume-search \
+		--with-daemon-user=colord \
+		$(confflags)
 
 override_dh_auto_test:
 	@echo "TODO: Test suite disabled - requires running dbus daemon, currently fails"

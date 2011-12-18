@@ -2,8 +2,14 @@ colord (0.1.15-2) UNRELEASED; urgency=low
 
   * debian/control:
     + Move gir package to Section: introspection
+  * debian/control:
+  * debian/rules:
+  * debian/colord.install:
+    + Fix the kfreebsd build (Closes: 652427).  Thanks, Michael Biebl!
+      - Restrict sane and gudev to linux-any.
+      - Use libusb2-dev on kfreebsd-any.
 
- -- Christopher James Halse Rogers <raof@ubuntu.com>  Wed, 14 Dec 2011 22:01:40 +1100
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Mon, 19 Dec 2011 09:30:34 +1100
 
 colord (0.1.15-1) unstable; urgency=low
 
