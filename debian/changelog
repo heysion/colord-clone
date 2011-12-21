@@ -1,3 +1,12 @@
+colord (0.1.15-3) unstable; urgency=low
+
+  * debian/rules:
+    + Pass --disable-examples to configure; we don't ship them, and they add
+      an unnecessary Build-Dependancy on libdbus-1-dev.  Really fixes the
+      kFreeBSD build. (Closes: 652427)
+
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Thu, 22 Dec 2011 10:15:18 +1100
+
 colord (0.1.15-2) unstable; urgency=low
 
   * debian/control:
