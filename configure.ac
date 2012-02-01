@@ -3,7 +3,7 @@ AC_PREREQ(2.63)
 
 m4_define([cd_major_version], [0])
 m4_define([cd_minor_version], [1])
-m4_define([cd_micro_version], [15])
+m4_define([cd_micro_version], [16])
 m4_define([cd_version],
           [cd_major_version.cd_minor_version.cd_micro_version])
 
@@ -37,7 +37,7 @@ AC_SUBST(CD_MICRO_VERSION)
 # REVISION	If the API and ABI remains the same, but bugs are fixed.
 # AGE		Don't use.
 LT_CURRENT=1
-LT_REVISION=7
+LT_REVISION=8
 LT_AGE=0
 AC_SUBST(LT_CURRENT)
 AC_SUBST(LT_REVISION)
@@ -150,16 +150,6 @@ if test x$enable_gudev != xno; then
 fi
 AM_CONDITIONAL(HAVE_GUDEV, test x$enable_gudev = xyes)
 
-dnl **** Check for libusb1 ****
-PKG_CHECK_MODULES(USB, libusb-1.0 >= 1.0.0)
-AC_CHECK_LIB(usb-1.0,
-	     libusb_strerror,
-	     has_new_libusb=yes,
-	     has_new_libusb=no)
-if test x$has_new_libusb = xyes; then
-	AC_DEFINE(HAVE_NEW_USB,1,[Got new libusb])
-fi
-
 dnl ---------------------------------------------------------------------------
 dnl - Is docbook2man available?
 dnl ---------------------------------------------------------------------------
@@ -176,9 +166,20 @@ AC_ARG_ENABLE(polkit, AS_HELP_STRING([--enable-polkit],[enable PolicyKit]),
 	      enable_polkit=$enableval,enable_polkit=yes)
 AM_CONDITIONAL(CD_BUILD_POLKIT, test x$enable_polkit = xyes)
 if test x$enable_polkit = xyes; then
-	PKG_CHECK_MODULES(POLKIT, polkit-gobject-1 >= 0.97)
+	PKG_CHECK_MODULES(POLKIT, polkit-gobject-1 >= 0.103)
 	AC_DEFINE(USE_POLKIT, 1, [if we should use PolicyKit])
 fi
+
+dnl ---------------------------------------------------------------------------
+dnl - Select whether and where to install systemd system service files
+dnl ---------------------------------------------------------------------------
+
+AC_ARG_WITH([systemdsystemunitdir],
+            AS_HELP_STRING([--with-systemdsystemunitdir=DIR], [Directory for systemd service files]),
+            [],
+            [with_systemdsystemunitdir=$($PKG_CONFIG --variable=systemdsystemunitdir systemd)])
+AC_SUBST([systemdsystemunitdir], [$with_systemdsystemunitdir])
+AM_CONDITIONAL(HAVE_SYSTEMD, [test -n "$with_systemdsystemunitdir"])
 
 dnl ---------------------------------------------------------------------------
 dnl - Build DBus examples
