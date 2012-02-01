@@ -52,9 +52,6 @@
 /* Got new lcms2 */
 #undef HAVE_NEW_LCMS
 
-/* Got new libusb */
-#undef HAVE_NEW_USB
-
 /* Use SANE support for detecting scanners */
 #undef HAVE_SANE
 

@@ -34,6 +34,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
+@HAVE_SYSTEMD_TRUE@am__append_1 = $(systemdservicemain_in_files)
 subdir = data
 DIST_COMMON = $(dist_dbus_DATA) $(dist_profile_DATA) \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
@@ -90,9 +91,11 @@ am__nobase_list = $(am__nobase_strip_setup); \
 am__base_list = \
   sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
   sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__installdirs = "$(DESTDIR)$(dbusdir)" "$(DESTDIR)$(profiledir)" \
-	"$(DESTDIR)$(servicemaindir)"
-DATA = $(dist_dbus_DATA) $(dist_profile_DATA) $(servicemain_DATA)
+am__installdirs = "$(DESTDIR)$(dbusservicemaindir)" \
+	"$(DESTDIR)$(dbusdir)" "$(DESTDIR)$(profiledir)" \
+	"$(DESTDIR)$(systemdservicemaindir)"
+DATA = $(dbusservicemain_DATA) $(dist_dbus_DATA) $(dist_profile_DATA) \
+	$(systemdservicemain_DATA)
 RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
   distclean-recursive maintainer-clean-recursive
 AM_RECURSIVE_TARGETS = $(RECURSIVE_TARGETS:-recursive=) \
@@ -252,8 +255,6 @@ SHELL = @SHELL@
 SQLITE_CFLAGS = @SQLITE_CFLAGS@
 SQLITE_LIBS = @SQLITE_LIBS@
 STRIP = @STRIP@
-USB_CFLAGS = @USB_CFLAGS@
-USB_LIBS = @USB_LIBS@
 USE_NLS = @USE_NLS@
 VAPIGEN = @VAPIGEN@
 VERSION = @VERSION@
@@ -313,6 +314,7 @@ sharedstatedir = @sharedstatedir@
 slashlibdir = @slashlibdir@
 srcdir = @srcdir@
 sysconfdir = @sysconfdir@
+systemdsystemunitdir = @systemdsystemunitdir@
 target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
@@ -324,16 +326,18 @@ dbusdir = $(sysconfdir)/dbus-1/system.d
 dist_dbus_DATA = org.freedesktop.ColorManager.conf
 profiledir = $(datadir)/color/icc/colord
 dist_profile_DATA = x11-colors.icc crayons.icc
-servicemaindir = $(datadir)/dbus-1/system-services
-servicemain_in_files = org.freedesktop.ColorManager.service.in
-servicemain_DATA = $(servicemain_in_files:.service.in=.service)
-EXTRA_DIST = \
-	$(servicemain_in_files)				\
-	org.freedesktop.ColorManager.conf.in
-
+dbusservicemaindir = $(datadir)/dbus-1/system-services
+dbusservicemain_in_files = org.freedesktop.ColorManager.service.in
+dbusservicemain_DATA = $(dbusservicemain_in_files:.service.in=.service)
+@HAVE_SYSTEMD_TRUE@systemdservicemaindir = $(systemdsystemunitdir)
+@HAVE_SYSTEMD_TRUE@systemdservicemain_in_files = colord.service.in
+@HAVE_SYSTEMD_TRUE@systemdservicemain_DATA = $(systemdservicemain_in_files:.service.in=.service)
+EXTRA_DIST = $(dbusservicemain_in_files) \
+	org.freedesktop.ColorManager.conf.in $(am__append_1)
 DISTCLEANFILES = \
-	org.freedesktop.ColorManager.service		\
-	$(dist_profile_DATA)
+	$(dbusservicemain_DATA)				\
+	$(dist_profile_DATA)				\
+	$(systemdservicemain_DATA)
 
 all: all-recursive
 
@@ -376,6 +380,26 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
+install-dbusservicemainDATA: $(dbusservicemain_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(dbusservicemaindir)" || $(MKDIR_P) "$(DESTDIR)$(dbusservicemaindir)"
+	@list='$(dbusservicemain_DATA)'; test -n "$(dbusservicemaindir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(dbusservicemaindir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(dbusservicemaindir)" || exit $$?; \
+	done
+
+uninstall-dbusservicemainDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dbusservicemain_DATA)'; test -n "$(dbusservicemaindir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	test -n "$$files" || exit 0; \
+	echo " ( cd '$(DESTDIR)$(dbusservicemaindir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(dbusservicemaindir)" && rm -f $$files
 install-dist_dbusDATA: $(dist_dbus_DATA)
 	@$(NORMAL_INSTALL)
 	test -z "$(dbusdir)" || $(MKDIR_P) "$(DESTDIR)$(dbusdir)"
@@ -416,26 +440,26 @@ uninstall-dist_profileDATA:
 	test -n "$$files" || exit 0; \
 	echo " ( cd '$(DESTDIR)$(profiledir)' && rm -f" $$files ")"; \
 	cd "$(DESTDIR)$(profiledir)" && rm -f $$files
-install-servicemainDATA: $(servicemain_DATA)
+install-systemdservicemainDATA: $(systemdservicemain_DATA)
 	@$(NORMAL_INSTALL)
-	test -z "$(servicemaindir)" || $(MKDIR_P) "$(DESTDIR)$(servicemaindir)"
-	@list='$(servicemain_DATA)'; test -n "$(servicemaindir)" || list=; \
+	test -z "$(systemdservicemaindir)" || $(MKDIR_P) "$(DESTDIR)$(systemdservicemaindir)"
+	@list='$(systemdservicemain_DATA)'; test -n "$(systemdservicemaindir)" || list=; \
 	for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  echo "$$d$$p"; \
 	done | $(am__base_list) | \
 	while read files; do \
-	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(servicemaindir)'"; \
-	  $(INSTALL_DATA) $$files "$(DESTDIR)$(servicemaindir)" || exit $$?; \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(systemdservicemaindir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(systemdservicemaindir)" || exit $$?; \
 	done
 
-uninstall-servicemainDATA:
+uninstall-systemdservicemainDATA:
 	@$(NORMAL_UNINSTALL)
-	@list='$(servicemain_DATA)'; test -n "$(servicemaindir)" || list=; \
+	@list='$(systemdservicemain_DATA)'; test -n "$(systemdservicemaindir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
 	test -n "$$files" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(servicemaindir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(servicemaindir)" && rm -f $$files
+	echo " ( cd '$(DESTDIR)$(systemdservicemaindir)' && rm -f" $$files ")"; \
+	cd "$(DESTDIR)$(systemdservicemaindir)" && rm -f $$files
 
 # This directory's subdirectories are mostly independent; you can cd
 # into them and run `make' without going through this Makefile.
@@ -635,7 +659,7 @@ check: check-recursive
 all-am: Makefile $(DATA)
 installdirs: installdirs-recursive
 installdirs-am:
-	for dir in "$(DESTDIR)$(dbusdir)" "$(DESTDIR)$(profiledir)" "$(DESTDIR)$(servicemaindir)"; do \
+	for dir in "$(DESTDIR)$(dbusservicemaindir)" "$(DESTDIR)$(dbusdir)" "$(DESTDIR)$(profiledir)" "$(DESTDIR)$(systemdservicemaindir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-recursive
@@ -684,8 +708,8 @@ info: info-recursive
 
 info-am:
 
-install-data-am: install-dist_dbusDATA install-dist_profileDATA \
-	install-servicemainDATA
+install-data-am: install-dbusservicemainDATA install-dist_dbusDATA \
+	install-dist_profileDATA install-systemdservicemainDATA
 
 install-dvi: install-dvi-recursive
 
@@ -729,8 +753,8 @@ ps: ps-recursive
 
 ps-am:
 
-uninstall-am: uninstall-dist_dbusDATA uninstall-dist_profileDATA \
-	uninstall-servicemainDATA
+uninstall-am: uninstall-dbusservicemainDATA uninstall-dist_dbusDATA \
+	uninstall-dist_profileDATA uninstall-systemdservicemainDATA
 
 .MAKE: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) ctags-recursive \
 	install-am install-strip tags-recursive
@@ -740,21 +764,25 @@ uninstall-am: uninstall-dist_dbusDATA uninstall-dist_profileDATA \
 	ctags ctags-recursive distclean distclean-generic \
 	distclean-libtool distclean-tags distdir dvi dvi-am html \
 	html-am info info-am install install-am install-data \
-	install-data-am install-dist_dbusDATA install-dist_profileDATA \
-	install-dvi install-dvi-am install-exec install-exec-am \
-	install-html install-html-am install-info install-info-am \
-	install-man install-pdf install-pdf-am install-ps \
-	install-ps-am install-servicemainDATA install-strip \
-	installcheck installcheck-am installdirs installdirs-am \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags tags-recursive uninstall uninstall-am \
+	install-data-am install-dbusservicemainDATA \
+	install-dist_dbusDATA install-dist_profileDATA install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-info install-info-am install-man \
+	install-pdf install-pdf-am install-ps install-ps-am \
+	install-strip install-systemdservicemainDATA installcheck \
+	installcheck-am installdirs installdirs-am maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-generic \
+	mostlyclean-libtool pdf pdf-am ps ps-am tags tags-recursive \
+	uninstall uninstall-am uninstall-dbusservicemainDATA \
 	uninstall-dist_dbusDATA uninstall-dist_profileDATA \
-	uninstall-servicemainDATA
+	uninstall-systemdservicemainDATA
 
-$(servicemain_DATA): $(servicemain_in_files) Makefile
+$(dbusservicemain_DATA): $(dbusservicemain_in_files) Makefile
 	@sed -e "s|\@servicedir\@|$(libexecdir)|" $< | \
 	sed -e "s|\@daemon_user\@|$(daemon_user)|" > $@
+@HAVE_SYSTEMD_TRUE@$(systemdservicemain_DATA): $(systemdservicemain_in_files) Makefile
+@HAVE_SYSTEMD_TRUE@	@sed -e "s|\@servicedir\@|$(libexecdir)|" $< | \
+@HAVE_SYSTEMD_TRUE@	sed -e "s|\@daemon_user\@|$(daemon_user)|" > $@
 
 x11-colors.icc:
 	$(top_builddir)/client/cd-create-profile --output $@ --named-color-palette ./x11-colors.csv --nc-prefix="X11" --named-color-type srgb -d "X11 Colors" -c "No copyright" -n "Richard Hughes"

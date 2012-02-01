@@ -613,6 +613,8 @@ namespace Cd {
 		COLORIMTRE_HCFR,
 		I1_DISPLAY3,
 		COLORHUG,
+		SPYDER2,
+		SPYDER3,
 		LAST
 	}
 	[CCode (cheader_filename = "colord.h", cprefix = "CD_SENSOR_STATE_")]
@@ -669,12 +671,30 @@ namespace Cd {
 	public const int MICRO_VERSION;
 	[CCode (cheader_filename = "colord.h", cname = "CD_MINOR_VERSION")]
 	public const int MINOR_VERSION;
+	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_ACCURACY_DE76_AVG")]
+	public const string PROFILE_METADATA_ACCURACY_DE76_AVG;
+	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_ACCURACY_DE76_MAX")]
+	public const string PROFILE_METADATA_ACCURACY_DE76_MAX;
+	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_ACCURACY_DE76_RMS")]
+	public const string PROFILE_METADATA_ACCURACY_DE76_RMS;
 	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_CMF_BINARY")]
 	public const string PROFILE_METADATA_CMF_BINARY;
 	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_CMF_PRODUCT")]
 	public const string PROFILE_METADATA_CMF_PRODUCT;
 	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_CMF_VERSION")]
 	public const string PROFILE_METADATA_CMF_VERSION;
+	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_CONNECTION_TYPE")]
+	public const string PROFILE_METADATA_CONNECTION_TYPE;
+	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_CONNECTION_TYPE_DISPLAYPORT")]
+	public const string PROFILE_METADATA_CONNECTION_TYPE_DISPLAYPORT;
+	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_CONNECTION_TYPE_DVI")]
+	public const string PROFILE_METADATA_CONNECTION_TYPE_DVI;
+	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_CONNECTION_TYPE_HDMI")]
+	public const string PROFILE_METADATA_CONNECTION_TYPE_HDMI;
+	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_CONNECTION_TYPE_INTERNAL")]
+	public const string PROFILE_METADATA_CONNECTION_TYPE_INTERNAL;
+	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_CONNECTION_TYPE_VGA")]
+	public const string PROFILE_METADATA_CONNECTION_TYPE_VGA;
 	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_DATA_SOURCE")]
 	public const string PROFILE_METADATA_DATA_SOURCE;
 	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_DATA_SOURCE_CALIB")]
@@ -697,10 +717,20 @@ namespace Cd {
 	public const string PROFILE_METADATA_EDID_VENDOR;
 	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_FILE_CHECKSUM")]
 	public const string PROFILE_METADATA_FILE_CHECKSUM;
+	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_MAPPING_DEVICE_ID")]
+	public const string PROFILE_METADATA_MAPPING_DEVICE_ID;
 	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_MAPPING_FORMAT")]
 	public const string PROFILE_METADATA_MAPPING_FORMAT;
 	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_MAPPING_QUALIFIER")]
 	public const string PROFILE_METADATA_MAPPING_QUALIFIER;
+	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_MEASUREMENT_DEVICE")]
+	public const string PROFILE_METADATA_MEASUREMENT_DEVICE;
+	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_SCREEN_SURFACE")]
+	public const string PROFILE_METADATA_SCREEN_SURFACE;
+	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_SCREEN_SURFACE_GLOSSY")]
+	public const string PROFILE_METADATA_SCREEN_SURFACE_GLOSSY;
+	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_SCREEN_SURFACE_MATTE")]
+	public const string PROFILE_METADATA_SCREEN_SURFACE_MATTE;
 	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_STANDARD_SPACE")]
 	public const string PROFILE_METADATA_STANDARD_SPACE;
 	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_PROPERTY_COLORSPACE")]
