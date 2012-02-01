@@ -1,6 +1,210 @@
+commit 90034022879a64fd90e2bc9e7d82177a90fef740
+Author: Richard Hughes <richard@hughsie.com>
+Date:   2012-01-17
+
+    Release colord 0.1.16
+
+M	NEWS
+M	configure.ac
+M	doc/website/download.html
+
+commit b144a92d611ca0a7824d9c85eb1da43e01a7c8b5
+Author: Benedikt Morbach <benedikt.morbach@googlemail.com>
+Date:	2012-01-12
+
+    Install a systemd service file if systemd is used
+
+    This makes dbus defer starting colord to systemd instead of doing
+    it itself
+    and thus puts the daemon under proper systemd supervision.
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	Makefile.am
+M	configure.ac
+M	contrib/colord.spec.in
+M	data/Makefile.am
+A	data/colord.service.in
+M	data/org.freedesktop.ColorManager.service.in
+
+commit fe07880032d6c74d93495e57347709a856e7fa9d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-01-16
+
+    Add a device-inhibit command to the colormgr client
+
+    To use this, you just have to do:
+
+    $ colormgr get-devices
+
+    ... to get the device path, and then use the new command to inhibit
+    the profile
+    for 10 seconds:
+
+    $ colormgr device-inhibit
+    /org/freedesktop/ColorManager/devices/xrandr_Lenovo 10
+
+    Using a timeout of 0 will mean 'forever', and the user will have to
+    use ctrl-c
+    to quit the colormgr utility.
+
+M	client/cd-util.c
+
+commit 6e7b251867ba3b74751b53f1ba563e98a6e3df1a
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-01-13
+
+    Add profile metadata MAPPING_device_id for automatic profile mapping
+
+    This allows us to automatically soft-add a profile for a given device.
+    This would let us profile a device, and by setting the
+    MAPPING_device_id
+    metadata key to the device_id we could share the profile with other
+    people with
+    the same hardware.
+
+    If this profile was then installed elsewhere, then it would
+    automatically be
+    mapped to the device if present, just like it would be done from a
+    PPD file.
+    This of course can be overriden using the mapping database, which
+    uses hard
+    mappings.
+
+M	doc/metadata-spec.txt
+M	libcolord/cd-enum.h
+M	src/cd-main.c
+
+commit 4c3b664dcb8f3bf867bc08dfd1854754c464108c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-01-13
+
+    trivial: Add cd_profile_get_metadata_item() so we can get a single
+    hash entry
+
+M	src/cd-profile.c
+M	src/cd-profile.h
+
+commit 9cf408e5cfbe477c8b1375e4680e414c52b0bdbe
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-01-10
+
+    Add some profile metadata keys discussed with Florian Höch
+
+M	doc/metadata-spec.txt
+M	libcolord/cd-enum.h
+
+commit 02131412449250bd68760a53021f0ff06fc1a720
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-12-16
+
+    Set the colorimeter sensor group so the dameon can access the sensor
+
+M	rules/69-cd-sensors.rules.in
+
+commit 553d9a07cf18656a2ba4c6efcf51e486f55f2639
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-12-12
+
+    Split the spyder hardware into different types
+
+    The designers wanted different attach images in the client tools.
+
+M	libcolord/cd-enum.c
+M	libcolord/cd-enum.h
+M	rules/69-cd-sensors.rules.in
+
+commit 727d593aca2752d0a276e14d5fd52761f43dd827
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-12-07
+
+    trivial: fix up the website now we are using fd.o for bugs
+
+M	doc/website/bugs.html
+
+commit 6e1854455f39e288303741896582bedc73b55e37
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-12-07
+
+    Use GUsb for the Huey sensor
+
+    Also disable the Colormunki native driver, it doesn't actually
+    work yet.
+
+M	configure.ac
+M	contrib/colord.spec.in
+M	src/Makefile.am
+M	src/sensors/Makefile.am
+M	src/sensors/cd-self-test.c
+M	src/sensors/cd-sensor-huey.c
+M	src/sensors/cd-sensor-munki.c
+D	src/sensors/cd-usb.c
+D	src/sensors/cd-usb.h
+
+commit 16e8c8c41e8f09d0b91407722bc2567e8b30fc6b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-12-07
+
+    Support 2nd generation Huey hardware
+
+    These are also built into the Thinkpad w700 laptop too.
+
+M	rules/69-cd-sensors.rules.in
+M	src/sensors/cd-sensor-huey-private.h
+M	src/sensors/cd-sensor-huey.c
+
+commit c7e5a8b0f15cd43e788ea9da145c4265a51b6899
+Author: Vincent Untz <vuntz@gnome.org>
+Date:	2011-12-06
+
+    Add org.freedesktop.policykit.owner annotations to .policy file
+
+    We only add those annotations when the daemon is configured to run as
+    non-root.
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	configure.ac
+M	contrib/colord.spec.in
+M	po/POTFILES.in
+A	po/POTFILES.skip
+M	policy/Makefile.am
+R096	policy/org.freedesktop.color.policy.in
+policy/org.freedesktop.color.policy.in.in
+
+commit 78b6dc7dbf865df6b0d30526293591fe5773029a
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-12-06
+
+    If /usr/share/color appears at runtime, don't rescan the parent dir
+
+    Resolves https://bugs.freedesktop.org/show_bug.cgi?id=43542
+
+M	src/cd-profile-store.c
+
+commit 3ccd51e12c697738f8cf90b495a55f2eb75eeac0
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-28
+
+    Fix a Wformat error when printing a gsize
+
+    Resolves https://bugs.freedesktop.org/show_bug.cgi?id=43284
+
+M	src/sensors/cd-sensor-colorhug-private.c
+
+commit b9a6e03ef8633bb01cb5e4fb30ea449a37ea1d28
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2011-11-26
+
+    trivial: post release version bump
+
+M	RELEASE
+M	configure.ac
+M	doc/website/download.html
+
 commit 72ef4215b714638b8682630f15311b7cb43419dc
 Author: Richard Hughes <richard@hughsie.com>
-Date:   2011-11-26
+Date:	2011-11-26
 
     Release colord 0.1.15
 

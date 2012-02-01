@@ -241,8 +241,6 @@ SHELL = @SHELL@
 SQLITE_CFLAGS = @SQLITE_CFLAGS@
 SQLITE_LIBS = @SQLITE_LIBS@
 STRIP = @STRIP@
-USB_CFLAGS = @USB_CFLAGS@
-USB_LIBS = @USB_LIBS@
 USE_NLS = @USE_NLS@
 VAPIGEN = @VAPIGEN@
 VERSION = @VERSION@
@@ -302,6 +300,7 @@ sharedstatedir = @sharedstatedir@
 slashlibdir = @slashlibdir@
 srcdir = @srcdir@
 sysconfdir = @sysconfdir@
+systemdsystemunitdir = @systemdsystemunitdir@
 target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
@@ -324,7 +323,8 @@ SUBDIRS = \
 
 DISTCHECK_CONFIGURE_FLAGS = \
 	--enable-introspection				\
-	--enable-fd-fallback
+	--enable-fd-fallback				\
+	--with-systemdsystemunitdir=$$dc_install_base/$(systemdsystemunitdir)
 
 EXTRA_DIST = \
 	COPYING						\

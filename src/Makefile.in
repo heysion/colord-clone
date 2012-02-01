@@ -79,8 +79,7 @@ cd_self_test_OBJECTS = $(am_cd_self_test_OBJECTS)
 am__DEPENDENCIES_1 =
 cd_self_test_DEPENDENCIES = $(COLORD_PRIVATE_LIBS) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
@@ -111,7 +110,7 @@ colord_OBJECTS = $(am_colord_OBJECTS)
 colord_DEPENDENCIES = $(COLORD_PRIVATE_LIBS) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1)
 colord_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(colord_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
@@ -333,8 +332,6 @@ SHELL = @SHELL@
 SQLITE_CFLAGS = @SQLITE_CFLAGS@
 SQLITE_LIBS = @SQLITE_LIBS@
 STRIP = @STRIP@
-USB_CFLAGS = @USB_CFLAGS@
-USB_LIBS = @USB_LIBS@
 USE_NLS = @USE_NLS@
 VAPIGEN = @VAPIGEN@
 VERSION = @VERSION@
@@ -394,6 +391,7 @@ sharedstatedir = @sharedstatedir@
 slashlibdir = @slashlibdir@
 srcdir = @srcdir@
 sysconfdir = @sysconfdir@
+systemdsystemunitdir = @systemdsystemunitdir@
 target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
@@ -415,7 +413,6 @@ INCLUDES = \
 	$(GUDEV_CFLAGS)					\
 	$(SANE_CFLAGS)					\
 	$(SQLITE_CFLAGS)				\
-	$(USB_CFLAGS)					\
 	-I$(top_srcdir)/libcolord			\
 	-DG_LOG_DOMAIN=\"Cd\"				\
 	-DLIBEXECDIR=\"$(libexecdir)\"			\
@@ -450,7 +447,6 @@ colord_LDADD = \
 	$(LCMS_LIBS)					\
 	$(GUDEV_LIBS)					\
 	$(SANE_LIBS)					\
-	$(USB_LIBS)					\
 	$(GLIB_LIBS)
 
 colord_CFLAGS = \
@@ -480,7 +476,6 @@ cd_self_test_LDADD = \
 	$(POLKIT_LIBS)					\
 	$(LCMS_LIBS)					\
 	$(SQLITE_LIBS)					\
-	$(USB_LIBS)					\
 	$(GLIB_LIBS)
 
 cd_self_test_CFLAGS = $(WARNINGFLAGS_C)
