@@ -14,7 +14,7 @@ case "$1" in
 
 # create colord user if it isn't already there
         adduser --system --group --home /var/lib/colord colord \
-	    --gecos "colord colour management daemon"
+	    --quiet --gecos "colord colour management daemon"
 
 
 	;;

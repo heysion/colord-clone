@@ -7,6 +7,7 @@ colord (0.1.16-1) unstable; urgency=low
   * debian/colord.postinst:
     - Create /var/lib/colord if necessary; we can not rely on adduser creating
       this directory if the user has previously purged colord.
+    - Quieten needless output from adduser.
 
  -- Christopher James Halse Rogers <raof@ubuntu.com>  Thu, 02 Feb 2012 13:57:16 +1100
 
