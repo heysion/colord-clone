@@ -2,8 +2,13 @@ colord (0.1.16-1) unstable; urgency=low
 
   * New upstream release
     - Drop 01_use_polkit_owner_annotation.patch; included upstream.
+  * debian/colord.postrm:
+    - Remove /var/lib/colord on purge; package is now puiparts clean.
+  * debian/colord.postinst:
+    - Create /var/lib/colord if necessary; we can not rely on adduser creating
+      this directory if the user has previously purged colord.
 
- -- Christopher James Halse Rogers <raof@ubuntu.com>  Thu, 02 Feb 2012 10:31:15 +1100
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Thu, 02 Feb 2012 13:57:16 +1100
 
 colord (0.1.15-3) unstable; urgency=low
 
