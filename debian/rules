@@ -29,6 +29,7 @@ override_dh_auto_configure:
 		--disable-static \
 		--disable-volume-search \
 		--with-daemon-user=colord \
+		--with-systemdsystemunitdir=/lib/systemd/system \
 		$(confflags)
 
 override_dh_auto_test:
