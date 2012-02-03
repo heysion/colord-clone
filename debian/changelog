@@ -1,4 +1,4 @@
-colord (0.1.16-2) UNRELEASED; urgency=low
+colord (0.1.16-2) unstable; urgency=low
 
   * debian/colord.postinst:
     - Only try to change ownership of /var/lib/colord after we've made sure the
