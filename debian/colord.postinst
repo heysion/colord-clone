@@ -8,13 +8,15 @@ case "$1" in
 # create the scanner group if it isn't already there
 	addgroup --quiet --system scanner
 
-# ensure /var/lib/colord exists and has appropriate permissions
+# ensure /var/lib/colord exists...
 	mkdir -p /var/lib/colord
-	chown -R colord:colord /var/lib/colord
 
-# create colord user if it isn't already there
+# ...create colord user if it isn't already there...
         adduser --system --group --home /var/lib/colord colord \
 	    --quiet --gecos "colord colour management daemon"
+
+# ...finally, ensure /var/lib/colord has the right permissions
+	chown -R colord:colord /var/lib/colord
 
 
 	;;
