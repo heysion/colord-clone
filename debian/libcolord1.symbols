@@ -136,6 +136,7 @@ libcolord.so.1 libcolord1 #MINVER#
  cd_device_to_string@Base 0.1.10
  cd_mat33_clear@Base 0.1.15
  cd_mat33_copy@Base 0.1.15
+ cd_mat33_determinant@Base 0.1.17
  cd_mat33_get_data@Base 0.1.15
  cd_mat33_matrix_multiply@Base 0.1.15
  cd_mat33_reciprocal@Base 0.1.15
