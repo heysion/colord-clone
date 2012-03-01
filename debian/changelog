@@ -3,8 +3,11 @@ colord (0.1.17-1) UNRELEASED; urgency=low
   * New upstream version
   * debian/colord.postrm:
     - Fix purge action when colord failed to install correctly. (Closes: 660666)
+  * debian/control:
+    - Drop unnecessary build-depends libusb2-dev [kfreebsd].  Thanks,
+      Robert Millan! (Closes: 659624)
 
- -- Christopher James Halse Rogers <raof@ubuntu.com>  Thu, 01 Mar 2012 16:17:31 +1100
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Thu, 01 Mar 2012 16:27:23 +1100
 
 colord (0.1.16-2) unstable; urgency=low
 
