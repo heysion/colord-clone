@@ -182,9 +182,19 @@ cd_profile_get_filename (CdProfile *profile)
 gboolean
 cd_profile_has_access (CdProfile *profile)
 {
+	gboolean ret = TRUE;
+
 	g_return_val_if_fail (CD_IS_PROFILE (profile), FALSE);
 	g_return_val_if_fail (profile->priv->proxy != NULL, FALSE);
-	return g_access (profile->priv->filename, R_OK) == 0;
+
+	/* virtual profile */
+	if (profile->priv->filename == NULL)
+		goto out;
+
+	/* profile on disk */
+	ret = g_access (profile->priv->filename, R_OK) == 0;
+out:
+	return ret;
 }
 
 /**
@@ -432,7 +442,7 @@ cd_profile_get_metadata_item (CdProfile *profile, const gchar *key)
 static void
 cd_profile_set_metadata_from_variant (CdProfile *profile, GVariant *variant)
 {
-	GVariantIter *iter = NULL;
+	GVariantIter iter;
 	const gchar *prop_key;
 	const gchar *prop_value;
 
@@ -440,9 +450,8 @@ cd_profile_set_metadata_from_variant (CdProfile *profile, GVariant *variant)
 	g_hash_table_remove_all (profile->priv->metadata);
 
 	/* insert the new metadata */
-	g_variant_get (variant, "a{ss}",
-		       &iter);
-	while (g_variant_iter_loop (iter, "{ss}",
+	g_variant_iter_init (&iter, variant);
+	while (g_variant_iter_loop (&iter, "{ss}",
 				    &prop_key, &prop_value)) {
 		g_hash_table_insert (profile->priv->metadata,
 				     g_strdup (prop_key),

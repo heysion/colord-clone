@@ -59,6 +59,7 @@ struct _CdProfilePrivate
 	gboolean			 is_system_wide;
 	gint64				 created;
 	guint				 owner;
+	GMappedFile			*mapped_file;
 };
 
 enum {
@@ -259,9 +260,10 @@ cd_profile_install_system_wide (CdProfile *profile, GError **error)
 	GError *error_local = NULL;
 	GFile *file_dest = NULL;
 	GFile *file = NULL;
+	CdProfilePrivate *priv = profile->priv;
 
 	/* is icc filename set? */
-	if (profile->priv->filename == NULL) {
+	if (priv->filename == NULL) {
 		ret = FALSE;
 		g_set_error (error,
 			     CD_MAIN_ERROR,
@@ -271,48 +273,73 @@ cd_profile_install_system_wide (CdProfile *profile, GError **error)
 	}
 
 	/* is profile already installed in /var/lib/color */
-	if (g_str_has_prefix (profile->priv->filename,
+	if (g_str_has_prefix (priv->filename,
 			      CD_SYSTEM_PROFILES_DIR)) {
 		ret = FALSE;
 		g_set_error (error,
 			     CD_MAIN_ERROR,
 			     CD_MAIN_ERROR_FAILED,
 			     "file %s already installed in /var",
-			     profile->priv->filename);
+			     priv->filename);
 		goto out;
 	}
 
 	/* is profile already installed in /usr/share/color */
-	if (g_str_has_prefix (profile->priv->filename,
+	if (g_str_has_prefix (priv->filename,
 			      DATADIR "/color")) {
 		ret = FALSE;
 		g_set_error (error,
 			     CD_MAIN_ERROR,
 			     CD_MAIN_ERROR_FAILED,
 			     "file %s already installed in /usr",
-			     profile->priv->filename);
+			     priv->filename);
 		goto out;
 	}
 
 	/* copy */
-	basename = g_path_get_basename (profile->priv->filename);
+	basename = g_path_get_basename (priv->filename);
 	filename = g_build_filename (CD_SYSTEM_PROFILES_DIR,
 				     basename, NULL);
-	file = g_file_new_for_path (profile->priv->filename);
 	file_dest = g_file_new_for_path (filename);
 
-	/* do the copy */
-	ret = g_file_copy (file, file_dest, G_FILE_COPY_OVERWRITE,
-			   NULL, NULL, NULL, &error_local);
-	if (!ret) {
-		ret = FALSE;
-		g_set_error (error,
-			     CD_MAIN_ERROR,
-			     CD_MAIN_ERROR_FAILED,
-			     "failed to copy: %s",
-			     error_local->message);
-		g_error_free (error_local);
-		goto out;
+	/* try to write a mapped file first, else copy the file */
+	if (priv->mapped_file != NULL) {
+		g_debug ("writing mapped file to %s", filename);
+		ret = g_file_replace_contents (file_dest,
+					       g_mapped_file_get_contents (priv->mapped_file),
+					       g_mapped_file_get_length (priv->mapped_file),
+					       NULL,
+					       FALSE,
+					       G_FILE_CREATE_PRIVATE | G_FILE_CREATE_REPLACE_DESTINATION,
+					       NULL,
+					       NULL, /* cancellable */
+					       &error_local);
+		if (!ret) {
+			ret = FALSE;
+			g_set_error (error,
+				     CD_MAIN_ERROR,
+				     CD_MAIN_ERROR_FAILED,
+				     "failed to write mapped file %s: %s",
+				     priv->filename,
+				     error_local->message);
+			g_error_free (error_local);
+			goto out;
+		}
+	} else {
+		file = g_file_new_for_path (priv->filename);
+		ret = g_file_copy (file, file_dest, G_FILE_COPY_OVERWRITE,
+				   NULL, NULL, NULL, &error_local);
+		if (!ret) {
+			ret = FALSE;
+			g_set_error (error,
+				     CD_MAIN_ERROR,
+				     CD_MAIN_ERROR_FAILED,
+				     "failed to copy %s: %s",
+				     priv->filename,
+				     error_local->message);
+			g_error_free (error_local);
+			goto out;
+		}
 	}
 out:
 	g_free (filename);
@@ -736,6 +763,9 @@ cd_profile_set_from_profile (CdProfile *profile,
 		if (tmp != NULL)
 			*tmp = '\0';
 
+		/* make underscores into spaces */
+		g_strdelimit (priv->title, "_", ' ');
+
 		/* remove any shitty prefix */
 		if (g_str_has_suffix (priv->title, ".icc") ||
 		    g_str_has_suffix (priv->title, ".ICC") ||
@@ -1035,6 +1065,9 @@ cd_profile_set_fd (CdProfile *profile,
 		goto out;
 	}
 
+	/* create a mapped file */
+	priv->mapped_file = g_mapped_file_new_from_fd (fd, FALSE, error);
+
 	/* parse the ICC file */
 	lcms_profile = cmsOpenProfileFromStream (stream, "r");
 	if (lcms_profile == NULL) {
@@ -1304,6 +1337,8 @@ cd_profile_finalize (GObject *object)
 		g_dbus_connection_unregister_object (priv->connection,
 						     priv->registration_id);
 	}
+	if (priv->mapped_file != NULL)
+		g_mapped_file_unref (priv->mapped_file);
 	g_free (priv->filename);
 	g_free (priv->qualifier);
 	g_free (priv->format);
