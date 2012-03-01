@@ -404,12 +404,11 @@ cd_device_set_profiles_array_from_variant (CdDevice *device,
 	gchar *object_path_tmp;
 	gsize len;
 	guint i;
-	GVariantIter iter;
 
 	g_ptr_array_set_size (device->priv->profiles, 0);
 	if (profiles == NULL)
 		goto out;
-	len = g_variant_iter_init (&iter, profiles);
+	len = g_variant_n_children (profiles);
 	for (i=0; i<len; i++) {
 		g_variant_get_child (profiles, i,
 				     "o", &object_path_tmp);
@@ -464,7 +463,7 @@ cd_device_get_metadata_item (CdDevice *device, const gchar *key)
 static void
 cd_device_set_metadata_from_variant (CdDevice *device, GVariant *variant)
 {
-	GVariantIter *iter = NULL;
+	GVariantIter iter;
 	const gchar *prop_key;
 	const gchar *prop_value;
 
@@ -472,9 +471,8 @@ cd_device_set_metadata_from_variant (CdDevice *device, GVariant *variant)
 	g_hash_table_remove_all (device->priv->metadata);
 
 	/* insert the new metadata */
-	g_variant_get (variant, "a{ss}",
-		       &iter);
-	while (g_variant_iter_loop (iter, "{ss}",
+	g_variant_iter_init (&iter, variant);
+	while (g_variant_iter_loop (&iter, "{ss}",
 				    &prop_key, &prop_value)) {
 		g_hash_table_insert (device->priv->metadata,
 				     g_strdup (prop_key),
