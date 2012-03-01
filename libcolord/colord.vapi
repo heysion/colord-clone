@@ -446,19 +446,19 @@ namespace Cd {
 		public string vendor { owned get; }
 		public virtual signal void button_pressed ();
 	}
-	[CCode (cheader_filename = "colord.h")]
+	[CCode (cheader_filename = "colord.h", has_type_id = false)]
 	public struct ColorLab {
 		public double L;
 		public double a;
 		public double b;
 	}
-	[CCode (cheader_filename = "colord.h")]
+	[CCode (cheader_filename = "colord.h", has_type_id = false)]
 	public struct ColorRGB8 {
 		public uint8 R;
 		public uint8 G;
 		public uint8 B;
 	}
-	[CCode (cheader_filename = "colord.h")]
+	[CCode (cheader_filename = "colord.h", has_type_id = false)]
 	public struct Mat3x3 {
 		public double m00;
 		public double m01;
@@ -470,7 +470,7 @@ namespace Cd {
 		public double m21;
 		public double m22;
 	}
-	[CCode (cheader_filename = "colord.h")]
+	[CCode (cheader_filename = "colord.h", has_type_id = false)]
 	public struct Vec3 {
 		public double v0;
 		public double v1;
@@ -589,6 +589,7 @@ namespace Cd {
 		PROJECTOR,
 		AMBIENT,
 		CALIBRATION,
+		LED,
 		LAST
 	}
 	[CCode (cheader_filename = "colord.h", cprefix = "CD_SENSOR_ERROR_")]
@@ -725,6 +726,8 @@ namespace Cd {
 	public const string PROFILE_METADATA_MAPPING_QUALIFIER;
 	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_MEASUREMENT_DEVICE")]
 	public const string PROFILE_METADATA_MEASUREMENT_DEVICE;
+	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_SCREEN_BRIGHTNESS")]
+	public const string PROFILE_METADATA_SCREEN_BRIGHTNESS;
 	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_SCREEN_SURFACE")]
 	public const string PROFILE_METADATA_SCREEN_SURFACE;
 	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_SCREEN_SURFACE_GLOSSY")]
@@ -789,6 +792,8 @@ namespace Cd {
 	public static void mat33_clear (Cd.Mat3x3 src);
 	[CCode (cheader_filename = "colord.h", cname = "cd_mat33_copy")]
 	public static void mat33_copy (Cd.Mat3x3 src, Cd.Mat3x3 dest);
+	[CCode (cheader_filename = "colord.h", cname = "cd_mat33_determinant")]
+	public static double mat33_determinant (Cd.Mat3x3 src);
 	[CCode (cheader_filename = "colord.h", cname = "cd_mat33_get_data")]
 	public static double mat33_get_data (Cd.Mat3x3 src);
 	[CCode (cheader_filename = "colord.h", cname = "cd_mat33_matrix_multiply")]
