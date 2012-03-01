@@ -8,7 +8,7 @@ case "$1" in
 # This should change once bug #621833 is resolved.
 
 # Remove colord's state directory
-	rm -r /var/lib/colord
+	rm -rf /var/lib/colord
 	;;
 esac	
 

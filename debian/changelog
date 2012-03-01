@@ -1,6 +1,8 @@
 colord (0.1.17-1) UNRELEASED; urgency=low
 
   * New upstream version
+  * debian/colord.postrm:
+    - Fix purge action when colord failed to install correctly. (Closes: 660666)
 
  -- Christopher James Halse Rogers <raof@ubuntu.com>  Thu, 01 Mar 2012 16:17:31 +1100
 
