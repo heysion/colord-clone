@@ -700,7 +700,6 @@ static void
 cd_profile_set_metadata_from_profile (CdProfile *profile,
 				      cmsHPROFILE lcms_profile)
 {
-#ifdef HAVE_NEW_LCMS
 	cmsHANDLE dict;
 	const cmsDICTentry* entry;
 	gchar ascii_name[1024];
@@ -730,7 +729,6 @@ cd_profile_set_metadata_from_profile (CdProfile *profile,
 				     g_strdup (ascii_name),
 				     g_strdup (ascii_value));
 	}
-#endif
 }
 
 /**
@@ -1066,7 +1064,17 @@ cd_profile_set_fd (CdProfile *profile,
 	}
 
 	/* create a mapped file */
+#if GLIB_CHECK_VERSION(2,31,0)
 	priv->mapped_file = g_mapped_file_new_from_fd (fd, FALSE, error);
+	if (priv->mapped_file == NULL) {
+		g_set_error (error,
+			     CD_MAIN_ERROR,
+			     CD_MAIN_ERROR_FAILED,
+			     "failed to create mapped file from fd %i",
+			     fd);
+		goto out;
+	}
+#endif
 
 	/* parse the ICC file */
 	lcms_profile = cmsOpenProfileFromStream (stream, "r");

@@ -3,7 +3,7 @@ AC_PREREQ(2.63)
 
 m4_define([cd_major_version], [0])
 m4_define([cd_minor_version], [1])
-m4_define([cd_micro_version], [17])
+m4_define([cd_micro_version], [18])
 m4_define([cd_version],
           [cd_major_version.cd_minor_version.cd_micro_version])
 
@@ -37,7 +37,7 @@ AC_SUBST(CD_MICRO_VERSION)
 # REVISION	If the API and ABI remains the same, but bugs are fixed.
 # AGE		Don't use.
 LT_CURRENT=1
-LT_REVISION=9
+LT_REVISION=10
 LT_AGE=0
 AC_SUBST(LT_CURRENT)
 AC_SUBST(LT_REVISION)
@@ -133,13 +133,7 @@ if test x$have_gusb = xyes; then
 fi
 AM_CONDITIONAL(HAVE_GUSB, test x$have_gusb = xyes)
 
-PKG_CHECK_MODULES(LCMS, lcms2 >= 2.2, has_new_lcms=yes, has_new_lcms=no)
-if test x$has_new_lcms = xyes; then
-	AC_DEFINE(HAVE_NEW_LCMS,1,[Got new lcms2])
-else
-	PKG_CHECK_MODULES(LCMS, lcms2)
-fi
-
+PKG_CHECK_MODULES(LCMS, lcms2 >= 2.2)
 PKG_CHECK_MODULES(SQLITE, sqlite3)
 
 dnl **** Check for GUDEV ****
@@ -279,7 +273,7 @@ fi
 AC_SUBST(slashlibdir)
 
 # per-machine directory
-AC_SUBST(CD_SYSTEM_PROFILES_DIR, "\$(localstatedir)/lib/color")
+AC_SUBST(CD_SYSTEM_PROFILES_DIR, "\$(localstatedir)/lib/colord/icc")
 
 dnl ---------------------------------------------------------------------------
 dnl - Makefiles, etc.
@@ -287,6 +281,9 @@ dnl ---------------------------------------------------------------------------
 AC_CONFIG_FILES([
 Makefile
 etc/Makefile
+contrib/Makefile
+contrib/colord-sane/Makefile
+contrib/colord-sane/org.freedesktop.colord-sane.conf
 examples/Makefile
 man/Makefile
 doc/Makefile
