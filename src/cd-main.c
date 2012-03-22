@@ -36,7 +36,6 @@
 #include "cd-profile-array.h"
 #include "cd-profile.h"
 #include "cd-profile-store.h"
-#include "cd-sane-client.h"
 #include "cd-sensor-client.h"
 #include "cd-udev-client.h"
 
@@ -55,7 +54,6 @@ static CdDeviceDb *device_db = NULL;
 static CdUdevClient *udev_client = NULL;
 static CdSensorClient *sensor_client = NULL;
 #endif
-static CdSaneClient *sane_client = NULL;
 static CdConfig *config = NULL;
 static GPtrArray *sensors = NULL;
 static GHashTable *standard_spaces = NULL;
@@ -442,9 +440,11 @@ cd_main_device_add (CdDevice *device,
 	}
 
 	/* profile is no longer valid */
-	g_signal_connect (device, "invalidate",
-			  G_CALLBACK (cd_main_device_invalidate_cb),
-			  NULL);
+	if (scope == CD_OBJECT_SCOPE_TEMP) {
+		g_signal_connect (device, "invalidate",
+				  G_CALLBACK (cd_main_device_invalidate_cb),
+				  NULL);
+	}
 
 	/* add to array */
 	cd_device_array_add (devices_array, device);
@@ -481,7 +481,7 @@ cd_main_create_device (const gchar *sender,
 		goto out;
 
 	/* setup DBus watcher */
-	if ((scope & CD_OBJECT_SCOPE_TEMP) > 0) {
+	if (sender != NULL && (scope & CD_OBJECT_SCOPE_TEMP) > 0) {
 		g_debug ("temporary device");
 		cd_device_watch_sender (device_tmp, sender);
 	}
@@ -732,6 +732,7 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 	GVariant *value = NULL;
 	gint fd = -1;
 	guint uid;
+	gint32 fd_handle = 0;
 	const gchar *metadata_key = NULL;
 	const gchar *metadata_value = NULL;
 	GDBusMessage *message;
@@ -1097,8 +1098,9 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 		goto out;
 	}
 
-	/* return 's' */
-	if (g_strcmp0 (method_name, "CreateProfile") == 0) {
+	/* return 'o' */
+	if (g_strcmp0 (method_name, "CreateProfile") == 0 ||
+	    g_strcmp0 (method_name, "CreateProfileWithFd") == 0) {
 
 		/* require auth */
 		ret = cd_main_sender_authenticated (invocation,
@@ -1106,12 +1108,23 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 		if (!ret)
 			goto out;
 
-		/* does already exist */
-		g_variant_get (parameters, "(&s&sa{ss})",
-			       &device_id,
-			       &scope_tmp,
-			       &iter);
-		g_debug ("CdMain: %s:CreateProfile(%s)", sender, device_id);
+		if (g_strcmp0 (g_variant_get_type_string (parameters),
+			       "(ssha{ss})") == 0) {
+			g_variant_get (parameters, "(&s&sha{ss})",
+				       &device_id,
+				       &scope_tmp,
+				       &fd_handle,
+				       &iter);
+			g_debug ("CdMain: %s:CreateProfileWithFd(%s,%i)",
+				 g_dbus_method_invocation_get_sender (invocation),
+				 device_id, fd_handle);
+		} else {
+			g_variant_get (parameters, "(&s&sa{ss})",
+				       &device_id,
+				       &scope_tmp,
+				       &iter);
+			g_debug ("CdMain: %s:CreateProfile(%s)", sender, device_id);
+		}
 		profile = cd_profile_array_get_by_id (profiles_array,
 						      device_id);
 		if (profile != NULL) {
@@ -1153,7 +1166,7 @@ cd_main_daemon_method_call (GDBusConnection *connection_, const gchar *sender,
 		message = g_dbus_method_invocation_get_message (invocation);
 		fd_list = g_dbus_message_get_unix_fd_list (message);
 		if (fd_list != NULL && g_unix_fd_list_get_length (fd_list) == 1) {
-			fd = g_unix_fd_list_get (fd_list, 0, &error);
+			fd = g_unix_fd_list_get (fd_list, fd_handle, &error);
 			if (fd < 0) {
 				g_warning ("CdMain: failed to get fd from message: %s",
 					   error->message);
@@ -1531,6 +1544,31 @@ out:
 }
 
 /**
+ * cd_main_colord_sane_refresh_cb:
+ **/
+static void
+cd_main_colord_sane_refresh_cb (GObject *source_object,
+				GAsyncResult *res,
+				gpointer user_data)
+{
+	GError *error = NULL;
+	GVariant *retval;
+
+	retval = g_dbus_connection_call_finish (connection,
+						res,
+						&error);
+	if (retval == NULL) {
+		g_warning ("failed to contact colord-sane: %s",
+			   error->message);
+		g_error_free (error);
+		goto out;
+	}
+out:
+	if (retval != NULL)
+		g_variant_unref (retval);
+}
+
+/**
  * cd_main_on_name_acquired_cb:
  **/
 static void
@@ -1605,12 +1643,18 @@ cd_main_on_name_acquired_cb (GDBusConnection *connection_,
 	/* add SANE devices */
 	ret = cd_config_get_boolean (config, "UseSANE");
 	if (ret) {
-		ret = cd_sane_client_refresh (sane_client, &error);
-		if (!ret) {
-			g_warning ("CdMain: failed to refresh SANE devices: %s",
-				    error->message);
-			g_error_free (error);
-		}
+		g_dbus_connection_call (connection,
+					"org.freedesktop.colord-sane",
+					"/org/freedesktop/colord_sane",
+					"org.freedesktop.colord.sane",
+					"Refresh",
+					NULL,
+					NULL,
+					G_DBUS_CALL_FLAGS_NONE,
+					-1,
+					NULL,
+					cd_main_colord_sane_refresh_cb,
+					NULL);
 	}
 
 	/* now we've got the profiles, setup the overrides */
@@ -1804,14 +1848,6 @@ main (int argc, char *argv[])
 						 g_str_equal,
 						 g_free,
 						 (GDestroyNotify) g_object_unref);
-
-	sane_client = cd_sane_client_new ();
-	g_signal_connect (sane_client, "added",
-			  G_CALLBACK (cd_main_client_device_added_cb),
-			  NULL);
-	g_signal_connect (sane_client, "removed",
-			  G_CALLBACK (cd_main_client_device_removed_cb),
-			  NULL);
 #ifdef HAVE_GUDEV
 	udev_client = cd_udev_client_new ();
 	g_signal_connect (udev_client, "device-added",
@@ -1924,8 +1960,6 @@ out:
 #endif
 	if (config != NULL)
 		g_object_unref (config);
-	if (sane_client != NULL)
-		g_object_unref (sane_client);
 	if (profile_store != NULL)
 		g_object_unref (profile_store);
 	if (mapping_db != NULL)

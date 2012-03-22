@@ -49,9 +49,6 @@
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
 
-/* Got new lcms2 */
-#undef HAVE_NEW_LCMS
-
 /* Use SANE support for detecting scanners */
 #undef HAVE_SANE
 

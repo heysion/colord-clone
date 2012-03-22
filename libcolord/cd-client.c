@@ -465,7 +465,7 @@ cd_client_create_device_cb (GObject *source_object,
 	/* success */
 	g_simple_async_result_set_op_res_gpointer (res_source,
 						   device,
-						   (GDestroyNotify) g_object_ref);
+						   (GDestroyNotify) g_object_unref);
 	g_variant_unref (result);
 out:
 	g_free (object_path);
@@ -615,7 +615,7 @@ cd_client_create_profile_cb (GObject *source_object,
 	/* success */
 	g_simple_async_result_set_op_res_gpointer (res_source,
 						   profile,
-						   (GDestroyNotify) g_object_ref);
+						   (GDestroyNotify) g_object_unref);
 out:
 	if (reply != NULL)
 		g_object_unref (reply);
@@ -692,7 +692,7 @@ cd_client_create_profile (CdClient *client,
 	request = g_dbus_message_new_method_call (COLORD_DBUS_SERVICE,
 						  COLORD_DBUS_PATH,
 						  COLORD_DBUS_INTERFACE,
-						  "CreateProfile");
+						  "CreateProfileWithFd");
 
 	/* get fd if possible top avoid open() in daemon */
 	if (properties != NULL) {
@@ -722,9 +722,10 @@ cd_client_create_profile (CdClient *client,
 	}
 
 	/* set parameters */
-	body = g_variant_new ("(ssa{ss})",
+	body = g_variant_new ("(ssha{ss})",
 			      id,
 			      cd_object_scope_to_string (scope),
+			      fd > -1 ? 0 : -1,
 			      &builder);
 	g_dbus_message_set_body (request, body);
 

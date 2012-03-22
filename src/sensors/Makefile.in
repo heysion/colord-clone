@@ -318,6 +318,10 @@ INTLTOOL_EXTRACT = @INTLTOOL_EXTRACT@
 INTLTOOL_MERGE = @INTLTOOL_MERGE@
 INTLTOOL_PERL = @INTLTOOL_PERL@
 INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
+INTLTOOL_V_MERGE = @INTLTOOL_V_MERGE@
+INTLTOOL_V_MERGE_OPTIONS = @INTLTOOL_V_MERGE_OPTIONS@
+INTLTOOL__v_MERGE_ = @INTLTOOL__v_MERGE_@
+INTLTOOL__v_MERGE_0 = @INTLTOOL__v_MERGE_0@
 INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
 INTROSPECTION_CFLAGS = @INTROSPECTION_CFLAGS@
 INTROSPECTION_COMPILER = @INTROSPECTION_COMPILER@
@@ -422,6 +426,8 @@ htmldir = @htmldir@
 includedir = @includedir@
 infodir = @infodir@
 install_sh = @install_sh@
+intltool__v_merge_options_ = @intltool__v_merge_options_@
+intltool__v_merge_options_0 = @intltool__v_merge_options_0@
 libdir = @libdir@
 libexecdir = @libexecdir@
 localedir = @localedir@
@@ -463,7 +469,6 @@ INCLUDES = \
 	-DCD_COMPILATION				\
 	-DG_UDEV_API_IS_SUBJECT_TO_CHANGE		\
 	-DG_USB_API_IS_SUBJECT_TO_CHANGE		\
-	-DCD_SYSTEM_PROFILES_DIR="\"$(CD_SYSTEM_PROFILES_DIR)"\" \
 	-DLOCALEDIR=\""$(localedir)"\"
 
 COLORD_LIBS = \
@@ -1210,8 +1215,7 @@ info: info-am
 info-am:
 
 install-data-am: install-pluginLTLIBRARIES
-	@$(NORMAL_INSTALL)
-	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
+
 install-dvi: install-dvi-am
 
 install-dvi-am:
@@ -1258,30 +1262,23 @@ ps-am:
 
 uninstall-am: uninstall-pluginLTLIBRARIES
 
-.MAKE: check-am install-am install-data-am install-strip
+.MAKE: check-am install-am install-strip
 
 .PHONY: CTAGS GTAGS all all-am check check-TESTS check-am clean \
 	clean-checkPROGRAMS clean-generic clean-libtool \
 	clean-noinstPROGRAMS clean-pluginLTLIBRARIES ctags distclean \
 	distclean-compile distclean-generic distclean-libtool \
 	distclean-tags distdir dvi dvi-am html html-am info info-am \
-	install install-am install-data install-data-am \
-	install-data-hook install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-pluginLTLIBRARIES install-ps install-ps-am \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	pdf pdf-am ps ps-am tags uninstall uninstall-am \
-	uninstall-pluginLTLIBRARIES
+	install install-am install-data install-data-am install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-info install-info-am install-man \
+	install-pdf install-pdf-am install-pluginLTLIBRARIES \
+	install-ps install-ps-am install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
+	tags uninstall uninstall-am uninstall-pluginLTLIBRARIES
 
-
-install-data-hook:
-	if test -w $(DESTDIR)$(prefix)/; then \
-		mkdir -p $(DESTDIR)$(CD_SYSTEM_PROFILES_DIR); \
-		mkdir -p $(DESTDIR)$(localstatedir)/lib/colord; \
-	fi
 
 -include $(top_srcdir)/git.mk
 
