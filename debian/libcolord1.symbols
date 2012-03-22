@@ -39,6 +39,7 @@ libcolord.so.1 libcolord1 #MINVER#
  cd_client_get_profiles@Base 0.1.10
  cd_client_get_profiles_finish@Base 0.1.10
  cd_client_get_profiles_sync@Base 0.1.10
+ cd_device_get_profiling_inhibitors@Base 0.1.18
  cd_client_get_sensors@Base 0.1.10
  cd_client_get_sensors_finish@Base 0.1.10
  cd_client_get_sensors_sync@Base 0.1.10
