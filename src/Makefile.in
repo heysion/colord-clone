@@ -93,9 +93,9 @@ am__colord_SOURCES_DIST = cd-common.c cd-common.h cd-config.c \
 	cd-device.h cd-inhibit.c cd-inhibit.h cd-mapping-db.c \
 	cd-mapping-db.h cd-profile-array.c cd-profile-array.h \
 	cd-profile.c cd-profile.h cd-profile-store.c \
-	cd-profile-store.h cd-sane-client.c cd-sane-client.h \
-	cd-sensor.c cd-sensor.h cd-main.c cd-sensor-client.c \
-	cd-sensor-client.h cd-udev-client.c cd-udev-client.h
+	cd-profile-store.h cd-sensor.c cd-sensor.h cd-main.c \
+	cd-sensor-client.c cd-sensor-client.h cd-udev-client.c \
+	cd-udev-client.h
 @HAVE_GUDEV_TRUE@am__objects_1 = colord-cd-sensor-client.$(OBJEXT) \
 @HAVE_GUDEV_TRUE@	colord-cd-udev-client.$(OBJEXT)
 am_colord_OBJECTS = colord-cd-common.$(OBJEXT) \
@@ -104,14 +104,12 @@ am_colord_OBJECTS = colord-cd-common.$(OBJEXT) \
 	colord-cd-device-db.$(OBJEXT) colord-cd-inhibit.$(OBJEXT) \
 	colord-cd-mapping-db.$(OBJEXT) \
 	colord-cd-profile-array.$(OBJEXT) colord-cd-profile.$(OBJEXT) \
-	colord-cd-profile-store.$(OBJEXT) \
-	colord-cd-sane-client.$(OBJEXT) colord-cd-sensor.$(OBJEXT) \
+	colord-cd-profile-store.$(OBJEXT) colord-cd-sensor.$(OBJEXT) \
 	colord-cd-main.$(OBJEXT) $(am__objects_1)
 colord_OBJECTS = $(am_colord_OBJECTS)
 colord_DEPENDENCIES = $(COLORD_PRIVATE_LIBS) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 colord_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(colord_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
@@ -278,6 +276,10 @@ INTLTOOL_EXTRACT = @INTLTOOL_EXTRACT@
 INTLTOOL_MERGE = @INTLTOOL_MERGE@
 INTLTOOL_PERL = @INTLTOOL_PERL@
 INTLTOOL_UPDATE = @INTLTOOL_UPDATE@
+INTLTOOL_V_MERGE = @INTLTOOL_V_MERGE@
+INTLTOOL_V_MERGE_OPTIONS = @INTLTOOL_V_MERGE_OPTIONS@
+INTLTOOL__v_MERGE_ = @INTLTOOL__v_MERGE_@
+INTLTOOL__v_MERGE_0 = @INTLTOOL__v_MERGE_0@
 INTL_MACOSX_LIBS = @INTL_MACOSX_LIBS@
 INTROSPECTION_CFLAGS = @INTROSPECTION_CFLAGS@
 INTROSPECTION_COMPILER = @INTROSPECTION_COMPILER@
@@ -382,6 +384,8 @@ htmldir = @htmldir@
 includedir = @includedir@
 infodir = @infodir@
 install_sh = @install_sh@
+intltool__v_merge_options_ = @intltool__v_merge_options_@
+intltool__v_merge_options_0 = @intltool__v_merge_options_0@
 libdir = @libdir@
 libexecdir = @libexecdir@
 localedir = @localedir@
@@ -418,7 +422,6 @@ INCLUDES = \
 	$(POLKIT_CFLAGS)				\
 	$(LCMS_CFLAGS)					\
 	$(GUDEV_CFLAGS)					\
-	$(SANE_CFLAGS)					\
 	$(SQLITE_CFLAGS)				\
 	-I$(top_srcdir)/libcolord			\
 	-DG_LOG_DOMAIN=\"Cd\"				\
@@ -444,16 +447,14 @@ colord_SOURCES = cd-common.c cd-common.h cd-config.c cd-config.h \
 	cd-device.c cd-device-db.c cd-device-db.h cd-device.h \
 	cd-inhibit.c cd-inhibit.h cd-mapping-db.c cd-mapping-db.h \
 	cd-profile-array.c cd-profile-array.h cd-profile.c \
-	cd-profile.h cd-profile-store.c cd-profile-store.h \
-	cd-sane-client.c cd-sane-client.h cd-sensor.c cd-sensor.h \
-	cd-main.c $(am__append_1)
+	cd-profile.h cd-profile-store.c cd-profile-store.h cd-sensor.c \
+	cd-sensor.h cd-main.c $(am__append_1)
 colord_LDADD = \
 	$(COLORD_PRIVATE_LIBS)				\
 	$(SQLITE_LIBS)					\
 	$(POLKIT_LIBS)					\
 	$(LCMS_LIBS)					\
 	$(GUDEV_LIBS)					\
-	$(SANE_LIBS)					\
 	$(GLIB_LIBS)
 
 colord_CFLAGS = \
@@ -606,7 +607,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colord-cd-profile-array.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colord-cd-profile-store.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colord-cd-profile.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colord-cd-sane-client.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colord-cd-sensor-client.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colord-cd-sensor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colord-cd-udev-client.Po@am__quote@
@@ -911,20 +911,6 @@ colord-cd-profile-store.obj: cd-profile-store.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-profile-store.c' object='colord-cd-profile-store.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(colord_CFLAGS) $(CFLAGS) -c -o colord-cd-profile-store.obj `if test -f 'cd-profile-store.c'; then $(CYGPATH_W) 'cd-profile-store.c'; else $(CYGPATH_W) '$(srcdir)/cd-profile-store.c'; fi`
-
-colord-cd-sane-client.o: cd-sane-client.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(colord_CFLAGS) $(CFLAGS) -MT colord-cd-sane-client.o -MD -MP -MF $(DEPDIR)/colord-cd-sane-client.Tpo -c -o colord-cd-sane-client.o `test -f 'cd-sane-client.c' || echo '$(srcdir)/'`cd-sane-client.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/colord-cd-sane-client.Tpo $(DEPDIR)/colord-cd-sane-client.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-sane-client.c' object='colord-cd-sane-client.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(colord_CFLAGS) $(CFLAGS) -c -o colord-cd-sane-client.o `test -f 'cd-sane-client.c' || echo '$(srcdir)/'`cd-sane-client.c
-
-colord-cd-sane-client.obj: cd-sane-client.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(colord_CFLAGS) $(CFLAGS) -MT colord-cd-sane-client.obj -MD -MP -MF $(DEPDIR)/colord-cd-sane-client.Tpo -c -o colord-cd-sane-client.obj `if test -f 'cd-sane-client.c'; then $(CYGPATH_W) 'cd-sane-client.c'; else $(CYGPATH_W) '$(srcdir)/cd-sane-client.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/colord-cd-sane-client.Tpo $(DEPDIR)/colord-cd-sane-client.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-sane-client.c' object='colord-cd-sane-client.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(colord_CFLAGS) $(CFLAGS) -c -o colord-cd-sane-client.obj `if test -f 'cd-sane-client.c'; then $(CYGPATH_W) 'cd-sane-client.c'; else $(CYGPATH_W) '$(srcdir)/cd-sane-client.c'; fi`
 
 colord-cd-sensor.o: cd-sensor.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(colord_CFLAGS) $(CFLAGS) -MT colord-cd-sensor.o -MD -MP -MF $(DEPDIR)/colord-cd-sensor.Tpo -c -o colord-cd-sensor.o `test -f 'cd-sensor.c' || echo '$(srcdir)/'`cd-sensor.c
@@ -1431,7 +1417,8 @@ uninstall-am: uninstall-dist_introspectionDATA \
 install-data-hook:
 	if test -w $(DESTDIR)$(prefix)/; then \
 		mkdir -p $(DESTDIR)$(CD_SYSTEM_PROFILES_DIR); \
-		mkdir -p $(DESTDIR)$(localstatedir)/lib/colord; \
+		chown $(daemon_user) $(DESTDIR)$(localstatedir)/lib/colord; \
+		chmod 0755 $(DESTDIR)$(localstatedir)/lib/colord; \
 	fi
 
 -include $(top_srcdir)/git.mk

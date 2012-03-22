@@ -170,6 +170,8 @@ namespace Cd {
 		public Cd.DeviceRelation get_profile_relation_sync (Cd.Profile profile, GLib.Cancellable? cancellable) throws GLib.Error;
 		[CCode (cname = "cd_device_get_profiles")]
 		public GLib.GenericArray<Cd.Profile> get_profiles ();
+		[CCode (array_length = false, array_null_terminated = true, cname = "cd_device_get_profiling_inhibitors")]
+		public unowned string[] get_profiling_inhibitors ();
 		[CCode (cname = "cd_device_get_scope")]
 		public Cd.ObjectScope get_scope ();
 		[CCode (cname = "cd_device_get_serial")]
@@ -250,6 +252,9 @@ namespace Cd {
 		public string object_path { owned get; set construct; }
 		[NoAccessorMethod]
 		public uint owner { get; }
+		[CCode (array_length = false, array_null_terminated = true)]
+		[NoAccessorMethod]
+		public string[] profiling_inhibitors { owned get; }
 		[NoAccessorMethod]
 		public uint scope { get; }
 		[NoAccessorMethod]
@@ -660,6 +665,8 @@ namespace Cd {
 	public const string DEVICE_PROPERTY_OWNER;
 	[CCode (cheader_filename = "colord.h", cname = "CD_DEVICE_PROPERTY_PROFILES")]
 	public const string DEVICE_PROPERTY_PROFILES;
+	[CCode (cheader_filename = "colord.h", cname = "CD_DEVICE_PROPERTY_PROFILING_INHIBITORS")]
+	public const string DEVICE_PROPERTY_PROFILING_INHIBITORS;
 	[CCode (cheader_filename = "colord.h", cname = "CD_DEVICE_PROPERTY_SCOPE")]
 	public const string DEVICE_PROPERTY_SCOPE;
 	[CCode (cheader_filename = "colord.h", cname = "CD_DEVICE_PROPERTY_SERIAL")]

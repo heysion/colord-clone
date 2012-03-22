@@ -1,6 +1,443 @@
+commit 6ac743e2170fb5cdcd8612302ae65b2963c63c4a
+Author: Richard Hughes <richard@hughsie.com>
+Date:   2012-03-15
+
+    Release colord 0.1.18
+
+M	NEWS
+M	RELEASE
+M	configure.ac
+M	doc/website/download.html
+M	po/bg_BG.po
+M	po/cs.po
+M	po/de.po
+M	po/en_GB.po
+M	po/es.po
+M	po/fi.po
+M	po/fr.po
+M	po/ga.po
+M	po/gl.po
+M	po/he.po
+M	po/id.po
+M	po/it.po
+M	po/ja.po
+M	po/kk.po
+M	po/ko.po
+M	po/lt.po
+M	po/lv.po
+M	po/nl.po
+M	po/pl.po
+M	po/pt_BR.po
+M	po/ro.po
+M	po/ru.po
+M	po/sk.po
+M	po/sl.po
+M	po/sv.po
+M	po/uk.po
+M	po/zh_CN.po
+M	po/zh_TW.po
+
+commit 76b3f709f15a995070593ae825b10cdf685b9447
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-14
+
+    trivial: fix some of the function name prefixes in cd-fix-profile
+
+M	client/cd-fix-profile.c
+
+commit 7ee11c946ff69ca03ad75dbff2bbb897ce27bcbd
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-14
+
+    Make cd-fix-profile automatically add the GAMUT keys to the ICC file
+
+M	client/Makefile.am
+M	client/cd-fix-profile.c
+
+commit 66d74c134e2aaa0f7154230718011923d0123e94
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-14
+
+    Add the GAMUT_coverage metadata key to the spec
+
+M	doc/metadata-spec.txt
+
+commit dea58fdbee6d7a4f1cb273001782fd515f3064ab
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-14
+
+    Add the GAMUT_volume metadata key to the spec
+
+M	doc/metadata-spec.txt
+
+commit 5d984f502fc6b8d07f90b5901974fb1ba6ce44b7
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-13
+
+    Add a new and improved cd-fix-profile that can add and remove
+    metadata entries
+
+M	client/cd-fix-profile.c
+
+commit 63657539788e914ac45b00155553d949c667ef1c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-13
+
+    Depend on lcms2 >= 2.2
+
+    Verson 2.2 was released on 2011-06-07 and contains important
+    functionality we
+    depend on to work correctly
+
+M	client/cd-common.c
+M	client/cd-lcms-helpers.c
+M	configure.ac
+M	libcolord/cd-self-test.c
+M	src/cd-profile.c
+
+commit 1bea0478ec8a31bc975b536db64f6170b2bd89fa
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-13
+
+    trivial: make the colord v.s. oyranos stats easier to read
+
+M	doc/website/faq.html
+M	doc/website/style.css
+
+commit 41e7a2d7675a2ed41033a5bc364251a1a7ed3e44
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-12
+
+    When doing 'colorhug get-devices' show the profile ID and filename
+    if available
+
+M	client/cd-util.c
+
+commit f2ff3ccc4950d6bf6144fdb57c601ed3101f6e13
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-12
+
+    trivial: Do not show a critical DBus warning when loading each
+    'disk' device
+
+M	src/cd-device.c
+M	src/cd-main.c
+
+commit 47b6edc69438246040e9a01f7dc59b8d12634509
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-10
+
+    Do not automatically delete 'disk' or 'normal' scope devices when
+    the session process exits
+
+    Only watch for the invalidate signal on 'temp' scope devices.
+
+M	src/cd-main.c
+
+commit 7aa115ed75f25c990e83361a3a1eae3ed5218351
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-10
+
+    Install per-machine profiles in /var/lib/colord/icc
+
+    We can't assume we've got access to the shared /var/lib/color/icc
+    as this is
+    only writable by the root user, and colord can (and should) be
+    running as a
+    non-root user by default.
+
+M	configure.ac
+M	contrib/colord.spec.in
+M	src/Makefile.am
+M	src/cd-profile-store.c
+
+commit 67b51e5ac8db257b6c89040e613114c87cc2318c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-10
+
+    trivial: fix a warning in the client tools if the device owner changes
+
+M	libcolord/cd-device.c
+
+commit 5d73ef7b429eb8a110f56742a0ec8b7bb895cdab
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-10
+
+    trivial: Don't create the per-machine directories twice when doing
+    'make install'
+
+M	src/sensors/Makefile.am
+
+commit 4c7446b93d9e5fe653f30ff5c2f2ecda906a82c2
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-10
+
+    Ensure per-machine profiles are installed in /var/lib/color/icc
+
+M	configure.ac
+
+commit 95249cca59b1b0764dc2c2e28cfeb0b01680e39c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-09
+
+    Split out the SANE support into it's own process
+
+    SANE is the #1 causes of crashes in colord, so we should just create
+    a new
+    process and deal with crashes there without taking out the main
+    daemon.
+
+M	Makefile.am
+M	configure.ac
+A	contrib/Makefile.am
+A	contrib/colord-sane/Makefile.am
+A	contrib/colord-sane/cd-main.c
+A	contrib/colord-sane/colord-sane.service.in
+A	contrib/colord-sane/org.freedesktop.colord-sane.conf.in
+A	contrib/colord-sane/org.freedesktop.colord-sane.service.in
+A	contrib/colord-sane/org.freedesktop.colord.sane.xml
+M	contrib/colord.spec.in
+M	etc/colord.conf.in
+M	po/POTFILES.in
+M	src/Makefile.am
+M	src/cd-main.c
+D	src/cd-sane-client.c
+D	src/cd-sane-client.h
+
+commit 0b9a74680c9c7a75fee7b85d375f3c23369d14d4
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-09
+
+    Fix a small memory leak when creating devices and profiles in clients
+
+M	libcolord/cd-client.c
+
+commit 78f7abb234a1660dc39f921bf50c5747c09bd363
+Author: Martin Srebotnjak <miles@filmsi.net>
+Date:	2012-03-09
+
+    Updated Slovenian translation
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	po/sl.po
+
+commit 009fcd8800d3607a872be2130b03321dc7e68698
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-09
+
+    trivial: Sync the ColorHug private header with upstream
+
+M	src/sensors/cd-sensor-colorhug-private.c
+M	src/sensors/cd-sensor-colorhug-private.h
+
+commit 72bf04baac5091912d9bbf68c837c947b619f085
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-08
+
+    trivial: update FAQ: Apparently you don't have to use liboyranos
+    directly
+
+M	doc/website/faq.html
+
+commit 582973432487de33cd60bfb9708432a7a5e3cac3
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-08
+
+    Ensure we return NULL for missing device properties
+
+    The colord-kde frontend sets a zero length string for missing
+    properties, which
+    confuses the title logic in gnome-control-center when showing
+    the device.
+
+    In the same way we try to detect these 'nullable' strings in the
+    profile code,
+    add it to the libcolord ChDevice code to make the panel do the
+    right thing.
+
+M	libcolord/cd-device.c
+
+commit 0706385071441da05a654de738ec73e31826704f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-02
+
+    Add a Manager.CreateProfileWithFd() method
+
+    When we're doing FD passing, the DBus spec says we should pass an
+    'h' handle
+    type as the index into the UnixFdList. To avoid breaking API,
+    leave the
+    CreateProfile() DBus signature as (ssa{ss}) and add a new shim method
+    of (ssha{ss}). You can actually still pass FDs using either method.
+
+    This makes implementations using QtDBus possible, which validates
+    the DBus type
+    signatures in a way that libdbus or GDBus does not.
+
+M	libcolord/cd-client.c
+M	src/cd-main.c
+M	src/org.freedesktop.ColorManager.xml
+
+commit bd9d38a571491b3ceaea3ea8ad7cc04b6a3508a0
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-02
+
+    trivial: refresh translations from transifex
+
+M	RELEASE
+C066	po/de.po	po/bg_BG.po
+M	po/cs.po
+M	po/de.po
+M	po/es.po
+M	po/fi.po
+M	po/fr.po
+C066	po/ro.po	po/ga.po
+M	po/gl.po
+M	po/he.po
+M	po/id.po
+M	po/it.po
+M	po/ja.po
+C066	po/zh_TW.po	po/kk.po
+C066	po/zh_TW.po	po/ko.po
+M	po/lt.po
+C066	po/ro.po	po/lv.po
+M	po/nl.po
+M	po/pl.po
+M	po/ro.po
+M	po/ru.po
+M	po/sk.po
+M	po/sl.po
+M	po/sv.po
+M	po/uk.po
+M	po/zh_CN.po
+M	po/zh_TW.po
+
+commit 6aec37da37325c7d630213db666bf7f1b0a6d5ab
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-02
+
+    trivial: Fix make distcheck
+
+    After the commits to make the daemon run as non-root, intltool
+    was having
+    problems during make check. This was traced back to the
+    '<@ANNOTATE_OWNER@/>'
+    tag, which wasn't valid XML. By making this a comment, we can do the
+    substitution without upsetting the translation tools.
+
+M	policy/Makefile.am
+M	policy/org.freedesktop.color.policy.in.in
+
+commit d6799ca4882bf0cbe6903931e34fe9865af98cbd
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-02
+
+    trivial: always build the translations after the policy has been
+    generated
+
+M	Makefile.am
+
+commit e88348806b77c1a4a950f9d8460056cd0ddc3325
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-02
+
+    trivial: Add g-o-i annotation for the new
+    cd_device_get_profiling_inhibitors()
+
+M	libcolord/cd-device.c
+
+commit c9062f6456f03b4b3bcf5f5561c1d1ad8d577660
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-02
+
+    trivial: update the transifex config to reflect reality
+
+M	.tx/config
+
+commit 6da7779ffb578f62fef718afe49f1fd38a3ebffc
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-01
+
+    trivial: add a clarification in the device-and-profile-naming-spec
+
+M	doc/device-and-profile-naming-spec.txt
+
+commit e3e0ecf277d08595c03355e22049d4c6faa16921
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-02-28
+
+    trivial: fix up a 'lie' in the FAQ
+
+M	doc/website/faq.html
+
+commit f2b76337af19fcf660773428e7de962d34899ef0
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-02-28
+
+    Show what DBus names have inhibited each device
+
+    This makes it much easier to visually test the inhibit code and in
+    the self tests.
+
+M	client/cd-util.c
+M	libcolord/cd-device.c
+M	libcolord/cd-device.h
+M	libcolord/cd-enum.h
+M	src/cd-device.c
+M	src/cd-inhibit.c
+M	src/cd-inhibit.h
+M	src/org.freedesktop.ColorManager.Device.xml
+
+commit 15826d6042ffb392b50e2815c7d90ee75589ba5f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-02-28
+
+    trivial: do not print blank entries in colormgr
+
+M	client/cd-util.c
+
+commit 6623fb6ba2e65397ce5448764dbeadf037ba25d7
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-02-24
+
+    trivial: add another FAQ entry about root
+
+M	doc/website/faq.html
+
+commit ca59f7cd0998816c7efd0e6d8b03333ba155f3e7
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-02-24
+
+    trivial: add another FAQ entry about oyranos
+
+M	doc/website/faq.html
+
+commit 638a98fef16fa15946522d4112660b4b20c0d630
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-02-23
+
+    trivial: Fix compile with older versions of GLib
+
+    g_mapped_file_new_from_fd() was introduced in 2.31.0 not 2.30.0 as the
+    docs suggested.
+
+    Resoves https://bugs.freedesktop.org/show_bug.cgi?id=46481
+
+M	src/cd-profile.c
+
+commit 16204766a4872f36e6aeb16f2f0738374a9a25ec
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-02-22
+
+    trivial: post release version bump
+
+M	RELEASE
+M	configure.ac
+
 commit 61bf1266f7f3bf7b43b2d28a08da1714e5abaf94
 Author: Richard Hughes <richard@hughsie.com>
-Date:   2012-02-22
+Date:	2012-02-22
 
     Release colord 0.1.17
 
