@@ -1,0 +1,49 @@
+commit 679c938b167ea4e7f20d68d5e65c29e88ddc0a30
+Author: Christopher James Halse Rogers <raof@ubuntu.com>
+Date:   Wed Mar 28 14:04:49 2012 +1100
+
+    Add User key to colord-sane's DBus service file.
+    
+    DBus will not spawn the service without this key;
+    Specify @daemon_user@ as the user to run the helper.
+
+diff --git a/contrib/colord-sane/org.freedesktop.colord-sane.service.in b/contrib/colord-sane/org.freedesktop.colord-sane.service.in
+index a470147..7d19e14 100644
+--- a/contrib/colord-sane/org.freedesktop.colord-sane.service.in
++++ b/contrib/colord-sane/org.freedesktop.colord-sane.service.in
+@@ -1,4 +1,5 @@
+ [D-BUS Service]
+ Name=org.freedesktop.colord-sane
+ Exec=@servicedir@/colord-sane
++User=@daemon_user@
+ SystemdService=colord-sane.service
+commit 1c85505549d92f71365a9624887c18d22bfd7aee
+Author: Christopher James Halse Rogers <raof@ubuntu.com>
+Date:   Wed Mar 28 16:02:12 2012 +1100
+
+    Ensure colord-sane can create devices and profiles.
+    
+    When colord-sane is running as @daemon_user@ it cannot gain the authorisation
+    necessary for it to add or remove the devices and profiles it should.
+    
+    Extend the existing uid 0 check to also authorise clients running as @daemon_user@.
+
+diff --git a/src/cd-common.c b/src/cd-common.c
+index 19f0e41..5bff7f2 100644
+--- a/src/cd-common.c
++++ b/src/cd-common.c
+@@ -134,6 +134,14 @@ cd_main_sender_authenticated (GDBusMethodInvocation *invocation,
+ 		goto out;
+ 	}
+ 
++	/* a client running as the daemon user may also do all actions */
++	if (uid = getuid ()) {
++		g_debug ("CdCommon: not checking %s for %s as running as daemon user",
++			 action_id, sender);
++		ret = TRUE;
++		goto out;
++	}
++
+ #ifdef USE_POLKIT
+ 	/* get authority */
+ 	authority = polkit_authority_get_sync (NULL, &error);
