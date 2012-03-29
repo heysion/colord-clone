@@ -16,6 +16,9 @@ colord (0.1.18-1) UNRELEASED; urgency=low
     - Set single-debian-patch, and ignore it in git.  This makes cherry-picking
       from upstream cleaner: the patch lands in debian-patches, and disappears
       when we grab the upstream version containing the cherry-pick.
+  * debian/patches/01_fix_colord_sane.diff, pre-cherry-picked from upstream.
+    - Fixes issues with DBus spawning colord-sane, and with colord-sane
+      communicating with colord when run as the colord user
 
  -- Christopher James Halse Rogers <raof@ubuntu.com>  Thu, 01 Mar 2012 17:33:00 +1100
 
