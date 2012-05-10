@@ -110,11 +110,13 @@ am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(vapidir)" \
 	"$(DESTDIR)$(libcolordbase_includedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libcolord_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
+libcolord_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_libcolord_la_OBJECTS = libcolord_la-cd-client.lo \
 	libcolord_la-cd-client-sync.lo libcolord_la-cd-color.lo \
 	libcolord_la-cd-device.lo libcolord_la-cd-device-sync.lo \
-	libcolord_la-cd-enum.lo libcolord_la-cd-math.lo \
+	libcolord_la-cd-enum.lo libcolord_la-cd-it8.lo \
+	libcolord_la-cd-it8-utils.lo libcolord_la-cd-math.lo \
 	libcolord_la-cd-profile.lo libcolord_la-cd-profile-sync.lo \
 	libcolord_la-cd-sensor.lo libcolord_la-cd-sensor-sync.lo
 libcolord_la_OBJECTS = $(am_libcolord_la_OBJECTS)
@@ -215,6 +217,8 @@ GTKDOC_DEPS_CFLAGS = @GTKDOC_DEPS_CFLAGS@
 GTKDOC_DEPS_LIBS = @GTKDOC_DEPS_LIBS@
 GTKDOC_MKPDF = @GTKDOC_MKPDF@
 GTKDOC_REBASE = @GTKDOC_REBASE@
+GTK_CFLAGS = @GTK_CFLAGS@
+GTK_LIBS = @GTK_LIBS@
 GUDEV_CFLAGS = @GUDEV_CFLAGS@
 GUDEV_LIBS = @GUDEV_LIBS@
 GUSB_CFLAGS = @GUSB_CFLAGS@
@@ -366,6 +370,7 @@ top_srcdir = @top_srcdir@
 @HAVE_INTROSPECTION_TRUE@INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 INCLUDES = \
 	$(GLIB_CFLAGS)						\
+	$(LCMS_CFLAGS)						\
 	-I$(top_srcdir)						\
 	-I$(top_srcdir)/libcolord				\
 	-DCD_COMPILATION					\
@@ -389,7 +394,8 @@ lib_LTLIBRARIES = \
 
 libcolord_includedir = $(includedir)/colord-1
 libcolord_include_HEADERS = \
-	colord.h
+	colord.h						\
+	colord-private.h
 
 libcolordbase_includedir = $(libcolord_includedir)/colord
 libcolordbase_include_HEADERS = \
@@ -399,6 +405,8 @@ libcolordbase_include_HEADERS = \
 	cd-device.h						\
 	cd-device-sync.h					\
 	cd-enum.h						\
+	cd-it8.h						\
+	cd-it8-utils.h						\
 	cd-math.h						\
 	cd-profile.h						\
 	cd-profile-sync.h					\
@@ -413,6 +421,8 @@ libcolord_la_SOURCES = \
 	cd-device.c						\
 	cd-device-sync.c					\
 	cd-enum.c						\
+	cd-it8.c						\
+	cd-it8-utils.c						\
 	cd-math.c						\
 	cd-profile.c						\
 	cd-profile-sync.c					\
@@ -420,6 +430,7 @@ libcolord_la_SOURCES = \
 	cd-sensor-sync.c
 
 libcolord_la_LIBADD = \
+	$(LCMS_LIBS)						\
 	$(GLIB_LIBS)
 
 libcolord_la_LDFLAGS = \
@@ -589,6 +600,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolord_la-cd-device-sync.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolord_la-cd-device.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolord_la-cd-enum.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolord_la-cd-it8-utils.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolord_la-cd-it8.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolord_la-cd-math.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolord_la-cd-profile-sync.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolord_la-cd-profile.Plo@am__quote@
@@ -702,6 +715,20 @@ libcolord_la-cd-enum.lo: cd-enum.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-enum.c' object='libcolord_la-cd-enum.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolord_la_CFLAGS) $(CFLAGS) -c -o libcolord_la-cd-enum.lo `test -f 'cd-enum.c' || echo '$(srcdir)/'`cd-enum.c
+
+libcolord_la-cd-it8.lo: cd-it8.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolord_la_CFLAGS) $(CFLAGS) -MT libcolord_la-cd-it8.lo -MD -MP -MF $(DEPDIR)/libcolord_la-cd-it8.Tpo -c -o libcolord_la-cd-it8.lo `test -f 'cd-it8.c' || echo '$(srcdir)/'`cd-it8.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcolord_la-cd-it8.Tpo $(DEPDIR)/libcolord_la-cd-it8.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-it8.c' object='libcolord_la-cd-it8.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolord_la_CFLAGS) $(CFLAGS) -c -o libcolord_la-cd-it8.lo `test -f 'cd-it8.c' || echo '$(srcdir)/'`cd-it8.c
+
+libcolord_la-cd-it8-utils.lo: cd-it8-utils.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolord_la_CFLAGS) $(CFLAGS) -MT libcolord_la-cd-it8-utils.lo -MD -MP -MF $(DEPDIR)/libcolord_la-cd-it8-utils.Tpo -c -o libcolord_la-cd-it8-utils.lo `test -f 'cd-it8-utils.c' || echo '$(srcdir)/'`cd-it8-utils.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcolord_la-cd-it8-utils.Tpo $(DEPDIR)/libcolord_la-cd-it8-utils.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-it8-utils.c' object='libcolord_la-cd-it8-utils.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolord_la_CFLAGS) $(CFLAGS) -c -o libcolord_la-cd-it8-utils.lo `test -f 'cd-it8-utils.c' || echo '$(srcdir)/'`cd-it8-utils.c
 
 libcolord_la-cd-math.lo: cd-math.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolord_la_CFLAGS) $(CFLAGS) -MT libcolord_la-cd-math.lo -MD -MP -MF $(DEPDIR)/libcolord_la-cd-math.Tpo -c -o libcolord_la-cd-math.lo `test -f 'cd-math.c' || echo '$(srcdir)/'`cd-math.c

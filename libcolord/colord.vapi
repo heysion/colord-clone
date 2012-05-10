@@ -263,6 +263,79 @@ namespace Cd {
 		public string vendor { owned get; }
 		public virtual signal void changed ();
 	}
+	[CCode (cheader_filename = "colord.h", type_id = "cd_it8_get_type ()")]
+	public class It8 : GLib.Object {
+		[CCode (cname = "cd_it8_new", has_construct_function = false)]
+		public It8 ();
+		[CCode (cname = "cd_it8_add_data")]
+		public void add_data (Cd.ColorRGB rgb, Cd.ColorXYZ xyz);
+		[CCode (cname = "cd_it8_add_option")]
+		public void add_option (string option);
+		[CCode (cname = "cd_it8_error_quark")]
+		public static GLib.Quark error_quark ();
+		[CCode (cname = "cd_it8_get_data_item")]
+		public bool get_data_item (uint idx, Cd.ColorRGB rgb, Cd.ColorXYZ xyz);
+		[CCode (cname = "cd_it8_get_data_size")]
+		public uint get_data_size ();
+		[CCode (cname = "cd_it8_get_instrument")]
+		public unowned string get_instrument ();
+		[CCode (cname = "cd_it8_get_kind")]
+		public Cd.It8Kind get_kind ();
+		[CCode (cname = "cd_it8_get_matrix")]
+		public Cd.Mat3x3 get_matrix ();
+		[CCode (cname = "cd_it8_get_normalized")]
+		public bool get_normalized ();
+		[CCode (cname = "cd_it8_get_originator")]
+		public unowned string get_originator ();
+		[CCode (cname = "cd_it8_get_reference")]
+		public unowned string get_reference ();
+		[CCode (cname = "cd_it8_get_spectral")]
+		public bool get_spectral ();
+		[CCode (cname = "cd_it8_get_title")]
+		public unowned string get_title ();
+		[CCode (cname = "cd_it8_has_option")]
+		public bool has_option (string option);
+		[CCode (cname = "cd_it8_load_from_data")]
+		public bool load_from_data (string data, size_t size) throws GLib.Error;
+		[CCode (cname = "cd_it8_load_from_file")]
+		public bool load_from_file (GLib.File file) throws GLib.Error;
+		[CCode (cname = "cd_it8_save_to_file")]
+		public bool save_to_file (GLib.File file) throws GLib.Error;
+		[CCode (cname = "cd_it8_set_instrument")]
+		public void set_instrument (string instrument);
+		[CCode (cname = "cd_it8_set_kind")]
+		public void set_kind (Cd.It8Kind kind);
+		[CCode (cname = "cd_it8_set_matrix")]
+		public void set_matrix (Cd.Mat3x3 matrix);
+		[CCode (cname = "cd_it8_set_normalized")]
+		public void set_normalized (bool normalized);
+		[CCode (cname = "cd_it8_set_originator")]
+		public void set_originator (string originator);
+		[CCode (cname = "cd_it8_set_reference")]
+		public void set_reference (string reference);
+		[CCode (cname = "cd_it8_set_spectral")]
+		public void set_spectral (bool spectral);
+		[CCode (cname = "cd_it8_set_title")]
+		public void set_title (string title);
+		[CCode (cname = "cd_it8_utils_calculate_ccmx")]
+		public bool utils_calculate_ccmx (Cd.It8 it8_measured, Cd.It8 it8_ccmx) throws GLib.Error;
+		[CCode (cname = "cd_it8_new_with_kind", has_construct_function = false)]
+		public It8.with_kind (Cd.It8Kind kind);
+		[NoAccessorMethod]
+		public string instrument { owned get; }
+		[NoAccessorMethod]
+		public uint kind { get; set; }
+		[NoAccessorMethod]
+		public bool normalized { get; }
+		[NoAccessorMethod]
+		public string originator { owned get; }
+		[NoAccessorMethod]
+		public string reference { owned get; }
+		[NoAccessorMethod]
+		public bool spectral { get; }
+		[NoAccessorMethod]
+		public string title { owned get; }
+	}
 	[CCode (cheader_filename = "colord.h", type_id = "cd_profile_get_type ()")]
 	public class Profile : GLib.Object {
 		[CCode (cname = "cd_profile_new", has_construct_function = false)]
@@ -395,6 +468,10 @@ namespace Cd {
 		public bool get_native ();
 		[CCode (cname = "cd_sensor_get_object_path")]
 		public unowned string get_object_path ();
+		[CCode (cname = "cd_sensor_get_option")]
+		public unowned string get_option (string key);
+		[CCode (cname = "cd_sensor_get_options")]
+		public GLib.HashTable<void*,void*> get_options ();
 		[CCode (cname = "cd_sensor_get_sample")]
 		public async Cd.ColorXYZ get_sample (Cd.SensorCap cap, GLib.Cancellable? cancellable) throws GLib.Error;
 		[CCode (cname = "cd_sensor_get_sample_sync")]
@@ -417,6 +494,10 @@ namespace Cd {
 		public bool lock_sync (GLib.Cancellable? cancellable) throws GLib.Error;
 		[CCode (cname = "cd_sensor_set_object_path")]
 		public void set_object_path (string object_path);
+		[CCode (cname = "cd_sensor_set_options")]
+		public async bool set_options (GLib.HashTable<void*,void*> values, GLib.Cancellable? cancellable) throws GLib.Error;
+		[CCode (cname = "cd_sensor_set_options_sync")]
+		public bool set_options_sync (GLib.HashTable<void*,void*> values, GLib.Cancellable? cancellable) throws GLib.Error;
 		[CCode (cname = "cd_sensor_state_from_string")]
 		public static Cd.SensorState state_from_string (string sensor_state);
 		[CCode (cname = "cd_sensor_state_to_string")]
@@ -550,6 +631,19 @@ namespace Cd {
 		HARD,
 		LAST
 	}
+	[CCode (cheader_filename = "colord.h", cprefix = "CD_IT8_ERROR_")]
+	public enum It8Error {
+		FAILED,
+		LAST
+	}
+	[CCode (cheader_filename = "colord.h", cprefix = "CD_IT8_KIND_")]
+	public enum It8Kind {
+		UNKNOWN,
+		TI1,
+		TI3,
+		CCMX,
+		LAST
+	}
 	[CCode (cheader_filename = "colord.h", cprefix = "CD_OBJECT_SCOPE_")]
 	public enum ObjectScope {
 		UNKNOWN,
@@ -629,6 +723,7 @@ namespace Cd {
 		STARTING,
 		IDLE,
 		MEASURING,
+		BUSY,
 		LAST
 	}
 	[CCode (cheader_filename = "colord.h", cprefix = "CD_STANDARD_SPACE_")]
