@@ -3,7 +3,7 @@ AC_PREREQ(2.63)
 
 m4_define([cd_major_version], [0])
 m4_define([cd_minor_version], [1])
-m4_define([cd_micro_version], [18])
+m4_define([cd_micro_version], [20])
 m4_define([cd_version],
           [cd_major_version.cd_minor_version.cd_micro_version])
 
@@ -272,6 +272,23 @@ else
 fi
 AC_SUBST(slashlibdir)
 
+dnl **** Check for GTK ****
+AC_ARG_ENABLE(gtk, AS_HELP_STRING([--enable-gtk],[Enable GTK support]),
+	      enable_gtk=$enableval)
+has_gtk=no
+if test x$enable_gtk != xno; then
+	PKG_CHECK_MODULES(GTK, gtk+-3.0, has_gtk=yes, has_gtk=no)
+	if test $has_gtk = "no"; then
+		if test x$enable_gtk = xyes -a $has_gtk = "no"; then
+			AC_MSG_ERROR([--enable-gtk was specified and GTK was not found])
+		fi
+	fi
+fi
+AM_CONDITIONAL(HAVE_GTK, test x$has_gtk = xyes)
+if test x$has_gtk = xyes; then
+	AC_DEFINE(HAVE_GTK,1,[Use GTK support])
+fi
+
 # per-machine directory
 AC_SUBST(CD_SYSTEM_PROFILES_DIR, "\$(localstatedir)/lib/colord/icc")
 
@@ -303,6 +320,8 @@ client/Makefile
 libcolord/cd-version.h
 libcolord/colord.pc
 libcolord/Makefile
+libcolord-gtk/colord-gtk.pc
+libcolord-gtk/Makefile
 ])
 AC_OUTPUT
 
@@ -322,8 +341,8 @@ echo "
         File descriptor fallback:  ${enable_fd_fallback}
         External volume searching: ${enable_volume_search}
         SANE support:              ${has_sane}
+        GTK support:               ${has_gtk}
         GUDEV support:             ${enable_gudev}
-        LCMS2 DICT support:        ${has_new_lcms}
         Vala API generator:        ${has_vapigen}
         Daemon user:               ${daemon_user}
 "

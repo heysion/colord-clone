@@ -33,6 +33,7 @@
 #include "cd-color.h"
 #include "cd-device.h"
 #include "cd-device-sync.h"
+#include "cd-it8.h"
 #include "cd-math.h"
 #include "cd-profile.h"
 #include "cd-profile-sync.h"
@@ -98,6 +99,181 @@ _g_test_realpath (const gchar *relpath)
 }
 
 /**********************************************************************/
+
+static void
+colord_it8_raw_func (void)
+{
+	CdColorRGB rgb;
+	CdColorXYZ xyz;
+	CdIt8 *it8;
+	gboolean ret;
+	gchar *filename;
+	GError *error = NULL;
+	GFile *file;
+	GFile *file_new;
+
+	it8 = cd_it8_new ();
+	g_assert (it8 != NULL);
+
+	/* load in file */
+	filename = _g_test_realpath (TESTDATADIR "/raw.ti3");
+	file = g_file_new_for_path (filename);
+	ret = cd_it8_load_from_file (it8, file, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	/* write this to a new file */
+	file_new = g_file_new_for_path ("/tmp/test.ti3");
+	ret = cd_it8_save_to_file (it8, file_new, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	/* load in file again to ensure we save all the required data */
+	ret = cd_it8_load_from_file (it8, file_new, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	/* test values */
+	g_assert_cmpint (cd_it8_get_kind (it8), ==, CD_IT8_KIND_TI3);
+	g_assert_cmpint (cd_it8_get_data_size (it8), ==, 5);
+	g_assert (!cd_it8_get_normalized (it8));
+	g_assert_cmpstr (cd_it8_get_originator (it8), ==, "cd-self-test");
+	g_assert (!cd_it8_get_spectral (it8));
+	g_assert_cmpstr (cd_it8_get_instrument (it8), ==, "huey");
+	ret = cd_it8_get_data_item (it8, 1, &rgb, &xyz);
+	g_assert (ret);
+	g_assert_cmpfloat (ABS (rgb.R - 1.0f), <, 0.01f);
+	g_assert_cmpfloat (ABS (rgb.G - 1.0f), <, 0.01f);
+	g_assert_cmpfloat (ABS (rgb.B - 1.0f), <, 0.01f);
+	g_assert_cmpfloat (ABS (xyz.X - 145.46f), <, 0.01f);
+	g_assert_cmpfloat (ABS (xyz.Y - 99.88f), <, 0.01f);
+	g_assert_cmpfloat (ABS (xyz.Z - 116.59f), <, 0.01f);
+
+	/* remove temp file */
+	ret = g_file_delete (file_new, NULL, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	g_free (filename);
+	g_object_unref (it8);
+	g_object_unref (file);
+	g_object_unref (file_new);
+}
+
+static void
+colord_it8_normalized_func (void)
+{
+	CdColorRGB rgb;
+	CdColorXYZ xyz;
+	CdIt8 *it8;
+	gboolean ret;
+	gchar *filename;
+	GError *error = NULL;
+	GFile *file;
+	GFile *file_new;
+
+	it8 = cd_it8_new ();
+	g_assert (it8 != NULL);
+
+	/* load in file */
+	filename = _g_test_realpath (TESTDATADIR "/normalised.ti3");
+	file = g_file_new_for_path (filename);
+	ret = cd_it8_load_from_file (it8, file, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	/* write this to a new file */
+	file_new = g_file_new_for_path ("/tmp/test.ti3");
+	ret = cd_it8_save_to_file (it8, file_new, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	/* load in file again to ensure we save all the required data */
+	ret = cd_it8_load_from_file (it8, file_new, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	/* test values */
+	g_assert_cmpint (cd_it8_get_data_size (it8), ==, 2);
+	g_assert (!cd_it8_get_normalized (it8));
+	g_assert_cmpstr (cd_it8_get_originator (it8), ==, NULL);
+	g_assert (!cd_it8_get_spectral (it8));
+	g_assert_cmpstr (cd_it8_get_instrument (it8), ==, NULL);
+	ret = cd_it8_get_data_item (it8, 1, &rgb, &xyz);
+	g_assert (ret);
+	g_assert_cmpfloat (ABS (rgb.R - 1.0f), <, 0.01f);
+	g_assert_cmpfloat (ABS (rgb.G - 1.0f), <, 0.01f);
+	g_assert_cmpfloat (ABS (rgb.B - 1.0f), <, 0.01f);
+	g_assert_cmpfloat (ABS (xyz.X - 90.21f), <, 0.01f);
+	g_assert_cmpfloat (ABS (xyz.Y - 41.22f), <, 0.01f);
+	g_assert_cmpfloat (ABS (xyz.Z - 56.16f), <, 0.01f);
+
+	/* remove temp file */
+	ret = g_file_delete (file_new, NULL, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	g_free (filename);
+	g_object_unref (it8);
+	g_object_unref (file);
+	g_object_unref (file_new);
+}
+
+static void
+colord_it8_ccmx_func (void)
+{
+	CdIt8 *it8;
+	const CdMat3x3 *matrix;
+	gboolean ret;
+	gchar *filename;
+	GError *error = NULL;
+	GFile *file;
+	GFile *file_new;
+
+	it8 = cd_it8_new ();
+	g_assert (it8 != NULL);
+
+	/* load in file */
+	filename = _g_test_realpath (TESTDATADIR "/calibration.ccmx");
+	file = g_file_new_for_path (filename);
+	ret = cd_it8_load_from_file (it8, file, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	/* write this to a new file */
+	file_new = g_file_new_for_path ("/tmp/test.ccmx");
+	ret = cd_it8_save_to_file (it8, file_new, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	/* load in file again to ensure we save all the required data */
+	ret = cd_it8_load_from_file (it8, file_new, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	/* test values */
+	g_assert_cmpint (cd_it8_get_data_size (it8), ==, 0);
+	g_assert_cmpstr (cd_it8_get_originator (it8), ==, "cd-self-test");
+	g_assert_cmpstr (cd_it8_get_title (it8), ==, "Factory Calibration");
+	g_assert (!cd_it8_get_spectral (it8));
+	g_assert (cd_it8_has_option (it8, "TYPE_FACTORY"));
+	g_assert (!cd_it8_has_option (it8, "TYPE_XXXXXXX"));
+	g_assert_cmpstr (cd_it8_get_instrument (it8), ==, "Huey");
+	matrix = cd_it8_get_matrix (it8);
+	g_assert_cmpfloat (ABS (matrix->m00 - 1.3139f), <, 0.01f);
+	g_assert_cmpfloat (ABS (matrix->m01 - 0.21794f), <, 0.01f);
+	g_assert_cmpfloat (ABS (matrix->m02 - 0.89224f), <, 0.01f);
+
+	/* remove temp file */
+	ret = g_file_delete (file_new, NULL, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	g_free (filename);
+	g_object_unref (it8);
+	g_object_unref (file);
+	g_object_unref (file_new);
+}
 
 static void
 colord_client_get_devices_cb (GObject *object,
@@ -216,8 +392,7 @@ colord_client_random_func (void)
 					       &error);
 	g_assert_no_error (error);
 	g_assert (device != NULL);
-	g_assert_cmpstr (cd_device_get_object_path (device), ==,
-			 device_path);
+	g_assert (g_str_has_prefix (cd_device_get_object_path (device), device_path));
 
 	/* connect */
 	ret = cd_device_connect_sync (device, NULL, &error);
@@ -305,8 +480,7 @@ colord_client_random_func (void)
 	g_assert_no_error (error);
 	g_assert (ret);
 
-	g_assert_cmpstr (cd_profile_get_object_path (profile), ==,
-			 profile_path);
+	g_assert (g_str_has_prefix (cd_profile_get_object_path (profile), profile_path));
 	g_assert_cmpstr (cd_profile_get_id (profile), ==, profile_id);
 	g_assert (!cd_profile_get_is_system_wide (profile));
 
@@ -324,8 +498,7 @@ colord_client_random_func (void)
 						  &error);
 	g_assert_no_error (error);
 	g_assert (profile2 != NULL);
-	g_assert_cmpstr (cd_profile_get_object_path (profile2), ==,
-			 profile2_path);
+	g_assert (g_str_has_prefix (cd_profile_get_object_path (profile2), profile2_path));
 
 	/* connect */
 	ret = cd_profile_connect_sync (profile2, NULL, &error);
@@ -518,8 +691,7 @@ colord_client_random_func (void)
 								 &error);
 	g_assert_no_error (error);
 	g_assert (profile_tmp != NULL);
-	g_assert_cmpstr (cd_profile_get_object_path (profile), ==,
-			 profile_path);
+	g_assert (g_str_has_prefix (cd_profile_get_object_path (profile), profile_path));
 	g_object_unref (profile_tmp);
 
 	/* check matches wildcarded qualifier */
@@ -529,8 +701,7 @@ colord_client_random_func (void)
 								 &error);
 	g_assert_no_error (error);
 	g_assert (profile_tmp != NULL);
-	g_assert_cmpstr (cd_profile_get_object_path (profile_tmp), ==,
-			 profile_path);
+	g_assert (g_str_has_prefix (cd_profile_get_object_path (profile_tmp), profile_path));
 	g_object_unref (profile_tmp);
 
 	/* check hard profiles beat soft profiles */
@@ -540,8 +711,7 @@ colord_client_random_func (void)
 								 &error);
 	g_assert_no_error (error);
 	g_assert (profile_tmp != NULL);
-	g_assert_cmpstr (cd_profile_get_object_path (profile_tmp), ==,
-			 profile2_path);
+	g_assert (g_str_has_prefix (cd_profile_get_object_path (profile_tmp), profile2_path));
 	g_object_unref (profile_tmp);
 
 	/* uninhibit device (should fail) */
@@ -1483,7 +1653,7 @@ colord_device_async_func (void)
 	g_debug ("connected to device in %f", g_test_timer_elapsed ());
 
 	/* set a property in another instance */
-	device_tmp = cd_device_new_with_object_path ("/org/freedesktop/ColorManager/devices/device_async_dave");
+	device_tmp = cd_device_new_with_object_path ("/org/freedesktop/ColorManager/devices/device_async_dave_hughsie");
 	ret = cd_device_connect_sync (device_tmp, NULL, &error);
 	g_assert_no_error (error);
 	g_assert (ret);
@@ -1493,7 +1663,7 @@ colord_device_async_func (void)
 	g_object_unref (device_tmp);
 
 	/* delete known device */
-	device_tmp = cd_device_new_with_object_path ("/org/freedesktop/ColorManager/devices/device_async_dave");
+	device_tmp = cd_device_new_with_object_path ("/org/freedesktop/ColorManager/devices/device_async_dave_hughsie");
 	ret = cd_client_delete_device_sync (client, device_tmp, NULL, &error);
 	g_assert_no_error (error);
 	g_assert (ret);
@@ -1624,8 +1794,8 @@ colord_device_modified_func (void)
 					       &error);
 	g_assert_no_error (error);
 	g_assert (device != NULL);
-	g_assert_cmpstr (cd_device_get_object_path (device), ==,
-			 "/org/freedesktop/ColorManager/devices/device_dave");
+	g_assert (g_str_has_prefix (cd_device_get_object_path (device),
+		  "/org/freedesktop/ColorManager/devices/device_dave"));
 
 	/* connect */
 	ret = cd_device_connect_sync (device, NULL, &error);
@@ -1790,13 +1960,11 @@ colord_profile_ordering_func (void)
 	g_assert (array != NULL);
 	g_assert_cmpint (array->len, ==, 2);
 	profile_tmp = CD_PROFILE (g_ptr_array_index (array, 0));
-	g_assert_cmpstr (cd_profile_get_object_path (profile_tmp),
-			 ==,
-			 "/org/freedesktop/ColorManager/profiles/profile1");
+	g_assert (g_str_has_prefix (cd_profile_get_object_path (profile_tmp),
+				    "/org/freedesktop/ColorManager/profiles/profile1"));
 	profile_tmp = CD_PROFILE (g_ptr_array_index (array, 1));
-	g_assert_cmpstr (cd_profile_get_object_path (profile_tmp),
-			 ==,
-			 "/org/freedesktop/ColorManager/profiles/profile2");
+	g_assert (g_str_has_prefix (cd_profile_get_object_path (profile_tmp),
+				    "/org/freedesktop/ColorManager/profiles/profile2"));
 	g_ptr_array_unref (array);
 
 	/* delete profiles */
@@ -1840,9 +2008,8 @@ colord_profile_ordering_func (void)
 	g_assert (array != NULL);
 	g_assert_cmpint (array->len, ==, 1);
 	profile_tmp = CD_PROFILE (g_ptr_array_index (array, 0));
-	g_assert_cmpstr (cd_profile_get_object_path (profile_tmp),
-			 ==,
-			 "/org/freedesktop/ColorManager/profiles/profile1");
+	g_assert (g_str_has_prefix (cd_profile_get_object_path (profile_tmp),
+				    "/org/freedesktop/ColorManager/profiles/profile1"));
 	g_ptr_array_unref (array);
 
 	/* create older profile */
@@ -1864,13 +2031,11 @@ colord_profile_ordering_func (void)
 	g_assert (array != NULL);
 	g_assert_cmpint (array->len, ==, 2);
 	profile_tmp = CD_PROFILE (g_ptr_array_index (array, 0));
-	g_assert_cmpstr (cd_profile_get_object_path (profile_tmp),
-			 ==,
-			 "/org/freedesktop/ColorManager/profiles/profile1");
+	g_assert (g_str_has_prefix (cd_profile_get_object_path (profile_tmp),
+				    "/org/freedesktop/ColorManager/profiles/profile1"));
 	profile_tmp = CD_PROFILE (g_ptr_array_index (array, 1));
-	g_assert_cmpstr (cd_profile_get_object_path (profile_tmp),
-			 ==,
-			 "/org/freedesktop/ColorManager/profiles/profile2");
+	g_assert (g_str_has_prefix (cd_profile_get_object_path (profile_tmp),
+				    "/org/freedesktop/ColorManager/profiles/profile2"));
 	g_ptr_array_unref (array);
 
 	g_free (device_id);
@@ -2032,6 +2197,9 @@ main (int argc, char **argv)
 	/* tests go here */
 	g_test_add_func ("/colord/color", colord_color_func);
 	g_test_add_func ("/colord/math", cd_test_math_func);
+	g_test_add_func ("/colord/it8-raw", colord_it8_raw_func);
+	g_test_add_func ("/colord/it8-normalized", colord_it8_normalized_func);
+	g_test_add_func ("/colord/it8-ccmx", colord_it8_ccmx_func);
 	g_test_add_func ("/colord/device", colord_device_func);
 	g_test_add_func ("/colord/client", colord_client_func);
 	g_test_add_func ("/colord/device-duplicate", colord_device_duplicate_func);

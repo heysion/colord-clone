@@ -321,8 +321,13 @@ cd_util_show_sensor (CdSensor *sensor)
 	CdSensorState state;
 	const gchar *tmp;
 	gboolean ret;
+	gchar *str_tmp;
 	GError *error = NULL;
+	GHashTable *options = NULL;
+	GList *l;
+	GList *list = NULL;
 	GMainLoop *loop = NULL;
+	GVariant *value_tmp;
 
 	/* TRANSLATORS: the internal DBus path */
 	cd_util_print_field (_("Object Path"),
@@ -379,6 +384,26 @@ cd_util_show_sensor (CdSensor *sensor)
 			 tmp);
 	}
 
+	/* print sensor options */
+	options = cd_sensor_get_options (sensor);
+	list = g_hash_table_get_keys (options);
+	for (l = list; l != NULL; l = l->next) {
+		value_tmp = (GVariant *) g_hash_table_lookup (options,
+							      l->data);
+		if (g_variant_is_of_type (value_tmp, G_VARIANT_TYPE_STRING)) {
+			str_tmp = g_strdup_printf ("%s=%s",
+						   (const gchar *) l->data,
+						   g_variant_get_string (value_tmp, NULL));
+		} else {
+			str_tmp = g_strdup_printf ("%s=*unknown*",
+						   (const gchar *) l->data);
+		}
+
+		/* TRANSLATORS: the options for the sensor */
+		cd_util_print_field (_("Options"), str_tmp);
+		g_free (str_tmp);
+	}
+
 	/* TRANSLATORS: if the sensor has a colord native driver */
 	cd_util_print_field (_("Native"),
 			     cd_sensor_get_native (sensor) ? "Yes" : "No");
@@ -422,6 +447,8 @@ cd_util_show_sensor (CdSensor *sensor)
 		goto out;
 	}
 out:
+	g_list_free (list);
+	g_hash_table_unref (options);
 	if (loop != NULL)
 		g_main_loop_unref (loop);
 }
@@ -831,6 +858,88 @@ cd_util_get_sensor_reading (CdUtilPrivate *priv, gchar **values, GError **error)
 		cd_color_xyz_free (xyz);
 	}
 out:
+	if (array != NULL)
+		g_ptr_array_unref (array);
+	return ret;
+}
+
+/**
+ * cd_util_sensor_set_options:
+ **/
+static gboolean
+cd_util_sensor_set_options (CdUtilPrivate *priv, gchar **values, GError **error)
+{
+	CdSensor *sensor;
+	gboolean ret = TRUE;
+	GHashTable *options = NULL;
+	GPtrArray *array = NULL;
+	guint i;
+
+	if (g_strv_length (values) < 2) {
+		ret = FALSE;
+		g_set_error_literal (error,
+				     1, 0,
+				     "Not enough arguments, "
+				     "expected key value "
+				     "e.g. 'remote-profile-hash' 'deadbeef'");
+		goto out;
+	}
+
+	/* execute sync method */
+	array = cd_client_get_sensors_sync (priv->client, NULL, error);
+	if (array == NULL) {
+		ret = FALSE;
+		goto out;
+	}
+	if (array->len == 0) {
+		ret = FALSE;
+		/* TRANSLATORS: the user does not have a colorimeter attached */
+		g_set_error_literal (error, 1, 0,
+				     _("There are no supported sensors attached"));
+		goto out;
+	}
+
+	/* prepare options for each sensor */
+	options = g_hash_table_new (g_str_hash, g_str_equal);
+	g_hash_table_insert (options, values[0], g_variant_new_string (values[1]));
+
+	for (i=0; i < array->len; i++) {
+		sensor = g_ptr_array_index (array, i);
+
+		ret = cd_sensor_connect_sync (sensor, NULL, error);
+		if (!ret)
+			goto out;
+
+		/* lock */
+		ret = cd_sensor_lock_sync (sensor,
+					   NULL,
+					   error);
+		if (!ret)
+			goto out;
+
+		/* TRANSLATORS: this is the sensor title */
+		g_print ("%s: %s - %s\n", _("Sensor"),
+			 cd_sensor_get_vendor (sensor),
+			 cd_sensor_get_model (sensor));
+
+		/* set the options set */
+		ret = cd_sensor_set_options_sync (sensor,
+						  options,
+						  NULL,
+						  error);
+		if (!ret)
+			goto out;
+
+		/* unlock */
+		ret = cd_sensor_unlock_sync (sensor,
+					     NULL,
+					     error);
+		if (!ret)
+			goto out;
+	}
+out:
+	if (options != NULL)
+		g_hash_table_unref (options);
 	if (array != NULL)
 		g_ptr_array_unref (array);
 	return ret;
@@ -1783,6 +1892,11 @@ main (int argc, char *argv[])
 		     /* TRANSLATORS: command description */
 		     _("Locks the color sensor"),
 		     cd_util_sensor_lock);
+	cd_util_add (priv->cmd_array,
+		     "sensor-set-options",
+		     /* TRANSLATORS: command description */
+		     _("Sets one or more sensor options"),
+		     cd_util_sensor_set_options);
 	cd_util_add (priv->cmd_array,
 		     "create-device",
 		     /* TRANSLATORS: command description */

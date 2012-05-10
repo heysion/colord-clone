@@ -311,12 +311,12 @@
  * CH_CMD_TAKE_READINGS:
  *
  * Take a reading taking into account just dark offsets.
- * All of @red, @green and @blue are _signed_ values.
+ * All of @red, @green and @blue are packed float values.
  *
  * This command is useful if you want to do an ambient reading.
  *
  * IN:  [1:cmd]
- * OUT: [1:retval][1:cmd][2:red][2:green][2:blue]
+ * OUT: [1:retval][1:cmd][4:red][4:green][4:blue]
  *
  * This command is only available in firmware mode.
  **/
@@ -431,10 +431,10 @@
 /**
  * CH_CMD_GET_PRE_SCALE:
  *
- * Get the pre XYZ scaling constant.
+ * Get the pre XYZ scaling constant. @scale is a packed float.
  *
  * IN:  [1:cmd]
- * OUT: [1:retval][1:cmd][2:scale]
+ * OUT: [1:retval][1:cmd][4:scale]
  *
  * This command is only available in firmware mode.
  **/
@@ -443,9 +443,9 @@
 /**
  * CH_CMD_SET_PRE_SCALE:
  *
- * Set the pre XYZ scaling constant.
+ * Set the pre XYZ scaling constant. @scale is a packed float.
  *
- * IN:  [1:cmd][2:scale]
+ * IN:  [1:cmd][4:scale]
  * OUT: [1:retval][1:cmd]
  *
  * This command is only available in firmware mode.
@@ -455,10 +455,10 @@
 /**
  * CH_CMD_GET_POST_SCALE:
  *
- * Get the post XYZ scaling constant.
+ * Get the post XYZ scaling constant. @scale is a packed float.
  *
  * IN:  [1:cmd]
- * OUT: [1:retval][1:cmd][2:scale]
+ * OUT: [1:retval][1:cmd][4:scale]
  *
  * This command is only available in firmware mode.
  **/
@@ -467,9 +467,9 @@
 /**
  * CH_CMD_SET_POST_SCALE:
  *
- * Set the post XYZ scaling constant.
+ * Set the post XYZ scaling constant. @scale is a packed float.
  *
- * IN:  [1:cmd][2:scale]
+ * IN:  [1:cmd][4:scale]
  * OUT: [1:retval][1:cmd]
  *
  * This command is only available in firmware mode.
@@ -579,6 +579,33 @@
  * This command is available in firmware mode.
  **/
 #define	CH_CMD_GET_PCB_ERRATA			0x33
+
+/**
+ * CH_CMD_SET_REMOTE_HASH:
+ *
+ * Sets the remote SHA1 hash of the profile. This is designed to
+ * be used by the calibration program to indicate the key which allows
+ * the completed profile to be found from a public web service.
+ *
+ * IN:  [1:cmd][20:sha1_hash]
+ * OUT: [1:retval][1:cmd]
+ *
+ * This command is available in firmware mode.
+ **/
+#define	CH_CMD_SET_REMOTE_HASH			0x34
+
+/**
+ * CH_CMD_GET_REMOTE_HASH:
+ *
+ * Gets the remote hash which is used to get the last profile saved
+ * to a public web service.
+ *
+ * IN:  [1:cmd]
+ * OUT: [1:retval][1:cmd][20:sha1_hash]
+ *
+ * This command is available in firmware mode.
+ **/
+#define	CH_CMD_GET_REMOTE_HASH			0x35
 
 /* secret code */
 #define	CH_WRITE_EEPROM_MAGIC			"Un1c0rn2"
@@ -693,5 +720,16 @@ void		ch_device_write_command_async	(GUsbDevice	*device,
 gboolean	 ch_device_write_command_finish	(GUsbDevice	*device,
 						 GAsyncResult	*res,
 						 GError		**error);
+
+
+/* SHA1 hash */
+typedef struct {
+	guint8	bytes[20];
+} ChSha1;
+
+gchar		*ch_sha1_to_string		(const ChSha1		*sha1);
+gboolean	 ch_sha1_parse			(const gchar		*value,
+						 ChSha1			*sha1,
+						 GError			**error);
 
 #endif
