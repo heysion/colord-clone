@@ -16,6 +16,7 @@
 @SET_MAKE@
 
 
+
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkgincludedir = $(includedir)/@PACKAGE@
@@ -37,8 +38,10 @@ build_triplet = @build@
 host_triplet = @host@
 bin_PROGRAMS = colormgr$(EXEEXT) cd-create-profile$(EXEEXT) \
 	cd-fix-profile$(EXEEXT)
+@HAVE_GTK_TRUE@noinst_PROGRAMS = colord-convert$(EXEEXT)
 subdir = client
-DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
+DIST_COMMON = $(dist_bashcompletion_DATA) $(srcdir)/Makefile.am \
+	$(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/as-linguas.m4 \
 	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/gtk-doc.m4 \
@@ -69,8 +72,9 @@ libclientprivate_a_LIBADD =
 am_libclientprivate_a_OBJECTS = cd-common.$(OBJEXT) \
 	cd-lcms-helpers.$(OBJEXT)
 libclientprivate_a_OBJECTS = $(am_libclientprivate_a_OBJECTS)
-am__installdirs = "$(DESTDIR)$(bindir)"
-PROGRAMS = $(bin_PROGRAMS)
+am__installdirs = "$(DESTDIR)$(bindir)" \
+	"$(DESTDIR)$(bashcompletiondir)"
+PROGRAMS = $(bin_PROGRAMS) $(noinst_PROGRAMS)
 am_cd_create_profile_OBJECTS =  \
 	cd_create_profile-cd-create-profile.$(OBJEXT)
 cd_create_profile_OBJECTS = $(am_cd_create_profile_OBJECTS)
@@ -91,6 +95,17 @@ cd_fix_profile_DEPENDENCIES = libclientprivate.a $(am__DEPENDENCIES_1) \
 cd_fix_profile_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(cd_fix_profile_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o \
+	$@
+am__colord_convert_SOURCES_DIST = cd-convert.c
+@HAVE_GTK_TRUE@am_colord_convert_OBJECTS =  \
+@HAVE_GTK_TRUE@	colord_convert-cd-convert.$(OBJEXT)
+colord_convert_OBJECTS = $(am_colord_convert_OBJECTS)
+@HAVE_GTK_TRUE@colord_convert_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+@HAVE_GTK_TRUE@	$(COLORD_LIBS) $(am__DEPENDENCIES_1) \
+@HAVE_GTK_TRUE@	$(am__DEPENDENCIES_1)
+colord_convert_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(colord_convert_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o \
 	$@
 am_colormgr_OBJECTS = colormgr-cd-util.$(OBJEXT)
 colormgr_OBJECTS = $(am_colormgr_OBJECTS)
@@ -123,10 +138,39 @@ AM_V_GEN = $(am__v_GEN_@AM_V@)
 am__v_GEN_ = $(am__v_GEN_@AM_DEFAULT_V@)
 am__v_GEN_0 = @echo "  GEN   " $@;
 SOURCES = $(libclientprivate_a_SOURCES) $(cd_create_profile_SOURCES) \
-	$(cd_fix_profile_SOURCES) $(colormgr_SOURCES)
+	$(cd_fix_profile_SOURCES) $(colord_convert_SOURCES) \
+	$(colormgr_SOURCES)
 DIST_SOURCES = $(libclientprivate_a_SOURCES) \
 	$(cd_create_profile_SOURCES) $(cd_fix_profile_SOURCES) \
-	$(colormgr_SOURCES)
+	$(am__colord_convert_SOURCES_DIST) $(colormgr_SOURCES)
+am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
+am__vpath_adj = case $$p in \
+    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
+    *) f=$$p;; \
+  esac;
+am__strip_dir = f=`echo $$p | sed -e 's|^.*/||'`;
+am__install_max = 40
+am__nobase_strip_setup = \
+  srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*|]/\\\\&/g'`
+am__nobase_strip = \
+  for p in $$list; do echo "$$p"; done | sed -e "s|$$srcdirstrip/||"
+am__nobase_list = $(am__nobase_strip_setup); \
+  for p in $$list; do echo "$$p $$p"; done | \
+  sed "s| $$srcdirstrip/| |;"' / .*\//!s/ .*/ ./; s,\( .*\)/[^/]*$$,\1,' | \
+  $(AWK) 'BEGIN { files["."] = "" } { files[$$2] = files[$$2] " " $$1; \
+    if (++n[$$2] == $(am__install_max)) \
+      { print $$2, files[$$2]; n[$$2] = 0; files[$$2] = "" } } \
+    END { for (dir in files) print dir, files[dir] }'
+am__base_list = \
+  sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
+  sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
+am__uninstall_files_from_dir = { \
+  test -z "$$files" \
+    || { test ! -d "$$dir" && test ! -f "$$dir" && test ! -r "$$dir"; } \
+    || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
+         $(am__cd) "$$dir" && rm -f $$files; }; \
+  }
+DATA = $(dist_bashcompletion_DATA)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -179,6 +223,8 @@ GTKDOC_DEPS_CFLAGS = @GTKDOC_DEPS_CFLAGS@
 GTKDOC_DEPS_LIBS = @GTKDOC_DEPS_LIBS@
 GTKDOC_MKPDF = @GTKDOC_MKPDF@
 GTKDOC_REBASE = @GTKDOC_REBASE@
+GTK_CFLAGS = @GTK_CFLAGS@
+GTK_LIBS = @GTK_LIBS@
 GUDEV_CFLAGS = @GUDEV_CFLAGS@
 GUDEV_LIBS = @GUDEV_LIBS@
 GUSB_CFLAGS = @GUSB_CFLAGS@
@@ -330,6 +376,7 @@ INCLUDES = \
 	$(GTK_CFLAGS)					\
 	-I$(top_srcdir)					\
 	-I$(top_srcdir)/libcolord			\
+	-I$(top_srcdir)/libcolord-gtk			\
 	-DG_LOG_DOMAIN=\"Cd\"				\
 	-DCD_COMPILATION				\
 	-DLIBEXECDIR=\"$(libexecdir)\"			\
@@ -338,7 +385,10 @@ INCLUDES = \
 	-DVERSION="\"$(VERSION)\""			\
 	-DLOCALEDIR=\""$(localedir)"\"
 
-COLORD_LIBS = $(top_builddir)/libcolord/libcolord.la
+COLORD_LIBS = \
+	$(top_builddir)/libcolord/libcolord.la		\
+	$(top_builddir)/libcolord-gtk/libcolord-gtk.la
+
 noinst_LIBRARIES = libclientprivate.a
 libclientprivate_a_SOURCES = \
 	cd-common.c					\
@@ -382,6 +432,21 @@ cd_create_profile_LDADD = \
 cd_create_profile_CFLAGS = \
 	$(WARNINGFLAGS_C)
 
+@HAVE_GTK_TRUE@colord_convert_SOURCES = \
+@HAVE_GTK_TRUE@	cd-convert.c
+
+@HAVE_GTK_TRUE@colord_convert_LDADD = \
+@HAVE_GTK_TRUE@	$(LCMS_LIBS)					\
+@HAVE_GTK_TRUE@	$(COLORD_LIBS)					\
+@HAVE_GTK_TRUE@	$(GTK_LIBS)					\
+@HAVE_GTK_TRUE@	$(GLIB_LIBS)					\
+@HAVE_GTK_TRUE@	-lm
+
+@HAVE_GTK_TRUE@colord_convert_CFLAGS = \
+@HAVE_GTK_TRUE@	$(WARNINGFLAGS_C)
+
+bashcompletiondir = ${sysconfdir}/bash_completion.d
+dist_bashcompletion_DATA = colormgr-completion.bash
 MAINTAINERCLEANFILES = *.a
 all: all-am
 
@@ -467,12 +532,24 @@ clean-binPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
+
+clean-noinstPROGRAMS:
+	@list='$(noinst_PROGRAMS)'; test -n "$$list" || exit 0; \
+	echo " rm -f" $$list; \
+	rm -f $$list || exit $$?; \
+	test -n "$(EXEEXT)" || exit 0; \
+	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
+	echo " rm -f" $$list; \
+	rm -f $$list
 cd-create-profile$(EXEEXT): $(cd_create_profile_OBJECTS) $(cd_create_profile_DEPENDENCIES) $(EXTRA_cd_create_profile_DEPENDENCIES) 
 	@rm -f cd-create-profile$(EXEEXT)
 	$(AM_V_CCLD)$(cd_create_profile_LINK) $(cd_create_profile_OBJECTS) $(cd_create_profile_LDADD) $(LIBS)
 cd-fix-profile$(EXEEXT): $(cd_fix_profile_OBJECTS) $(cd_fix_profile_DEPENDENCIES) $(EXTRA_cd_fix_profile_DEPENDENCIES) 
 	@rm -f cd-fix-profile$(EXEEXT)
 	$(AM_V_CCLD)$(cd_fix_profile_LINK) $(cd_fix_profile_OBJECTS) $(cd_fix_profile_LDADD) $(LIBS)
+colord-convert$(EXEEXT): $(colord_convert_OBJECTS) $(colord_convert_DEPENDENCIES) $(EXTRA_colord_convert_DEPENDENCIES) 
+	@rm -f colord-convert$(EXEEXT)
+	$(AM_V_CCLD)$(colord_convert_LINK) $(colord_convert_OBJECTS) $(colord_convert_LDADD) $(LIBS)
 colormgr$(EXEEXT): $(colormgr_OBJECTS) $(colormgr_DEPENDENCIES) $(EXTRA_colormgr_DEPENDENCIES) 
 	@rm -f colormgr$(EXEEXT)
 	$(AM_V_CCLD)$(colormgr_LINK) $(colormgr_OBJECTS) $(colormgr_LDADD) $(LIBS)
@@ -487,6 +564,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd-lcms-helpers.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd_create_profile-cd-create-profile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd_fix_profile-cd-fix-profile.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colord_convert-cd-convert.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colormgr-cd-util.Po@am__quote@
 
 .c.o:
@@ -538,6 +616,20 @@ cd_fix_profile-cd-fix-profile.obj: cd-fix-profile.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_fix_profile_CFLAGS) $(CFLAGS) -c -o cd_fix_profile-cd-fix-profile.obj `if test -f 'cd-fix-profile.c'; then $(CYGPATH_W) 'cd-fix-profile.c'; else $(CYGPATH_W) '$(srcdir)/cd-fix-profile.c'; fi`
 
+colord_convert-cd-convert.o: cd-convert.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(colord_convert_CFLAGS) $(CFLAGS) -MT colord_convert-cd-convert.o -MD -MP -MF $(DEPDIR)/colord_convert-cd-convert.Tpo -c -o colord_convert-cd-convert.o `test -f 'cd-convert.c' || echo '$(srcdir)/'`cd-convert.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/colord_convert-cd-convert.Tpo $(DEPDIR)/colord_convert-cd-convert.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-convert.c' object='colord_convert-cd-convert.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(colord_convert_CFLAGS) $(CFLAGS) -c -o colord_convert-cd-convert.o `test -f 'cd-convert.c' || echo '$(srcdir)/'`cd-convert.c
+
+colord_convert-cd-convert.obj: cd-convert.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(colord_convert_CFLAGS) $(CFLAGS) -MT colord_convert-cd-convert.obj -MD -MP -MF $(DEPDIR)/colord_convert-cd-convert.Tpo -c -o colord_convert-cd-convert.obj `if test -f 'cd-convert.c'; then $(CYGPATH_W) 'cd-convert.c'; else $(CYGPATH_W) '$(srcdir)/cd-convert.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/colord_convert-cd-convert.Tpo $(DEPDIR)/colord_convert-cd-convert.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-convert.c' object='colord_convert-cd-convert.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(colord_convert_CFLAGS) $(CFLAGS) -c -o colord_convert-cd-convert.obj `if test -f 'cd-convert.c'; then $(CYGPATH_W) 'cd-convert.c'; else $(CYGPATH_W) '$(srcdir)/cd-convert.c'; fi`
+
 colormgr-cd-util.o: cd-util.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(colormgr_CFLAGS) $(CFLAGS) -MT colormgr-cd-util.o -MD -MP -MF $(DEPDIR)/colormgr-cd-util.Tpo -c -o colormgr-cd-util.o `test -f 'cd-util.c' || echo '$(srcdir)/'`cd-util.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/colormgr-cd-util.Tpo $(DEPDIR)/colormgr-cd-util.Po
@@ -557,6 +649,24 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
+install-dist_bashcompletionDATA: $(dist_bashcompletion_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(bashcompletiondir)" || $(MKDIR_P) "$(DESTDIR)$(bashcompletiondir)"
+	@list='$(dist_bashcompletion_DATA)'; test -n "$(bashcompletiondir)" || list=; \
+	for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  echo "$$d$$p"; \
+	done | $(am__base_list) | \
+	while read files; do \
+	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(bashcompletiondir)'"; \
+	  $(INSTALL_DATA) $$files "$(DESTDIR)$(bashcompletiondir)" || exit $$?; \
+	done
+
+uninstall-dist_bashcompletionDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(dist_bashcompletion_DATA)'; test -n "$(bashcompletiondir)" || list=; \
+	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
+	dir='$(DESTDIR)$(bashcompletiondir)'; $(am__uninstall_files_from_dir)
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
@@ -642,9 +752,9 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LIBRARIES) $(PROGRAMS)
+all-am: Makefile $(LIBRARIES) $(PROGRAMS) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(bindir)"; do \
+	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(bashcompletiondir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -681,7 +791,7 @@ maintainer-clean-generic:
 clean: clean-am
 
 clean-am: clean-binPROGRAMS clean-generic clean-libtool \
-	clean-noinstLIBRARIES mostlyclean-am
+	clean-noinstLIBRARIES clean-noinstPROGRAMS mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -701,7 +811,7 @@ info: info-am
 
 info-am:
 
-install-data-am:
+install-data-am: install-dist_bashcompletionDATA
 
 install-dvi: install-dvi-am
 
@@ -747,23 +857,25 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-binPROGRAMS
+uninstall-am: uninstall-binPROGRAMS uninstall-dist_bashcompletionDATA
 
 .MAKE: install-am install-strip
 
 .PHONY: CTAGS GTAGS all all-am check check-am clean clean-binPROGRAMS \
-	clean-generic clean-libtool clean-noinstLIBRARIES ctags \
-	distclean distclean-compile distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am html \
-	html-am info info-am install install-am install-binPROGRAMS \
-	install-data install-data-am install-dvi install-dvi-am \
+	clean-generic clean-libtool clean-noinstLIBRARIES \
+	clean-noinstPROGRAMS ctags distclean distclean-compile \
+	distclean-generic distclean-libtool distclean-tags distdir dvi \
+	dvi-am html html-am info info-am install install-am \
+	install-binPROGRAMS install-data install-data-am \
+	install-dist_bashcompletionDATA install-dvi install-dvi-am \
 	install-exec install-exec-am install-html install-html-am \
 	install-info install-info-am install-man install-pdf \
 	install-pdf-am install-ps install-ps-am install-strip \
 	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
-	tags uninstall uninstall-am uninstall-binPROGRAMS
+	tags uninstall uninstall-am uninstall-binPROGRAMS \
+	uninstall-dist_bashcompletionDATA
 
 
 -include $(top_srcdir)/git.mk

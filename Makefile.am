@@ -1,6 +1,6 @@
 AUTOMAKE_OPTIONS = 1.7
 
-ACLOCAL_AMFLAGS = -I m4
+ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 
 NULL =
 
@@ -9,14 +9,25 @@ SUBDIRS = 						\
 	policy						\
 	man						\
 	libcolord					\
+	rules						\
+	po
+
+if HAVE_GTK
+SUBDIRS += 						\
+	libcolord-gtk
+endif
+
+# this needs libcolord and libcolord-gtk
+SUBDIRS += 						\
 	client						\
 	contrib						\
-	data						\
-	examples					\
-	rules						\
 	doc						\
-	src						\
-	po
+	examples					\
+	src
+
+# this needs client/cd-create-profile
+SUBDIRS += 						\
+	data
 
 snapshot:
 	$(MAKE) dist distdir=$(PACKAGE)-$(VERSION)-`date +"%Y%m%d"`
@@ -24,6 +35,8 @@ snapshot:
 DISTCHECK_CONFIGURE_FLAGS =				\
 	--enable-introspection				\
 	--enable-fd-fallback				\
+	--enable-gtk					\
+	--enable-gtk-doc				\
 	--with-systemdsystemunitdir=$$dc_install_base/$(systemdsystemunitdir)
 
 EXTRA_DIST =						\

@@ -34,6 +34,9 @@
 /* Define if the GNU gettext() function is already present or preinstalled. */
 #undef HAVE_GETTEXT
 
+/* Use GTK support */
+#undef HAVE_GTK
+
 /* Use GUDEV support for hardware */
 #undef HAVE_GUDEV
 

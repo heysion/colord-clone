@@ -79,9 +79,10 @@ cd_color_yxy_dup (const CdColorYxy *src)
 
 /**
  * cd_color_xyz_get_type:
- * Return value: a #GType
  *
  * Gets a specific type.
+ *
+ * Return value: a #GType
  **/
 GType
 cd_color_xyz_get_type (void)
@@ -96,9 +97,10 @@ cd_color_xyz_get_type (void)
 
 /**
  * cd_color_rgb_get_type:
- * Return value: a #GType
  *
  * Gets a specific type.
+ *
+ * Return value: a #GType
  **/
 GType
 cd_color_rgb_get_type (void)
@@ -113,9 +115,10 @@ cd_color_rgb_get_type (void)
 
 /**
  * cd_color_yxy_get_type:
- * Return value: a #GType
  *
  * Gets a specific type.
+ *
+ * Return value: a #GType
  **/
 GType
 cd_color_yxy_get_type (void)
@@ -352,10 +355,6 @@ cd_color_convert_xyz_to_yxy (const CdColorXYZ *src, CdColorYxy *dest)
 
 	g_return_if_fail (src != NULL);
 	g_return_if_fail (dest != NULL);
-
-	g_assert (src->X < 96.0f);
-	g_assert (src->Y < 100.0f);
-	g_assert (src->Z < 109.0f);
 
 	/* prevent division by zero */
 	sum = src->X + src->Y + src->Z;

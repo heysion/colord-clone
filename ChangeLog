@@ -1,6 +1,676 @@
+commit ae057dab8200a98d877832a0b4019f16909a5042
+Author: Richard Hughes <richard@hughsie.com>
+Date:   2012-05-09
+
+    Release colord 0.1.20
+
+M	NEWS
+M	RELEASE
+M	doc/website/download.html
+M	po/bg_BG.po
+M	po/cs.po
+M	po/de.po
+M	po/en_GB.po
+M	po/eo.po
+M	po/es.po
+M	po/fi.po
+M	po/fr.po
+M	po/ga.po
+M	po/gl.po
+M	po/he.po
+M	po/hu.po
+M	po/id.po
+M	po/it.po
+M	po/ja.po
+M	po/kk.po
+M	po/ko.po
+M	po/lt.po
+M	po/lv.po
+M	po/nl.po
+M	po/pl.po
+M	po/pt_BR.po
+M	po/ro.po
+M	po/ru.po
+M	po/sk.po
+M	po/sl.po
+M	po/sv.po
+M	po/te.po
+M	po/tr.po
+M	po/uk.po
+M	po/zh_CN.po
+M	po/zh_TW.po
+
+commit 59f167402cca8512a399ff5d7ea36bfe9d4915dd
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-09
+
+    trivial: only build colorhug-convert if we have GTK support
+    compiled in
+
+M	client/Makefile.am
+
+commit 6539d14eb54edde21cefe1f82af99c2b707f6cff
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-09
+
+    trivial: add Gio dep to colord-convert
+
+    Resolves: https://bugs.freedesktop.org/show_bug.cgi?id=49691
+
+M	client/Makefile.am
+
+commit cd5f2dd289fafe6a433e636e1304c6c529b1c0d6
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-09
+
+    trivial: fix up the Fedora example spec file
+
+M	contrib/colord.spec.in
+
+commit ae9d72d925f073539f9a1ff39996bb2476a88664
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-09
+
+    trivial: fix quite a few issues with the gtk-doc documentation
+
+M	doc/api/colord-docs.xml
+M	libcolord-gtk/Makefile.am
+M	libcolord-gtk/colord-gtk.h
+M	libcolord/cd-color.c
+M	libcolord/cd-it8-utils.c
+M	libcolord/cd-it8.c
+
+commit ddf8bed4dcc0cb5255107d5f966c3a8567e00506
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-09
+
+    trivial: fix make distcheck by removing a generated file
+
+M	doc/api/Makefile.am
+
+commit 9b087c560549e31ae7bea9328a08adf255a16a92
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-09
+
+    trivial: build libcolord-gtk before the client tools
+
+M	Makefile.am
+
+commit 1f1bffaa596be2f50605c84a760d963e98f5530e
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-09
+
+    Add functionality to colord-convert to sample ti1 -> ti3 files
+
+M	client/Makefile.am
+M	client/cd-convert.c
+M	po/POTFILES.in
+
+commit bb1eac7825571ebd1c9481d9eca5a621ba76cb4c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-09
+
+    trivial: include @prefix@ in the colord-gtk.pc file
+
+M	libcolord-gtk/colord-gtk.pc.in
+
+commit 4bb385837f3386948719c9877a2e0a824a1321c9
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-09
+
+    Add CdSampleWindow to libcolord-gtk
+
+    This is used in two other of my projects, and makes sense to put
+    all in one place.
+
+M	libcolord-gtk/Makefile.am
+A	libcolord-gtk/cd-sample-window.c
+A	libcolord-gtk/cd-sample-window.h
+M	libcolord-gtk/cd-self-test.c
+M	libcolord-gtk/colord-gtk.h
+
+commit a6fab5e0495c9580ec68ec1055b45b92216cfe36
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-09
+
+    trivial: fix make check when using auto-edid profiles
+
+M	libcolord-gtk/cd-self-test.c
+
+commit 3779549f3d15ba06fb9656d41eb79a5912b229a4
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-09
+
+    trivial: fix a potential bug spotted by clang
+
+M	libcolord/cd-it8.c
+
+commit 989b55caaa729843cae5d3f7a36698edf9b0fc8f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-08
+
+    trivial: save the it8 file without the final '\0' byte
+
+M	libcolord/cd-it8.c
+
+commit efa679ec8c534cdd1a7bc7c4251ec119597d4686
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-08
+
+    trivial: accept ti1 files with just RGB data
+
+M	libcolord/cd-it8.c
+
+commit c331126ad52e35008e2d9c2e5471907f85392cc6
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-08
+
+    trivial: add the colorhug-convert utility for creating .ccmx files
+
+    This utility is not yet installed as it is incomplete.
+
+M	client/Makefile.am
+A	client/cd-convert.c
+
+commit 6a91f6d8091a5d08be3ce026f5b66c6fcdf14ee4
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-08
+
+    Add gio-2.0 to the requires line of colord.pc for GFile
+
+M	libcolord/colord.pc.in
+
+commit 68f92643e1cbdf55a60ed9af465347730251f15f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-08
+
+    trivial: add cd_it8_load_from_data()
+
+M	libcolord/cd-it8.c
+M	libcolord/cd-it8.h
+M	libcolord/cd-self-test.c
+
+commit e3e4b7cc03f19d3c38e3f68d978f82e45d0fd28d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-08
+
+    trivial: add cd_it8_set_title() and cd_it8_get_title()
+
+M	libcolord/cd-it8.c
+M	libcolord/cd-it8.h
+M	libcolord/cd-self-test.c
+
+commit 092c9ccce517393988e655731a970b143cff6916
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-08
+
+    trivial: add option support in CdIt8
+
+    NOTE: this only extracts options with the TYPE_ prefix.
+
+M	libcolord/cd-it8.c
+M	libcolord/cd-it8.h
+M	libcolord/cd-self-test.c
+
+commit f272e516a683d7fc33fd2b8a48a4c65ca790baf1
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-08
+
+    Add cd_it8_utils_calculate_ccmx() to libcolorhug
+
+M	libcolord/Makefile.am
+A	libcolord/cd-it8-utils.c
+C051	libcolord/colord.h	libcolord/cd-it8-utils.h
+M	libcolord/colord.h
+
+commit 0b22b7fe819f440b7082e3c8a3f7e17124721d1b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-08
+
+    Add CdIt8 as a helper for reading and writing ti1, ti3 and ccmx files
+
+M	data/tests/Makefile.am
+A	data/tests/calibration.ccmx
+A	data/tests/normalised.ti3
+A	data/tests/raw.ti3
+M	doc/api/colord-docs.xml
+M	libcolord/Makefile.am
+A	libcolord/cd-it8.c
+A	libcolord/cd-it8.h
+M	libcolord/cd-self-test.c
+M	libcolord/colord.h
+
+commit 74038bbf49f3c5a68c0abf2f7aeab9f7d9d1fe49
+Author: Craig Keogh <cskeogh@adam.com.au>
+Date:	2012-05-08
+
+    Fix build failure when colord is not installed system-wide
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	libcolord-gtk/Makefile.am
+
+commit 690848676b23226cbd2cb3a6a26bbbb81288392d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-08
+
+    trivial: remove an invalid bounds check in
+    cd_color_convert_xyz_to_yxy()
+
+M	libcolord/cd-color.c
+
+commit 8c1d1fc9177d168c8729dfebd10e5a9177d4c5e0
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-08
+
+    trivial: fix up the Oyranos FAQ page a little
+
+M	doc/website/faq.html
+
+commit 8ba2e91ef8fc7ad33bf8bcb0d29851d929c35969
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-04
+
+    trivial: Add cd_window_get_profile_sync() helper
+
+M	libcolord-gtk/Makefile.am
+A	libcolord-gtk/cd-window-sync.c
+C063	libcolord-gtk/colord-gtk.h	libcolord-gtk/cd-window-sync.h
+M	libcolord-gtk/colord-gtk.h
+
+commit abd7a7f7c1a64f07cebfedc0a146112d25f594f2
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-04
+
+    trivial: use the output coverage rather than the widget center point
+
+M	libcolord-gtk/cd-window.c
+
+commit d06b92be984d0eb02c51d31df4330170aca69a91
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-04
+
+    trivial: rename some of the API added in the last commit
+
+M	examples/cd-gtk-demo.c
+M	libcolord-gtk/cd-self-test.c
+M	libcolord-gtk/cd-window.c
+M	libcolord-gtk/cd-window.h
+
+commit 257d03d5e39f63ba7a2409ed1a3a3deecd6d5d91
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-03
+
+    Add CdWindow which allows us to get the color profile for a GtkWidget
+
+    This commit adds a gtk-3.0 dep to the new libcolord-gtk. You can
+    split this out
+    into a seporate subpackage if this makes things easier to install
+    on headless
+    things like print servers.
+
+M	Makefile.am
+M	configure.ac
+M	contrib/colord.spec.in
+A	examples/cd-gtk-demo.c
+A	libcolord-gtk/Makefile.am
+A	libcolord-gtk/cd-self-test.c
+A	libcolord-gtk/cd-window.c
+A	libcolord-gtk/cd-window.h
+A	libcolord-gtk/colord-gtk.h
+A	libcolord-gtk/colord-gtk.pc.in
+
+commit dc65fc9e88e775bf4a838ed6bca8e11e40581d11
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-03
+
+    trivial: Add copyright headers to the example programs
+
+M	examples/cd-find-device-by-property.py
+M	examples/cd-libcolord-find-device-by-property.c
+
+commit 31acaa1b33e68e3eb2c8afddb34b05e8d1da605f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-04-26
+
+    trivial: less hardcoding in examples
+
+M	examples/cd-dbus-use-qualifier.c
+
+commit 0ef118d8bc8c9f5d17b5e81885b1ed2e0bcb5de1
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-04-26
+
+    trivial: Correct a statement on the website
+
+M	doc/website/specifics.html
+
+commit ec16715bd163db3425575e8c99ee1aab0461274e
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-04-24
+
+    colorhug: Save the EEPROM after setting sensor options
+
+M	src/sensors/cd-sensor-colorhug.c
+
+commit a4f185d55594d7473a0bce9e1167b374364c9171
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-04-23
+
+    Enable gtk-doc in the default distro build
+
+M	contrib/colord.spec.in
+
+commit 19ba96d49e891f8bb23833ac09ad86adf8c0e678
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-04-23
+
+    trivial: get rid of a conditional in the summary that doesn't
+    exist anymore
+
+M	configure.ac
+
+commit d7e66ab7b365761eef4e044be9d4be50f2ff4606
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-04-23
+
+    Add a GObject Introspection example
+
+A	examples/cd-find-device-by-property.py
+
+commit 8bc5a037828d3c244f77366c74480b5a9c120de8
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-04-20
+
+    colorhug: Allow saving the remote hash as a sensor option
+
+M	src/sensors/cd-sensor-colorhug-private.c
+M	src/sensors/cd-sensor-colorhug-private.h
+M	src/sensors/cd-sensor-colorhug.c
+
+commit 1dd331190089d4e095f4eec35c59cc5c0349e308
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-04-19
+
+    trivial: update the colorhug header to reflect reality
+
+M	src/sensors/cd-sensor-colorhug-private.h
+
+commit 9efa97a703fb0e225dd780d1a15414ff941ef5ec
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-04-19
+
+    Add a bash completion file for colormgr
+
+M	client/Makefile.am
+A	client/colormgr-completion.bash
+M	contrib/colord.spec.in
+
+commit 3e174d1ca5935184020abff26b4bd1b0bb135360
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-04-19
+
+    trivial: fix a critical warning when getting a sensor sample
+
+    The value from g_variant_new() is floating, not ref'd.
+
+M	src/cd-sensor.c
+
+commit 96094fa1444981170cd79144d98624b04f5d8b81
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-04-19
+
+    Add a colord-private.h that can be used without GObject
+
+M	libcolord/Makefile.am
+A	libcolord/colord-private.h
+
+commit 7fbb58f5b265b164f90451fbfe04c9a78b7585ba
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-04-19
+
+    Print any sensor options when doing 'colormgr get-sensors'
+
+M	client/cd-util.c
+
+commit 1e93fb18ced35b08358a096c3c3b1c0822528ff7
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-04-19
+
+    Add a sensor-set-options sub-command to the colormgr tool
+
+M	client/cd-util.c
+
+commit 431766f359ccde466051796bb488804bfe1dc5dc
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-04-19
+
+    Add async and sync methods in libcolord to support sensor options
+
+M	libcolord/cd-sensor-sync.c
+M	libcolord/cd-sensor-sync.h
+M	libcolord/cd-sensor.c
+M	libcolord/cd-sensor.h
+
+commit 02e8230ac44e3fec386f5378690ed30211a11489
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-04-19
+
+    Add the concept of 'options' on each color sensor device
+
+    This allows us to modify things like the sample time and set other
+    non-standard
+    attributes on sensors.
+
+    The options are stored as an array of variants, so we can store ints,
+    strings or
+    even raw data in the hash table.
+
+M	src/cd-sensor.c
+M	src/cd-sensor.h
+M	src/org.freedesktop.ColorManager.Sensor.xml
+
+commit 394b574163547733d7538db4807a3480ddf93de6
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-04-19
+
+    Add a BUSY state value for sensor devices
+
+M	libcolord/cd-enum.c
+M	libcolord/cd-enum.h
+
+commit 20614052ef5d2aaa74c1a636186c363919e82084
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-04-19
+
+    trivial: make some common code more common
+
+M	src/cd-sensor.c
+
+commit ca900b7860385e8691684cf18547fa0689a72aa5
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-04-17
+
+    trivial: post release version bump
+
+M	RELEASE
+M	configure.ac
+
+commit ffdbbdc221cd5bafea6d2aa7f2dc676fb19bc9d7
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-04-17
+
+    Release colord 0.1.19
+
+M	NEWS
+M	doc/website/download.html
+M	po/eo.po
+M	po/gl.po
+M	po/id.po
+M	po/ja.po
+M	po/nl.po
+M	po/pt_BR.po
+M	po/ru.po
+M	po/te.po
+M	po/zh_CN.po
+
+commit 3b95137e326dd4137c923ff51630bdb3333f4aee
+Author: Craig Keogh <cskeogh@adam.com.au>
+Date:	2012-04-02
+
+    Honor aclocal flags (GNOME bug 653945)
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	Makefile.am
+
+commit c6f94f1398ef8e70a8069470cb63824af3b9ed0c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-30
+
+    trivial: fix up a compile failure in the uid == getuid patch
+
+M	src/cd-common.c
+
+commit 72d3ddb96b87247069a51212d834cc81e8d5b634
+Author: Christopher James Halse Rogers <raof@ubuntu.com>
+Date:	2012-03-28
+
+    Ensure colord-sane can create devices and profiles.
+
+    When colord-sane is running as @daemon_user@ it cannot gain the
+    authorisation
+    necessary for it to add or remove the devices and profiles it should.
+
+    Extend the existing uid 0 check to also authorise clients running
+    as @daemon_user@.
+
+M	src/cd-common.c
+
+commit d8eff946b1648a5a8b382867bb50a151f00b9260
+Author: Christopher James Halse Rogers <raof@ubuntu.com>
+Date:	2012-03-28
+
+    Add User key to colord-sane's DBus service file.
+
+    DBus will not spawn the service without this key;
+    Specify @daemon_user@ as the user to run the helper.
+
+M	contrib/colord-sane/org.freedesktop.colord-sane.service.in
+
+commit 4e28e25feaf611a4366fef88fec885657bfd76bc
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-29
+
+    Do not enable PrivateNetwork=yes as it breaks hotplugging devices
+
+    We think that udev's AF_NETLINK messages are being filtered when
+    network
+    namespacing is on.
+
+M	data/colord.service.in
+
+commit 0b30f6adb5b9105defa21e9936455e4efa9ad47e
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-28
+
+    Revert "Return the first profile we can access when getting the
+    device default profile"
+
+    We don't want to connect to each profile in a sync method just to
+    get the
+    default profile.
+
+    This reverts commit 536a2750289280c8453493be16347403b898b6df.
+
+M	libcolord/cd-device.c
+
+commit 628c5cb3197d6a04a5967035d7a82de86fdaebbc
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-26
+
+    Remove the 'Default,' profile title prefix if legacy profiles are
+    installed
+
+M	src/cd-profile.c
+
+commit 15bcad40a3b6c958bc322cc967c2e930145c96e1
+Author: John Sheu <john.sheu@gmail.com>
+Date:	2012-03-24
+
+    Fix usage of CD_OBJECT_SCOPE_* enums
+
+    Disk-scope devices apparently haven't been working for a while!
+
+    Some usages of these were using bitmask tests -- bad since these are
+    defined numerically.
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	src/cd-main.c
+
+commit 536a2750289280c8453493be16347403b898b6df
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-20
+
+    Return the first profile we can access when getting the device
+    default profile
+
+    The first profile in the list could belong to another user.
+
+M	libcolord/cd-device.c
+
+commit c3d7020ab84cdff63ce19f80040e027c6482a3da
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-17
+
+    Add a user suffix to the object path of user-created devices and
+    profiles
+
+    This means that two users logged in at the same time can have the
+    same device
+    and profile IDs, and the uid of the calling process is used to
+    choose the
+    correct profile.
+
+    The session should not prefix the username itself to the device-id
+    as the
+    device-id is required to be predictable for other clients to query.
+
+M	doc/device-and-profile-naming-spec.txt
+M	libcolord/cd-self-test.c
+M	src/Makefile.am
+M	src/cd-device-array.c
+M	src/cd-device-array.h
+M	src/cd-device.c
+M	src/cd-device.h
+M	src/cd-main.c
+M	src/cd-profile-array.c
+M	src/cd-profile-array.h
+M	src/cd-profile.c
+M	src/cd-profile.h
+M	src/cd-self-test.c
+
+commit eada0d279ef4d973ac1a3742f29e580ab1b400d5
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-17
+
+    trivial: Sync the Fedora spec file with upstream
+
+M	contrib/colord.spec.in
+
+commit 701b9c2be49bf6187ed2faa02a4ff116f6074a44
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-03-15
+
+    trivial: post release version bump
+
+M	RELEASE
+M	configure.ac
+
 commit 6ac743e2170fb5cdcd8612302ae65b2963c63c4a
 Author: Richard Hughes <richard@hughsie.com>
-Date:   2012-03-15
+Date:	2012-03-15
 
     Release colord 0.1.18
 

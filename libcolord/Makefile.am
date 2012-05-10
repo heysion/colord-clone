@@ -7,6 +7,7 @@ endif
 
 INCLUDES = \
 	$(GLIB_CFLAGS)						\
+	$(LCMS_CFLAGS)						\
 	-I$(top_srcdir)						\
 	-I$(top_srcdir)/libcolord				\
 	-DCD_COMPILATION					\
@@ -29,7 +30,8 @@ lib_LTLIBRARIES =						\
 
 libcolord_includedir = $(includedir)/colord-1
 libcolord_include_HEADERS =					\
-	colord.h
+	colord.h						\
+	colord-private.h
 
 libcolordbase_includedir = $(libcolord_includedir)/colord
 libcolordbase_include_HEADERS =					\
@@ -39,6 +41,8 @@ libcolordbase_include_HEADERS =					\
 	cd-device.h						\
 	cd-device-sync.h					\
 	cd-enum.h						\
+	cd-it8.h						\
+	cd-it8-utils.h						\
 	cd-math.h						\
 	cd-profile.h						\
 	cd-profile-sync.h					\
@@ -53,6 +57,8 @@ libcolord_la_SOURCES =						\
 	cd-device.c						\
 	cd-device-sync.c					\
 	cd-enum.c						\
+	cd-it8.c						\
+	cd-it8-utils.c						\
 	cd-math.c						\
 	cd-profile.c						\
 	cd-profile-sync.c					\
@@ -60,6 +66,7 @@ libcolord_la_SOURCES =						\
 	cd-sensor-sync.c
 
 libcolord_la_LIBADD =						\
+	$(LCMS_LIBS)						\
 	$(GLIB_LIBS)
 
 libcolord_la_LDFLAGS =						\

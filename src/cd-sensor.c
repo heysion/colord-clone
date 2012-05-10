@@ -65,6 +65,14 @@ typedef struct {
 	gboolean	 (*unlock_finish)	(CdSensor		*sensor,
 						 GAsyncResult		*res,
 						 GError			**error);
+	void		 (*set_options_async)	(CdSensor		*sensor,
+						 GHashTable		*options,
+						 GCancellable		*cancellable,
+						 GAsyncReadyCallback	 callback,
+						 gpointer		 user_data);
+	gboolean	 (*set_options_finish)	(CdSensor		*sensor,
+						 GAsyncResult		*res,
+						 GError			**error);
 } CdSensorIface;
 
 /**
@@ -89,6 +97,7 @@ struct _CdSensorPrivate
 	GDBusConnection			*connection;
 	guint				 registration_id;
 	CdSensorIface			*desc;
+	GHashTable			*options;
 };
 
 enum {
@@ -284,6 +293,8 @@ cd_sensor_load (CdSensor *sensor, GError **error)
 	/* connect up exported methods */
 	g_module_symbol (handle, "cd_sensor_get_sample_async", (gpointer *)&desc->get_sample_async);
 	g_module_symbol (handle, "cd_sensor_get_sample_finish", (gpointer *)&desc->get_sample_finish);
+	g_module_symbol (handle, "cd_sensor_set_options_async", (gpointer *)&desc->set_options_async);
+	g_module_symbol (handle, "cd_sensor_set_options_finish", (gpointer *)&desc->set_options_finish);
 	g_module_symbol (handle, "cd_sensor_coldplug", (gpointer *)&desc->coldplug);
 	g_module_symbol (handle, "cd_sensor_dump_device", (gpointer *)&desc->dump_device);
 	g_module_symbol (handle, "cd_sensor_lock_async", (gpointer *)&desc->lock_async);
@@ -442,8 +453,35 @@ cd_sensor_get_sample_cb (GObject *source_object,
 out:
 	if (sample != NULL)
 		cd_color_xyz_free (sample);
-	if (result != NULL)
-		g_variant_unref (result);
+}
+
+/**
+ * cd_sensor_set_options_cb:
+ **/
+static void
+cd_sensor_set_options_cb (GObject *source_object,
+			  GAsyncResult *res,
+			  gpointer user_data)
+{
+	gboolean ret;
+	CdSensor *sensor = CD_SENSOR (source_object);
+	GDBusMethodInvocation *invocation = (GDBusMethodInvocation *) user_data;
+	GError *error = NULL;
+
+	/* get the result */
+	ret = sensor->priv->desc->set_options_finish (sensor, res, &error);
+	if (!ret) {
+		g_dbus_method_invocation_return_error (invocation,
+						       CD_MAIN_ERROR,
+						       CD_MAIN_ERROR_FAILED,
+						       "failed to set options: %s",
+						       error->message);
+		g_error_free (error);
+		goto out;
+	}
+	g_dbus_method_invocation_return_value (invocation, NULL);
+out:
+	return;
 }
 
 /**
@@ -566,26 +604,30 @@ cd_sensor_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 			    const gchar *method_name, GVariant *parameters,
 			    GDBusMethodInvocation *invocation, gpointer user_data)
 {
+	CdSensorCap cap;
 	CdSensor *sensor = CD_SENSOR (user_data);
 	CdSensorPrivate *priv = sensor->priv;
-	CdSensorCap cap;
-	gboolean ret;
 	const gchar *cap_tmp = NULL;
+	gboolean ret;
+	gchar *key;
+	GHashTable *options = NULL;
+	GVariantIter iter;
 	GVariant *result = NULL;
+	GVariant *value;
+
+	/* check native */
+	if (!priv->native) {
+		g_dbus_method_invocation_return_error (invocation,
+						       CD_MAIN_ERROR,
+						       CD_MAIN_ERROR_FAILED,
+						       "no native driver for sensor");
+		goto out;
+	}
 
 	/* return '' */
 	if (g_strcmp0 (method_name, "Lock") == 0) {
 
 		g_debug ("CdSensor %s:Lock()", sender);
-
-		/* non-native */
-		if (!priv->native) {
-			g_dbus_method_invocation_return_error (invocation,
-							       CD_MAIN_ERROR,
-							       CD_MAIN_ERROR_FAILED,
-							       "cannot lock non-native driver");
-			goto out;
-		}
 
 		/* check locked */
 		if (priv->locked) {
@@ -630,15 +672,6 @@ cd_sensor_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 
 		g_debug ("CdSensor %s:Unlock()", sender);
 
-		/* non-native */
-		if (!priv->native) {
-			g_dbus_method_invocation_return_error (invocation,
-							       CD_MAIN_ERROR,
-							       CD_MAIN_ERROR_FAILED,
-							       "cannot unlock non-native driver");
-			goto out;
-		}
-
 		/* check locked */
 		if (!priv->locked) {
 			g_dbus_method_invocation_return_error (invocation,
@@ -679,15 +712,6 @@ cd_sensor_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 	if (g_strcmp0 (method_name, "GetSample") == 0) {
 
 		g_debug ("CdSensor %s:GetSample()", sender);
-
-		/* check native */
-		if (!priv->native) {
-			g_dbus_method_invocation_return_error (invocation,
-							       CD_MAIN_ERROR,
-							       CD_MAIN_ERROR_FAILED,
-							       "no native driver for sensor");
-			goto out;
-		}
 
 		/* check locked */
 		if (!priv->locked) {
@@ -738,11 +762,96 @@ cd_sensor_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 		goto out;
 	}
 
+	/* return '' */
+	if (g_strcmp0 (method_name, "SetOptions") == 0) {
+
+		g_debug ("CdSensor %s:SetOptions()", sender);
+
+		/* check locked */
+		if (!priv->locked) {
+			g_dbus_method_invocation_return_error (invocation,
+							       CD_MAIN_ERROR,
+							       CD_MAIN_ERROR_FAILED,
+							       "sensor is not yet locked");
+			goto out;
+		}
+
+		/*  check idle */
+		if (priv->state != CD_SENSOR_STATE_IDLE) {
+			g_dbus_method_invocation_return_error (invocation,
+							       CD_MAIN_ERROR,
+							       CD_MAIN_ERROR_FAILED,
+							       "sensor not idle: %s",
+							       cd_sensor_state_to_string (priv->state));
+			goto out;
+		}
+
+		/* no support */
+		if (sensor->priv->desc->set_options_async == NULL) {
+			g_dbus_method_invocation_return_error (invocation,
+							       CD_MAIN_ERROR,
+							       CD_MAIN_ERROR_FAILED,
+							       "no sensor options support");
+			goto out;
+		}
+
+		/* unwrap the parameters into a hash table */
+		options = g_hash_table_new_full (g_str_hash, g_str_equal,
+						 g_free, (GDestroyNotify) g_variant_unref);
+		result = g_variant_get_child_value (parameters, 0);
+		g_variant_iter_init (&iter, result);
+		while (g_variant_iter_next (&iter, "{sv}", &key, &value))
+			g_hash_table_insert (options, key, value);
+
+		/* proxy */
+		sensor->priv->desc->set_options_async (sensor,
+						       options,
+						       NULL,
+						       cd_sensor_set_options_cb,
+						       invocation);
+		goto out;
+	}
+
 	/* we suck */
 	g_critical ("failed to process sensor method %s", method_name);
 out:
+	if (options != NULL)
+		g_hash_table_unref (options);
 	if (result != NULL)
 		g_variant_unref (result);
+}
+
+/**
+ * cd_sensor_get_options_as_variant:
+ **/
+static GVariant *
+cd_sensor_get_options_as_variant (CdSensor *sensor)
+{
+	GList *list, *l;
+	GVariantBuilder builder;
+	GVariant *value;
+
+	/* do not try to build an empty array */
+	if (g_hash_table_size (sensor->priv->options) == 0) {
+		value = g_variant_new_array (G_VARIANT_TYPE ("{sv}"),
+					     NULL, 0);
+		goto out;
+	}
+
+	/* add all the keys in the dictionary to the variant builder */
+	list = g_hash_table_get_keys (sensor->priv->options);
+	g_variant_builder_init (&builder, G_VARIANT_TYPE_ARRAY);
+	for (l = list; l != NULL; l = l->next) {
+		g_variant_builder_add (&builder,
+				       "{sv}",
+				       l->data,
+				       g_hash_table_lookup (sensor->priv->options,
+							    l->data));
+	}
+	g_list_free (list);
+	value = g_variant_builder_end (&builder);
+out:
+	return value;
 }
 
 /**
@@ -805,6 +914,10 @@ cd_sensor_dbus_get_property (GDBusConnection *connection_, const gchar *sender,
 	}
 	if (g_strcmp0 (property_name, "Capabilities") == 0) {
 		retval = g_variant_new_strv ((const gchar * const*) priv->caps, -1);
+		goto out;
+	}
+	if (g_strcmp0 (property_name, "Options") == 0) {
+		retval = cd_sensor_get_options_as_variant (sensor);
 		goto out;
 	}
 
@@ -946,6 +1059,26 @@ cd_sensor_set_from_device (CdSensor *sensor,
 	return TRUE;
 }
 #endif
+
+/**
+ * cd_sensor_add_option:
+ **/
+void
+cd_sensor_add_option (CdSensor *sensor,
+		      const gchar *key,
+		      GVariant *value)
+{
+	GVariant *options;
+	g_hash_table_insert (sensor->priv->options,
+			     g_strdup (key),
+			     g_variant_ref_sink (value));
+
+	/* update clients */
+	options = cd_sensor_get_options_as_variant (sensor);
+	cd_sensor_dbus_emit_property_changed (sensor,
+					      "Options",
+					      options);
+}
 
 /**
  * cd_sensor_get_property:
@@ -1115,6 +1248,10 @@ cd_sensor_init (CdSensor *sensor)
 	sensor->priv->caps = g_new0 (gchar *, CD_SENSOR_CAP_LAST);
 	sensor->priv->state = CD_SENSOR_STATE_IDLE;
 	sensor->priv->mode = CD_SENSOR_CAP_UNKNOWN;
+	sensor->priv->options = g_hash_table_new_full (g_str_hash,
+						       g_str_equal,
+						       (GDestroyNotify) g_free,
+						       (GDestroyNotify) g_variant_unref);
 }
 
 /**
@@ -1141,6 +1278,7 @@ cd_sensor_finalize (GObject *object)
 	g_free (priv->serial);
 	g_free (priv->id);
 	g_free (priv->object_path);
+	g_hash_table_unref (priv->options);
 
 	G_OBJECT_CLASS (cd_sensor_parent_class)->finalize (object);
 }
