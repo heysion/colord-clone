@@ -46,4 +46,4 @@ override_dh_gencontrol:
 	dh_gencontrol
 
 %:
-	dh $@
+	dh $@ --parallel

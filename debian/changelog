@@ -14,6 +14,8 @@ colord (0.1.21-1) UNRELEASED; urgency=low
     - Update for new upstream
   * debian/rules:
     - Enable hardning flags
+  * debian/rules:
+    - Enable parallel builds
 
  -- Christopher James Halse Rogers <raof@ubuntu.com>  Wed, 30 May 2012 17:16:15 +1000
 
