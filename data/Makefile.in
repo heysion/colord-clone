@@ -344,8 +344,8 @@ dist_profile_DATA = x11-colors.icc crayons.icc
 dbusservicemaindir = $(datadir)/dbus-1/system-services
 dbusservicemain_in_files = org.freedesktop.ColorManager.service.in
 dbusservicemain_DATA = $(dbusservicemain_in_files:.service.in=.service)
+systemdservicemain_in_files = colord.service.in
 @HAVE_SYSTEMD_TRUE@systemdservicemaindir = $(systemdsystemunitdir)
-@HAVE_SYSTEMD_TRUE@systemdservicemain_in_files = colord.service.in
 @HAVE_SYSTEMD_TRUE@systemdservicemain_DATA = $(systemdservicemain_in_files:.service.in=.service)
 EXTRA_DIST = $(dbusservicemain_in_files) \
 	org.freedesktop.ColorManager.conf.in $(am__append_1)

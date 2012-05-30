@@ -37,10 +37,11 @@ build_triplet = @build@
 host_triplet = @host@
 @HAVE_GUDEV_TRUE@@HAVE_SANE_TRUE@libexec_PROGRAMS =  \
 @HAVE_GUDEV_TRUE@@HAVE_SANE_TRUE@	colord-sane$(EXEEXT)
-@HAVE_SYSTEMD_TRUE@am__append_1 = $(systemdservicemain_in_files)
+@HAVE_SANE_TRUE@@HAVE_SYSTEMD_TRUE@am__append_1 = $(systemdservicemain_in_files)
 subdir = contrib/colord-sane
-DIST_COMMON = $(dist_dbus_DATA) $(dist_introspection_DATA) \
-	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+DIST_COMMON = $(am__dist_dbus_DATA_DIST) \
+	$(am__dist_introspection_DATA_DIST) $(srcdir)/Makefile.am \
+	$(srcdir)/Makefile.in \
 	$(srcdir)/org.freedesktop.colord-sane.conf.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/as-linguas.m4 \
@@ -134,6 +135,8 @@ am__uninstall_files_from_dir = { \
     || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
          $(am__cd) "$$dir" && rm -f $$files; }; \
   }
+am__dist_dbus_DATA_DIST = org.freedesktop.colord-sane.conf
+am__dist_introspection_DATA_DIST = org.freedesktop.colord.sane.xml
 DATA = $(dbusservicemain_DATA) $(dist_dbus_DATA) \
 	$(dist_introspection_DATA) $(systemdservicemain_DATA)
 ETAGS = etags
@@ -336,23 +339,23 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-introspectiondir = $(datadir)/dbus-1/interfaces
-dist_introspection_DATA = \
-	org.freedesktop.colord.sane.xml
+@HAVE_SANE_TRUE@introspectiondir = $(datadir)/dbus-1/interfaces
+@HAVE_SANE_TRUE@dist_introspection_DATA = \
+@HAVE_SANE_TRUE@	org.freedesktop.colord.sane.xml
 
-INCLUDES = \
-	$(GLIB_CFLAGS)					\
-	$(GUDEV_CFLAGS)					\
-	$(SANE_CFLAGS)					\
-	-I$(top_srcdir)					\
-	-I$(top_srcdir)/libcolord			\
-	-DG_LOG_DOMAIN=\"CdSane\"			\
-	-DLIBEXECDIR=\"$(libexecdir)\"			\
-	-DDATADIR=\"$(datadir)\"			\
-	-DVERSION="\"$(VERSION)\""			\
-	-DCD_COMPILATION				\
-	-DG_UDEV_API_IS_SUBJECT_TO_CHANGE		\
-	-DLOCALEDIR=\""$(localedir)"\"
+@HAVE_SANE_TRUE@INCLUDES = \
+@HAVE_SANE_TRUE@	$(GLIB_CFLAGS)					\
+@HAVE_SANE_TRUE@	$(GUDEV_CFLAGS)					\
+@HAVE_SANE_TRUE@	$(SANE_CFLAGS)					\
+@HAVE_SANE_TRUE@	-I$(top_srcdir)					\
+@HAVE_SANE_TRUE@	-I$(top_srcdir)/libcolord			\
+@HAVE_SANE_TRUE@	-DG_LOG_DOMAIN=\"CdSane\"			\
+@HAVE_SANE_TRUE@	-DLIBEXECDIR=\"$(libexecdir)\"			\
+@HAVE_SANE_TRUE@	-DDATADIR=\"$(datadir)\"			\
+@HAVE_SANE_TRUE@	-DVERSION="\"$(VERSION)\""			\
+@HAVE_SANE_TRUE@	-DCD_COMPILATION				\
+@HAVE_SANE_TRUE@	-DG_UDEV_API_IS_SUBJECT_TO_CHANGE		\
+@HAVE_SANE_TRUE@	-DLOCALEDIR=\""$(localedir)"\"
 
 @HAVE_GUDEV_TRUE@@HAVE_SANE_TRUE@COLORD_LIBS = \
 @HAVE_GUDEV_TRUE@@HAVE_SANE_TRUE@	$(top_builddir)/libcolord/libcolord.la
@@ -369,20 +372,21 @@ INCLUDES = \
 @HAVE_GUDEV_TRUE@@HAVE_SANE_TRUE@colord_sane_CFLAGS = \
 @HAVE_GUDEV_TRUE@@HAVE_SANE_TRUE@	$(WARNINGFLAGS_C)
 
-dbusdir = $(sysconfdir)/dbus-1/system.d
-dist_dbus_DATA = org.freedesktop.colord-sane.conf
-dbusservicemaindir = $(datadir)/dbus-1/system-services
-dbusservicemain_in_files = org.freedesktop.colord-sane.service.in
-dbusservicemain_DATA = $(dbusservicemain_in_files:.service.in=.service)
-@HAVE_SYSTEMD_TRUE@systemdservicemaindir = $(systemdsystemunitdir)
-@HAVE_SYSTEMD_TRUE@systemdservicemain_in_files = colord-sane.service.in
-@HAVE_SYSTEMD_TRUE@systemdservicemain_DATA = $(systemdservicemain_in_files:.service.in=.service)
-EXTRA_DIST = $(dbusservicemain_in_files) \
-	org.freedesktop.colord-sane.conf.in $(am__append_1)
-DISTCLEANFILES = \
-	$(dbusservicemain_DATA)				\
-	$(dist_profile_DATA)				\
-	$(systemdservicemain_DATA)
+@HAVE_SANE_TRUE@dbusdir = $(sysconfdir)/dbus-1/system.d
+@HAVE_SANE_TRUE@dist_dbus_DATA = org.freedesktop.colord-sane.conf
+@HAVE_SANE_TRUE@dbusservicemaindir = $(datadir)/dbus-1/system-services
+@HAVE_SANE_TRUE@dbusservicemain_in_files = org.freedesktop.colord-sane.service.in
+@HAVE_SANE_TRUE@dbusservicemain_DATA = $(dbusservicemain_in_files:.service.in=.service)
+@HAVE_SANE_TRUE@@HAVE_SYSTEMD_TRUE@systemdservicemaindir = $(systemdsystemunitdir)
+@HAVE_SANE_TRUE@@HAVE_SYSTEMD_TRUE@systemdservicemain_in_files = colord-sane.service.in
+@HAVE_SANE_TRUE@@HAVE_SYSTEMD_TRUE@systemdservicemain_DATA = $(systemdservicemain_in_files:.service.in=.service)
+@HAVE_SANE_TRUE@EXTRA_DIST = $(dbusservicemain_in_files) \
+@HAVE_SANE_TRUE@	org.freedesktop.colord-sane.conf.in \
+@HAVE_SANE_TRUE@	$(am__append_1)
+@HAVE_SANE_TRUE@DISTCLEANFILES = \
+@HAVE_SANE_TRUE@	$(dbusservicemain_DATA)				\
+@HAVE_SANE_TRUE@	$(dist_profile_DATA)				\
+@HAVE_SANE_TRUE@	$(systemdservicemain_DATA)
 
 all: all-am
 
@@ -802,14 +806,14 @@ uninstall-am: uninstall-dbusservicemainDATA uninstall-dist_dbusDATA \
 	uninstall-dist_dbusDATA uninstall-dist_introspectionDATA \
 	uninstall-libexecPROGRAMS uninstall-systemdservicemainDATA
 
-$(dbusservicemain_DATA): $(dbusservicemain_in_files) Makefile
-	@sed -e "s|\@servicedir\@|$(libexecdir)|" $< | \
-	sed -e "s|\@daemon_user\@|$(daemon_user)|" > $@
-@HAVE_SYSTEMD_TRUE@$(systemdservicemain_DATA): $(systemdservicemain_in_files) Makefile
-@HAVE_SYSTEMD_TRUE@	@sed -e "s|\@servicedir\@|$(libexecdir)|" $< | \
-@HAVE_SYSTEMD_TRUE@	sed -e "s|\@daemon_user\@|$(daemon_user)|" > $@
+@HAVE_SANE_TRUE@$(dbusservicemain_DATA): $(dbusservicemain_in_files) Makefile
+@HAVE_SANE_TRUE@	@sed -e "s|\@servicedir\@|$(libexecdir)|" $< | \
+@HAVE_SANE_TRUE@	sed -e "s|\@daemon_user\@|$(daemon_user)|" > $@
+@HAVE_SANE_TRUE@@HAVE_SYSTEMD_TRUE@$(systemdservicemain_DATA): $(systemdservicemain_in_files) Makefile
+@HAVE_SANE_TRUE@@HAVE_SYSTEMD_TRUE@	@sed -e "s|\@servicedir\@|$(libexecdir)|" $< | \
+@HAVE_SANE_TRUE@@HAVE_SYSTEMD_TRUE@	sed -e "s|\@daemon_user\@|$(daemon_user)|" > $@
 
--include $(top_srcdir)/git.mk
+@HAVE_SANE_TRUE@-include $(top_srcdir)/git.mk
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

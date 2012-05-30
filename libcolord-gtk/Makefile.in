@@ -347,9 +347,12 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 @HAVE_INTROSPECTION_TRUE@INTROSPECTION_GIRS = ColordGtk-1.0.gir
-@HAVE_INTROSPECTION_TRUE@INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir)
-@HAVE_INTROSPECTION_TRUE@INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir) \
-@HAVE_INTROSPECTION_TRUE@				--includedir=$(top_srcdir)/libcolord
+@HAVE_INTROSPECTION_TRUE@INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir)		\
+@HAVE_INTROSPECTION_TRUE@				--add-include-path=$(top_builddir)/libcolord
+
+@HAVE_INTROSPECTION_TRUE@INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)			\
+@HAVE_INTROSPECTION_TRUE@				--includedir=$(top_srcdir)/libcolord	\
+@HAVE_INTROSPECTION_TRUE@				--includedir=$(top_builddir)/libcolord
 
 INCLUDES = \
 	$(GLIB_CFLAGS)						\

@@ -79,7 +79,7 @@
 </pre>
 </div>
 <div class="refsect1">
-<a name="id480726"></a><h2>Signals</h2>
+<a name="id452942"></a><h2>Signals</h2>
 <pre class="synopsis"><a class="link" href="ColorManager.html#ColorManager::Changed">Changed</a>        ()
 <a class="link" href="ColorManager.html#ColorManager::DeviceAdded">DeviceAdded</a>    ('o' object_path)
 <a class="link" href="ColorManager.html#ColorManager::DeviceRemoved">DeviceRemoved</a>  ('o' object_path)
@@ -92,7 +92,7 @@
 </pre>
 </div>
 <div class="refsect1">
-<a name="id480327"></a><h2>Implemented Interfaces</h2>
+<a name="id452542"></a><h2>Implemented Interfaces</h2>
 <p>
     Objects implementing org.freedesktop.ColorManager also implements
     org.freedesktop.DBus.Introspectable,
@@ -100,12 +100,12 @@
     </p>
 </div>
 <div class="refsect1">
-<a name="id480344"></a><h2>Properties</h2>
+<a name="id452559"></a><h2>Properties</h2>
 <pre class="synopsis"><a class="link" href="ColorManager.html#ColorManager:DaemonVersion">'DaemonVersion'</a> read      's'
 </pre>
 </div>
 <div class="refsect1">
-<a name="id480366"></a><h2>Description</h2>
+<a name="id452582"></a><h2>Description</h2>
 <p>
       
         </p>
@@ -117,9 +117,9 @@
     </p>
 </div>
 <div class="refsect1">
-<a name="id486261"></a><h2>Details</h2>
+<a name="id458477"></a><h2>Details</h2>
 <div class="refsect2">
-<a name="id486268"></a><h3>
+<a name="id458484"></a><h3>
 <a name="ColorManager.GetDevices"></a>GetDevices ()</h3>
 <pre class="programlisting">GetDevices (out 'ao' devices)</pre>
 </div>
@@ -139,7 +139,7 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id486320"></a><h3>
+<a name="id458536"></a><h3>
 <a name="ColorManager.GetDevicesByKind"></a>GetDevicesByKind ()</h3>
 <pre class="programlisting">GetDevicesByKind (in  's'  kind,
                   out 'ao' devices)</pre>
@@ -171,7 +171,7 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id485668"></a><h3>
+<a name="id457883"></a><h3>
 <a name="ColorManager.FindDeviceById"></a>FindDeviceById ()</h3>
 <pre class="programlisting">FindDeviceById (in  's' device_id,
                 out 'o' object_path)</pre>
@@ -206,7 +206,7 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id473879"></a><h3>
+<a name="id446094"></a><h3>
 <a name="ColorManager.FindDeviceByProperty"></a>FindDeviceByProperty ()</h3>
 <pre class="programlisting">FindDeviceByProperty (in  's' key,
                       in  's' value,
@@ -246,7 +246,7 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id473968"></a><h3>
+<a name="id446183"></a><h3>
 <a name="ColorManager.FindProfileById"></a>FindProfileById ()</h3>
 <pre class="programlisting">FindProfileById (in  's' profile_id,
                  out 'o' object_path)</pre>
@@ -277,7 +277,7 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id474029"></a><h3>
+<a name="id446244"></a><h3>
 <a name="ColorManager.FindProfileByFilename"></a>FindProfileByFilename ()</h3>
 <pre class="programlisting">FindProfileByFilename (in  's' filename,
                        out 'o' object_path)</pre>
@@ -308,7 +308,7 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id474090"></a><h3>
+<a name="id446305"></a><h3>
 <a name="ColorManager.GetStandardSpace"></a>GetStandardSpace ()</h3>
 <pre class="programlisting">GetStandardSpace (in  's' standard-space,
                   out 'o' object_path)</pre>
@@ -348,7 +348,7 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id474181"></a><h3>
+<a name="id446397"></a><h3>
 <a name="ColorManager.GetProfiles"></a>GetProfiles ()</h3>
 <pre class="programlisting">GetProfiles (out 'ao' devices)</pre>
 </div>
@@ -368,7 +368,7 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id474233"></a><h3>
+<a name="id446448"></a><h3>
 <a name="ColorManager.GetSensors"></a>GetSensors ()</h3>
 <pre class="programlisting">GetSensors (out 'ao' devices)</pre>
 </div>
@@ -388,7 +388,7 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id474284"></a><h3>
+<a name="id446500"></a><h3>
 <a name="ColorManager.GetProfilesByKind"></a>GetProfilesByKind ()</h3>
 <pre class="programlisting">GetProfilesByKind (in  's'  kind,
                    out 'ao' devices)</pre>
@@ -420,7 +420,7 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id474364"></a><h3>
+<a name="id446579"></a><h3>
 <a name="ColorManager.CreateProfileWithFd"></a>CreateProfileWithFd ()</h3>
 <pre class="programlisting">CreateProfileWithFd (in  's'     profile_id,
                      in  's'     scope,
@@ -511,7 +511,7 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id474522"></a><h3>
+<a name="id446737"></a><h3>
 <a name="ColorManager.CreateProfile"></a>CreateProfile ()</h3>
 <pre class="programlisting">CreateProfile (in  's'     profile_id,
                in  's'     scope,
@@ -565,7 +565,7 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id474620"></a><h3>
+<a name="id446835"></a><h3>
 <a name="ColorManager.CreateDevice"></a>CreateDevice ()</h3>
 <pre class="programlisting">CreateDevice (in  's'     device_id,
               in  's'     scope,
@@ -635,7 +635,7 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id474748"></a><h3>
+<a name="id446964"></a><h3>
 <a name="ColorManager.DeleteDevice"></a>DeleteDevice ()</h3>
 <pre class="programlisting">DeleteDevice (in  'o' object_path)</pre>
 </div>
@@ -655,7 +655,7 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id474794"></a><h3>
+<a name="id447010"></a><h3>
 <a name="ColorManager.DeleteProfile"></a>DeleteProfile ()</h3>
 <pre class="programlisting">DeleteProfile (in  'o' object_path)</pre>
 </div>
@@ -675,9 +675,9 @@
 </table></div>
 </div>
 <div class="refsect1">
-<a name="id474841"></a><h2>Signal Details</h2>
+<a name="id447057"></a><h2>Signal Details</h2>
 <div class="refsect2">
-<a name="id474849"></a><h3>
+<a name="id447065"></a><h3>
 <a name="ColorManager::Changed"></a>The Changed signal</h3>
 <pre class="programlisting">Changed ()</pre>
 </div>
@@ -691,7 +691,7 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id474881"></a><h3>
+<a name="id447096"></a><h3>
 <a name="ColorManager::DeviceAdded"></a>The DeviceAdded signal</h3>
 <pre class="programlisting">DeviceAdded ('o' object_path)</pre>
 </div>
@@ -711,7 +711,7 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id474923"></a><h3>
+<a name="id447139"></a><h3>
 <a name="ColorManager::DeviceRemoved"></a>The DeviceRemoved signal</h3>
 <pre class="programlisting">DeviceRemoved ('o' object_path)</pre>
 </div>
@@ -731,7 +731,7 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id474966"></a><h3>
+<a name="id447182"></a><h3>
 <a name="ColorManager::DeviceChanged"></a>The DeviceChanged signal</h3>
 <pre class="programlisting">DeviceChanged ('o' object_path)</pre>
 </div>
@@ -751,7 +751,7 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id475009"></a><h3>
+<a name="id447224"></a><h3>
 <a name="ColorManager::ProfileAdded"></a>The ProfileAdded signal</h3>
 <pre class="programlisting">ProfileAdded ('o' object_path)</pre>
 </div>
@@ -771,7 +771,7 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id475052"></a><h3>
+<a name="id447267"></a><h3>
 <a name="ColorManager::ProfileRemoved"></a>The ProfileRemoved signal</h3>
 <pre class="programlisting">ProfileRemoved ('o' object_path)</pre>
 </div>
@@ -791,7 +791,7 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id475094"></a><h3>
+<a name="id447310"></a><h3>
 <a name="ColorManager::SensorAdded"></a>The SensorAdded signal</h3>
 <pre class="programlisting">SensorAdded ('o' object_path)</pre>
 </div>
@@ -811,7 +811,7 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id475137"></a><h3>
+<a name="id447352"></a><h3>
 <a name="ColorManager::SensorRemoved"></a>The SensorRemoved signal</h3>
 <pre class="programlisting">SensorRemoved ('o' object_path)</pre>
 </div>
@@ -831,7 +831,7 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id475180"></a><h3>
+<a name="id447395"></a><h3>
 <a name="ColorManager::ProfileChanged"></a>The ProfileChanged signal</h3>
 <pre class="programlisting">ProfileChanged ('o' object_path)</pre>
 </div>
@@ -851,9 +851,9 @@
 </table></div>
 </div>
 <div class="refsect1">
-<a name="id475224"></a><h2>Property Details</h2>
+<a name="id447439"></a><h2>Property Details</h2>
 <div class="refsect2">
-<a name="id475232"></a><h3>
+<a name="id447447"></a><h3>
 <a name="ColorManager:DaemonVersion"></a>The "DaemonVersion" property</h3>
 <pre class="programlisting">'DaemonVersion'  read      's'
 </pre>
