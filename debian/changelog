@@ -16,6 +16,9 @@ colord (0.1.21-1) UNRELEASED; urgency=low
     - Enable hardning flags
   * debian/rules:
     - Enable parallel builds
+  * debian/cd-fix-profile.1:
+  * debian/colord.manpages:
+    - Drop local manpage; now shipped upstream
 
  -- Christopher James Halse Rogers <raof@ubuntu.com>  Wed, 30 May 2012 17:16:15 +1000
 
