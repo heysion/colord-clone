@@ -135,6 +135,35 @@ libcolord.so.1 libcolord1 #MINVER#
  cd_device_set_serial_sync@Base 0.1.10
  cd_device_set_vendor_sync@Base 0.1.10
  cd_device_to_string@Base 0.1.10
+ cd_it8_add_data@Base 0.1.20
+ cd_it8_add_option@Base 0.1.20
+ cd_it8_error_quark@Base 0.1.20
+ cd_it8_get_data_item@Base 0.1.20
+ cd_it8_get_data_size@Base 0.1.20
+ cd_it8_get_instrument@Base 0.1.20
+ cd_it8_get_kind@Base 0.1.20
+ cd_it8_get_matrix@Base 0.1.20
+ cd_it8_get_normalized@Base 0.1.20
+ cd_it8_get_originator@Base 0.1.20
+ cd_it8_get_reference@Base 0.1.20
+ cd_it8_get_spectral@Base 0.1.20
+ cd_it8_get_title@Base 0.1.20
+ cd_it8_get_type@Base 0.1.20
+ cd_it8_has_option@Base 0.1.20
+ cd_it8_load_from_data@Base 0.1.20
+ cd_it8_load_from_file@Base 0.1.20
+ cd_it8_new@Base 0.1.20
+ cd_it8_new_with_kind@Base 0.1.20
+ cd_it8_save_to_file@Base 0.1.20
+ cd_it8_set_instrument@Base 0.1.20
+ cd_it8_set_kind@Base 0.1.20
+ cd_it8_set_matrix@Base 0.1.20
+ cd_it8_set_normalized@Base 0.1.20
+ cd_it8_set_originator@Base 0.1.20
+ cd_it8_set_reference@Base 0.1.20
+ cd_it8_set_spectral@Base 0.1.20
+ cd_it8_set_title@Base 0.1.20
+ cd_it8_utils_calculate_ccmx@Base 0.1.20
  cd_mat33_clear@Base 0.1.15
  cd_mat33_copy@Base 0.1.15
  cd_mat33_determinant@Base 0.1.17
@@ -202,6 +231,8 @@ libcolord.so.1 libcolord1 #MINVER#
  cd_sensor_get_model@Base 0.1.10
  cd_sensor_get_native@Base 0.1.10
  cd_sensor_get_object_path@Base 0.1.10
+ cd_sensor_get_option@Base 0.1.20
+ cd_sensor_get_options@Base 0.1.20
  cd_sensor_get_sample@Base 0.1.10
  cd_sensor_get_sample_finish@Base 0.1.10
  cd_sensor_get_sample_sync@Base 0.1.10
@@ -218,6 +249,9 @@ libcolord.so.1 libcolord1 #MINVER#
  cd_sensor_new@Base 0.1.10
  cd_sensor_new_with_object_path@Base 0.1.10
  cd_sensor_set_object_path@Base 0.1.10
+ cd_sensor_set_options@Base 0.1.20
+ cd_sensor_set_options_finish@Base 0.1.20
+ cd_sensor_set_options_sync@Base 0.1.20
  cd_sensor_state_from_string@Base 0.1.10
  cd_sensor_state_to_string@Base 0.1.10
  cd_sensor_unlock@Base 0.1.10
