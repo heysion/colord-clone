@@ -1,4 +1,4 @@
-colord (0.1.21-1) UNRELEASED; urgency=low
+colord (0.1.21-1) unstable; urgency=low
 
   * New upstream version 
   * debian/patches/01_fix_colord_sane.diff:
