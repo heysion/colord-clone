@@ -1,5 +1,5 @@
 [Unit]
-Description=Daemon for managing, installing and generating color profiles
+Description=Manage, Install and Generate Color Profiles
 
 [Service]
 Type=dbus
@@ -10,10 +10,3 @@ User=@daemon_user@
 # network namespacing is on.
 # PrivateNetwork=yes
 PrivateTmp=yes
-
-[Install]
-# We pull this in by graphical.target instead of waiting for the bus
-# activation, to speed things up a little: gdm uses this anyway so it is nice
-# if it is already around when gdm wants to use it and doesn't have to wait for
-# it.
-WantedBy=graphical.target

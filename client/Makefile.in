@@ -101,8 +101,8 @@ am__colord_convert_SOURCES_DIST = cd-convert.c
 @HAVE_GTK_TRUE@	colord_convert-cd-convert.$(OBJEXT)
 colord_convert_OBJECTS = $(am_colord_convert_OBJECTS)
 @HAVE_GTK_TRUE@colord_convert_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-@HAVE_GTK_TRUE@	$(COLORD_LIBS) $(am__DEPENDENCIES_1) \
-@HAVE_GTK_TRUE@	$(am__DEPENDENCIES_1)
+@HAVE_GTK_TRUE@	$(COLORD_LIBS) $(COLORD_GTK_LIBS) \
+@HAVE_GTK_TRUE@	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 colord_convert_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(colord_convert_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o \
@@ -386,7 +386,9 @@ INCLUDES = \
 	-DLOCALEDIR=\""$(localedir)"\"
 
 COLORD_LIBS = \
-	$(top_builddir)/libcolord/libcolord.la		\
+	$(top_builddir)/libcolord/libcolord.la
+
+COLORD_GTK_LIBS = \
 	$(top_builddir)/libcolord-gtk/libcolord-gtk.la
 
 noinst_LIBRARIES = libclientprivate.a
@@ -438,6 +440,7 @@ cd_create_profile_CFLAGS = \
 @HAVE_GTK_TRUE@colord_convert_LDADD = \
 @HAVE_GTK_TRUE@	$(LCMS_LIBS)					\
 @HAVE_GTK_TRUE@	$(COLORD_LIBS)					\
+@HAVE_GTK_TRUE@	$(COLORD_GTK_LIBS)				\
 @HAVE_GTK_TRUE@	$(GTK_LIBS)					\
 @HAVE_GTK_TRUE@	$(GLIB_LIBS)					\
 @HAVE_GTK_TRUE@	-lm

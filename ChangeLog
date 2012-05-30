@@ -1,6 +1,139 @@
+commit d69d2ae736fd601cd21314c464fcbd24e68cc1db
+Author: Richard Hughes <richard@hughsie.com>
+Date:   2012-05-22
+
+    Release colord 0.1.21
+
+M	NEWS
+M	configure.ac
+M	doc/website/download.html
+M	po/cs.po
+M	po/fi.po
+
+commit 32c9bffc3264d09fe755f7abbc3e77b167a30371
+Author: Benedikt Morbach <benedikt.morbach@googlemail.com>
+Date:	2012-05-22
+
+    Fix autotools when configuring without systemd
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	configure.ac
+M	data/Makefile.am
+
+commit eb14ca20a52d92465c586c19764cb16ccd9e3c55
+Author: Benedikt Morbach <benedikt.morbach@googlemail.com>
+Date:	2012-05-22
+
+    Fix the description in the systemd service file
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	data/colord.service.in
+
+commit 80ca44664b8e433ddc39f7953ff4de2e589103dd
+Author: Benedikt Morbach <benedikt.morbach@googlemail.com>
+Date:	2012-05-22
+
+    Do not use 'WantedBy=graphical.target' in the shipped systemd file
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	data/colord.service.in
+
+commit a44ac58af394245c1363629ba9d2de6ee6936d34
+Author: Christoph Brill <egore@gmx.de>
+Date:	2012-05-22
+
+    Do not install any parts of colord-sane if --disable-sane is specified
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	contrib/colord-sane/Makefile.am
+
+commit 6a5bffec8e1473371e8828a8f92a56f52014e04c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-21
+
+    Save the CCMX and ITx files to be compatible with argyllcms
+
+    CGATS specifies 7 bytes for the sheet type identifier.
+
+M	libcolord/cd-it8.c
+
+commit df7e9c73aac52f2202c0d61c3dab7d55e82ce57b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-18
+
+    trivial: fix a critical warning when a sensor connect fails
+
+M	client/cd-util.c
+
+commit d34d3f5d5ad8765b48f6fb9d1bf48e543c2bf900
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-18
+
+    The ColorHug has a new VID and PID
+
+    Also recognise the old vendor and product IDs, as there is no new
+    firmware
+    available yet that uses the new values.
+
+M	rules/69-cd-sensors.rules.in
+M	src/sensors/cd-sensor-colorhug-private.h
+M	src/sensors/cd-sensor-colorhug.c
+
+commit 82ccb761d009ada20b2356f25e4e47d2c79efd70
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-17
+
+    Do not add sensors that are ignored or have no caps
+
+M	src/cd-sensor-client.c
+M	src/cd-sensor.c
+
+commit c786626694a2a286b55e1f09424b248bbae93584
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-16
+
+    Fix InstallSystemWide() by not writing a private file
+
+    Resolves: https://bugzilla.gnome.org/show_bug.cgi?id=676194
+
+M	src/cd-profile.c
+
+commit 67f6b43497d55b99b30c412fa8d0e8f3782f1969
+Author: Yanko Kaneti <yaneti@declera.com>
+Date:	2012-05-10
+
+    Isolate gtk dependency to cd-convert
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	client/Makefile.am
+
+commit 84b57f1c6b12595f4d7da1e4a66d93f95f3f3e10
+Author: Colin Walters <walters@verbum.org>
+Date:	2012-05-09
+
+    build: Fix srcdir != builddir with introspection enabled
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	libcolord-gtk/Makefile.am
+
+commit 94e6ada69a820d9eb0be54c5e8fade9da6e6f4c4
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2012-05-09
+
+    trivial: post release version bump
+
+M	RELEASE
+M	configure.ac
+
 commit ae057dab8200a98d877832a0b4019f16909a5042
 Author: Richard Hughes <richard@hughsie.com>
-Date:   2012-05-09
+Date:	2012-05-09
 
     Release colord 0.1.20
 
