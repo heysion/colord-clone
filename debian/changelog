@@ -12,6 +12,8 @@ colord (0.1.21-1) UNRELEASED; urgency=low
     - Add libcolord-gtk1 library
   * debian/libcolord1.symbols:
     - Update for new upstream
+  * debian/rules:
+    - Enable hardning flags
 
  -- Christopher James Halse Rogers <raof@ubuntu.com>  Wed, 30 May 2012 17:16:15 +1000
 
