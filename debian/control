@@ -2,7 +2,7 @@ Source: colord
 Priority: optional
 Maintainer: Christopher James Halse Rogers <raof@ubuntu.com>
 Build-Depends: 
- debhelper (>= 8.1.3),
+ debhelper (>= 9),
  autotools-dev,
  intltool,
  libglib2.0-dev,
