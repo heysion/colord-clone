@@ -18,6 +18,9 @@ Build-Depends:
  gobject-introspection,
  libgirepository1.0-dev,
  libgtk-3-dev,
+ dh-autoreconf,
+ gtk-doc-tools,
+ autopoint,
 Standards-Version: 3.9.2
 Section: graphics
 Homepage: http://www.freedesktop.org/software/colord/

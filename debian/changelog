@@ -1,3 +1,20 @@
+colord (0.1.21-2) unstable; urgency=low
+
+  * debian/patches/also_sanitise_username_for_dbus.patch:
+    - Sanitise username when used as a component of a DBus object path.
+      Fixes crash in cd_device_register_object (Closes: 675852) (LP: #1021374)
+  * debian/patches/fix_colord-sane_dbus_threading.patch:
+    - Initialise libdbus threadsafety in colord-sane. (Probably) fixes multiple
+      crashes from colord-sane in libdbus (LP: #844286). Plausibly fixes other
+      bad colord-sane behaviour, such as 100% CPU usage (Closes: 668325)
+  * debian/rules:
+  * debian/control:
+    - Add dh_autoreconf to pick up the build system changes from
+      fix_colord-sane_dbus_threading.patch and add all the various
+      build-depends required.
+
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Wed, 12 Sep 2012 18:28:06 +1000
+
 colord (0.1.21-1) unstable; urgency=low
 
   * New upstream version 
