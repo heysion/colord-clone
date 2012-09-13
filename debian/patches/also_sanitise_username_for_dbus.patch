@@ -6,9 +6,9 @@ Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/colord/+bug/1021374
 
 Index: colord/src/cd-device.c
 ===================================================================
---- colord.orig/src/cd-device.c	2012-09-13 12:25:40.336402926 +1000
-+++ colord/src/cd-device.c	2012-09-13 12:26:20.868404118 +1000
-@@ -244,19 +244,20 @@
+--- colord.orig/src/cd-device.c	2012-09-13 14:06:46.476688685 +1000
++++ colord/src/cd-device.c	2012-09-13 14:08:33.172692354 +1000
+@@ -244,19 +244,21 @@
  	gchar *path_owner;
  	struct passwd *pw;
  
@@ -25,9 +25,10 @@ Index: colord/src/cd-device.c
 -		path_owner = g_strdup_printf ("%s_%s",
 -					      path_tmp,
 -					      pw->pw_name);
-+		path_tmp = g_strdup_printf ("%s_%s",
++		path_tmp = g_strdup_printf ("%s_%s_%d",
 +					    device->priv->id,
-+					    pw->pw_name);
++					    pw->pw_name,
++					    device->priv->owner);
  	}
 +
 +	/* make sure object path is sane */
@@ -38,9 +39,9 @@ Index: colord/src/cd-device.c
  						      path_owner,
 Index: colord/src/cd-profile.c
 ===================================================================
---- colord.orig/src/cd-profile.c	2012-09-13 12:25:40.336402926 +1000
-+++ colord/src/cd-profile.c	2012-09-13 12:27:13.472405664 +1000
-@@ -171,19 +171,20 @@
+--- colord.orig/src/cd-profile.c	2012-09-13 14:06:46.476688685 +1000
++++ colord/src/cd-profile.c	2012-09-13 14:08:33.172692354 +1000
+@@ -171,19 +171,21 @@
  	gchar *path_owner;
  	struct passwd *pw;
  
@@ -57,9 +58,10 @@ Index: colord/src/cd-profile.c
 -		path_owner = g_strdup_printf ("%s_%s",
 -					      path_tmp,
 -					      pw->pw_name);
-+		path_tmp = g_strdup_printf ("%s_%s",
++		path_tmp = g_strdup_printf ("%s_%s_%d",
 +					    profile->priv->id,
-+					    pw->pw_name);
++					    pw->pw_name,
++					    profile->priv->owner);
  	}
 +	/* make sure object path is sane */
 +	path_owner = cd_main_ensure_dbus_path (path_tmp);
