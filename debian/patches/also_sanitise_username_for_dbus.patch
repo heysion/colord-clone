@@ -4,9 +4,11 @@ Bug: https://bugs.freedesktop.org/show_bug.cgi?id=51031
 Bug-Debian: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=675852
 Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/colord/+bug/1021374
 
---- colord-0.1.21.orig/src/cd-device.c
-+++ colord-0.1.21/src/cd-device.c
-@@ -244,19 +244,20 @@ cd_device_set_object_path (CdDevice *dev
+Index: colord/src/cd-device.c
+===================================================================
+--- colord.orig/src/cd-device.c	2012-09-13 12:25:40.336402926 +1000
++++ colord/src/cd-device.c	2012-09-13 12:26:20.868404118 +1000
+@@ -244,19 +244,20 @@
  	gchar *path_owner;
  	struct passwd *pw;
  
@@ -34,3 +36,34 @@ Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/colord/+bug/1021374
  	device->priv->object_path = g_build_filename (COLORD_DBUS_PATH,
  						      "devices",
  						      path_owner,
+Index: colord/src/cd-profile.c
+===================================================================
+--- colord.orig/src/cd-profile.c	2012-09-13 12:25:40.336402926 +1000
++++ colord/src/cd-profile.c	2012-09-13 12:27:13.472405664 +1000
+@@ -171,19 +171,20 @@
+ 	gchar *path_owner;
+ 	struct passwd *pw;
+ 
+-	/* make sure object path is sane */
+-	path_tmp = cd_main_ensure_dbus_path (profile->priv->id);
+ 
+ 	/* append the uid to the object path */
+ 	pw = getpwuid (profile->priv->owner);
+ 	if (profile->priv->owner == 0 ||
+ 	    g_strcmp0 (pw->pw_name, DAEMON_USER) == 0) {
+-		path_owner = g_strdup (path_tmp);
++		path_tmp = g_strdup (profile->priv->id);
+ 	} else {
+-		path_owner = g_strdup_printf ("%s_%s",
+-					      path_tmp,
+-					      pw->pw_name);
++		path_tmp = g_strdup_printf ("%s_%s",
++					    profile->priv->id,
++					    pw->pw_name);
+ 	}
++	/* make sure object path is sane */
++	path_owner = cd_main_ensure_dbus_path (path_tmp);
++
+ 	profile->priv->object_path = g_build_filename (COLORD_DBUS_PATH,
+ 						       "profiles",
+ 						       path_owner,
