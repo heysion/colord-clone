@@ -1,3 +1,12 @@
+colord (0.1.21-3) unstable; urgency=low
+
+  * debian/control:
+    - Add libdbus-1-dev to build depends; the patches in 0.1.21-2 introduce a
+      new dbus dependency, causing FTBFS on !linux archs (Closes: 689300).
+      Thanks, Pino Toscano!
+
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Tue, 02 Oct 2012 13:54:26 +1000
+
 colord (0.1.21-2) unstable; urgency=low
 
   * debian/patches/also_sanitise_username_for_dbus.patch:

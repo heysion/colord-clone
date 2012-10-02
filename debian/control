@@ -14,6 +14,7 @@ Build-Depends:
  libgusb-dev [linux-any],
  libpolkit-gobject-1-dev (>= 0.103),
  libsane-dev [linux-any],
+ libdbus-1-dev,
  valac,
  gobject-introspection,
  libgirepository1.0-dev,
