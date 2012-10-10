@@ -4,8 +4,13 @@ colord (0.1.21-4) unstable; urgency=low
     - Rework colord-sane to be run once per sane probe. This works around
       bugs in libsane and its plugins, which otherwise leak fds causing all
       manner of bad behaviour, such as high CPU usage. (Closes: 668325)
+  * debian/patches/initialise_gdbus_connection_sooner.patch:
+    - Initialise connection variable from the bus_connected callback rather
+      than the name_acquired callback. Fixes a race where colord could try to
+      process a request before name_acquired was called, resulting in an
+      abort().
 
- -- Christopher James Halse Rogers <raof@ubuntu.com>  Wed, 10 Oct 2012 14:33:25 +1100
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Wed, 10 Oct 2012 21:12:29 +1100
 
 colord (0.1.21-3) unstable; urgency=low
 
