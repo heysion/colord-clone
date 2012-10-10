@@ -1,3 +1,12 @@
+colord (0.1.21-4) unstable; urgency=low
+
+  * debian/patches/one_shot_colord-sane:
+    - Rework colord-sane to be run once per sane probe. This works around
+      bugs in libsane and its plugins, which otherwise leak fds causing all
+      manner of bad behaviour, such as high CPU usage. (Closes: 668325)
+
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Wed, 10 Oct 2012 14:33:25 +1100
+
 colord (0.1.21-3) unstable; urgency=low
 
   * debian/control:
