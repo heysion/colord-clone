@@ -6,7 +6,11 @@ case "$1" in
     configure)
     
 # create the scanner group if it isn't already there
-	addgroup --quiet --system scanner
+# We need to check for the existence of the group to avoid system/non-system
+# group discrepencies. (Bug #648287, LP: #989921)
+        if ! getent group scanner >/dev/null; then
+	    addgroup --quiet --system scanner
+        fi
 
 # ensure /var/lib/colord exists...
 	mkdir -p /var/lib/colord
