@@ -2126,10 +2126,11 @@ cd_main_plugin_device_removed_cb (CdPlugin *plugin,
 /**
  * cd_main_load_plugin:
  */
-static void
+static gboolean
 cd_main_load_plugin (CdMainPrivate *priv, const gchar *filename)
 {
 	CdPluginGetDescFunc plugin_desc = NULL;
+	CdPluginProbeFunc plugin_probe = NULL;
 	CdPlugin *plugin;
 	gboolean ret;
 	GModule *module;
@@ -2138,7 +2139,7 @@ cd_main_load_plugin (CdMainPrivate *priv, const gchar *filename)
 	if (module == NULL) {
 		g_warning ("failed to open plugin %s: %s",
 			   filename, g_module_error ());
-		goto out;
+		return FALSE;
 	}
 
 	/* get description */
@@ -2148,7 +2149,19 @@ cd_main_load_plugin (CdMainPrivate *priv, const gchar *filename)
 	if (!ret) {
 		g_warning ("Plugin %s requires description", filename);
 		g_module_close (module);
-		goto out;
+		return FALSE;
+	}
+
+	/* give the module the option to opt-out */
+	ret = g_module_symbol (module,
+			       "cd_plugin_probe",
+			       (gpointer *) &plugin_probe);
+	if (ret) {
+		if (!plugin_probe (priv->config)) {
+			g_debug ("plugin %s refused to load", filename);
+			g_module_close (module);
+			return FALSE;
+		}
 	}
 
 	/* print what we know */
@@ -2161,8 +2174,7 @@ cd_main_load_plugin (CdMainPrivate *priv, const gchar *filename)
 
 	/* add to array */
 	g_ptr_array_add (priv->plugins, plugin);
-out:
-	return;
+	return TRUE;
 }
 
 /**
@@ -2198,8 +2210,11 @@ cd_main_load_plugins (CdMainPrivate *priv)
 		filename_plugin = g_build_filename (path,
 						    filename_tmp,
 						    NULL);
-		cd_main_load_plugin (priv, filename_plugin);
-		syslog (LOG_INFO, "Loading plugin %s", filename_tmp);
+		if (cd_main_load_plugin (priv, filename_plugin)) {
+			syslog (LOG_INFO, "Loading plugin %s", filename_tmp);
+		} else {
+			syslog (LOG_INFO, "Plugin %s not loaded", filename_tmp);
+		}
 		g_free (filename_plugin);
 	} while (TRUE);
 out:

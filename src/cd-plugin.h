@@ -25,6 +25,7 @@
 #include <glib-object.h>
 
 #include "cd-device.h"
+#include "cd-config.h"
 
 G_BEGIN_DECLS
 
@@ -36,6 +37,7 @@ typedef void		 (*CdPluginFunc)		(CdPlugin	*plugin);
 typedef void		 (*CdPluginDeviceFunc)		(CdPlugin	*plugin,
 							 CdDevice	*device,
 							 gpointer	 user_data);
+typedef gboolean	 (*CdPluginProbeFunc)		(CdConfig	*config);
 
 struct CdPlugin {
 	GModule			*module;
@@ -65,6 +67,9 @@ void		 cd_plugin_device_added			(CdPlugin	*plugin,
 							 CdDevice	*device);
 void		 cd_plugin_device_removed		(CdPlugin	*plugin,
 							 CdDevice	*device);
+
+/* optional probe function. Returns false if plugin should not be enabled */
+gboolean	 cd_plugin_probe			(CdConfig	*config);
 
 G_END_DECLS
 
