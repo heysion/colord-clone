@@ -21,6 +21,8 @@ case "$1" in
 
 # ...finally, ensure /var/lib/colord has the right permissions
 	chown -R colord:colord /var/lib/colord
+# Restore selinux context (Bug #695085)
+        [ -x /sbin/restorecon ] && /sbin/restorecon /var/lib/colord
 
 
 	;;
