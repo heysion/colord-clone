@@ -34,14 +34,6 @@ cd-sensor
 
 
 
-<!-- ##### ENUM CdSensorError ##### -->
-<para>
-
-</para>
-
-@CD_SENSOR_ERROR_FAILED: 
-@CD_SENSOR_ERROR_LAST: 
-
 <!-- ##### USER_FUNCTION _cd_sensor_reserved1 ##### -->
 <para>
 
@@ -165,6 +157,24 @@ cd-sensor
 
 
 <!-- ##### FUNCTION cd_sensor_get_connected ##### -->
+<para>
+
+</para>
+
+@sensor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_sensor_get_embedded ##### -->
+<para>
+
+</para>
+
+@sensor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_sensor_get_id ##### -->
 <para>
 
 </para>

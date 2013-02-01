@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>cd-sensor-sync</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
 <link rel="home" href="index.html" title="colord Reference Manual">
 <link rel="up" href="libcolord-glib-helpers.html" title="libcolord-glib helpers">
 <link rel="prev" href="colord-cd-profile-sync.html" title="cd-profile-sync">
@@ -80,8 +80,11 @@ Connects to the object and fills up initial properties.
 WARNING: This function is synchronous, and may block.
 Do not use it in GUI applications.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
@@ -119,8 +122,11 @@ Gets a sample from the sensor.
 WARNING: This function is synchronous, and may block.
 Do not use it in GUI applications.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
@@ -160,8 +166,11 @@ Locks the device so we can use it.
 WARNING: This function is synchronous, and may block.
 Do not use it in GUI applications.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
@@ -199,12 +208,20 @@ Sets options on the sensor device.
 WARNING: This function is synchronous, and may block.
 Do not use it in GUI applications.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
 <td>a <span class="type">CdSensor</span> instance.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>values</code></em> :</span></p></td>
+<td>the options. <span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> utf8 GVariant]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
@@ -237,8 +254,11 @@ Unlocks the device for use by other programs.
 WARNING: This function is synchronous, and may block.
 Do not use it in GUI applications.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>

@@ -14,8 +14,6 @@
 
 @SET_MAKE@
 
-
-
 VPATH = @srcdir@
 am__make_dryrun = \
   { \
@@ -52,11 +50,9 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-bin_PROGRAMS = colormgr$(EXEEXT) cd-create-profile$(EXEEXT) \
-	cd-fix-profile$(EXEEXT)
-subdir = client
-DIST_COMMON = $(dist_bashcompletion_DATA) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(top_srcdir)/depcomp
+subdir = src/plugins
+DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+	$(top_srcdir)/depcomp
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/as-linguas.m4 \
 	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/gtk-doc.m4 \
@@ -74,49 +70,73 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-LIBRARIES = $(noinst_LIBRARIES)
-ARFLAGS = cru
-AM_V_AR = $(am__v_AR_@AM_V@)
-am__v_AR_ = $(am__v_AR_@AM_DEFAULT_V@)
-am__v_AR_0 = @echo "  AR      " $@;
-am__v_AR_1 = 
-libclientprivate_a_AR = $(AR) $(ARFLAGS)
-libclientprivate_a_LIBADD =
-am_libclientprivate_a_OBJECTS = cd-common.$(OBJEXT) \
-	cd-lcms-helpers.$(OBJEXT)
-libclientprivate_a_OBJECTS = $(am_libclientprivate_a_OBJECTS)
-am__installdirs = "$(DESTDIR)$(bindir)" \
-	"$(DESTDIR)$(bashcompletiondir)"
-PROGRAMS = $(bin_PROGRAMS)
-am_cd_create_profile_OBJECTS =  \
-	cd_create_profile-cd-create-profile.$(OBJEXT)
-cd_create_profile_OBJECTS = $(am_cd_create_profile_OBJECTS)
+am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
+am__vpath_adj = case $$p in \
+    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
+    *) f=$$p;; \
+  esac;
+am__strip_dir = f=`echo $$p | sed -e 's|^.*/||'`;
+am__install_max = 40
+am__nobase_strip_setup = \
+  srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*|]/\\\\&/g'`
+am__nobase_strip = \
+  for p in $$list; do echo "$$p"; done | sed -e "s|$$srcdirstrip/||"
+am__nobase_list = $(am__nobase_strip_setup); \
+  for p in $$list; do echo "$$p $$p"; done | \
+  sed "s| $$srcdirstrip/| |;"' / .*\//!s/ .*/ ./; s,\( .*\)/[^/]*$$,\1,' | \
+  $(AWK) 'BEGIN { files["."] = "" } { files[$$2] = files[$$2] " " $$1; \
+    if (++n[$$2] == $(am__install_max)) \
+      { print $$2, files[$$2]; n[$$2] = 0; files[$$2] = "" } } \
+    END { for (dir in files) print dir, files[dir] }'
+am__base_list = \
+  sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
+  sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
+am__uninstall_files_from_dir = { \
+  test -z "$$files" \
+    || { test ! -d "$$dir" && test ! -f "$$dir" && test ! -r "$$dir"; } \
+    || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
+         $(am__cd) "$$dir" && rm -f $$files; }; \
+  }
+am__installdirs = "$(DESTDIR)$(plugindir)"
+LTLIBRARIES = $(noinst_LTLIBRARIES) $(plugin_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-cd_create_profile_DEPENDENCIES = libclientprivate.a \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) $(COLORD_LIBS)
+@HAVE_GUDEV_TRUE@libcd_plugin_camera_la_DEPENDENCIES =  \
+@HAVE_GUDEV_TRUE@	$(am__DEPENDENCIES_1)
+am__libcd_plugin_camera_la_SOURCES_DIST = cd-plugin-camera.c
+@HAVE_GUDEV_TRUE@am_libcd_plugin_camera_la_OBJECTS =  \
+@HAVE_GUDEV_TRUE@	libcd_plugin_camera_la-cd-plugin-camera.lo
+libcd_plugin_camera_la_OBJECTS = $(am_libcd_plugin_camera_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
-cd_create_profile_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+libcd_plugin_camera_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
-	$(cd_create_profile_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
-	-o $@
-am_cd_fix_profile_OBJECTS = cd_fix_profile-cd-fix-profile.$(OBJEXT)
-cd_fix_profile_OBJECTS = $(am_cd_fix_profile_OBJECTS)
-cd_fix_profile_DEPENDENCIES = libclientprivate.a $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(COLORD_LIBS)
-cd_fix_profile_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(libcd_plugin_camera_la_CFLAGS) $(CFLAGS) \
+	$(libcd_plugin_camera_la_LDFLAGS) $(LDFLAGS) -o $@
+@HAVE_GUDEV_TRUE@am_libcd_plugin_camera_la_rpath = -rpath $(plugindir)
+libcd_plugin_example_la_DEPENDENCIES =
+am_libcd_plugin_example_la_OBJECTS =  \
+	libcd_plugin_example_la-cd-plugin-example.lo
+libcd_plugin_example_la_OBJECTS =  \
+	$(am_libcd_plugin_example_la_OBJECTS)
+libcd_plugin_example_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
-	$(cd_fix_profile_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o \
-	$@
-am_colormgr_OBJECTS = colormgr-cd-util.$(OBJEXT)
-colormgr_OBJECTS = $(am_colormgr_OBJECTS)
-colormgr_DEPENDENCIES = libclientprivate.a $(COLORD_LIBS) \
-	$(am__DEPENDENCIES_1)
-colormgr_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(colormgr_CFLAGS) \
-	$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+	$(libcd_plugin_example_la_CFLAGS) $(CFLAGS) \
+	$(libcd_plugin_example_la_LDFLAGS) $(LDFLAGS) -o $@
+@HAVE_GUDEV_TRUE@libcd_plugin_scanner_la_DEPENDENCIES =  \
+@HAVE_GUDEV_TRUE@	$(am__DEPENDENCIES_1)
+am__libcd_plugin_scanner_la_SOURCES_DIST = cd-plugin-scanner.c
+@HAVE_GUDEV_TRUE@am_libcd_plugin_scanner_la_OBJECTS =  \
+@HAVE_GUDEV_TRUE@	libcd_plugin_scanner_la-cd-plugin-scanner.lo
+libcd_plugin_scanner_la_OBJECTS =  \
+	$(am_libcd_plugin_scanner_la_OBJECTS)
+libcd_plugin_scanner_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(libcd_plugin_scanner_la_CFLAGS) $(CFLAGS) \
+	$(libcd_plugin_scanner_la_LDFLAGS) $(LDFLAGS) -o $@
+@HAVE_GUDEV_TRUE@am_libcd_plugin_scanner_la_rpath = -rpath \
+@HAVE_GUDEV_TRUE@	$(plugindir)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -151,44 +171,17 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libclientprivate_a_SOURCES) $(cd_create_profile_SOURCES) \
-	$(cd_fix_profile_SOURCES) $(colormgr_SOURCES)
-DIST_SOURCES = $(libclientprivate_a_SOURCES) \
-	$(cd_create_profile_SOURCES) $(cd_fix_profile_SOURCES) \
-	$(colormgr_SOURCES)
+SOURCES = $(libcd_plugin_camera_la_SOURCES) \
+	$(libcd_plugin_example_la_SOURCES) \
+	$(libcd_plugin_scanner_la_SOURCES)
+DIST_SOURCES = $(am__libcd_plugin_camera_la_SOURCES_DIST) \
+	$(libcd_plugin_example_la_SOURCES) \
+	$(am__libcd_plugin_scanner_la_SOURCES_DIST)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
-am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
-am__vpath_adj = case $$p in \
-    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
-    *) f=$$p;; \
-  esac;
-am__strip_dir = f=`echo $$p | sed -e 's|^.*/||'`;
-am__install_max = 40
-am__nobase_strip_setup = \
-  srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*|]/\\\\&/g'`
-am__nobase_strip = \
-  for p in $$list; do echo "$$p"; done | sed -e "s|$$srcdirstrip/||"
-am__nobase_list = $(am__nobase_strip_setup); \
-  for p in $$list; do echo "$$p $$p"; done | \
-  sed "s| $$srcdirstrip/| |;"' / .*\//!s/ .*/ ./; s,\( .*\)/[^/]*$$,\1,' | \
-  $(AWK) 'BEGIN { files["."] = "" } { files[$$2] = files[$$2] " " $$1; \
-    if (++n[$$2] == $(am__install_max)) \
-      { print $$2, files[$$2]; n[$$2] = 0; files[$$2] = "" } } \
-    END { for (dir in files) print dir, files[dir] }'
-am__base_list = \
-  sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
-  sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__uninstall_files_from_dir = { \
-  test -z "$$files" \
-    || { test ! -d "$$dir" && test ! -f "$$dir" && test ! -r "$$dir"; } \
-    || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
-         $(am__cd) "$$dir" && rm -f $$files; }; \
-  }
-DATA = $(dist_bashcompletion_DATA)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -393,70 +386,41 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 udevrulesdir = @udevrulesdir@
+AUTOMAKE_OPTIONS = 1.7
+CD_GLIB2_LIBS = \
+	$(top_builddir)/lib/packagekit-glib2/libpackagekit-glib2.la
+
 AM_CPPFLAGS = \
+	$(GIO_CFLAGS)					\
 	$(GLIB_CFLAGS)					\
-	$(GTK_CFLAGS)					\
-	-I$(top_srcdir)					\
-	-I$(top_srcdir)/libcolord			\
+	$(GUDEV_CFLAGS)					\
 	-DG_LOG_DOMAIN=\"Cd\"				\
 	-DCD_COMPILATION				\
 	-DCD_DISABLE_DEPRECATED				\
-	-DLIBEXECDIR=\"$(libexecdir)\"			\
-	-DDATADIR=\"$(datadir)\"			\
-	-DSYSCONFDIR=\""$(sysconfdir)"\"		\
-	-DVERSION="\"$(VERSION)\""			\
-	-DLOCALEDIR=\""$(localedir)"\"
+	-I$(top_srcdir)/src
 
-COLORD_LIBS = \
-	$(top_builddir)/libcolord/libcolord.la
 
-noinst_LIBRARIES = libclientprivate.a
-libclientprivate_a_SOURCES = \
-	cd-common.c					\
-	cd-common.h					\
-	cd-lcms-helpers.c				\
-	cd-lcms-helpers.h
+# plugins
+plugindir = $(libdir)/colord-plugins
+noinst_LTLIBRARIES = \
+	libcd_plugin_example.la
 
-colormgr_SOURCES = \
-	cd-util.c
+libcd_plugin_example_la_SOURCES = cd-plugin-example.c
+libcd_plugin_example_la_LIBADD = $(CD_PLUGIN_LIBS)
+libcd_plugin_example_la_LDFLAGS = -module -avoid-version
+libcd_plugin_example_la_CFLAGS = $(CD_PLUGIN_CFLAGS) $(WARNINGFLAGS_C)
+@HAVE_GUDEV_TRUE@plugin_LTLIBRARIES = \
+@HAVE_GUDEV_TRUE@	libcd_plugin_camera.la				\
+@HAVE_GUDEV_TRUE@	libcd_plugin_scanner.la
 
-colormgr_LDADD = \
-	libclientprivate.a				\
-	$(COLORD_LIBS)					\
-	$(GLIB_LIBS)
-
-colormgr_CFLAGS = \
-	$(WARNINGFLAGS_C)
-
-cd_fix_profile_SOURCES = \
-	cd-fix-profile.c
-
-cd_fix_profile_LDADD = \
-	libclientprivate.a				\
-	$(GLIB_LIBS)					\
-	$(LCMS_LIBS)					\
-	$(COLORD_LIBS)					\
-	-lm
-
-cd_fix_profile_CFLAGS = \
-	$(WARNINGFLAGS_C)
-
-cd_create_profile_SOURCES = \
-	cd-create-profile.c
-
-cd_create_profile_LDADD = \
-	libclientprivate.a				\
-	$(GLIB_LIBS)					\
-	$(LCMS_LIBS)					\
-	$(COLORD_LIBS)					\
-	-lm
-
-cd_create_profile_CFLAGS = \
-	$(WARNINGFLAGS_C)
-
-bashcompletiondir = ${sysconfdir}/bash_completion.d
-dist_bashcompletion_DATA = colormgr-completion.bash
-MAINTAINERCLEANFILES = *.a
+@HAVE_GUDEV_TRUE@libcd_plugin_camera_la_SOURCES = cd-plugin-camera.c
+@HAVE_GUDEV_TRUE@libcd_plugin_camera_la_LIBADD = $(GUDEV_LIBS)
+@HAVE_GUDEV_TRUE@libcd_plugin_camera_la_LDFLAGS = -module -avoid-version
+@HAVE_GUDEV_TRUE@libcd_plugin_camera_la_CFLAGS = $(GUDEV_CFLAGS) $(WARNINGFLAGS_C)
+@HAVE_GUDEV_TRUE@libcd_plugin_scanner_la_SOURCES = cd-plugin-scanner.c
+@HAVE_GUDEV_TRUE@libcd_plugin_scanner_la_LIBADD = $(GUDEV_LIBS)
+@HAVE_GUDEV_TRUE@libcd_plugin_scanner_la_LDFLAGS = -module -avoid-version
+@HAVE_GUDEV_TRUE@libcd_plugin_scanner_la_CFLAGS = $(GUDEV_CFLAGS) $(WARNINGFLAGS_C)
 all: all-am
 
 .SUFFIXES:
@@ -470,9 +434,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu client/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu src/plugins/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu client/Makefile
+	  $(AUTOMAKE) --gnu src/plugins/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -492,67 +456,56 @@ $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
 
-clean-noinstLIBRARIES:
-	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
-libclientprivate.a: $(libclientprivate_a_OBJECTS) $(libclientprivate_a_DEPENDENCIES) $(EXTRA_libclientprivate_a_DEPENDENCIES) 
-	$(AM_V_at)-rm -f libclientprivate.a
-	$(AM_V_AR)$(libclientprivate_a_AR) libclientprivate.a $(libclientprivate_a_OBJECTS) $(libclientprivate_a_LIBADD)
-	$(AM_V_at)$(RANLIB) libclientprivate.a
-install-binPROGRAMS: $(bin_PROGRAMS)
+clean-noinstLTLIBRARIES:
+	-test -z "$(noinst_LTLIBRARIES)" || rm -f $(noinst_LTLIBRARIES)
+	@list='$(noinst_LTLIBRARIES)'; \
+	locs=`for p in $$list; do echo $$p; done | \
+	      sed 's|^[^/]*$$|.|; s|/[^/]*$$||; s|$$|/so_locations|' | \
+	      sort -u`; \
+	test -z "$$locs" || { \
+	  echo rm -f $${locs}; \
+	  rm -f $${locs}; \
+	}
+install-pluginLTLIBRARIES: $(plugin_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
-	@list='$(bin_PROGRAMS)'; test -n "$(bindir)" || list=; \
-	if test -n "$$list"; then \
-	  echo " $(MKDIR_P) '$(DESTDIR)$(bindir)'"; \
-	  $(MKDIR_P) "$(DESTDIR)$(bindir)" || exit 1; \
-	fi; \
-	for p in $$list; do echo "$$p $$p"; done | \
-	sed 's/$(EXEEXT)$$//' | \
-	while read p p1; do if test -f $$p || test -f $$p1; \
-	  then echo "$$p"; echo "$$p"; else :; fi; \
-	done | \
-	sed -e 'p;s,.*/,,;n;h' -e 's|.*|.|' \
-	    -e 'p;x;s,.*/,,;s/$(EXEEXT)$$//;$(transform);s/$$/$(EXEEXT)/' | \
-	sed 'N;N;N;s,\n, ,g' | \
-	$(AWK) 'BEGIN { files["."] = ""; dirs["."] = 1 } \
-	  { d=$$3; if (dirs[d] != 1) { print "d", d; dirs[d] = 1 } \
-	    if ($$2 == $$4) files[d] = files[d] " " $$1; \
-	    else { print "f", $$3 "/" $$4, $$1; } } \
-	  END { for (d in files) print "f", d, files[d] }' | \
-	while read type dir files; do \
-	    if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
-	    test -z "$$files" || { \
-	    echo " $(INSTALL_PROGRAM_ENV) $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL_PROGRAM) $$files '$(DESTDIR)$(bindir)$$dir'"; \
-	    $(INSTALL_PROGRAM_ENV) $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL_PROGRAM) $$files "$(DESTDIR)$(bindir)$$dir" || exit $$?; \
-	    } \
-	; done
+	@list='$(plugin_LTLIBRARIES)'; test -n "$(plugindir)" || list=; \
+	list2=; for p in $$list; do \
+	  if test -f $$p; then \
+	    list2="$$list2 $$p"; \
+	  else :; fi; \
+	done; \
+	test -z "$$list2" || { \
+	  echo " $(MKDIR_P) '$(DESTDIR)$(plugindir)'"; \
+	  $(MKDIR_P) "$(DESTDIR)$(plugindir)" || exit 1; \
+	  echo " $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$list2 '$(DESTDIR)$(plugindir)'"; \
+	  $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=install $(INSTALL) $(INSTALL_STRIP_FLAG) $$list2 "$(DESTDIR)$(plugindir)"; \
+	}
 
-uninstall-binPROGRAMS:
+uninstall-pluginLTLIBRARIES:
 	@$(NORMAL_UNINSTALL)
-	@list='$(bin_PROGRAMS)'; test -n "$(bindir)" || list=; \
-	files=`for p in $$list; do echo "$$p"; done | \
-	  sed -e 'h;s,^.*/,,;s/$(EXEEXT)$$//;$(transform)' \
-	      -e 's/$$/$(EXEEXT)/' `; \
-	test -n "$$list" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(bindir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(bindir)" && rm -f $$files
+	@list='$(plugin_LTLIBRARIES)'; test -n "$(plugindir)" || list=; \
+	for p in $$list; do \
+	  $(am__strip_dir) \
+	  echo " $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=uninstall rm -f '$(DESTDIR)$(plugindir)/$$f'"; \
+	  $(LIBTOOL) $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=uninstall rm -f "$(DESTDIR)$(plugindir)/$$f"; \
+	done
 
-clean-binPROGRAMS:
-	@list='$(bin_PROGRAMS)'; test -n "$$list" || exit 0; \
-	echo " rm -f" $$list; \
-	rm -f $$list || exit $$?; \
-	test -n "$(EXEEXT)" || exit 0; \
-	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
-	echo " rm -f" $$list; \
-	rm -f $$list
-cd-create-profile$(EXEEXT): $(cd_create_profile_OBJECTS) $(cd_create_profile_DEPENDENCIES) $(EXTRA_cd_create_profile_DEPENDENCIES) 
-	@rm -f cd-create-profile$(EXEEXT)
-	$(AM_V_CCLD)$(cd_create_profile_LINK) $(cd_create_profile_OBJECTS) $(cd_create_profile_LDADD) $(LIBS)
-cd-fix-profile$(EXEEXT): $(cd_fix_profile_OBJECTS) $(cd_fix_profile_DEPENDENCIES) $(EXTRA_cd_fix_profile_DEPENDENCIES) 
-	@rm -f cd-fix-profile$(EXEEXT)
-	$(AM_V_CCLD)$(cd_fix_profile_LINK) $(cd_fix_profile_OBJECTS) $(cd_fix_profile_LDADD) $(LIBS)
-colormgr$(EXEEXT): $(colormgr_OBJECTS) $(colormgr_DEPENDENCIES) $(EXTRA_colormgr_DEPENDENCIES) 
-	@rm -f colormgr$(EXEEXT)
-	$(AM_V_CCLD)$(colormgr_LINK) $(colormgr_OBJECTS) $(colormgr_LDADD) $(LIBS)
+clean-pluginLTLIBRARIES:
+	-test -z "$(plugin_LTLIBRARIES)" || rm -f $(plugin_LTLIBRARIES)
+	@list='$(plugin_LTLIBRARIES)'; \
+	locs=`for p in $$list; do echo $$p; done | \
+	      sed 's|^[^/]*$$|.|; s|/[^/]*$$||; s|$$|/so_locations|' | \
+	      sort -u`; \
+	test -z "$$locs" || { \
+	  echo rm -f $${locs}; \
+	  rm -f $${locs}; \
+	}
+libcd_plugin_camera.la: $(libcd_plugin_camera_la_OBJECTS) $(libcd_plugin_camera_la_DEPENDENCIES) $(EXTRA_libcd_plugin_camera_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(libcd_plugin_camera_la_LINK) $(am_libcd_plugin_camera_la_rpath) $(libcd_plugin_camera_la_OBJECTS) $(libcd_plugin_camera_la_LIBADD) $(LIBS)
+libcd_plugin_example.la: $(libcd_plugin_example_la_OBJECTS) $(libcd_plugin_example_la_DEPENDENCIES) $(EXTRA_libcd_plugin_example_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(libcd_plugin_example_la_LINK)  $(libcd_plugin_example_la_OBJECTS) $(libcd_plugin_example_la_LIBADD) $(LIBS)
+libcd_plugin_scanner.la: $(libcd_plugin_scanner_la_OBJECTS) $(libcd_plugin_scanner_la_DEPENDENCIES) $(EXTRA_libcd_plugin_scanner_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(libcd_plugin_scanner_la_LINK) $(am_libcd_plugin_scanner_la_rpath) $(libcd_plugin_scanner_la_OBJECTS) $(libcd_plugin_scanner_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -560,11 +513,9 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd-common.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd-lcms-helpers.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd_create_profile-cd-create-profile.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd_fix_profile-cd-fix-profile.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colormgr-cd-util.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcd_plugin_camera_la-cd-plugin-camera.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcd_plugin_example_la-cd-plugin-example.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcd_plugin_scanner_la-cd-plugin-scanner.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -587,74 +538,32 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
 
-cd_create_profile-cd-create-profile.o: cd-create-profile.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_create_profile_CFLAGS) $(CFLAGS) -MT cd_create_profile-cd-create-profile.o -MD -MP -MF $(DEPDIR)/cd_create_profile-cd-create-profile.Tpo -c -o cd_create_profile-cd-create-profile.o `test -f 'cd-create-profile.c' || echo '$(srcdir)/'`cd-create-profile.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cd_create_profile-cd-create-profile.Tpo $(DEPDIR)/cd_create_profile-cd-create-profile.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-create-profile.c' object='cd_create_profile-cd-create-profile.o' libtool=no @AMDEPBACKSLASH@
+libcd_plugin_camera_la-cd-plugin-camera.lo: cd-plugin-camera.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcd_plugin_camera_la_CFLAGS) $(CFLAGS) -MT libcd_plugin_camera_la-cd-plugin-camera.lo -MD -MP -MF $(DEPDIR)/libcd_plugin_camera_la-cd-plugin-camera.Tpo -c -o libcd_plugin_camera_la-cd-plugin-camera.lo `test -f 'cd-plugin-camera.c' || echo '$(srcdir)/'`cd-plugin-camera.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcd_plugin_camera_la-cd-plugin-camera.Tpo $(DEPDIR)/libcd_plugin_camera_la-cd-plugin-camera.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-plugin-camera.c' object='libcd_plugin_camera_la-cd-plugin-camera.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_create_profile_CFLAGS) $(CFLAGS) -c -o cd_create_profile-cd-create-profile.o `test -f 'cd-create-profile.c' || echo '$(srcdir)/'`cd-create-profile.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcd_plugin_camera_la_CFLAGS) $(CFLAGS) -c -o libcd_plugin_camera_la-cd-plugin-camera.lo `test -f 'cd-plugin-camera.c' || echo '$(srcdir)/'`cd-plugin-camera.c
 
-cd_create_profile-cd-create-profile.obj: cd-create-profile.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_create_profile_CFLAGS) $(CFLAGS) -MT cd_create_profile-cd-create-profile.obj -MD -MP -MF $(DEPDIR)/cd_create_profile-cd-create-profile.Tpo -c -o cd_create_profile-cd-create-profile.obj `if test -f 'cd-create-profile.c'; then $(CYGPATH_W) 'cd-create-profile.c'; else $(CYGPATH_W) '$(srcdir)/cd-create-profile.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cd_create_profile-cd-create-profile.Tpo $(DEPDIR)/cd_create_profile-cd-create-profile.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-create-profile.c' object='cd_create_profile-cd-create-profile.obj' libtool=no @AMDEPBACKSLASH@
+libcd_plugin_example_la-cd-plugin-example.lo: cd-plugin-example.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcd_plugin_example_la_CFLAGS) $(CFLAGS) -MT libcd_plugin_example_la-cd-plugin-example.lo -MD -MP -MF $(DEPDIR)/libcd_plugin_example_la-cd-plugin-example.Tpo -c -o libcd_plugin_example_la-cd-plugin-example.lo `test -f 'cd-plugin-example.c' || echo '$(srcdir)/'`cd-plugin-example.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcd_plugin_example_la-cd-plugin-example.Tpo $(DEPDIR)/libcd_plugin_example_la-cd-plugin-example.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-plugin-example.c' object='libcd_plugin_example_la-cd-plugin-example.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_create_profile_CFLAGS) $(CFLAGS) -c -o cd_create_profile-cd-create-profile.obj `if test -f 'cd-create-profile.c'; then $(CYGPATH_W) 'cd-create-profile.c'; else $(CYGPATH_W) '$(srcdir)/cd-create-profile.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcd_plugin_example_la_CFLAGS) $(CFLAGS) -c -o libcd_plugin_example_la-cd-plugin-example.lo `test -f 'cd-plugin-example.c' || echo '$(srcdir)/'`cd-plugin-example.c
 
-cd_fix_profile-cd-fix-profile.o: cd-fix-profile.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_fix_profile_CFLAGS) $(CFLAGS) -MT cd_fix_profile-cd-fix-profile.o -MD -MP -MF $(DEPDIR)/cd_fix_profile-cd-fix-profile.Tpo -c -o cd_fix_profile-cd-fix-profile.o `test -f 'cd-fix-profile.c' || echo '$(srcdir)/'`cd-fix-profile.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cd_fix_profile-cd-fix-profile.Tpo $(DEPDIR)/cd_fix_profile-cd-fix-profile.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-fix-profile.c' object='cd_fix_profile-cd-fix-profile.o' libtool=no @AMDEPBACKSLASH@
+libcd_plugin_scanner_la-cd-plugin-scanner.lo: cd-plugin-scanner.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcd_plugin_scanner_la_CFLAGS) $(CFLAGS) -MT libcd_plugin_scanner_la-cd-plugin-scanner.lo -MD -MP -MF $(DEPDIR)/libcd_plugin_scanner_la-cd-plugin-scanner.Tpo -c -o libcd_plugin_scanner_la-cd-plugin-scanner.lo `test -f 'cd-plugin-scanner.c' || echo '$(srcdir)/'`cd-plugin-scanner.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcd_plugin_scanner_la-cd-plugin-scanner.Tpo $(DEPDIR)/libcd_plugin_scanner_la-cd-plugin-scanner.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-plugin-scanner.c' object='libcd_plugin_scanner_la-cd-plugin-scanner.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_fix_profile_CFLAGS) $(CFLAGS) -c -o cd_fix_profile-cd-fix-profile.o `test -f 'cd-fix-profile.c' || echo '$(srcdir)/'`cd-fix-profile.c
-
-cd_fix_profile-cd-fix-profile.obj: cd-fix-profile.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_fix_profile_CFLAGS) $(CFLAGS) -MT cd_fix_profile-cd-fix-profile.obj -MD -MP -MF $(DEPDIR)/cd_fix_profile-cd-fix-profile.Tpo -c -o cd_fix_profile-cd-fix-profile.obj `if test -f 'cd-fix-profile.c'; then $(CYGPATH_W) 'cd-fix-profile.c'; else $(CYGPATH_W) '$(srcdir)/cd-fix-profile.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cd_fix_profile-cd-fix-profile.Tpo $(DEPDIR)/cd_fix_profile-cd-fix-profile.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-fix-profile.c' object='cd_fix_profile-cd-fix-profile.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_fix_profile_CFLAGS) $(CFLAGS) -c -o cd_fix_profile-cd-fix-profile.obj `if test -f 'cd-fix-profile.c'; then $(CYGPATH_W) 'cd-fix-profile.c'; else $(CYGPATH_W) '$(srcdir)/cd-fix-profile.c'; fi`
-
-colormgr-cd-util.o: cd-util.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(colormgr_CFLAGS) $(CFLAGS) -MT colormgr-cd-util.o -MD -MP -MF $(DEPDIR)/colormgr-cd-util.Tpo -c -o colormgr-cd-util.o `test -f 'cd-util.c' || echo '$(srcdir)/'`cd-util.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/colormgr-cd-util.Tpo $(DEPDIR)/colormgr-cd-util.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-util.c' object='colormgr-cd-util.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(colormgr_CFLAGS) $(CFLAGS) -c -o colormgr-cd-util.o `test -f 'cd-util.c' || echo '$(srcdir)/'`cd-util.c
-
-colormgr-cd-util.obj: cd-util.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(colormgr_CFLAGS) $(CFLAGS) -MT colormgr-cd-util.obj -MD -MP -MF $(DEPDIR)/colormgr-cd-util.Tpo -c -o colormgr-cd-util.obj `if test -f 'cd-util.c'; then $(CYGPATH_W) 'cd-util.c'; else $(CYGPATH_W) '$(srcdir)/cd-util.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/colormgr-cd-util.Tpo $(DEPDIR)/colormgr-cd-util.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-util.c' object='colormgr-cd-util.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(colormgr_CFLAGS) $(CFLAGS) -c -o colormgr-cd-util.obj `if test -f 'cd-util.c'; then $(CYGPATH_W) 'cd-util.c'; else $(CYGPATH_W) '$(srcdir)/cd-util.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcd_plugin_scanner_la_CFLAGS) $(CFLAGS) -c -o libcd_plugin_scanner_la-cd-plugin-scanner.lo `test -f 'cd-plugin-scanner.c' || echo '$(srcdir)/'`cd-plugin-scanner.c
 
 mostlyclean-libtool:
 	-rm -f *.lo
 
 clean-libtool:
 	-rm -rf .libs _libs
-install-dist_bashcompletionDATA: $(dist_bashcompletion_DATA)
-	@$(NORMAL_INSTALL)
-	@list='$(dist_bashcompletion_DATA)'; test -n "$(bashcompletiondir)" || list=; \
-	if test -n "$$list"; then \
-	  echo " $(MKDIR_P) '$(DESTDIR)$(bashcompletiondir)'"; \
-	  $(MKDIR_P) "$(DESTDIR)$(bashcompletiondir)" || exit 1; \
-	fi; \
-	for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  echo "$$d$$p"; \
-	done | $(am__base_list) | \
-	while read files; do \
-	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(bashcompletiondir)'"; \
-	  $(INSTALL_DATA) $$files "$(DESTDIR)$(bashcompletiondir)" || exit $$?; \
-	done
-
-uninstall-dist_bashcompletionDATA:
-	@$(NORMAL_UNINSTALL)
-	@list='$(dist_bashcompletion_DATA)'; test -n "$(bashcompletiondir)" || list=; \
-	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	dir='$(DESTDIR)$(bashcompletiondir)'; $(am__uninstall_files_from_dir)
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
@@ -754,9 +663,9 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LIBRARIES) $(PROGRAMS) $(DATA)
+all-am: Makefile $(LTLIBRARIES)
 installdirs:
-	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(bashcompletiondir)"; do \
+	for dir in "$(DESTDIR)$(plugindir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -789,11 +698,10 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
 clean: clean-am
 
-clean-am: clean-binPROGRAMS clean-generic clean-libtool \
-	clean-noinstLIBRARIES mostlyclean-am
+clean-am: clean-generic clean-libtool clean-noinstLTLIBRARIES \
+	clean-pluginLTLIBRARIES mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -813,13 +721,13 @@ info: info-am
 
 info-am:
 
-install-data-am: install-dist_bashcompletionDATA
+install-data-am: install-pluginLTLIBRARIES
 
 install-dvi: install-dvi-am
 
 install-dvi-am:
 
-install-exec-am: install-binPROGRAMS
+install-exec-am:
 
 install-html: install-html-am
 
@@ -859,25 +767,24 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-binPROGRAMS uninstall-dist_bashcompletionDATA
+uninstall-am: uninstall-pluginLTLIBRARIES
 
 .MAKE: install-am install-strip
 
-.PHONY: CTAGS GTAGS all all-am check check-am clean clean-binPROGRAMS \
-	clean-generic clean-libtool clean-noinstLIBRARIES cscopelist \
-	ctags distclean distclean-compile distclean-generic \
+.PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
+	clean-libtool clean-noinstLTLIBRARIES clean-pluginLTLIBRARIES \
+	cscopelist ctags distclean distclean-compile distclean-generic \
 	distclean-libtool distclean-tags distdir dvi dvi-am html \
-	html-am info info-am install install-am install-binPROGRAMS \
-	install-data install-data-am install-dist_bashcompletionDATA \
-	install-dvi install-dvi-am install-exec install-exec-am \
-	install-html install-html-am install-info install-info-am \
-	install-man install-pdf install-pdf-am install-ps \
-	install-ps-am install-strip installcheck installcheck-am \
-	installdirs maintainer-clean maintainer-clean-generic \
-	mostlyclean mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libtool pdf pdf-am ps ps-am tags uninstall \
-	uninstall-am uninstall-binPROGRAMS \
-	uninstall-dist_bashcompletionDATA
+	html-am info info-am install install-am install-data \
+	install-data-am install-dvi install-dvi-am install-exec \
+	install-exec-am install-html install-html-am install-info \
+	install-info-am install-man install-pdf install-pdf-am \
+	install-pluginLTLIBRARIES install-ps install-ps-am \
+	install-strip installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
+	pdf pdf-am ps ps-am tags uninstall uninstall-am \
+	uninstall-pluginLTLIBRARIES
 
 
 -include $(top_srcdir)/git.mk

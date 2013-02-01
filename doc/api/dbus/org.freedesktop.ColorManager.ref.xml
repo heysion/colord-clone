@@ -9,52 +9,57 @@
   </refnamediv>
   <refsynopsisdiv role="synopsis">
     <title role="synopsis.title">Methods</title>
-    <synopsis><link linkend="ColorManager.GetDevices">GetDevices</link>            (out 'ao'    devices)
-<link linkend="ColorManager.GetDevicesByKind">GetDevicesByKind</link>      (in  's'     kind,
-                       out 'ao'    devices)
-<link linkend="ColorManager.FindDeviceById">FindDeviceById</link>        (in  's'     device_id,
-                       out 'o'     object_path)
-<link linkend="ColorManager.FindDeviceByProperty">FindDeviceByProperty</link>  (in  's'     key,
-                       in  's'     value,
-                       out 'o'     object_path)
-<link linkend="ColorManager.FindProfileById">FindProfileById</link>       (in  's'     profile_id,
-                       out 'o'     object_path)
-<link linkend="ColorManager.FindProfileByFilename">FindProfileByFilename</link> (in  's'     filename,
-                       out 'o'     object_path)
-<link linkend="ColorManager.GetStandardSpace">GetStandardSpace</link>      (in  's'     standard-space,
-                       out 'o'     object_path)
-<link linkend="ColorManager.GetProfiles">GetProfiles</link>           (out 'ao'    devices)
-<link linkend="ColorManager.GetSensors">GetSensors</link>            (out 'ao'    devices)
-<link linkend="ColorManager.GetProfilesByKind">GetProfilesByKind</link>     (in  's'     kind,
-                       out 'ao'    devices)
-<link linkend="ColorManager.CreateProfileWithFd">CreateProfileWithFd</link>   (in  's'     profile_id,
-                       in  's'     scope,
-                       in  'h'     handle,
-                       in  'a{ss}' properties,
-                       out 'o'     object_path)
-<link linkend="ColorManager.CreateProfile">CreateProfile</link>         (in  's'     profile_id,
-                       in  's'     scope,
-                       in  'a{ss}' properties,
-                       out 'o'     object_path)
-<link linkend="ColorManager.CreateDevice">CreateDevice</link>          (in  's'     device_id,
-                       in  's'     scope,
-                       in  'a{ss}' properties,
-                       out 'o'     object_path)
-<link linkend="ColorManager.DeleteDevice">DeleteDevice</link>          (in  'o'     object_path)
-<link linkend="ColorManager.DeleteProfile">DeleteProfile</link>         (in  'o'     object_path)
+    <synopsis><link linkend="ColorManager.GetDevices">GetDevices</link>(out'ao'devices)
+<link linkend="ColorManager.GetDevicesByKind">GetDevicesByKind</link>(in's'kind,
+out'ao'devices)
+<link linkend="ColorManager.FindDeviceById">FindDeviceById</link>(in's'device_id,
+out'o'object_path)
+<link linkend="ColorManager.FindSensorById">FindSensorById</link>(in's'sensor_id,
+out'o'object_path)
+<link linkend="ColorManager.FindDeviceByProperty">FindDeviceByProperty</link>(in's'key,
+in's'value,
+out'o'object_path)
+<link linkend="ColorManager.FindProfileById">FindProfileById</link>(in's'profile_id,
+out'o'object_path)
+<link linkend="ColorManager.FindProfileByProperty">FindProfileByProperty</link>(in's'key,
+in's'value,
+out'o'object_path)
+<link linkend="ColorManager.FindProfileByFilename">FindProfileByFilename</link>(in's'filename,
+out'o'object_path)
+<link linkend="ColorManager.GetStandardSpace">GetStandardSpace</link>(in's'standard-space,
+out'o'object_path)
+<link linkend="ColorManager.GetProfiles">GetProfiles</link>(out'ao'devices)
+<link linkend="ColorManager.GetSensors">GetSensors</link>(out'ao'devices)
+<link linkend="ColorManager.GetProfilesByKind">GetProfilesByKind</link>(in's'kind,
+out'ao'devices)
+<link linkend="ColorManager.CreateProfileWithFd">CreateProfileWithFd</link>(in's'profile_id,
+in's'scope,
+in'h'handle,
+in'a{ss}'properties,
+out'o'object_path)
+<link linkend="ColorManager.CreateProfile">CreateProfile</link>(in's'profile_id,
+in's'scope,
+in'a{ss}'properties,
+out'o'object_path)
+<link linkend="ColorManager.CreateDevice">CreateDevice</link>(in's'device_id,
+in's'scope,
+in'a{ss}'properties,
+out'o'object_path)
+<link linkend="ColorManager.DeleteDevice">DeleteDevice</link>(in'o'object_path)
+<link linkend="ColorManager.DeleteProfile">DeleteProfile</link>(in'o'object_path)
 </synopsis>
   </refsynopsisdiv>
   <refsect1 role="signal_proto">
     <title role="signal_proto.title">Signals</title>
-    <synopsis><link linkend="ColorManager::Changed">Changed</link>        ()
-<link linkend="ColorManager::DeviceAdded">DeviceAdded</link>    ('o' object_path)
-<link linkend="ColorManager::DeviceRemoved">DeviceRemoved</link>  ('o' object_path)
-<link linkend="ColorManager::DeviceChanged">DeviceChanged</link>  ('o' object_path)
-<link linkend="ColorManager::ProfileAdded">ProfileAdded</link>   ('o' object_path)
-<link linkend="ColorManager::ProfileRemoved">ProfileRemoved</link> ('o' object_path)
-<link linkend="ColorManager::SensorAdded">SensorAdded</link>    ('o' object_path)
-<link linkend="ColorManager::SensorRemoved">SensorRemoved</link>  ('o' object_path)
-<link linkend="ColorManager::ProfileChanged">ProfileChanged</link> ('o' object_path)
+    <synopsis><link linkend="ColorManager::Changed">Changed</link>()
+<link linkend="ColorManager::DeviceAdded">DeviceAdded</link>('o'object_path)
+<link linkend="ColorManager::DeviceRemoved">DeviceRemoved</link>('o'object_path)
+<link linkend="ColorManager::DeviceChanged">DeviceChanged</link>('o'object_path)
+<link linkend="ColorManager::ProfileAdded">ProfileAdded</link>('o'object_path)
+<link linkend="ColorManager::ProfileRemoved">ProfileRemoved</link>('o'object_path)
+<link linkend="ColorManager::SensorAdded">SensorAdded</link>('o'object_path)
+<link linkend="ColorManager::SensorRemoved">SensorRemoved</link>('o'object_path)
+<link linkend="ColorManager::ProfileChanged">ProfileChanged</link>('o'object_path)
 </synopsis>
   </refsect1>
   <refsect1 role="impl_interfaces">
@@ -67,7 +72,7 @@
   </refsect1>
   <refsect1 role="properties">
     <title role="properties.title">Properties</title>
-    <synopsis><link linkend="ColorManager:DaemonVersion">'DaemonVersion'</link> read      's'
+    <synopsis><link linkend="ColorManager:DaemonVersion">'DaemonVersion'</link>read's'
 </synopsis>
   </refsect1>
   <refsect1 role="desc">
@@ -80,7 +85,7 @@
       
     </para>
   </refsect1>
-  <refsect1 role="details"><title role="details.title">Details</title><refsect2><title><anchor role="function" id="ColorManager.GetDevices"/>GetDevices ()</title><indexterm><primary>GetDevices</primary><secondary>ColorManager</secondary></indexterm><programlisting>GetDevices (out 'ao' devices)</programlisting></refsect2>
+  <refsect1 role="details"><title role="details.title">Details</title><refsect2><title><anchor role="function" id="ColorManager.GetDevices"/>GetDevices ()</title><indexterm><primary>GetDevices</primary><secondary>ColorManager</secondary></indexterm><programlisting>GetDevices (out'ao'devices)</programlisting></refsect2>
           <para>
             Gets a list of all the devices which have assigned color profiles.
           </para>
@@ -88,8 +93,8 @@
             <para>
               An array of device IDs, e.g. <literal>['/org/freedesktop/ColorManager/device/xrandr_ibm_france_ltn154p2_l05']</literal>.
             </para>
-          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.GetDevicesByKind"/>GetDevicesByKind ()</title><indexterm><primary>GetDevicesByKind</primary><secondary>ColorManager</secondary></indexterm><programlisting>GetDevicesByKind (in  's'  kind,
-                  out 'ao' devices)</programlisting></refsect2>
+          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.GetDevicesByKind"/>GetDevicesByKind ()</title><indexterm><primary>GetDevicesByKind</primary><secondary>ColorManager</secondary></indexterm><programlisting>GetDevicesByKind (in's'kind,
+out'ao'devices)</programlisting></refsect2>
           <para>
             Gets a list of all the devices which have assigned color profiles.
           </para>
@@ -102,8 +107,8 @@
             <para>
               An array of device IDs, e.g. <literal>['/org/freedesktop/ColorManager/device/xrandr_ibm_france_ltn154p2_l05']</literal>.
             </para>
-          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.FindDeviceById"/>FindDeviceById ()</title><indexterm><primary>FindDeviceById</primary><secondary>ColorManager</secondary></indexterm><programlisting>FindDeviceById (in  's' device_id,
-                out 'o' object_path)</programlisting></refsect2>
+          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.FindDeviceById"/>FindDeviceById ()</title><indexterm><primary>FindDeviceById</primary><secondary>ColorManager</secondary></indexterm><programlisting>FindDeviceById (in's'device_id,
+out'o'object_path)</programlisting></refsect2>
           <para>
             Gets a device path for the device ID.
             This method is required as device ID's may have to be mangled
@@ -119,9 +124,22 @@
             <para>
               A device path.
             </para>
-          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.FindDeviceByProperty"/>FindDeviceByProperty ()</title><indexterm><primary>FindDeviceByProperty</primary><secondary>ColorManager</secondary></indexterm><programlisting>FindDeviceByProperty (in  's' key,
-                      in  's' value,
-                      out 'o' object_path)</programlisting></refsect2>
+          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.FindSensorById"/>FindSensorById ()</title><indexterm><primary>FindSensorById</primary><secondary>ColorManager</secondary></indexterm><programlisting>FindSensorById (in's'sensor_id,
+out'o'object_path)</programlisting></refsect2>
+          <para>
+            Gets a sensor path for the sensor ID.
+          </para>
+        <variablelist role="params"><varlistentry><term><parameter>sensor_id</parameter>:</term><listitem><simpara>
+            <para>
+              A sensor ID.
+            </para>
+          </simpara></listitem></varlistentry><varlistentry><term><parameter>object_path</parameter>:</term><listitem><simpara>
+            <para>
+              A sensor path.
+            </para>
+          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.FindDeviceByProperty"/>FindDeviceByProperty ()</title><indexterm><primary>FindDeviceByProperty</primary><secondary>ColorManager</secondary></indexterm><programlisting>FindDeviceByProperty (in's'key,
+in's'value,
+out'o'object_path)</programlisting></refsect2>
           <para>
             Gets a device path for the device with the specified property.
           </para>
@@ -137,8 +155,8 @@
             <para>
               A device path.
             </para>
-          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.FindProfileById"/>FindProfileById ()</title><indexterm><primary>FindProfileById</primary><secondary>ColorManager</secondary></indexterm><programlisting>FindProfileById (in  's' profile_id,
-                 out 'o' object_path)</programlisting></refsect2>
+          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.FindProfileById"/>FindProfileById ()</title><indexterm><primary>FindProfileById</primary><secondary>ColorManager</secondary></indexterm><programlisting>FindProfileById (in's'profile_id,
+out'o'object_path)</programlisting></refsect2>
           <para>
             Gets a profile path for the profile ID.
           </para>
@@ -150,8 +168,26 @@
             <para>
               A profile path.
             </para>
-          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.FindProfileByFilename"/>FindProfileByFilename ()</title><indexterm><primary>FindProfileByFilename</primary><secondary>ColorManager</secondary></indexterm><programlisting>FindProfileByFilename (in  's' filename,
-                       out 'o' object_path)</programlisting></refsect2>
+          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.FindProfileByProperty"/>FindProfileByProperty ()</title><indexterm><primary>FindProfileByProperty</primary><secondary>ColorManager</secondary></indexterm><programlisting>FindProfileByProperty (in's'key,
+in's'value,
+out'o'object_path)</programlisting></refsect2>
+          <para>
+            Gets a profile path for the profile with the specified property.
+          </para>
+        <variablelist role="params"><varlistentry><term><parameter>key</parameter>:</term><listitem><simpara>
+            <para>
+              A property key, e.g. <literal>FILE_checksum</literal>.
+            </para>
+          </simpara></listitem></varlistentry><varlistentry><term><parameter>value</parameter>:</term><listitem><simpara>
+            <para>
+              A property value, e.g. <literal>5b3855e8630c9d8a48177cc70680da93</literal>.
+            </para>
+          </simpara></listitem></varlistentry><varlistentry><term><parameter>object_path</parameter>:</term><listitem><simpara>
+            <para>
+              A profile path.
+            </para>
+          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.FindProfileByFilename"/>FindProfileByFilename ()</title><indexterm><primary>FindProfileByFilename</primary><secondary>ColorManager</secondary></indexterm><programlisting>FindProfileByFilename (in's'filename,
+out'o'object_path)</programlisting></refsect2>
           <para>
             Gets a profile path for the profile filename.
           </para>
@@ -163,8 +199,8 @@
             <para>
               A profile path.
             </para>
-          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.GetStandardSpace"/>GetStandardSpace ()</title><indexterm><primary>GetStandardSpace</primary><secondary>ColorManager</secondary></indexterm><programlisting>GetStandardSpace (in  's' standard-space,
-                  out 'o' object_path)</programlisting></refsect2>
+          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.GetStandardSpace"/>GetStandardSpace ()</title><indexterm><primary>GetStandardSpace</primary><secondary>ColorManager</secondary></indexterm><programlisting>GetStandardSpace (in's'standard-space,
+out'o'object_path)</programlisting></refsect2>
           <para>
             Gets a profile path for a defined profile space.
             The defined space is set from the profile metadata,
@@ -185,7 +221,7 @@
             <para>
               A profile path.
             </para>
-          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.GetProfiles"/>GetProfiles ()</title><indexterm><primary>GetProfiles</primary><secondary>ColorManager</secondary></indexterm><programlisting>GetProfiles (out 'ao' devices)</programlisting></refsect2>
+          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.GetProfiles"/>GetProfiles ()</title><indexterm><primary>GetProfiles</primary><secondary>ColorManager</secondary></indexterm><programlisting>GetProfiles (out'ao'devices)</programlisting></refsect2>
           <para>
             Gets a list of all the profiles recognised by the system.
           </para>
@@ -193,7 +229,7 @@
             <para>
               An array of profile IDs, e.g. <literal>['/org/freedesktop/ColorManager/profile/adobe_rgb']</literal>.
             </para>
-          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.GetSensors"/>GetSensors ()</title><indexterm><primary>GetSensors</primary><secondary>ColorManager</secondary></indexterm><programlisting>GetSensors (out 'ao' devices)</programlisting></refsect2>
+          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.GetSensors"/>GetSensors ()</title><indexterm><primary>GetSensors</primary><secondary>ColorManager</secondary></indexterm><programlisting>GetSensors (out'ao'devices)</programlisting></refsect2>
           <para>
             Gets a list of all the sensors recognised by the system.
           </para>
@@ -201,8 +237,8 @@
             <para>
               An array of sensor IDs, e.g. <literal>['/org/freedesktop/ColorManager/sensor/colormunki']</literal>.
             </para>
-          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.GetProfilesByKind"/>GetProfilesByKind ()</title><indexterm><primary>GetProfilesByKind</primary><secondary>ColorManager</secondary></indexterm><programlisting>GetProfilesByKind (in  's'  kind,
-                   out 'ao' devices)</programlisting></refsect2>
+          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.GetProfilesByKind"/>GetProfilesByKind ()</title><indexterm><primary>GetProfilesByKind</primary><secondary>ColorManager</secondary></indexterm><programlisting>GetProfilesByKind (in's'kind,
+out'ao'devices)</programlisting></refsect2>
           <para>
             Gets a list of all the profiles of a specified type.
           </para>
@@ -215,11 +251,11 @@
             <para>
               An array of device IDs, e.g. <literal>['/org/freedesktop/ColorManager/device/xrandr_ibm_france_ltn154p2_l05']</literal>.
             </para>
-          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.CreateProfileWithFd"/>CreateProfileWithFd ()</title><indexterm><primary>CreateProfileWithFd</primary><secondary>ColorManager</secondary></indexterm><programlisting>CreateProfileWithFd (in  's'     profile_id,
-                     in  's'     scope,
-                     in  'h'     handle,
-                     in  'a{ss}' properties,
-                     out 'o'     object_path)</programlisting></refsect2>
+          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.CreateProfileWithFd"/>CreateProfileWithFd ()</title><indexterm><primary>CreateProfileWithFd</primary><secondary>ColorManager</secondary></indexterm><programlisting>CreateProfileWithFd (in's'profile_id,
+in's'scope,
+in'h'handle,
+in'a{ss}'properties,
+out'o'object_path)</programlisting></refsect2>
           <para>
             Creates a profile.
           </para>
@@ -276,10 +312,10 @@
             <para>
               A profile path.
             </para>
-          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.CreateProfile"/>CreateProfile ()</title><indexterm><primary>CreateProfile</primary><secondary>ColorManager</secondary></indexterm><programlisting>CreateProfile (in  's'     profile_id,
-               in  's'     scope,
-               in  'a{ss}' properties,
-               out 'o'     object_path)</programlisting></refsect2>
+          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.CreateProfile"/>CreateProfile ()</title><indexterm><primary>CreateProfile</primary><secondary>ColorManager</secondary></indexterm><programlisting>CreateProfile (in's'profile_id,
+in's'scope,
+in'a{ss}'properties,
+out'o'object_path)</programlisting></refsect2>
           <para>
             Creates a profile without using a file descriptor.
             It is recomended you use CreateProfileWithFd() as the
@@ -304,10 +340,10 @@
             <para>
               A profile path.
             </para>
-          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.CreateDevice"/>CreateDevice ()</title><indexterm><primary>CreateDevice</primary><secondary>ColorManager</secondary></indexterm><programlisting>CreateDevice (in  's'     device_id,
-              in  's'     scope,
-              in  'a{ss}' properties,
-              out 'o'     object_path)</programlisting></refsect2>
+          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.CreateDevice"/>CreateDevice ()</title><indexterm><primary>CreateDevice</primary><secondary>ColorManager</secondary></indexterm><programlisting>CreateDevice (in's'device_id,
+in's'scope,
+in'a{ss}'properties,
+out'o'object_path)</programlisting></refsect2>
           <para>
             Creates a device.
           </para>
@@ -348,7 +384,7 @@
             <para>
               A device path.
             </para>
-          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.DeleteDevice"/>DeleteDevice ()</title><indexterm><primary>DeleteDevice</primary><secondary>ColorManager</secondary></indexterm><programlisting>DeleteDevice (in  'o' object_path)</programlisting></refsect2>
+          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.DeleteDevice"/>DeleteDevice ()</title><indexterm><primary>DeleteDevice</primary><secondary>ColorManager</secondary></indexterm><programlisting>DeleteDevice (in'o'object_path)</programlisting></refsect2>
           <para>
             Deletes a device.
           </para>
@@ -356,7 +392,7 @@
             <para>
               A device path.
             </para>
-          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.DeleteProfile"/>DeleteProfile ()</title><indexterm><primary>DeleteProfile</primary><secondary>ColorManager</secondary></indexterm><programlisting>DeleteProfile (in  'o' object_path)</programlisting></refsect2>
+          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.DeleteProfile"/>DeleteProfile ()</title><indexterm><primary>DeleteProfile</primary><secondary>ColorManager</secondary></indexterm><programlisting>DeleteProfile (in'o'object_path)</programlisting></refsect2>
           <para>
             Deletes a profile.
           </para>
@@ -370,7 +406,7 @@
             Some value on the interface or the number of devices or
             profiles has changed.
           </para>
-        <variablelist role="params"/><refsect2><title><anchor role="function" id="ColorManager::DeviceAdded"/>The DeviceAdded signal</title><indexterm><primary>DeviceAdded</primary><secondary>ColorManager</secondary></indexterm><programlisting>DeviceAdded ('o' object_path)</programlisting></refsect2>
+        <variablelist role="params"/><refsect2><title><anchor role="function" id="ColorManager::DeviceAdded"/>The DeviceAdded signal</title><indexterm><primary>DeviceAdded</primary><secondary>ColorManager</secondary></indexterm><programlisting>DeviceAdded ('o'object_path)</programlisting></refsect2>
           <para>
             A device has been added.
           </para>
@@ -378,7 +414,7 @@
             
               The device path.
             
-          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager::DeviceRemoved"/>The DeviceRemoved signal</title><indexterm><primary>DeviceRemoved</primary><secondary>ColorManager</secondary></indexterm><programlisting>DeviceRemoved ('o' object_path)</programlisting></refsect2>
+          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager::DeviceRemoved"/>The DeviceRemoved signal</title><indexterm><primary>DeviceRemoved</primary><secondary>ColorManager</secondary></indexterm><programlisting>DeviceRemoved ('o'object_path)</programlisting></refsect2>
           <para>
             A device has been removed.
           </para>
@@ -386,7 +422,7 @@
             
               The device path.
             
-          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager::DeviceChanged"/>The DeviceChanged signal</title><indexterm><primary>DeviceChanged</primary><secondary>ColorManager</secondary></indexterm><programlisting>DeviceChanged ('o' object_path)</programlisting></refsect2>
+          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager::DeviceChanged"/>The DeviceChanged signal</title><indexterm><primary>DeviceChanged</primary><secondary>ColorManager</secondary></indexterm><programlisting>DeviceChanged ('o'object_path)</programlisting></refsect2>
           <para>
             A device has changed.
           </para>
@@ -394,7 +430,7 @@
             
               The device path.
             
-          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager::ProfileAdded"/>The ProfileAdded signal</title><indexterm><primary>ProfileAdded</primary><secondary>ColorManager</secondary></indexterm><programlisting>ProfileAdded ('o' object_path)</programlisting></refsect2>
+          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager::ProfileAdded"/>The ProfileAdded signal</title><indexterm><primary>ProfileAdded</primary><secondary>ColorManager</secondary></indexterm><programlisting>ProfileAdded ('o'object_path)</programlisting></refsect2>
           <para>
             A profile has been added.
           </para>
@@ -402,7 +438,7 @@
             
               The profile path.
             
-          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager::ProfileRemoved"/>The ProfileRemoved signal</title><indexterm><primary>ProfileRemoved</primary><secondary>ColorManager</secondary></indexterm><programlisting>ProfileRemoved ('o' object_path)</programlisting></refsect2>
+          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager::ProfileRemoved"/>The ProfileRemoved signal</title><indexterm><primary>ProfileRemoved</primary><secondary>ColorManager</secondary></indexterm><programlisting>ProfileRemoved ('o'object_path)</programlisting></refsect2>
           <para>
             A profile has been removed.
           </para>
@@ -410,7 +446,7 @@
             
               The profile path.
             
-          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager::SensorAdded"/>The SensorAdded signal</title><indexterm><primary>SensorAdded</primary><secondary>ColorManager</secondary></indexterm><programlisting>SensorAdded ('o' object_path)</programlisting></refsect2>
+          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager::SensorAdded"/>The SensorAdded signal</title><indexterm><primary>SensorAdded</primary><secondary>ColorManager</secondary></indexterm><programlisting>SensorAdded ('o'object_path)</programlisting></refsect2>
           <para>
             A sensor has been added.
           </para>
@@ -418,7 +454,7 @@
             
               The sensor path.
             
-          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager::SensorRemoved"/>The SensorRemoved signal</title><indexterm><primary>SensorRemoved</primary><secondary>ColorManager</secondary></indexterm><programlisting>SensorRemoved ('o' object_path)</programlisting></refsect2>
+          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager::SensorRemoved"/>The SensorRemoved signal</title><indexterm><primary>SensorRemoved</primary><secondary>ColorManager</secondary></indexterm><programlisting>SensorRemoved ('o'object_path)</programlisting></refsect2>
           <para>
             A sensor has been removed.
           </para>
@@ -426,7 +462,7 @@
             
               The sensor path.
             
-          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager::ProfileChanged"/>The ProfileChanged signal</title><indexterm><primary>ProfileChanged</primary><secondary>ColorManager</secondary></indexterm><programlisting>ProfileChanged ('o' object_path)</programlisting></refsect2>
+          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager::ProfileChanged"/>The ProfileChanged signal</title><indexterm><primary>ProfileChanged</primary><secondary>ColorManager</secondary></indexterm><programlisting>ProfileChanged ('o'object_path)</programlisting></refsect2>
           <para>
             A profile has been changed.
           </para>
@@ -435,7 +471,7 @@
               The profile path.
             
           </simpara></listitem></varlistentry></variablelist></refsect1>
-  <refsect1 role="property_details"><title role="property_details.title">Property Details</title><refsect2><title><anchor role="function" id="ColorManager:DaemonVersion"/>The "DaemonVersion" property</title><indexterm><primary>DaemonVersion</primary><secondary>ColorManager</secondary></indexterm><programlisting>'DaemonVersion'  read      's'
+  <refsect1 role="property_details"><title role="property_details.title">Property Details</title><refsect2><title><anchor role="function" id="ColorManager:DaemonVersion"/>The "DaemonVersion" property</title><indexterm><primary>DaemonVersion</primary><secondary>ColorManager</secondary></indexterm><programlisting>'DaemonVersion'read's'
 </programlisting></refsect2>
           <para>
             The daemon version.

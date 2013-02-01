@@ -126,6 +126,18 @@ cd-device-sync
 @Returns: 
 
 
+<!-- ##### FUNCTION cd_device_set_enabled_sync ##### -->
+<para>
+
+</para>
+
+@device: 
+@enabled: 
+@cancellable: 
+@error: 
+@Returns: 
+
+
 <!-- ##### FUNCTION cd_device_set_kind_sync ##### -->
 <para>
 

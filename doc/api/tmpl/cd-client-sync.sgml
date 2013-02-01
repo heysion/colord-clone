@@ -120,7 +120,32 @@ cd-client-sync
 @Returns: 
 
 
+<!-- ##### FUNCTION cd_client_find_profile_by_property_sync ##### -->
+<para>
+
+</para>
+
+@client: 
+@key: 
+@value: 
+@cancellable: 
+@error: 
+@Returns: 
+
+
 <!-- ##### FUNCTION cd_client_find_profile_sync ##### -->
+<para>
+
+</para>
+
+@client: 
+@id: 
+@cancellable: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_client_find_sensor_sync ##### -->
 <para>
 
 </para>

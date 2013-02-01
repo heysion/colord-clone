@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>cd-client</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
 <link rel="home" href="index.html" title="colord Reference Manual">
 <link rel="up" href="libcolord.html" title="libcolord GObjects">
 <link rel="prev" href="libcolord.html" title="libcolord GObjects">
@@ -39,7 +39,6 @@
 <a name="colord-cd-client.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">#define             <a class="link" href="colord-cd-client.html#CD-CLIENT-ERROR:CAPS" title="CD_CLIENT_ERROR">CD_CLIENT_ERROR</a>
 #define             <a class="link" href="colord-cd-client.html#CD-CLIENT-TYPE-ERROR:CAPS" title="CD_CLIENT_TYPE_ERROR">CD_CLIENT_TYPE_ERROR</a>
-enum                <a class="link" href="colord-cd-client.html#CdClientError" title="enum CdClientError">CdClientError</a>;
 <span class="returnvalue">void</span>                (<a class="link" href="colord-cd-client.html#cd-client-reserved1" title="_cd_client_reserved1 ()">*_cd_client_reserved1</a>)             (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">void</span>                (<a class="link" href="colord-cd-client.html#cd-client-reserved2" title="_cd_client_reserved2 ()">*_cd_client_reserved2</a>)             (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">void</span>                (<a class="link" href="colord-cd-client.html#cd-client-reserved3" title="_cd_client_reserved3 ()">*_cd_client_reserved3</a>)             (<em class="parameter"><code><span class="type">void</span></code></em>);
@@ -124,7 +123,25 @@ enum                <a class="link" href="colord-cd-client.html#CdClientError" t
                                                         (<em class="parameter"><code><span class="type">CdClient</span> *client</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="colord-cd-client.html#cd-client-find-profile-by-property" title="cd_client_find_profile_by_property ()">cd_client_find_profile_by_property</a>  (<em class="parameter"><code><span class="type">CdClient</span> *client</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *key</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *value</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<span class="returnvalue">CdProfile</span> *         <a class="link" href="colord-cd-client.html#cd-client-find-profile-by-property-finish" title="cd_client_find_profile_by_property_finish ()">cd_client_find_profile_by_property_finish</a>
+                                                        (<em class="parameter"><code><span class="type">CdClient</span> *client</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <span class="returnvalue">CdProfile</span> *         <a class="link" href="colord-cd-client.html#cd-client-find-profile-finish" title="cd_client_find_profile_finish ()">cd_client_find_profile_finish</a>       (<em class="parameter"><code><span class="type">CdClient</span> *client</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="colord-cd-client.html#cd-client-find-sensor" title="cd_client_find_sensor ()">cd_client_find_sensor</a>               (<em class="parameter"><code><span class="type">CdClient</span> *client</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *id</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<span class="returnvalue">CdSensor</span> *          <a class="link" href="colord-cd-client.html#cd-client-find-sensor-finish" title="cd_client_find_sensor_finish ()">cd_client_find_sensor_finish</a>        (<em class="parameter"><code><span class="type">CdClient</span> *client</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-client.html#cd-client-get-connected" title="cd_client_get_connected ()">cd_client_get_connected</a>             (<em class="parameter"><code><span class="type">CdClient</span> *client</code></em>);
@@ -227,45 +244,6 @@ See also: <span class="type">CdDevice</span>
 </div>
 <hr>
 <div class="refsect2">
-<a name="CdClientError"></a><h3>enum CdClientError</h3>
-<pre class="programlisting">typedef enum {
-	CD_CLIENT_ERROR_FAILED,
-	CD_CLIENT_ERROR_ALREADY_EXISTS,
-	CD_CLIENT_ERROR_FILE_INVALID,
-	CD_CLIENT_ERROR_LAST
-} CdClientError;
-</pre>
-<p>
-Errors that can be thrown
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><a name="CD-CLIENT-ERROR-FAILED:CAPS"></a><span class="term"><code class="literal">CD_CLIENT_ERROR_FAILED</code></span></p></td>
-<td>the transaction failed for an unknown reason
-</td>
-</tr>
-<tr>
-<td><p><a name="CD-CLIENT-ERROR-ALREADY-EXISTS:CAPS"></a><span class="term"><code class="literal">CD_CLIENT_ERROR_ALREADY_EXISTS</code></span></p></td>
-<td>the device or profile already exists
-</td>
-</tr>
-<tr>
-<td><p><a name="CD-CLIENT-ERROR-FILE-INVALID:CAPS"></a><span class="term"><code class="literal">CD_CLIENT_ERROR_FILE_INVALID</code></span></p></td>
-<td>
-</td>
-</tr>
-<tr>
-<td><p><a name="CD-CLIENT-ERROR-LAST:CAPS"></a><span class="term"><code class="literal">CD_CLIENT_ERROR_LAST</code></span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
 <a name="cd-client-reserved1"></a><h3>_cd_client_reserved1 ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                (*_cd_client_reserved1)             (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
@@ -330,8 +308,11 @@ Errors that can be thrown
 <p>
 Connects to the colord daemon.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -364,8 +345,11 @@ Connects to the colord daemon.
 <p>
 Gets the result from the asynchronous function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -402,8 +386,11 @@ Gets the result from the asynchronous function.
 <p>
 Creates a color device.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -419,7 +406,8 @@ Creates a color device.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>properties</code></em> :</span></p></td>
-<td>properties to set on the device, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
+<td>properties to
+set on the device, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> utf8 utf8][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
 </td>
 </tr>
 <tr>
@@ -449,8 +437,11 @@ Creates a color device.
 <p>
 Gets the result from the asynchronous function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -488,8 +479,11 @@ Gets the result from the asynchronous function.
 <p>
 Creates a color profile.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -505,7 +499,8 @@ Creates a color profile.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>properties</code></em> :</span></p></td>
-<td>properties to set on the profile, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
+<td>properties to
+set on the profile, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> utf8 utf8][<acronym title="NULL is ok, both for passing and for returning."><span class="acronym">allow-none</span></acronym>]</span>
 </td>
 </tr>
 <tr>
@@ -535,8 +530,11 @@ Creates a color profile.
 <p>
 Gets the result from the asynchronous function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -572,8 +570,11 @@ Gets the result from the asynchronous function.
 <p>
 Deletes a device.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -611,8 +612,11 @@ Deletes a device.
 <p>
 Gets the result from the asynchronous function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -647,8 +651,11 @@ Gets the result from the asynchronous function.
 <p>
 Deletes a profile.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -686,8 +693,11 @@ Deletes a profile.
 <p>
 Gets the result from the asynchronous function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -715,8 +725,11 @@ Gets the result from the asynchronous function.
 <div class="refsect2">
 <a name="cd-client-error-quark"></a><h3>cd_client_error_quark ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              cd_client_error_quark               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>An error quark.</td>
@@ -735,8 +748,11 @@ Gets the result from the asynchronous function.
 <p>
 Finds a device by an ID.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -776,8 +792,11 @@ Finds a device by an ID.
 <p>
 Finds a color device that has a property value.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -819,8 +838,11 @@ Finds a color device that has a property value.
 <p>
 Gets the result from the asynchronous function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -854,8 +876,11 @@ Gets the result from the asynchronous function.
 <p>
 Gets the result from the asynchronous function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -891,8 +916,11 @@ Gets the result from the asynchronous function.
 <p>
 Finds a profile by an ID.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -931,8 +959,11 @@ Finds a profile by an ID.
 <p>
 Finds a profile by a filename.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -940,7 +971,7 @@ Finds a profile by a filename.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>filename</code></em> :</span></p></td>
-<td>a <span class="type">profile</span> filename</td>
+<td>a profile filename</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
@@ -970,8 +1001,11 @@ Finds a profile by a filename.
 <p>
 Gets the result from the asynchronous function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -995,6 +1029,93 @@ Gets the result from the asynchronous function.
 </tbody>
 </table></div>
 <p class="since">Since 0.1.8</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cd-client-find-profile-by-property"></a><h3>cd_client_find_profile_by_property ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cd_client_find_profile_by_property  (<em class="parameter"><code><span class="type">CdClient</span> *client</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *key</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *value</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<p>
+Finds a color profile that has a property value.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td>a <span class="type">CdClient</span> instance.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>key</code></em> :</span></p></td>
+<td>the profile property key</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
+<td>the profile property value</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
+<td>the function to run on completion</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>the data to pass to <em class="parameter"><code>callback</code></em>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.1.24</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cd-client-find-profile-by-property-finish"></a><h3>cd_client_find_profile_by_property_finish ()</h3>
+<pre class="programlisting"><span class="returnvalue">CdProfile</span> *         cd_client_find_profile_by_property_finish
+                                                        (<em class="parameter"><code><span class="type">CdClient</span> *client</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Gets the result from the asynchronous function.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td>a <span class="type">CdClient</span> instance.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
+<td>the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a <span class="type">CdProfile</span> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.1.24</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -1005,8 +1126,11 @@ Gets the result from the asynchronous function.
 <p>
 Gets the result from the asynchronous function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -1033,13 +1157,97 @@ Gets the result from the asynchronous function.
 </div>
 <hr>
 <div class="refsect2">
+<a name="cd-client-find-sensor"></a><h3>cd_client_find_sensor ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cd_client_find_sensor               (<em class="parameter"><code><span class="type">CdClient</span> *client</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *id</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
+<p>
+Finds a sensor by an ID.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td>a <span class="type">CdClient</span> instance.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>id</code></em> :</span></p></td>
+<td>a sensor id</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>callback</code></em> :</span></p></td>
+<td>the function to run on completion</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_data</code></em> :</span></p></td>
+<td>the data to pass to <em class="parameter"><code>callback</code></em>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.1.26</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cd-client-find-sensor-finish"></a><h3>cd_client_find_sensor_finish ()</h3>
+<pre class="programlisting"><span class="returnvalue">CdSensor</span> *          cd_client_find_sensor_finish        (<em class="parameter"><code><span class="type">CdClient</span> *client</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Gets the result from the asynchronous function.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td>a <span class="type">CdClient</span> instance.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
+<td>the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>a <span class="type">CdSensor</span> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.1.26</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="cd-client-get-connected"></a><h3>cd_client_get_connected ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_client_get_connected             (<em class="parameter"><code><span class="type">CdClient</span> *client</code></em>);</pre>
 <p>
 Gets if the client has been connected.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -1061,8 +1269,11 @@ Gets if the client has been connected.
 <p>
 Get colord daemon version.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -1086,8 +1297,11 @@ Get colord daemon version.
 <p>
 Gets an array of color devices.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -1122,8 +1336,11 @@ Gets an array of color devices.
 <p>
 Gets an array of color devices.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -1161,8 +1378,11 @@ Gets an array of color devices.
 <p>
 Gets the result from the asynchronous function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -1196,8 +1416,11 @@ Gets the result from the asynchronous function.
 <p>
 Gets the result from the asynchronous function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -1229,8 +1452,11 @@ Gets the result from the asynchronous function.
 <p>
 Gets if the colord server is currently running.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -1255,8 +1481,11 @@ Gets if the colord server is currently running.
 <p>
 Gets an array of color profiles.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -1289,8 +1518,11 @@ Gets an array of color profiles.
 <p>
 Gets the result from the asynchronous function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -1325,8 +1557,11 @@ Gets the result from the asynchronous function.
 <p>
 Gets an array of color sensors.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -1359,8 +1594,11 @@ Gets an array of color sensors.
 <p>
 Gets the result from the asynchronous function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -1396,8 +1634,11 @@ Gets the result from the asynchronous function.
 <p>
 Finds a standard profile space.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -1405,7 +1646,7 @@ Finds a standard profile space.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>standard_space</code></em> :</span></p></td>
-<td>a <span class="type">profile</span> id</td>
+<td>a profile id</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
@@ -1434,8 +1675,11 @@ Finds a standard profile space.
 <p>
 Gets the result from the asynchronous function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -1475,8 +1719,11 @@ Imports a color profile into the users home directory.
 If the profile should be accessable for all users, then call
 <a class="link" href="colord-cd-profile.html#cd-profile-install-system-wide" title="cd_profile_install_system_wide ()"><code class="function">cd_profile_install_system_wide()</code></a> on the result.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -1514,8 +1761,11 @@ If the profile should be accessable for all users, then call
 <p>
 Gets the result from the asynchronous function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
@@ -1547,8 +1797,11 @@ Gets the result from the asynchronous function.
 <p>
 Creates a new <span class="type">CdClient</span> object.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>a new CdClient object.</td>

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>cd-profile</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
 <link rel="home" href="index.html" title="colord Reference Manual">
 <link rel="up" href="libcolord.html" title="libcolord GObjects">
 <link rel="prev" href="colord-cd-device.html" title="cd-device">
@@ -39,7 +39,6 @@
 <a name="colord-cd-profile.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">#define             <a class="link" href="colord-cd-profile.html#CD-PROFILE-ERROR:CAPS" title="CD_PROFILE_ERROR">CD_PROFILE_ERROR</a>
 #define             <a class="link" href="colord-cd-profile.html#CD-PROFILE-TYPE-ERROR:CAPS" title="CD_PROFILE_TYPE_ERROR">CD_PROFILE_TYPE_ERROR</a>
-enum                <a class="link" href="colord-cd-profile.html#CdProfileError" title="enum CdProfileError">CdProfileError</a>;
 <span class="returnvalue">void</span>                (<a class="link" href="colord-cd-profile.html#cd-profile-reserved1" title="_cd_profile_reserved1 ()">*_cd_profile_reserved1</a>)            (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">void</span>                (<a class="link" href="colord-cd-profile.html#cd-profile-reserved2" title="_cd_profile_reserved2 ()">*_cd_profile_reserved2</a>)            (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">void</span>                (<a class="link" href="colord-cd-profile.html#cd-profile-reserved3" title="_cd_profile_reserved3 ()">*_cd_profile_reserved3</a>)            (<em class="parameter"><code><span class="type">void</span></code></em>);
@@ -76,6 +75,7 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-profile.html#cd-profile-get-qualifier" title="cd_profile_get_qualifier ()">cd_profile_get_qualifier</a>            (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
 <span class="returnvalue">CdObjectScope</span>       <a class="link" href="colord-cd-profile.html#cd-profile-get-scope" title="cd_profile_get_scope ()">cd_profile_get_scope</a>                (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
 const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-profile.html#cd-profile-get-title" title="cd_profile_get_title ()">cd_profile_get_title</a>                (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            <a class="link" href="colord-cd-profile.html#cd-profile-get-warnings" title="cd_profile_get_warnings ()">cd_profile_get_warnings</a>             (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-profile.html#cd-profile-has-access" title="cd_profile_has_access ()">cd_profile_has_access</a>               (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-profile.html#cd-profile-install-system-wide" title="cd_profile_install_system_wide ()">cd_profile_install_system_wide</a>      (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
@@ -128,33 +128,6 @@ See also: <span class="type">CdClient</span>
 </pre>
 <p>
 </p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="CdProfileError"></a><h3>enum CdProfileError</h3>
-<pre class="programlisting">typedef enum {
-	CD_PROFILE_ERROR_FAILED,
-	CD_PROFILE_ERROR_LAST
-} CdProfileError;
-</pre>
-<p>
-Errors that can be thrown
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><a name="CD-PROFILE-ERROR-FAILED:CAPS"></a><span class="term"><code class="literal">CD_PROFILE_ERROR_FAILED</code></span></p></td>
-<td>the transaction failed for an unknown reason
-</td>
-</tr>
-<tr>
-<td><p><a name="CD-PROFILE-ERROR-LAST:CAPS"></a><span class="term"><code class="literal">CD_PROFILE_ERROR_LAST</code></span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
 </div>
 <hr>
 <div class="refsect2">
@@ -222,8 +195,11 @@ Errors that can be thrown
 <p>
 Connects to the object and fills up initial properties.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
@@ -256,8 +232,11 @@ Connects to the object and fills up initial properties.
 <p>
 Gets the result from the asynchronous function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
@@ -289,8 +268,11 @@ Gets the result from the asynchronous function.
 <p>
 Tests two profiles for equality.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile1</code></em> :</span></p></td>
@@ -313,8 +295,11 @@ Tests two profiles for equality.
 <div class="refsect2">
 <a name="cd-profile-error-quark"></a><h3>cd_profile_error_quark ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              cd_profile_error_quark              (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>An error quark.</td>
@@ -329,8 +314,11 @@ Tests two profiles for equality.
 <p>
 Gets the profile age in seconds relative to the current time.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
@@ -351,8 +339,11 @@ Gets the profile age in seconds relative to the current time.
 <p>
 Gets the profile colorspace.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
@@ -374,8 +365,11 @@ Gets the profile colorspace.
 <p>
 Gets if the profile has been connected.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
@@ -397,8 +391,11 @@ Gets if the profile has been connected.
 <p>
 Gets the profile created date and time.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
@@ -419,8 +416,11 @@ Gets the profile created date and time.
 <p>
 Gets the profile filename.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
@@ -441,8 +441,11 @@ Gets the profile filename.
 <p>
 Gets the profile format.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
@@ -463,8 +466,11 @@ Gets the profile format.
 <p>
 Returns if the profile has a VCGT table.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
@@ -486,8 +492,11 @@ Returns if the profile has a VCGT table.
 <p>
 Gets the profile ID.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
@@ -509,8 +518,11 @@ Gets the profile ID.
 Returns if the profile is installed system wide and available for all
 users.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
@@ -532,8 +544,11 @@ users.
 <p>
 Gets the profile kind.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
@@ -555,8 +570,11 @@ Gets the profile kind.
 <p>
 Returns the profile metadata.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
@@ -564,7 +582,8 @@ Returns the profile metadata.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="type">GHashTable</span></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+<td>a
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="type">GHashTable</span></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> utf8 utf8]</span>
 </td>
 </tr>
 </tbody>
@@ -579,8 +598,11 @@ Returns the profile metadata.
 <p>
 Returns the profile metadata for a specific key.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
@@ -605,8 +627,11 @@ Returns the profile metadata for a specific key.
 <p>
 Gets the object path for the profile.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
@@ -628,8 +653,11 @@ Gets the object path for the profile.
 <p>
 Gets the profile owner.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
@@ -650,8 +678,11 @@ Gets the profile owner.
 <p>
 Gets the profile qualifier.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
@@ -672,8 +703,11 @@ Gets the profile qualifier.
 <p>
 Gets the profile scope.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
@@ -695,8 +729,11 @@ Gets the profile scope.
 <p>
 Gets the profile title.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
@@ -712,13 +749,42 @@ Gets the profile title.
 </div>
 <hr>
 <div class="refsect2">
+<a name="cd-profile-get-warnings"></a><h3>cd_profile_get_warnings ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            cd_profile_get_warnings             (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
+<p>
+Gets the profile warnings as a string array.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
+<td>a <span class="type">CdProfile</span> instance.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>Any profile warnings, e.g. "vcgt-non-monotonic". <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.1.25</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="cd-profile-has-access"></a><h3>cd_profile_has_access ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_profile_has_access               (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
 <p>
 Gets if the current user has access permissions to the profile.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
@@ -742,8 +808,11 @@ Gets if the current user has access permissions to the profile.
 <p>
 Sets the profile system wide.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
@@ -777,8 +846,11 @@ Sets the profile system wide.
 <p>
 Gets the result from the asynchronous function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
@@ -809,8 +881,11 @@ Gets the result from the asynchronous function.
 <p>
 Creates a new <span class="type">CdProfile</span> object.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>a new CdProfile object.</td>
@@ -825,8 +900,11 @@ Creates a new <span class="type">CdProfile</span> object.
 <p>
 Creates a new <span class="type">CdProfile</span> object with a known object path.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>object_path</code></em> :</span></p></td>
@@ -848,8 +926,11 @@ Creates a new <span class="type">CdProfile</span> object with a known object pat
 <p>
 Sets the object path of the profile.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
@@ -875,8 +956,11 @@ Sets the object path of the profile.
 <p>
 Deletes a color device.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
@@ -917,8 +1001,11 @@ Deletes a color device.
 <p>
 Gets the result from the asynchronous function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
@@ -949,8 +1036,11 @@ Gets the result from the asynchronous function.
 <p>
 Converts the profile to a string description.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>cd-device-sync</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
 <link rel="home" href="index.html" title="colord Reference Manual">
 <link rel="up" href="libcolord-glib-helpers.html" title="libcolord-glib helpers">
 <link rel="prev" href="colord-cd-client-sync.html" title="cd-client-sync">
@@ -72,6 +72,10 @@
                                                          <em class="parameter"><code><span class="type">CdColorspace</span> colorspace</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-device-sync.html#cd-device-set-enabled-sync" title="cd_device_set_enabled_sync ()">cd_device_set_enabled_sync</a>          (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> enabled</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-device-sync.html#cd-device-set-kind-sync" title="cd_device_set_kind_sync ()">cd_device_set_kind_sync</a>             (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
                                                          <em class="parameter"><code><span class="type">CdDeviceKind</span> kind</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
@@ -125,8 +129,11 @@ Adds a profile to a device.
 WARNING: This function is synchronous, and may block.
 Do not use it in GUI applications.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>device</code></em> :</span></p></td>
@@ -172,8 +179,11 @@ Connects to the object and fills up initial properties.
 WARNING: This function is synchronous, and may block.
 Do not use it in GUI applications.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>device</code></em> :</span></p></td>
@@ -212,8 +222,11 @@ Gets the prefered profile for some qualifiers.
 WARNING: This function is synchronous, and may block.
 Do not use it in GUI applications.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>device</code></em> :</span></p></td>
@@ -255,8 +268,11 @@ Gets the property relationship to the device.
 WARNING: This function is synchronous, and may block.
 Do not use it in GUI applications.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>device</code></em> :</span></p></td>
@@ -298,8 +314,11 @@ Makes an already added profile default for a device.
 WARNING: This function is synchronous, and may block.
 Do not use it in GUI applications.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>device</code></em> :</span></p></td>
@@ -341,8 +360,11 @@ returned if <a class="link" href="colord-cd-device-sync.html#cd-device-get-profi
 WARNING: This function is synchronous, and may block.
 Do not use it in GUI applications.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>device</code></em> :</span></p></td>
@@ -380,8 +402,11 @@ returned if <a class="link" href="colord-cd-device-sync.html#cd-device-get-profi
 WARNING: This function is synchronous, and may block.
 Do not use it in GUI applications.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>device</code></em> :</span></p></td>
@@ -419,8 +444,11 @@ Removes a profile from a device.
 WARNING: This function is synchronous, and may block.
 Do not use it in GUI applications.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>device</code></em> :</span></p></td>
@@ -462,8 +490,11 @@ Sets the device kind.
 WARNING: This function is synchronous, and may block.
 Do not use it in GUI applications.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>device</code></em> :</span></p></td>
@@ -471,7 +502,7 @@ Do not use it in GUI applications.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>colorspace</code></em> :</span></p></td>
-<td>The device colorspace, e.g. <span class="type">CD_DEVICE_COLORSPACE_RGB</span>
+<td>The device colorspace, e.g. <span class="type">CD_COLORSPACE_RGB</span>
 </td>
 </tr>
 <tr>
@@ -494,6 +525,52 @@ Do not use it in GUI applications.
 </div>
 <hr>
 <div class="refsect2">
+<a name="cd-device-set-enabled-sync"></a><h3>cd_device_set_enabled_sync ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_device_set_enabled_sync          (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> enabled</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Enables or disables a device.
+</p>
+<p>
+WARNING: This function is synchronous, and may block.
+Do not use it in GUI applications.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>device</code></em> :</span></p></td>
+<td>a <span class="type">CdDevice</span> instance.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>enabled</code></em> :</span></p></td>
+<td>the enabled state</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
+<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> for success, else <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#FALSE:CAPS"><code class="literal">FALSE</code></a>.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.1.26</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="cd-device-set-kind-sync"></a><h3>cd_device_set_kind_sync ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_device_set_kind_sync             (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
                                                          <em class="parameter"><code><span class="type">CdDeviceKind</span> kind</code></em>,
@@ -506,8 +583,11 @@ Sets the device kind.
 WARNING: This function is synchronous, and may block.
 Do not use it in GUI applications.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>device</code></em> :</span></p></td>
@@ -550,8 +630,11 @@ Sets the device mode.
 WARNING: This function is synchronous, and may block.
 Do not use it in GUI applications.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>device</code></em> :</span></p></td>
@@ -594,8 +677,11 @@ Sets the device model.
 WARNING: This function is synchronous, and may block.
 Do not use it in GUI applications.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>device</code></em> :</span></p></td>
@@ -638,8 +724,11 @@ Sets an object property.
 WARNING: This function is synchronous, and may block.
 Do not use it in GUI applications.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>device</code></em> :</span></p></td>
@@ -685,8 +774,11 @@ Sets the device serial number.
 WARNING: This function is synchronous, and may block.
 Do not use it in GUI applications.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>device</code></em> :</span></p></td>
@@ -728,8 +820,11 @@ Sets the device vendor.
 WARNING: This function is synchronous, and may block.
 Do not use it in GUI applications.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>device</code></em> :</span></p></td>

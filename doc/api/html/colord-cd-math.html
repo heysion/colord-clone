@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>cd-math</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
 <link rel="home" href="index.html" title="colord Reference Manual">
 <link rel="up" href="libcolord-glib-helpers.html" title="libcolord-glib helpers">
 <link rel="prev" href="colord-cd-version.html" title="cd-version">
@@ -47,6 +47,8 @@
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-math.html#cd-mat33-matrix-multiply" title="cd_mat33_matrix_multiply ()">cd_mat33_matrix_multiply</a>            (<em class="parameter"><code>const <a class="link" href="colord-cd-math.html#CdMat3x3" title="CdMat3x3"><span class="type">CdMat3x3</span></a> *mat_src1</code></em>,
                                                          <em class="parameter"><code>const <a class="link" href="colord-cd-math.html#CdMat3x3" title="CdMat3x3"><span class="type">CdMat3x3</span></a> *mat_src2</code></em>,
                                                          <em class="parameter"><code><a class="link" href="colord-cd-math.html#CdMat3x3" title="CdMat3x3"><span class="type">CdMat3x3</span></a> *mat_dest</code></em>);
+<span class="returnvalue">void</span>                <a class="link" href="colord-cd-math.html#cd-mat33-normalize" title="cd_mat33_normalize ()">cd_mat33_normalize</a>                  (<em class="parameter"><code>const <a class="link" href="colord-cd-math.html#CdMat3x3" title="CdMat3x3"><span class="type">CdMat3x3</span></a> *src</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="colord-cd-math.html#CdMat3x3" title="CdMat3x3"><span class="type">CdMat3x3</span></a> *dest</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-math.html#cd-mat33-reciprocal" title="cd_mat33_reciprocal ()">cd_mat33_reciprocal</a>                 (<em class="parameter"><code>const <a class="link" href="colord-cd-math.html#CdMat3x3" title="CdMat3x3"><span class="type">CdMat3x3</span></a> *src</code></em>,
                                                          <em class="parameter"><code><a class="link" href="colord-cd-math.html#CdMat3x3" title="CdMat3x3"><span class="type">CdMat3x3</span></a> *dest</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-math.html#cd-mat33-scalar-multiply" title="cd_mat33_scalar_multiply ()">cd_mat33_scalar_multiply</a>            (<em class="parameter"><code>const <a class="link" href="colord-cd-math.html#CdMat3x3" title="CdMat3x3"><span class="type">CdMat3x3</span></a> *mat_src</code></em>,
@@ -117,8 +119,11 @@ A GObject to use for common maths functionality like vectors and matrices.
 <p>
 Clears a matrix value, setting all it's values to zero.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>src</code></em> :</span></p></td>
 <td>the source</td>
@@ -134,8 +139,11 @@ Clears a matrix value, setting all it's values to zero.
 Copies the matrix.
 The arguments <em class="parameter"><code>src</code></em> and <em class="parameter"><code>dest</code></em> cannot be the same value.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>src</code></em> :</span></p></td>
@@ -155,8 +163,11 @@ The arguments <em class="parameter"><code>src</code></em> and <em class="paramet
 <p>
 Gets the determinant of the matrix.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>src</code></em> :</span></p></td>
 <td>the source</td>
@@ -170,8 +181,11 @@ Gets the determinant of the matrix.
 <p>
 Gets the raw data for the matrix.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>src</code></em> :</span></p></td>
@@ -195,8 +209,11 @@ Multiply (convolve) one matrix with another.
 The arguments <em class="parameter"><code>mat_src1</code></em> cannot be the same as <em class="parameter"><code>mat_dest</code></em>, and
 <em class="parameter"><code>mat_src2</code></em> cannot be the same as <em class="parameter"><code>mat_dest</code></em>.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>mat_src1</code></em> :</span></p></td>
@@ -215,6 +232,34 @@ The arguments <em class="parameter"><code>mat_src1</code></em> cannot be the sam
 </div>
 <hr>
 <div class="refsect2">
+<a name="cd-mat33-normalize"></a><h3>cd_mat33_normalize ()</h3>
+<pre class="programlisting"><span class="returnvalue">void</span>                cd_mat33_normalize                  (<em class="parameter"><code>const <a class="link" href="colord-cd-math.html#CdMat3x3" title="CdMat3x3"><span class="type">CdMat3x3</span></a> *src</code></em>,
+                                                         <em class="parameter"><code><a class="link" href="colord-cd-math.html#CdMat3x3" title="CdMat3x3"><span class="type">CdMat3x3</span></a> *dest</code></em>);</pre>
+<p>
+Normalizes a matrix
+</p>
+<p>
+The arguments <em class="parameter"><code>src</code></em> and <em class="parameter"><code>dest</code></em> can be the same value.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>src</code></em> :</span></p></td>
+<td>the source matrix</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>dest</code></em> :</span></p></td>
+<td>the destination matrix</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2">
 <a name="cd-mat33-reciprocal"></a><h3>cd_mat33_reciprocal ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_mat33_reciprocal                 (<em class="parameter"><code>const <a class="link" href="colord-cd-math.html#CdMat3x3" title="CdMat3x3"><span class="type">CdMat3x3</span></a> *src</code></em>,
                                                          <em class="parameter"><code><a class="link" href="colord-cd-math.html#CdMat3x3" title="CdMat3x3"><span class="type">CdMat3x3</span></a> *dest</code></em>);</pre>
@@ -222,8 +267,11 @@ The arguments <em class="parameter"><code>mat_src1</code></em> cannot be the sam
 Inverts the matrix.
 The arguments <em class="parameter"><code>src</code></em> and <em class="parameter"><code>dest</code></em> cannot be the same value.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>src</code></em> :</span></p></td>
@@ -251,8 +299,11 @@ The arguments <em class="parameter"><code>src</code></em> and <em class="paramet
 Multiplies a matrix with a scalar.
 The arguments <em class="parameter"><code>vec_src</code></em> and <em class="parameter"><code>vec_dest</code></em> can be the same value.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>mat_src</code></em> :</span></p></td>
@@ -276,8 +327,11 @@ The arguments <em class="parameter"><code>vec_src</code></em> and <em class="par
 <p>
 Sets the matrix to an identity value.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>src</code></em> :</span></p></td>
 <td>the source</td>
@@ -291,8 +345,11 @@ Sets the matrix to an identity value.
 <p>
 Obtains a string representaton of a matrix.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>src</code></em> :</span></p></td>
@@ -316,8 +373,11 @@ Obtains a string representaton of a matrix.
 Multiplies a matrix with a vector.
 The arguments <em class="parameter"><code>vec_src</code></em> and <em class="parameter"><code>vec_dest</code></em> cannot be the same value.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>mat_src</code></em> :</span></p></td>
@@ -344,8 +404,11 @@ The arguments <em class="parameter"><code>vec_src</code></em> and <em class="par
 Adds two vector quantaties
 The arguments <em class="parameter"><code>src</code></em> and <em class="parameter"><code>dest</code></em> can be the same value.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>src1</code></em> :</span></p></td>
@@ -369,8 +432,11 @@ The arguments <em class="parameter"><code>src</code></em> and <em class="paramet
 <p>
 Clears a vector, setting all it's values to zero.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>src</code></em> :</span></p></td>
 <td>the source vector</td>
@@ -386,8 +452,11 @@ Clears a vector, setting all it's values to zero.
 Copies the vector into another vector.
 The arguments <em class="parameter"><code>src</code></em> and <em class="parameter"><code>dest</code></em> cannot be the same value.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>src</code></em> :</span></p></td>
@@ -407,8 +476,11 @@ The arguments <em class="parameter"><code>src</code></em> and <em class="paramet
 <p>
 Gets the raw data for the vector.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>src</code></em> :</span></p></td>
@@ -431,8 +503,11 @@ Gets the raw data for the vector.
 <p>
 Initialises a vector.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>dest</code></em> :</span></p></td>
@@ -463,8 +538,11 @@ Initialises a vector.
 Multiplies a vector with a scalar.
 The arguments <em class="parameter"><code>src</code></em> and <em class="parameter"><code>dest</code></em> can be the same value.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>src</code></em> :</span></p></td>
@@ -489,12 +567,19 @@ The arguments <em class="parameter"><code>src</code></em> and <em class="paramet
 <p>
 Gets the mean squared error for a pair of vectors
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>src1</code></em> :</span></p></td>
 <td>the vector source</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>src2</code></em> :</span></p></td>
+<td>another vector source</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -513,8 +598,11 @@ Gets the mean squared error for a pair of vectors
 Subtracts one vector quantaty from another
 The arguments <em class="parameter"><code>src</code></em> and <em class="parameter"><code>dest</code></em> can be the same value.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>src1</code></em> :</span></p></td>
@@ -538,8 +626,11 @@ The arguments <em class="parameter"><code>src</code></em> and <em class="paramet
 <p>
 Obtains a string representaton of a vector.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>src</code></em> :</span></p></td>

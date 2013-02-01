@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>cd-it8</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
 <link rel="home" href="index.html" title="colord Reference Manual">
 <link rel="up" href="libcolord.html" title="libcolord GObjects">
 <link rel="prev" href="colord-cd-sensor.html" title="cd-sensor">
@@ -79,6 +79,10 @@ const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.htm
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <span class="returnvalue">CdIt8</span> *             <a class="link" href="colord-cd-it8.html#cd-it8-new" title="cd_it8_new ()">cd_it8_new</a>                          (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">CdIt8</span> *             <a class="link" href="colord-cd-it8.html#cd-it8-new-with-kind" title="cd_it8_new_with_kind ()">cd_it8_new_with_kind</a>                (<em class="parameter"><code><a class="link" href="colord-cd-it8.html#CdIt8Kind" title="enum CdIt8Kind"><span class="type">CdIt8Kind</span></a> kind</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-it8.html#cd-it8-save-to-data" title="cd_it8_save_to_data ()">cd_it8_save_to_data</a>                 (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **data</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> *size</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-it8.html#cd-it8-save-to-file" title="cd_it8_save_to_file ()">cd_it8_save_to_file</a>                 (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a> *file</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
@@ -135,8 +139,11 @@ or normalized sample data.
 <p>
 Errors that can be thrown
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><a name="CD-IT8-ERROR-FAILED:CAPS"></a><span class="term"><code class="literal">CD_IT8_ERROR_FAILED</code></span></p></td>
@@ -159,6 +166,7 @@ Errors that can be thrown
 	CD_IT8_KIND_TI1,
 	CD_IT8_KIND_TI3,
 	CD_IT8_KIND_CCMX,
+	CD_IT8_KIND_CAL,
 	CD_IT8_KIND_LAST
 } CdIt8Kind;
 </pre>
@@ -232,8 +240,11 @@ The kind of IT8 file.
 Adds a reading to this object. If either of <em class="parameter"><code>rgb</code></em> or <em class="parameter"><code>xyz</code></em> is NULL then
 a black reading (0.0, 0.0, 0.0) is added instead.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>it8</code></em> :</span></p></td>
@@ -261,8 +272,11 @@ a black reading (0.0, 0.0, 0.0) is added instead.
 <p>
 Sets any extra options that have to be set in the CCMX file
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>it8</code></em> :</span></p></td>
@@ -280,8 +294,11 @@ Sets any extra options that have to be set in the CCMX file
 <div class="refsect2">
 <a name="cd-it8-error-quark"></a><h3>cd_it8_error_quark ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              cd_it8_error_quark                  (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>An error quark.</td>
@@ -300,8 +317,11 @@ Sets any extra options that have to be set in the CCMX file
 Gets a specific bit of data from this object.
 The returned data are absolute readings and are not normalised.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>it8</code></em> :</span></p></td>
@@ -335,8 +355,11 @@ The returned data are absolute readings and are not normalised.
 <p>
 Gets the data size.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>it8</code></em> :</span></p></td>
@@ -357,8 +380,11 @@ Gets the data size.
 <p>
 Gets the instrument the file was created by.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>it8</code></em> :</span></p></td>
@@ -379,8 +405,11 @@ Gets the instrument the file was created by.
 <p>
 Gets the kind of IT8 file.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>it8</code></em> :</span></p></td>
@@ -401,8 +430,11 @@ Gets the kind of IT8 file.
 <p>
 Gets the calibration matrix in the it8 file.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>it8</code></em> :</span></p></td>
@@ -423,8 +455,11 @@ Gets the calibration matrix in the it8 file.
 <p>
 Gets if the data should be written normlaised to y=100.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>it8</code></em> :</span></p></td>
@@ -446,8 +481,11 @@ Gets if the data should be written normlaised to y=100.
 <p>
 Gets the file orginator.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>it8</code></em> :</span></p></td>
@@ -468,8 +506,11 @@ Gets the file orginator.
 <p>
 Gets the reference the file was created against.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>it8</code></em> :</span></p></td>
@@ -490,8 +531,11 @@ Gets the reference the file was created against.
 <p>
 Gets if the data is spectral or XYZ.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>it8</code></em> :</span></p></td>
@@ -513,8 +557,11 @@ Gets if the data is spectral or XYZ.
 <p>
 Gets the file title.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>it8</code></em> :</span></p></td>
@@ -536,8 +583,11 @@ Gets the file title.
 <p>
 Finds an option in the file.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>it8</code></em> :</span></p></td>
@@ -566,8 +616,11 @@ Finds an option in the file.
 <p>
 Loads a it8 file from data.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>it8</code></em> :</span></p></td>
@@ -604,8 +657,11 @@ Loads a it8 file from data.
 <p>
 Loads a it8 file from disk.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>it8</code></em> :</span></p></td>
@@ -637,8 +693,11 @@ Loads a it8 file from disk.
 <p>
 Creates a new <span class="type">CdIt8</span> object.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>a new CdIt8 object.</td>
@@ -653,8 +712,11 @@ Creates a new <span class="type">CdIt8</span> object.
 <p>
 Creates a new <span class="type">CdIt8</span> object.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>kind</code></em> :</span></p></td>
@@ -670,6 +732,49 @@ Creates a new <span class="type">CdIt8</span> object.
 </div>
 <hr>
 <div class="refsect2">
+<a name="cd-it8-save-to-data"></a><h3>cd_it8_save_to_data ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_it8_save_to_data                 (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **data</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> *size</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<p>
+Saves a it8 file to an area of memory.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>it8</code></em> :</span></p></td>
+<td>a <span class="type">CdIt8</span> instance.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>a pointer to returned data</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
+<td>size of <em class="parameter"><code>data</code></em>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if it8 file was saved.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.1.26</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="cd-it8-save-to-file"></a><h3>cd_it8_save_to_file ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_it8_save_to_file                 (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
                                                          <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a> *file</code></em>,
@@ -677,8 +782,11 @@ Creates a new <span class="type">CdIt8</span> object.
 <p>
 Saves a it8 file to disk
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>it8</code></em> :</span></p></td>
@@ -711,8 +819,11 @@ Saves a it8 file to disk
 <p>
 Sets the measuring instrument that created the .it8 file
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>it8</code></em> :</span></p></td>
@@ -734,8 +845,11 @@ Sets the measuring instrument that created the .it8 file
 <p>
 Set the kind of IT8 file.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>it8</code></em> :</span></p></td>
@@ -757,8 +871,11 @@ Set the kind of IT8 file.
 <p>
 Set the calibration matrix in the it8 file.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>it8</code></em> :</span></p></td>
@@ -780,8 +897,11 @@ Set the calibration matrix in the it8 file.
 <p>
 Sets if normalized data should be written to the .it8 file.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>it8</code></em> :</span></p></td>
@@ -803,8 +923,11 @@ Sets if normalized data should be written to the .it8 file.
 <p>
 Sets the program name that created the .it8 file
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>it8</code></em> :</span></p></td>
@@ -826,8 +949,11 @@ Sets the program name that created the .it8 file
 <p>
 Sets the reference that as used to create the .it8 reference
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>it8</code></em> :</span></p></td>
@@ -849,8 +975,11 @@ Sets the reference that as used to create the .it8 reference
 <p>
 Sets if spectral data should be written to the .it8 file.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>it8</code></em> :</span></p></td>
@@ -872,8 +1001,11 @@ Sets if spectral data should be written to the .it8 file.
 <p>
 Sets the display name for the file.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>it8</code></em> :</span></p></td>

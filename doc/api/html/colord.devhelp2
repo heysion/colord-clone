@@ -33,8 +33,10 @@
     <keyword type="" name="GetDevices ()" link="ColorManager.html#ColorManager.GetDevices"/>
     <keyword type="" name="GetDevicesByKind ()" link="ColorManager.html#ColorManager.GetDevicesByKind"/>
     <keyword type="" name="FindDeviceById ()" link="ColorManager.html#ColorManager.FindDeviceById"/>
+    <keyword type="" name="FindSensorById ()" link="ColorManager.html#ColorManager.FindSensorById"/>
     <keyword type="" name="FindDeviceByProperty ()" link="ColorManager.html#ColorManager.FindDeviceByProperty"/>
     <keyword type="" name="FindProfileById ()" link="ColorManager.html#ColorManager.FindProfileById"/>
+    <keyword type="" name="FindProfileByProperty ()" link="ColorManager.html#ColorManager.FindProfileByProperty"/>
     <keyword type="" name="FindProfileByFilename ()" link="ColorManager.html#ColorManager.FindProfileByFilename"/>
     <keyword type="" name="GetStandardSpace ()" link="ColorManager.html#ColorManager.GetStandardSpace"/>
     <keyword type="" name="GetProfiles ()" link="ColorManager.html#ColorManager.GetProfiles"/>
@@ -63,6 +65,7 @@
     <keyword type="" name="GetProfileRelation ()" link="Device.html#Device.GetProfileRelation"/>
     <keyword type="" name="ProfilingInhibit ()" link="Device.html#Device.ProfilingInhibit"/>
     <keyword type="" name="ProfilingUninhibit ()" link="Device.html#Device.ProfilingUninhibit"/>
+    <keyword type="" name="SetEnabled ()" link="Device.html#Device.SetEnabled"/>
     <keyword type="" name="The Changed signal" link="Device.html#Device::Changed"/>
     <keyword type="" name="The &quot;Created&quot; property" link="Device.html#Device:Created"/>
     <keyword type="" name="The &quot;Modified&quot; property" link="Device.html#Device:Modified"/>
@@ -77,6 +80,9 @@
     <keyword type="" name="The &quot;Format&quot; property" link="Device.html#Device:Format"/>
     <keyword type="" name="The &quot;Scope&quot; property" link="Device.html#Device:Scope"/>
     <keyword type="" name="The &quot;Owner&quot; property" link="Device.html#Device:Owner"/>
+    <keyword type="" name="The &quot;Enabled&quot; property" link="Device.html#Device:Enabled"/>
+    <keyword type="" name="The &quot;Seat&quot; property" link="Device.html#Device:Seat"/>
+    <keyword type="" name="The &quot;Embedded&quot; property" link="Device.html#Device:Embedded"/>
     <keyword type="" name="The &quot;Metadata&quot; property" link="Device.html#Device:Metadata"/>
     <keyword type="" name="The &quot;ProfilingInhibitors&quot; property" link="Device.html#Device:ProfilingInhibitors"/>
     <keyword type="" name="SetProperty ()" link="Profile.html#Profile.SetProperty"/>
@@ -95,11 +101,13 @@
     <keyword type="" name="The &quot;Created&quot; property" link="Profile.html#Profile:Created"/>
     <keyword type="" name="The &quot;Scope&quot; property" link="Profile.html#Profile:Scope"/>
     <keyword type="" name="The &quot;Owner&quot; property" link="Profile.html#Profile:Owner"/>
+    <keyword type="" name="The &quot;Warnings&quot; property" link="Profile.html#Profile:Warnings"/>
     <keyword type="" name="Lock ()" link="Sensor.html#Sensor.Lock"/>
     <keyword type="" name="Unlock ()" link="Sensor.html#Sensor.Unlock"/>
     <keyword type="" name="GetSample ()" link="Sensor.html#Sensor.GetSample"/>
     <keyword type="" name="SetOptions ()" link="Sensor.html#Sensor.SetOptions"/>
     <keyword type="" name="The ButtonPressed signal" link="Sensor.html#Sensor::ButtonPressed"/>
+    <keyword type="" name="The &quot;SensorId&quot; property" link="Sensor.html#Sensor:SensorId"/>
     <keyword type="" name="The &quot;Kind&quot; property" link="Sensor.html#Sensor:Kind"/>
     <keyword type="" name="The &quot;State&quot; property" link="Sensor.html#Sensor:State"/>
     <keyword type="" name="The &quot;Mode&quot; property" link="Sensor.html#Sensor:Mode"/>
@@ -107,12 +115,13 @@
     <keyword type="" name="The &quot;Model&quot; property" link="Sensor.html#Sensor:Model"/>
     <keyword type="" name="The &quot;Vendor&quot; property" link="Sensor.html#Sensor:Vendor"/>
     <keyword type="" name="The &quot;Native&quot; property" link="Sensor.html#Sensor:Native"/>
+    <keyword type="" name="The &quot;Embedded&quot; property" link="Sensor.html#Sensor:Embedded"/>
     <keyword type="" name="The &quot;Locked&quot; property" link="Sensor.html#Sensor:Locked"/>
     <keyword type="" name="The &quot;Capabilities&quot; property" link="Sensor.html#Sensor:Capabilities"/>
     <keyword type="" name="The &quot;Options&quot; property" link="Sensor.html#Sensor:Options"/>
+    <keyword type="" name="The &quot;Metadata&quot; property" link="Sensor.html#Sensor:Metadata"/>
     <keyword type="macro" name="CD_CLIENT_ERROR" link="colord-cd-client.html#CD-CLIENT-ERROR:CAPS"/>
     <keyword type="macro" name="CD_CLIENT_TYPE_ERROR" link="colord-cd-client.html#CD-CLIENT-TYPE-ERROR:CAPS"/>
-    <keyword type="enum" name="enum CdClientError" link="colord-cd-client.html#CdClientError"/>
     <keyword type="function" name="_cd_client_reserved1 ()" link="colord-cd-client.html#cd-client-reserved1"/>
     <keyword type="function" name="_cd_client_reserved2 ()" link="colord-cd-client.html#cd-client-reserved2"/>
     <keyword type="function" name="_cd_client_reserved3 ()" link="colord-cd-client.html#cd-client-reserved3"/>
@@ -139,7 +148,11 @@
     <keyword type="function" name="cd_client_find_profile ()" link="colord-cd-client.html#cd-client-find-profile" since="0.1.8"/>
     <keyword type="function" name="cd_client_find_profile_by_filename ()" link="colord-cd-client.html#cd-client-find-profile-by-filename" since="0.1.8"/>
     <keyword type="function" name="cd_client_find_profile_by_filename_finish ()" link="colord-cd-client.html#cd-client-find-profile-by-filename-finish" since="0.1.8"/>
+    <keyword type="function" name="cd_client_find_profile_by_property ()" link="colord-cd-client.html#cd-client-find-profile-by-property" since="0.1.24"/>
+    <keyword type="function" name="cd_client_find_profile_by_property_finish ()" link="colord-cd-client.html#cd-client-find-profile-by-property-finish" since="0.1.24"/>
     <keyword type="function" name="cd_client_find_profile_finish ()" link="colord-cd-client.html#cd-client-find-profile-finish" since="0.1.8"/>
+    <keyword type="function" name="cd_client_find_sensor ()" link="colord-cd-client.html#cd-client-find-sensor" since="0.1.26"/>
+    <keyword type="function" name="cd_client_find_sensor_finish ()" link="colord-cd-client.html#cd-client-find-sensor-finish" since="0.1.26"/>
     <keyword type="function" name="cd_client_get_connected ()" link="colord-cd-client.html#cd-client-get-connected" since="0.1.9"/>
     <keyword type="function" name="cd_client_get_daemon_version ()" link="colord-cd-client.html#cd-client-get-daemon-version" since="0.1.0"/>
     <keyword type="function" name="cd_client_get_devices ()" link="colord-cd-client.html#cd-client-get-devices" since="0.1.8"/>
@@ -168,7 +181,6 @@
     <keyword type="function" name="sensor_removed ()" link="colord-cd-client.html#sensor-removed"/>
     <keyword type="macro" name="CD_DEVICE_ERROR" link="colord-cd-device.html#CD-DEVICE-ERROR:CAPS"/>
     <keyword type="macro" name="CD_DEVICE_TYPE_ERROR" link="colord-cd-device.html#CD-DEVICE-TYPE-ERROR:CAPS"/>
-    <keyword type="enum" name="enum CdDeviceError" link="colord-cd-device.html#CdDeviceError"/>
     <keyword type="function" name="_cd_device_reserved1 ()" link="colord-cd-device.html#cd-device-reserved1"/>
     <keyword type="function" name="_cd_device_reserved2 ()" link="colord-cd-device.html#cd-device-reserved2"/>
     <keyword type="function" name="_cd_device_reserved3 ()" link="colord-cd-device.html#cd-device-reserved3"/>
@@ -187,6 +199,8 @@
     <keyword type="function" name="cd_device_get_connected ()" link="colord-cd-device.html#cd-device-get-connected" since="0.1.9"/>
     <keyword type="function" name="cd_device_get_created ()" link="colord-cd-device.html#cd-device-get-created" since="0.1.0"/>
     <keyword type="function" name="cd_device_get_default_profile ()" link="colord-cd-device.html#cd-device-get-default-profile" since="0.1.1"/>
+    <keyword type="function" name="cd_device_get_embedded ()" link="colord-cd-device.html#cd-device-get-embedded" since="0.1.27"/>
+    <keyword type="function" name="cd_device_get_enabled ()" link="colord-cd-device.html#cd-device-get-enabled" since="0.1.26"/>
     <keyword type="function" name="cd_device_get_format ()" link="colord-cd-device.html#cd-device-get-format" since="0.1.9"/>
     <keyword type="function" name="cd_device_get_id ()" link="colord-cd-device.html#cd-device-get-id" since="0.1.0"/>
     <keyword type="function" name="cd_device_get_kind ()" link="colord-cd-device.html#cd-device-get-kind" since="0.1.0"/>
@@ -204,6 +218,7 @@
     <keyword type="function" name="cd_device_get_profiles ()" link="colord-cd-device.html#cd-device-get-profiles" since="0.1.0"/>
     <keyword type="function" name="cd_device_get_profiling_inhibitors ()" link="colord-cd-device.html#cd-device-get-profiling-inhibitors" since="0.1.17"/>
     <keyword type="function" name="cd_device_get_scope ()" link="colord-cd-device.html#cd-device-get-scope" since="0.1.10"/>
+    <keyword type="function" name="cd_device_get_seat ()" link="colord-cd-device.html#cd-device-get-seat" since="0.1.24"/>
     <keyword type="function" name="cd_device_get_serial ()" link="colord-cd-device.html#cd-device-get-serial" since="0.1.0"/>
     <keyword type="function" name="cd_device_get_vendor ()" link="colord-cd-device.html#cd-device-get-vendor" since="0.1.1"/>
     <keyword type="function" name="cd_device_make_profile_default ()" link="colord-cd-device.html#cd-device-make-profile-default" since="0.1.8"/>
@@ -216,6 +231,8 @@
     <keyword type="function" name="cd_device_profiling_uninhibit_finish ()" link="colord-cd-device.html#cd-device-profiling-uninhibit-finish" since="0.1.8"/>
     <keyword type="function" name="cd_device_remove_profile ()" link="colord-cd-device.html#cd-device-remove-profile" since="0.1.8"/>
     <keyword type="function" name="cd_device_remove_profile_finish ()" link="colord-cd-device.html#cd-device-remove-profile-finish" since="0.1.8"/>
+    <keyword type="function" name="cd_device_set_enabled ()" link="colord-cd-device.html#cd-device-set-enabled" since="0.1.26"/>
+    <keyword type="function" name="cd_device_set_enabled_finish ()" link="colord-cd-device.html#cd-device-set-enabled-finish" since="0.1.26"/>
     <keyword type="function" name="cd_device_set_object_path ()" link="colord-cd-device.html#cd-device-set-object-path" since="0.1.8"/>
     <keyword type="function" name="cd_device_set_property ()" link="colord-cd-device.html#cd-device-set-property" since="0.1.8"/>
     <keyword type="function" name="cd_device_set_property_finish ()" link="colord-cd-device.html#cd-device-set-property-finish" since="0.1.8"/>
@@ -223,7 +240,6 @@
     <keyword type="function" name="changed ()" link="colord-cd-device.html#changed"/>
     <keyword type="macro" name="CD_PROFILE_ERROR" link="colord-cd-profile.html#CD-PROFILE-ERROR:CAPS"/>
     <keyword type="macro" name="CD_PROFILE_TYPE_ERROR" link="colord-cd-profile.html#CD-PROFILE-TYPE-ERROR:CAPS"/>
-    <keyword type="enum" name="enum CdProfileError" link="colord-cd-profile.html#CdProfileError"/>
     <keyword type="function" name="_cd_profile_reserved1 ()" link="colord-cd-profile.html#cd-profile-reserved1"/>
     <keyword type="function" name="_cd_profile_reserved2 ()" link="colord-cd-profile.html#cd-profile-reserved2"/>
     <keyword type="function" name="_cd_profile_reserved3 ()" link="colord-cd-profile.html#cd-profile-reserved3"/>
@@ -253,6 +269,7 @@
     <keyword type="function" name="cd_profile_get_qualifier ()" link="colord-cd-profile.html#cd-profile-get-qualifier" since="0.1.0"/>
     <keyword type="function" name="cd_profile_get_scope ()" link="colord-cd-profile.html#cd-profile-get-scope" since="0.1.10"/>
     <keyword type="function" name="cd_profile_get_title ()" link="colord-cd-profile.html#cd-profile-get-title" since="0.1.0"/>
+    <keyword type="function" name="cd_profile_get_warnings ()" link="colord-cd-profile.html#cd-profile-get-warnings" since="0.1.25"/>
     <keyword type="function" name="cd_profile_has_access ()" link="colord-cd-profile.html#cd-profile-has-access" since="0.1.13"/>
     <keyword type="function" name="cd_profile_install_system_wide ()" link="colord-cd-profile.html#cd-profile-install-system-wide" since="0.1.8"/>
     <keyword type="function" name="cd_profile_install_system_wide_finish ()" link="colord-cd-profile.html#cd-profile-install-system-wide-finish" since="0.1.8"/>
@@ -265,7 +282,6 @@
     <keyword type="function" name="changed ()" link="colord-cd-profile.html#changed"/>
     <keyword type="macro" name="CD_SENSOR_ERROR" link="colord-cd-sensor.html#CD-SENSOR-ERROR:CAPS"/>
     <keyword type="macro" name="CD_SENSOR_TYPE_ERROR" link="colord-cd-sensor.html#CD-SENSOR-TYPE-ERROR:CAPS"/>
-    <keyword type="enum" name="enum CdSensorError" link="colord-cd-sensor.html#CdSensorError"/>
     <keyword type="function" name="_cd_sensor_reserved1 ()" link="colord-cd-sensor.html#cd-sensor-reserved1"/>
     <keyword type="function" name="_cd_sensor_reserved2 ()" link="colord-cd-sensor.html#cd-sensor-reserved2"/>
     <keyword type="function" name="_cd_sensor_reserved3 ()" link="colord-cd-sensor.html#cd-sensor-reserved3"/>
@@ -281,6 +297,8 @@
     <keyword type="function" name="cd_sensor_error_quark ()" link="colord-cd-sensor.html#cd-sensor-error-quark" since="0.1.6"/>
     <keyword type="function" name="cd_sensor_get_caps ()" link="colord-cd-sensor.html#cd-sensor-get-caps" since="0.1.6"/>
     <keyword type="function" name="cd_sensor_get_connected ()" link="colord-cd-sensor.html#cd-sensor-get-connected" since="0.1.9"/>
+    <keyword type="function" name="cd_sensor_get_embedded ()" link="colord-cd-sensor.html#cd-sensor-get-embedded" since="0.1.26"/>
+    <keyword type="function" name="cd_sensor_get_id ()" link="colord-cd-sensor.html#cd-sensor-get-id" since="0.1.26"/>
     <keyword type="function" name="cd_sensor_get_kind ()" link="colord-cd-sensor.html#cd-sensor-get-kind" since="0.1.6"/>
     <keyword type="function" name="cd_sensor_get_locked ()" link="colord-cd-sensor.html#cd-sensor-get-locked" since="0.1.6"/>
     <keyword type="function" name="cd_sensor_get_mode ()" link="colord-cd-sensor.html#cd-sensor-get-mode" since="0.1.6"/>
@@ -335,6 +353,7 @@
     <keyword type="function" name="cd_it8_load_from_file ()" link="colord-cd-it8.html#cd-it8-load-from-file" since="0.1.20"/>
     <keyword type="function" name="cd_it8_new ()" link="colord-cd-it8.html#cd-it8-new" since="0.1.20"/>
     <keyword type="function" name="cd_it8_new_with_kind ()" link="colord-cd-it8.html#cd-it8-new-with-kind" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_save_to_data ()" link="colord-cd-it8.html#cd-it8-save-to-data" since="0.1.26"/>
     <keyword type="function" name="cd_it8_save_to_file ()" link="colord-cd-it8.html#cd-it8-save-to-file" since="0.1.20"/>
     <keyword type="function" name="cd_it8_set_instrument ()" link="colord-cd-it8.html#cd-it8-set-instrument" since="0.1.20"/>
     <keyword type="function" name="cd_it8_set_kind ()" link="colord-cd-it8.html#cd-it8-set-kind" since="0.1.20"/>
@@ -352,7 +371,9 @@
     <keyword type="function" name="cd_client_find_device_by_property_sync ()" link="colord-cd-client-sync.html#cd-client-find-device-by-property-sync" since="0.1.8"/>
     <keyword type="function" name="cd_client_find_device_sync ()" link="colord-cd-client-sync.html#cd-client-find-device-sync" since="0.1.0"/>
     <keyword type="function" name="cd_client_find_profile_by_filename_sync ()" link="colord-cd-client-sync.html#cd-client-find-profile-by-filename-sync" since="0.1.3"/>
+    <keyword type="function" name="cd_client_find_profile_by_property_sync ()" link="colord-cd-client-sync.html#cd-client-find-profile-by-property-sync" since="0.1.24"/>
     <keyword type="function" name="cd_client_find_profile_sync ()" link="colord-cd-client-sync.html#cd-client-find-profile-sync" since="0.1.0"/>
+    <keyword type="function" name="cd_client_find_sensor_sync ()" link="colord-cd-client-sync.html#cd-client-find-sensor-sync" since="0.1.26"/>
     <keyword type="function" name="cd_client_get_devices_by_kind_sync ()" link="colord-cd-client-sync.html#cd-client-get-devices-by-kind-sync" since="0.1.0"/>
     <keyword type="function" name="cd_client_get_devices_sync ()" link="colord-cd-client-sync.html#cd-client-get-devices-sync" since="0.1.0"/>
     <keyword type="function" name="cd_client_get_profiles_sync ()" link="colord-cd-client-sync.html#cd-client-get-profiles-sync" since="0.1.0"/>
@@ -368,6 +389,7 @@
     <keyword type="function" name="cd_device_profiling_uninhibit_sync ()" link="colord-cd-device-sync.html#cd-device-profiling-uninhibit-sync" since="0.1.1"/>
     <keyword type="function" name="cd_device_remove_profile_sync ()" link="colord-cd-device-sync.html#cd-device-remove-profile-sync" since="0.1.2"/>
     <keyword type="function" name="cd_device_set_colorspace_sync ()" link="colord-cd-device-sync.html#cd-device-set-colorspace-sync" since="0.1.1"/>
+    <keyword type="function" name="cd_device_set_enabled_sync ()" link="colord-cd-device-sync.html#cd-device-set-enabled-sync" since="0.1.26"/>
     <keyword type="function" name="cd_device_set_kind_sync ()" link="colord-cd-device-sync.html#cd-device-set-kind-sync" since="0.1.0"/>
     <keyword type="function" name="cd_device_set_mode_sync ()" link="colord-cd-device-sync.html#cd-device-set-mode-sync" since="0.1.2"/>
     <keyword type="function" name="cd_device_set_model_sync ()" link="colord-cd-device-sync.html#cd-device-set-model-sync" since="0.1.0"/>
@@ -396,6 +418,7 @@
     <keyword type="function" name="cd_mat33_determinant ()" link="colord-cd-math.html#cd-mat33-determinant"/>
     <keyword type="function" name="cd_mat33_get_data ()" link="colord-cd-math.html#cd-mat33-get-data"/>
     <keyword type="function" name="cd_mat33_matrix_multiply ()" link="colord-cd-math.html#cd-mat33-matrix-multiply"/>
+    <keyword type="function" name="cd_mat33_normalize ()" link="colord-cd-math.html#cd-mat33-normalize"/>
     <keyword type="function" name="cd_mat33_reciprocal ()" link="colord-cd-math.html#cd-mat33-reciprocal"/>
     <keyword type="function" name="cd_mat33_scalar_multiply ()" link="colord-cd-math.html#cd-mat33-scalar-multiply"/>
     <keyword type="function" name="cd_mat33_set_identity ()" link="colord-cd-math.html#cd-mat33-set-identity"/>
@@ -415,36 +438,28 @@
     <keyword type="struct" name="CdColorRGB8" link="colord-cd-color.html#CdColorRGB8"/>
     <keyword type="struct" name="CdColorXYZ" link="colord-cd-color.html#CdColorXYZ-struct"/>
     <keyword type="struct" name="CdColorYxy" link="colord-cd-color.html#CdColorYxy-struct"/>
-    <keyword type="function" name="cd_color_clear_xyz ()" link="colord-cd-color.html#cd-color-clear-xyz"/>
-    <keyword type="function" name="cd_color_convert_rgb8_to_rgb ()" link="colord-cd-color.html#cd-color-convert-rgb8-to-rgb"/>
-    <keyword type="function" name="cd_color_convert_rgb_to_rgb8 ()" link="colord-cd-color.html#cd-color-convert-rgb-to-rgb8"/>
-    <keyword type="function" name="cd_color_convert_xyz_to_yxy ()" link="colord-cd-color.html#cd-color-convert-xyz-to-yxy"/>
-    <keyword type="function" name="cd_color_convert_yxy_to_xyz ()" link="colord-cd-color.html#cd-color-convert-yxy-to-xyz"/>
-    <keyword type="function" name="cd_color_copy_rgb ()" link="colord-cd-color.html#cd-color-copy-rgb"/>
-    <keyword type="function" name="cd_color_copy_xyz ()" link="colord-cd-color.html#cd-color-copy-xyz"/>
-    <keyword type="function" name="cd_color_copy_yxy ()" link="colord-cd-color.html#cd-color-copy-yxy"/>
+    <keyword type="function" name="cd_color_get_blackbody_rgb ()" link="colord-cd-color.html#cd-color-get-blackbody-rgb"/>
+    <keyword type="function" name="cd_color_rgb8_to_rgb ()" link="colord-cd-color.html#cd-color-rgb8-to-rgb"/>
+    <keyword type="function" name="cd_color_rgb_copy ()" link="colord-cd-color.html#cd-color-rgb-copy"/>
     <keyword type="function" name="cd_color_rgb_dup ()" link="colord-cd-color.html#cd-color-rgb-dup"/>
     <keyword type="macro" name="cd_color_rgb_free" link="colord-cd-color.html#cd-color-rgb-free"/>
+    <keyword type="function" name="cd_color_rgb_interpolate ()" link="colord-cd-color.html#cd-color-rgb-interpolate"/>
     <keyword type="macro" name="cd_color_rgb_new" link="colord-cd-color.html#cd-color-rgb-new"/>
-    <keyword type="function" name="cd_color_set_rgb ()" link="colord-cd-color.html#cd-color-set-rgb"/>
-    <keyword type="function" name="cd_color_set_xyz ()" link="colord-cd-color.html#cd-color-set-xyz"/>
-    <keyword type="function" name="cd_color_set_yxy ()" link="colord-cd-color.html#cd-color-set-yxy"/>
+    <keyword type="function" name="cd_color_rgb_set ()" link="colord-cd-color.html#cd-color-rgb-set"/>
+    <keyword type="function" name="cd_color_rgb_to_rgb8 ()" link="colord-cd-color.html#cd-color-rgb-to-rgb8"/>
+    <keyword type="function" name="cd_color_xyz_clear ()" link="colord-cd-color.html#cd-color-xyz-clear"/>
+    <keyword type="function" name="cd_color_xyz_copy ()" link="colord-cd-color.html#cd-color-xyz-copy"/>
     <keyword type="function" name="cd_color_xyz_dup ()" link="colord-cd-color.html#cd-color-xyz-dup"/>
     <keyword type="macro" name="cd_color_xyz_free" link="colord-cd-color.html#cd-color-xyz-free"/>
     <keyword type="macro" name="cd_color_xyz_new" link="colord-cd-color.html#cd-color-xyz-new"/>
+    <keyword type="function" name="cd_color_xyz_set ()" link="colord-cd-color.html#cd-color-xyz-set"/>
+    <keyword type="function" name="cd_color_xyz_to_yxy ()" link="colord-cd-color.html#cd-color-xyz-to-yxy"/>
+    <keyword type="function" name="cd_color_yxy_copy ()" link="colord-cd-color.html#cd-color-yxy-copy"/>
     <keyword type="function" name="cd_color_yxy_dup ()" link="colord-cd-color.html#cd-color-yxy-dup"/>
     <keyword type="macro" name="cd_color_yxy_free" link="colord-cd-color.html#cd-color-yxy-free"/>
     <keyword type="macro" name="cd_color_yxy_new" link="colord-cd-color.html#cd-color-yxy-new"/>
-    <keyword type="constant" name="CD_CLIENT_ERROR_FAILED" link="colord-cd-client.html#CD-CLIENT-ERROR-FAILED:CAPS"/>
-    <keyword type="constant" name="CD_CLIENT_ERROR_ALREADY_EXISTS" link="colord-cd-client.html#CD-CLIENT-ERROR-ALREADY-EXISTS:CAPS"/>
-    <keyword type="constant" name="CD_CLIENT_ERROR_FILE_INVALID" link="colord-cd-client.html#CD-CLIENT-ERROR-FILE-INVALID:CAPS"/>
-    <keyword type="constant" name="CD_CLIENT_ERROR_LAST" link="colord-cd-client.html#CD-CLIENT-ERROR-LAST:CAPS"/>
-    <keyword type="constant" name="CD_DEVICE_ERROR_FAILED" link="colord-cd-device.html#CD-DEVICE-ERROR-FAILED:CAPS"/>
-    <keyword type="constant" name="CD_DEVICE_ERROR_LAST" link="colord-cd-device.html#CD-DEVICE-ERROR-LAST:CAPS"/>
-    <keyword type="constant" name="CD_PROFILE_ERROR_FAILED" link="colord-cd-profile.html#CD-PROFILE-ERROR-FAILED:CAPS"/>
-    <keyword type="constant" name="CD_PROFILE_ERROR_LAST" link="colord-cd-profile.html#CD-PROFILE-ERROR-LAST:CAPS"/>
-    <keyword type="constant" name="CD_SENSOR_ERROR_FAILED" link="colord-cd-sensor.html#CD-SENSOR-ERROR-FAILED:CAPS"/>
-    <keyword type="constant" name="CD_SENSOR_ERROR_LAST" link="colord-cd-sensor.html#CD-SENSOR-ERROR-LAST:CAPS"/>
+    <keyword type="function" name="cd_color_yxy_set ()" link="colord-cd-color.html#cd-color-yxy-set"/>
+    <keyword type="function" name="cd_color_yxy_to_xyz ()" link="colord-cd-color.html#cd-color-yxy-to-xyz"/>
     <keyword type="constant" name="CD_IT8_ERROR_FAILED" link="colord-cd-it8.html#CD-IT8-ERROR-FAILED:CAPS"/>
     <keyword type="constant" name="CD_IT8_ERROR_LAST" link="colord-cd-it8.html#CD-IT8-ERROR-LAST:CAPS"/>
   </functions>

@@ -89,6 +89,15 @@ cd-math
 @mat_dest: 
 
 
+<!-- ##### FUNCTION cd_mat33_normalize ##### -->
+<para>
+
+</para>
+
+@src: 
+@dest: 
+
+
 <!-- ##### FUNCTION cd_mat33_reciprocal ##### -->
 <para>
 
