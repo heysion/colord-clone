@@ -26,7 +26,7 @@ override_dh_install:
 
 override_dh_auto_configure:
 	dh_auto_configure -- \
-		--libexecdir=/usr/lib/$(DEB_HOST_MULTIARCH)/colord \
+		--libexecdir=/usr/lib/colord \
 		--disable-examples \
 		--disable-static \
 		--disable-volume-search \
