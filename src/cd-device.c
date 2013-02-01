@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*-
  *
- * Copyright (C) 2010-2011 Richard Hughes <richard@hughsie.com>
+ * Copyright (C) 2010-2012 Richard Hughes <richard@hughsie.com>
  *
  * Licensed under the GNU General Public License Version 2
  *
@@ -72,8 +72,11 @@ struct _CdDevicePrivate
 	guint64				 modified;
 	gboolean			 require_modified_signal;
 	gboolean			 is_virtual;
+	gboolean			 enabled;
+	gboolean			 embedded;
 	GHashTable			*metadata;
 	guint				 owner;
+	gchar				*seat;
 };
 
 enum {
@@ -96,6 +99,25 @@ typedef struct {
 
 static guint signals[SIGNAL_LAST] = { 0 };
 G_DEFINE_TYPE (CdDevice, cd_device, G_TYPE_OBJECT)
+
+/**
+ * cd_device_error_quark:
+ **/
+GQuark
+cd_device_error_quark (void)
+{
+	guint i;
+	static GQuark quark = 0;
+	if (!quark) {
+		quark = g_quark_from_static_string ("CdDevice");
+		for (i = 0; i < CD_DEVICE_ERROR_LAST; i++) {
+			g_dbus_error_register_error (quark,
+						     i,
+						     cd_device_error_to_string (i));
+		}
+	}
+	return quark;
+}
 
 #if !GLIB_CHECK_VERSION (2, 25, 0)
 static guint64
@@ -145,6 +167,26 @@ cd_device_set_owner (CdDevice *device, guint owner)
 {
 	g_return_if_fail (CD_IS_DEVICE (device));
 	device->priv->owner = owner;
+}
+
+/**
+ * cd_device_get_seat:
+ **/
+const gchar *
+cd_device_get_seat (CdDevice *device)
+{
+	g_return_val_if_fail (CD_IS_DEVICE (device), NULL);
+	return device->priv->seat;
+}
+
+/**
+ * cd_device_set_seat:
+ **/
+void
+cd_device_set_seat (CdDevice *device, const gchar *seat)
+{
+	g_return_if_fail (CD_IS_DEVICE (device));
+	device->priv->seat = g_strdup (seat);
 }
 
 /**
@@ -244,19 +286,21 @@ cd_device_set_object_path (CdDevice *device)
 	gchar *path_owner;
 	struct passwd *pw;
 
-	/* make sure object path is sane */
-	path_tmp = cd_main_ensure_dbus_path (device->priv->id);
-
 	/* append the uid to the object path */
 	pw = getpwuid (device->priv->owner);
 	if (device->priv->owner == 0 ||
 	    g_strcmp0 (pw->pw_name, DAEMON_USER) == 0) {
-		path_owner = g_strdup (path_tmp);
+		path_tmp = g_strdup (device->priv->id);
 	} else {
-		path_owner = g_strdup_printf ("%s_%s",
-					      path_tmp,
-					      pw->pw_name);
+		path_tmp = g_strdup_printf ("%s_%s_%d",
+					    device->priv->id,
+					    pw->pw_name,
+					    device->priv->owner);
 	}
+
+	/* make sure object path is sane */
+	path_owner = cd_main_ensure_dbus_path (path_tmp);
+
 	device->priv->object_path = g_build_filename (COLORD_DBUS_PATH,
 						      "devices",
 						      path_owner,
@@ -271,6 +315,8 @@ cd_device_set_object_path (CdDevice *device)
 void
 cd_device_set_id (CdDevice *device, const gchar *id)
 {
+	gchar *enabled_str;
+
 	g_return_if_fail (CD_IS_DEVICE (device));
 
 	g_free (device->priv->id);
@@ -278,6 +324,19 @@ cd_device_set_id (CdDevice *device, const gchar *id)
 
 	/* now calculate this again */
 	cd_device_set_object_path (device);
+
+	/* find initial enabled state */
+	enabled_str = cd_device_db_get_property (device->priv->device_db,
+						 device->priv->id,
+						 "Enabled",
+						 NULL);
+	if (g_strcmp0 (enabled_str, "False") == 0) {
+		g_debug ("%s disabled by db at load", id);
+		device->priv->enabled = FALSE;
+	} else {
+		device->priv->enabled = TRUE;
+	}
+	g_free (enabled_str);
 }
 
 /**
@@ -383,7 +442,7 @@ cd_device_match_qualifier (const gchar *qual1, const gchar *qual2)
 	split2 = g_strsplit (qual2, ".", 3);
 
 	/* ensure all substrings match */
-	for (i=0; i<3; i++) {
+	for (i = 0; i < 3; i++) {
 
 		/* wildcard in query */
 		if (g_strcmp0 (split1[i], "*") == 0)
@@ -424,7 +483,7 @@ cd_device_find_by_qualifier (const gchar *regex,
 	guint i;
 
 	/* find using a wildcard */
-	for (i=0; i<array->len; i++) {
+	for (i = 0; i < array->len; i++) {
 		item = g_ptr_array_index (array, i);
 		if (item->relation != relation)
 			continue;
@@ -471,7 +530,7 @@ cd_device_find_profile_by_object_path (GPtrArray *array, const gchar *object_pat
 	guint i;
 
 	/* find using an object path */
-	for (i=0; i<array->len; i++) {
+	for (i = 0; i < array->len; i++) {
 		item = g_ptr_array_index (array, i);
 		ret = (g_strcmp0 (object_path,
 				  cd_profile_get_object_path (item->profile)) == 0);
@@ -499,14 +558,14 @@ cd_device_get_profiles_as_variant (CdDevice *device)
 
 	/* copy the object paths, hard then soft */
 	profiles = g_new0 (GVariant *, device->priv->profiles->len + 1);
-	for (i=0; i<device->priv->profiles->len; i++) {
+	for (i = 0; i < device->priv->profiles->len; i++) {
 		item = g_ptr_array_index (device->priv->profiles, i);
 		if (item->relation == CD_DEVICE_RELATION_SOFT)
 			continue;
 		tmp = cd_profile_get_object_path (item->profile);
 		profiles[idx++] = g_variant_new_object_path (tmp);
 	}
-	for (i=0; i<device->priv->profiles->len; i++) {
+	for (i = 0; i < device->priv->profiles->len; i++) {
 		item = g_ptr_array_index (device->priv->profiles, i);
 		if (item->relation == CD_DEVICE_RELATION_HARD)
 			continue;
@@ -535,8 +594,17 @@ cd_device_remove_profile (CdDevice *device,
 	gboolean ret = FALSE;
 	guint i;
 
+	/* device is disabled */
+	if (priv->enabled == FALSE) {
+		g_set_error_literal (error,
+				     CD_DEVICE_ERROR,
+				     CD_DEVICE_ERROR_NOT_ENABLED,
+				     "device is disabled");
+		goto out;
+	}
+
 	/* check the profile exists on this device */
-	for (i=0; i<priv->profiles->len; i++) {
+	for (i = 0; i < priv->profiles->len; i++) {
 		item = g_ptr_array_index (priv->profiles, i);
 		if (g_strcmp0 (profile_object_path,
 			       cd_profile_get_object_path (item->profile)) == 0) {
@@ -546,8 +614,8 @@ cd_device_remove_profile (CdDevice *device,
 	}
 	if (!ret) {
 		g_set_error (error,
-			     CD_MAIN_ERROR,
-			     CD_MAIN_ERROR_FAILED,
+			     CD_DEVICE_ERROR,
+			     CD_DEVICE_ERROR_PROFILE_DOES_NOT_EXIST,
 			     "profile object path '%s' does not exist on '%s'",
 			     profile_object_path,
 			     priv->object_path);
@@ -585,7 +653,7 @@ cd_device_find_profile_relation (CdDevice *device,
 	guint i;
 
 	/* search profiles */
-	for (i=0; i<priv->profiles->len; i++) {
+	for (i = 0; i < priv->profiles->len; i++) {
 		item = g_ptr_array_index (priv->profiles, i);
 		if (g_strcmp0 (profile_object_path,
 			       cd_profile_get_object_path (item->profile)) == 0) {
@@ -640,9 +708,19 @@ cd_device_add_profile (CdDevice *device,
 {
 	CdDevicePrivate *priv = device->priv;
 	CdDeviceProfileItem *item;
-	CdProfile *profile;
+	CdProfile *profile = NULL;
 	gboolean ret = TRUE;
 	guint i;
+
+	/* device is disabled */
+	if (priv->enabled == FALSE) {
+		ret = FALSE;
+		g_set_error_literal (error,
+				     CD_DEVICE_ERROR,
+				     CD_DEVICE_ERROR_NOT_ENABLED,
+				     "device is disabled");
+		goto out;
+	}
 
 	/* is it available */
 	profile = cd_profile_array_get_by_object_path (priv->profile_array,
@@ -650,22 +728,22 @@ cd_device_add_profile (CdDevice *device,
 	if (profile == NULL) {
 		ret = FALSE;
 		g_set_error (error,
-			     CD_MAIN_ERROR,
-			     CD_MAIN_ERROR_FAILED,
+			     CD_DEVICE_ERROR,
+			     CD_DEVICE_ERROR_PROFILE_DOES_NOT_EXIST,
 			     "profile object path '%s' does not exist",
 			     profile_object_path);
 		goto out;
 	}
 
 	/* check it does not already exist */
-	for (i=0; i<priv->profiles->len; i++) {
+	for (i = 0; i < priv->profiles->len; i++) {
 		item = g_ptr_array_index (priv->profiles, i);
 		if (g_strcmp0 (cd_profile_get_object_path (profile),
 			       cd_profile_get_object_path (item->profile)) == 0) {
 			ret = FALSE;
 			g_set_error (error,
-				     CD_MAIN_ERROR,
-				     CD_MAIN_ERROR_FAILED,
+				     CD_DEVICE_ERROR,
+				     CD_DEVICE_ERROR_PROFILE_ALREADY_ADDED,
 				     "profile object path '%s' has already been added",
 				     profile_object_path);
 			goto out;
@@ -781,6 +859,7 @@ struct {
 	{ "Hewlett-Packard", "Hewlett Packard" },
 	{ "LENOVO", "Lenovo" },
 	{ "NIKON", "Nikon" },
+	{ "samsung", "Samsung" },
 	{ NULL, NULL }
 };
 
@@ -822,13 +901,28 @@ cd_device_set_model (CdDevice *device, const gchar *model)
 	/* remove insanities */
 	tmp = g_string_new (model);
 
-	/* are we really a webcam */
-	if (g_strcmp0 (priv->kind, "webcam") == 0)
-		g_string_assign (tmp, "Webcam");
+	/* remove the kind suffix */
+	if (g_strcmp0 (priv->kind, "printer") == 0)
+		cd_device_string_remove_suffix (tmp->str, "Printer");
+	if (g_strcmp0 (priv->kind, "display") == 0) {
+		cd_device_string_remove_suffix (tmp->str, "Monitor");
+		cd_device_string_remove_suffix (tmp->str, "Screen");
+	}
 
 	/* okay, we're done now */
 	g_free (priv->model);
 	priv->model = g_string_free (tmp, FALSE);
+}
+
+/**
+ * cd_device_get_nullable_for_string:
+ **/
+static GVariant *
+cd_device_get_nullable_for_string (const gchar *value)
+{
+	if (value == NULL)
+		return g_variant_new_string ("");
+	return g_variant_new_string (value);
 }
 
 /**
@@ -866,6 +960,11 @@ cd_device_set_property_internal (CdDevice *device,
 	} else if (g_strcmp0 (property, CD_DEVICE_PROPERTY_MODE) == 0) {
 		g_free (priv->mode);
 		priv->mode = g_strdup (value);
+	} else if (g_strcmp0 (property, CD_DEVICE_PROPERTY_SEAT) == 0) {
+		g_free (priv->seat);
+		priv->seat = g_strdup (value);
+	} else if (g_strcmp0 (property, CD_DEVICE_PROPERTY_EMBEDDED) == 0) {
+		priv->embedded = TRUE;
 	} else {
 		/* add to metadata */
 		is_metadata = TRUE;
@@ -889,7 +988,7 @@ cd_device_set_property_internal (CdDevice *device,
 	if (!is_metadata) {
 		cd_device_dbus_emit_property_changed (device,
 						      property,
-						      g_variant_new_string (value));
+						      cd_device_get_nullable_for_string (value));
 	}
 	return ret;
 }
@@ -923,11 +1022,22 @@ cd_device_make_default (CdDevice *device,
 	gboolean ret = FALSE;
 	CdDevicePrivate *priv = device->priv;
 
+	/* device is disabled */
+	if (priv->enabled == FALSE) {
+		g_set_error_literal (error,
+				     CD_DEVICE_ERROR,
+				     CD_DEVICE_ERROR_NOT_ENABLED,
+				     "device is disabled");
+		goto out;
+	}
+
 	/* find profile */
 	profile = cd_device_find_profile_by_object_path (priv->profiles,
 							 profile_object_path);
 	if (profile == NULL) {
-		g_set_error (error, 1, 0,
+		g_set_error (error,
+			     CD_DEVICE_ERROR,
+			     CD_DEVICE_ERROR_PROFILE_DOES_NOT_EXIST,
 			     "profile object path '%s' does not exist for this device",
 			     profile_object_path);
 		goto out;
@@ -963,10 +1073,60 @@ out:
 }
 
 /**
+ * cd_device_set_enabled:
+ **/
+static gboolean
+cd_device_set_enabled (CdDevice *device,
+		       gboolean enabled,
+		       GError **error)
+{
+	CdDevicePrivate *priv = device->priv;
+	gboolean ret;
+	GError *error_local = NULL;
+
+	/* device is already the correct state */
+	if (priv->enabled == enabled) {
+		ret = TRUE;
+		goto out;
+	}
+
+	/* update database */
+	ret = cd_device_db_set_property (device->priv->device_db,
+					 device->priv->id,
+					 "Enabled",
+					 enabled ? "True" : "False",
+					 &error_local);
+	if (!ret) {
+		g_set_error (error,
+			     CD_DEVICE_ERROR,
+			     CD_DEVICE_ERROR_INTERNAL,
+			     "%s", error_local->message);
+		g_error_free (error_local);
+		goto out;
+	}
+
+	/* change property */
+	priv->enabled = enabled;
+
+	/* reset modification time */
+	cd_device_reset_modified (device);
+
+	/* emit */
+	cd_device_dbus_emit_property_changed (device,
+					      "Enabled",
+					      g_variant_new_boolean (enabled));
+
+	/* emit global signal */
+	cd_device_dbus_emit_device_changed (device);
+out:
+	return ret;
+}
+
+/**
  * cd_device_dbus_method_call:
  **/
 static void
-cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
+cd_device_dbus_method_call (GDBusConnection *connection, const gchar *sender,
 			    const gchar *object_path, const gchar *interface_name,
 			    const gchar *method_name, GVariant *parameters,
 			    GDBusMethodInvocation *invocation, gpointer user_data)
@@ -975,6 +1135,7 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 	CdDevicePrivate *priv = device->priv;
 	CdProfile *profile = NULL;
 	const gchar *id;
+	gboolean enabled;
 	gboolean ret;
 	const gchar *profile_object_path = NULL;
 	const gchar *property_name = NULL;
@@ -982,7 +1143,6 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 	gchar **regexes = NULL;
 	GError *error = NULL;
 	guint i = 0;
-	GVariantIter *iter = NULL;
 	GVariant *tuple = NULL;
 	GVariant *value = NULL;
 	gchar *tmp;
@@ -992,10 +1152,18 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 	if (g_strcmp0 (method_name, "AddProfile") == 0) {
 
 		/* require auth */
-		ret = cd_main_sender_authenticated (invocation,
-						    "org.freedesktop.color-manager.modify-device");
-		if (!ret)
+		ret = cd_main_sender_authenticated (connection,
+						    sender,
+						    "org.freedesktop.color-manager.modify-device",
+						    &error);
+		if (!ret) {
+			g_dbus_method_invocation_return_error (invocation,
+							       CD_DEVICE_ERROR,
+							       CD_DEVICE_ERROR_FAILED_TO_AUTHENTICATE,
+							       "%s", error->message);
+			g_error_free (error);
 			goto out;
+		}
 
 		/* check the profile_object_path exists */
 		g_variant_get (parameters, "(&s&o)",
@@ -1013,8 +1181,8 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 		/* nothing valid */
 		if (relation == CD_DEVICE_RELATION_UNKNOWN) {
 			g_dbus_method_invocation_return_error (invocation,
-							       CD_MAIN_ERROR,
-							       CD_MAIN_ERROR_FAILED,
+							       CD_DEVICE_ERROR,
+							       CD_DEVICE_ERROR_INTERNAL,
 							       "relation '%s' unknown, expected 'hard' or 'soft'",
 							       property_value);
 			goto out;
@@ -1027,10 +1195,8 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 					     g_get_real_time (),
 					     &error);
 		if (!ret) {
-			g_dbus_method_invocation_return_error (invocation,
-							       CD_MAIN_ERROR,
-							       CD_MAIN_ERROR_FAILED,
-							       "%s", error->message);
+			g_dbus_method_invocation_return_gerror (invocation,
+								error);
 			g_error_free (error);
 			goto out;
 		}
@@ -1061,10 +1227,18 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 	if (g_strcmp0 (method_name, "RemoveProfile") == 0) {
 
 		/* require auth */
-		ret = cd_main_sender_authenticated (invocation,
-						    "org.freedesktop.color-manager.modify-device");
-		if (!ret)
+		ret = cd_main_sender_authenticated (connection,
+						    sender,
+						    "org.freedesktop.color-manager.modify-device",
+						    &error);
+		if (!ret) {
+			g_dbus_method_invocation_return_error (invocation,
+							       CD_DEVICE_ERROR,
+							       CD_DEVICE_ERROR_FAILED_TO_AUTHENTICATE,
+							       "%s", error->message);
+			g_error_free (error);
 			goto out;
+		}
 
 		/* try to remove */
 		g_variant_get (parameters, "(&o)",
@@ -1075,10 +1249,8 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 						profile_object_path,
 						&error);
 		if (!ret) {
-			g_dbus_method_invocation_return_error (invocation,
-							       CD_MAIN_ERROR,
-							       CD_MAIN_ERROR_FAILED,
-							       "%s", error->message);
+			g_dbus_method_invocation_return_gerror (invocation,
+								error);
 			g_error_free (error);
 			goto out;
 		}
@@ -1116,8 +1288,8 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 							    property_value);
 		if (relation == CD_DEVICE_RELATION_UNKNOWN) {
 			g_dbus_method_invocation_return_error (invocation,
-							       CD_MAIN_ERROR,
-							       CD_MAIN_ERROR_FAILED,
+							       CD_DEVICE_ERROR,
+							       CD_DEVICE_ERROR_PROFILE_DOES_NOT_EXIST,
 							       "no profile '%s' found",
 							       property_value);
 			goto out;
@@ -1146,22 +1318,22 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 		if (!ret) {
 			g_debug ("CdDevice: returning no results for profiling");
 			g_dbus_method_invocation_return_error (invocation,
-							       CD_MAIN_ERROR,
-							       CD_MAIN_ERROR_FAILED,
+							       CD_DEVICE_ERROR,
+							       CD_DEVICE_ERROR_PROFILING,
 							       "profiling, so ignoring '%s'",
 							       property_name);
 			goto out;
 		}
 
 		/* search each regex against the profiles for this device */
-		for (i=0; profile == NULL && regexes[i] != NULL; i++) {
+		for (i = 0; profile == NULL && regexes[i] != NULL; i++) {
 			if (i == 0)
 				g_debug ("searching [hard]");
 			profile = cd_device_find_by_qualifier (regexes[i],
 							       priv->profiles,
 							       CD_DEVICE_RELATION_HARD);
 		}
-		for (i=0; profile == NULL && regexes[i] != NULL; i++) {
+		for (i = 0; profile == NULL && regexes[i] != NULL; i++) {
 			if (i == 0)
 				g_debug ("searching [soft]");
 			profile = cd_device_find_by_qualifier (regexes[i],
@@ -1170,8 +1342,8 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 		}
 		if (profile == NULL) {
 			g_dbus_method_invocation_return_error (invocation,
-							       CD_MAIN_ERROR,
-							       CD_MAIN_ERROR_FAILED,
+							       CD_DEVICE_ERROR,
+							       CD_DEVICE_ERROR_NOTHING_MATCHED,
 							       "nothing matched expression '%s'",
 							       property_name);
 			goto out;
@@ -1187,10 +1359,18 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 	if (g_strcmp0 (method_name, "MakeProfileDefault") == 0) {
 
 		/* require auth */
-		ret = cd_main_sender_authenticated (invocation,
-						    "org.freedesktop.color-manager.modify-device");
-		if (!ret)
+		ret = cd_main_sender_authenticated (connection,
+						    sender,
+						    "org.freedesktop.color-manager.modify-device",
+						    &error);
+		if (!ret) {
+			g_dbus_method_invocation_return_error (invocation,
+							       CD_DEVICE_ERROR,
+							       CD_DEVICE_ERROR_FAILED_TO_AUTHENTICATE,
+							       "%s", error->message);
+			g_error_free (error);
 			goto out;
+		}
 
 		/* check the profile_object_path exists */
 		g_variant_get (parameters, "(&o)",
@@ -1203,11 +1383,8 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 					      profile_object_path,
 					      &error);
 		if (!ret) {
-			g_dbus_method_invocation_return_error (invocation,
-							       CD_MAIN_ERROR,
-							       CD_MAIN_ERROR_FAILED,
-							       "failed to make profile default: %s",
-							       error->message);
+			g_dbus_method_invocation_return_gerror (invocation,
+								error);
 			g_error_free (error);
 			goto out;
 		}
@@ -1234,13 +1411,54 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 	}
 
 	/* return '' */
+	if (g_strcmp0 (method_name, "SetEnabled") == 0) {
+
+		/* require auth */
+		ret = cd_main_sender_authenticated (connection,
+						    sender,
+						    "org.freedesktop.color-manager.modify-device",
+						    &error);
+		if (!ret) {
+			g_dbus_method_invocation_return_error (invocation,
+							       CD_DEVICE_ERROR,
+							       CD_DEVICE_ERROR_FAILED_TO_AUTHENTICATE,
+							       "%s", error->message);
+			g_error_free (error);
+			goto out;
+		}
+
+		/* set, and parse */
+		g_variant_get (parameters, "(b)",
+			       &enabled);
+		g_debug ("CdDevice %s:SetEnabled(%s)",
+			 sender, enabled ? "True" : "False");
+		ret = cd_device_set_enabled (device, enabled, &error);
+		if (!ret) {
+			g_dbus_method_invocation_return_gerror (invocation,
+							        error);
+			g_error_free (error);
+			goto out;
+		}
+		g_dbus_method_invocation_return_value (invocation, NULL);
+		goto out;
+	}
+
+	/* return '' */
 	if (g_strcmp0 (method_name, "SetProperty") == 0) {
 
 		/* require auth */
-		ret = cd_main_sender_authenticated (invocation,
-						    "org.freedesktop.color-manager.modify-device");
-		if (!ret)
+		ret = cd_main_sender_authenticated (connection,
+						    sender,
+						    "org.freedesktop.color-manager.modify-device",
+						    &error);
+		if (!ret) {
+			g_dbus_method_invocation_return_error (invocation,
+							       CD_DEVICE_ERROR,
+							       CD_DEVICE_ERROR_FAILED_TO_AUTHENTICATE,
+							       "%s", error->message);
+			g_error_free (error);
 			goto out;
+		}
 
 		/* set, and parse */
 		g_variant_get (parameters, "(&s&s)",
@@ -1254,10 +1472,8 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 						       (priv->object_scope == CD_OBJECT_SCOPE_DISK),
 						       &error);
 		if (!ret) {
-			g_dbus_method_invocation_return_error (invocation,
-							       CD_MAIN_ERROR,
-							       CD_MAIN_ERROR_FAILED,
-							       "%s", error->message);
+			g_dbus_method_invocation_return_gerror (invocation,
+								error);
 			g_error_free (error);
 			goto out;
 		}
@@ -1269,10 +1485,18 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 	if (g_strcmp0 (method_name, "ProfilingInhibit") == 0) {
 
 		/* require auth */
-		ret = cd_main_sender_authenticated (invocation,
-						    "org.freedesktop.color-manager.device-inhibit");
-		if (!ret)
+		ret = cd_main_sender_authenticated (connection,
+						    sender,
+						    "org.freedesktop.color-manager.device-inhibit",
+						    &error);
+		if (!ret) {
+			g_dbus_method_invocation_return_error (invocation,
+							       CD_DEVICE_ERROR,
+							       CD_DEVICE_ERROR_FAILED_TO_AUTHENTICATE,
+							       "%s", error->message);
+			g_error_free (error);
 			goto out;
+		}
 
 		/* inhbit all profiles */
 		g_debug ("CdDevice %s:ProfilingInhibit()",
@@ -1282,8 +1506,8 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 				      &error);
 		if (!ret) {
 			g_dbus_method_invocation_return_error (invocation,
-							       CD_MAIN_ERROR,
-							       CD_MAIN_ERROR_FAILED,
+							       CD_DEVICE_ERROR,
+							       CD_DEVICE_ERROR_FAILED_TO_INHIBIT,
 							       "%s", error->message);
 			g_error_free (error);
 			goto out;
@@ -1303,8 +1527,8 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 					 &error);
 		if (!ret) {
 			g_dbus_method_invocation_return_error (invocation,
-							       CD_MAIN_ERROR,
-							       CD_MAIN_ERROR_FAILED,
+							       CD_DEVICE_ERROR,
+							       CD_DEVICE_ERROR_FAILED_TO_UNINHIBIT,
 							       "%s", error->message);
 			g_error_free (error);
 			goto out;
@@ -1316,8 +1540,7 @@ cd_device_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 	/* we suck */
 	g_critical ("failed to process device method %s", method_name);
 out:
-	if (iter != NULL)
-		g_variant_iter_free (iter);
+	return;
 }
 
 /**
@@ -1340,17 +1563,6 @@ cd_device_inhibit_changed_cb (CdInhibit *inhibit,
 }
 
 /**
- * cd_device_get_nullable_for_string:
- **/
-static GVariant *
-cd_device_get_nullable_for_string (const gchar *value)
-{
-	if (value == NULL)
-		return g_variant_new_string ("");
-	return g_variant_new_string (value);
-}
-
-/**
  * cd_device_dbus_get_property:
  **/
 static GVariant *
@@ -1361,7 +1573,6 @@ cd_device_dbus_get_property (GDBusConnection *connection_, const gchar *sender,
 {
 	CdDevice *device = CD_DEVICE (user_data);
 	CdDevicePrivate *priv = device->priv;
-	gboolean ret;
 	gchar **bus_names = NULL;
 	GVariant *retval = NULL;
 
@@ -1387,6 +1598,10 @@ cd_device_dbus_get_property (GDBusConnection *connection_, const gchar *sender,
 		retval = cd_device_get_nullable_for_string (priv->serial);
 		goto out;
 	}
+	if (g_strcmp0 (property_name, CD_DEVICE_PROPERTY_ENABLED) == 0) {
+		retval = g_variant_new_boolean (priv->enabled);
+		goto out;
+	}
 	if (g_strcmp0 (property_name, CD_DEVICE_PROPERTY_COLORSPACE) == 0) {
 		retval = cd_device_get_nullable_for_string (priv->colorspace);
 		goto out;
@@ -1408,15 +1623,7 @@ cd_device_dbus_get_property (GDBusConnection *connection_, const gchar *sender,
 		goto out;
 	}
 	if (g_strcmp0 (property_name, CD_DEVICE_PROPERTY_PROFILES) == 0) {
-
-		/* are we profiling? */
-		ret = cd_inhibit_valid (priv->inhibit);
-		if (!ret) {
-			g_debug ("CdDevice: returning no profiles for profiling");
-			retval = g_variant_new ("ao", NULL);
-		} else {
-			retval = cd_device_get_profiles_as_variant (device);
-		}
+		retval = cd_device_get_profiles_as_variant (device);
 		goto out;
 	}
 	if (g_strcmp0 (property_name, CD_DEVICE_PROPERTY_METADATA) == 0) {
@@ -1429,6 +1636,14 @@ cd_device_dbus_get_property (GDBusConnection *connection_, const gchar *sender,
 	}
 	if (g_strcmp0 (property_name, CD_DEVICE_PROPERTY_OWNER) == 0) {
 		retval = g_variant_new_uint32 (priv->owner);
+		goto out;
+	}
+	if (g_strcmp0 (property_name, CD_DEVICE_PROPERTY_SEAT) == 0) {
+		retval = cd_device_get_nullable_for_string (priv->seat);
+		goto out;
+	}
+	if (g_strcmp0 (property_name, CD_DEVICE_PROPERTY_EMBEDDED) == 0) {
+		retval = g_variant_new_boolean (priv->embedded);
 		goto out;
 	}
 	if (g_strcmp0 (property_name, CD_DEVICE_PROPERTY_PROFILING_INHIBITORS) == 0) {
@@ -1472,8 +1687,8 @@ cd_device_register_object (CdDevice *device,
 		&error_local); /* GError** */
 	if (device->priv->registration_id == 0) {
 		g_set_error (error,
-			     CD_MAIN_ERROR,
-			     CD_MAIN_ERROR_FAILED,
+			     CD_DEVICE_ERROR,
+			     CD_DEVICE_ERROR_INTERNAL,
 			     "failed to register object: %s",
 			     error_local->message);
 		g_error_free (error_local);
@@ -1666,6 +1881,7 @@ cd_device_finalize (GObject *object)
 	g_free (priv->mode);
 	g_free (priv->serial);
 	g_free (priv->kind);
+	g_free (priv->seat);
 	g_free (priv->object_path);
 	g_ptr_array_unref (priv->profiles);
 	g_object_unref (priv->profile_array);

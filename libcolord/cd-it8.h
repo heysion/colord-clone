@@ -88,6 +88,7 @@ typedef enum {
 	CD_IT8_KIND_TI1,
 	CD_IT8_KIND_TI3,
 	CD_IT8_KIND_CCMX,
+	CD_IT8_KIND_CAL,
 	CD_IT8_KIND_LAST
 } CdIt8Kind;
 
@@ -106,6 +107,10 @@ gboolean	 cd_it8_load_from_file		(CdIt8		*it8,
 						 GError		**error);
 gboolean	 cd_it8_save_to_file		(CdIt8		*it8,
 						 GFile		*file,
+						 GError		**error);
+gboolean	 cd_it8_save_to_data		(CdIt8		*it8,
+						 gchar		**data,
+						 gsize		*size,
 						 GError		**error);
 
 /* setters */

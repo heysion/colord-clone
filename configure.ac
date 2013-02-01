@@ -3,11 +3,11 @@ AC_PREREQ(2.63)
 
 m4_define([cd_major_version], [0])
 m4_define([cd_minor_version], [1])
-m4_define([cd_micro_version], [21])
+m4_define([cd_micro_version], [28])
 m4_define([cd_version],
           [cd_major_version.cd_minor_version.cd_micro_version])
 
-AC_INIT([colord],[cd_version],[http://hughsie.com])
+AC_INIT([colord],[cd_version],[http://www.freedesktop.org/software/colord/])
 AC_CONFIG_SRCDIR(src)
 AM_INIT_AUTOMAKE([1.9 no-dist-gzip dist-xz tar-ustar])
 AC_CONFIG_HEADERS([config.h])
@@ -15,6 +15,7 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_PROG_LIBTOOL
 
 GOBJECT_INTROSPECTION_CHECK([0.9.8])
+GLIB_GSETTINGS
 
 # set up gtk-doc
 GTK_DOC_CHECK(1.9)
@@ -37,7 +38,7 @@ AC_SUBST(CD_MICRO_VERSION)
 # REVISION	If the API and ABI remains the same, but bugs are fixed.
 # AGE		Don't use.
 LT_CURRENT=1
-LT_REVISION=11
+LT_REVISION=16
 LT_AGE=0
 AC_SUBST(LT_CURRENT)
 AC_SUBST(LT_REVISION)
@@ -68,12 +69,9 @@ AC_ARG_ENABLE(strict, AS_HELP_STRING([--enable-strict],
 				     enable_strict=$enableval,
 				     enable_strict=$default_strict)
 if test x$enable_strict != xno; then
-	CPPFLAGS="$CPPFLAGS -DG_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_SINGLE_INCLUDES"
+	CPPFLAGS="$CPPFLAGS -DG_DISABLE_SINGLE_INCLUDES"
 	CPPFLAGS="$CPPFLAGS -DG_DISABLE_DEPRECATED"
 	CPPFLAGS="$CPPFLAGS -DGSEAL_ENABLE"
-	if test "$GCC" = "yes"; then
-		CPPFLAGS="$CPPFLAGS -Werror"
-	fi
 fi
 
 dnl ---------------------------------------------------------------------------
@@ -127,11 +125,13 @@ dnl ---------------------------------------------------------------------------
 dnl - Check library dependencies
 dnl ---------------------------------------------------------------------------
 PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.28.0 gobject-2.0 gthread-2.0 gio-2.0 >= 2.25.9 gio-unix-2.0 gmodule-2.0)
-PKG_CHECK_MODULES(GUSB, gusb >= 0.1.1, have_gusb=yes, have_gusb=no)
-if test x$have_gusb = xyes; then
+AC_ARG_ENABLE(gusb, AS_HELP_STRING([--enable-gusb],[Enable GUSB support]),
+	      enable_gusb=$enableval, enable_gusb=yes)
+if test x$enable_gusb != xno; then
+	PKG_CHECK_MODULES(GUSB, gusb >= 0.1.1)
 	AC_DEFINE(HAVE_GUSB,1,[whether gusb is available])
 fi
-AM_CONDITIONAL(HAVE_GUSB, test x$have_gusb = xyes)
+AM_CONDITIONAL(HAVE_GUSB, test x$enable_gusb = xyes)
 
 PKG_CHECK_MODULES(LCMS, lcms2 >= 2.2)
 PKG_CHECK_MODULES(SQLITE, sqlite3)
@@ -178,6 +178,27 @@ if test "x$with_systemdsystemunitdir" != "xno"; then
 fi
 AM_CONDITIONAL(HAVE_SYSTEMD, [test -n "$systemdsystemunitdir"])
 
+PKG_CHECK_MODULES(LIBSYSTEMD_LOGIN,
+                  [libsystemd-login >= 44],
+                  have_libsystemd_login=yes,
+                  have_libsystemd_login=no)
+AM_CONDITIONAL(HAVE_LIBSYSTEMD_LOGIN, test x$have_libsystemd_login = xyes)
+if test "x$have_libsystemd_login" = "xyes"; then
+	AC_DEFINE([HAVE_LIBSYSTEMD_LOGIN], 1, [Define to 1 if libsystemd-login is available])
+fi
+AC_SUBST(HAVE_LIBSYSTEMD_LOGIN)
+AC_SUBST(LIBSYSTEMD_LOGIN_CFLAGS)
+AC_SUBST(LIBSYSTEMD_LOGIN_LIBS)
+
+dnl ---------------------------------------------------------------------------
+dnl - Where to install udev rules
+dnl ---------------------------------------------------------------------------
+AC_ARG_WITH([udevrulesdir],
+            AS_HELP_STRING([--with-udevrulesdir=DIR], [Directory for udev rules files]),
+            [],
+            [with_udevrulesdir=$($PKG_CONFIG --variable=udevdir udev)/rules.d])
+AC_SUBST([udevrulesdir], [$with_udevrulesdir])
+
 dnl ---------------------------------------------------------------------------
 dnl - Build DBus examples
 dnl ---------------------------------------------------------------------------
@@ -194,32 +215,6 @@ dnl ---------------------------------------------------------------------------
 AC_ARG_ENABLE(reverse, AS_HELP_STRING([--enable-reverse],[enable reverse engineering tools]),
 	      enable_reverse=$enableval,enable_reverse=no)
 AM_CONDITIONAL(CD_BUILD_REVERSE, test x$enable_reverse = xyes)
-
-dnl **** Check for SANE ****
-AC_ARG_ENABLE(sane, AS_HELP_STRING([--enable-sane],[Enable SANE support]),
-	      enable_sane=$enableval)
-has_sane=no
-if test x$enable_sane != xno; then
-	PKG_CHECK_MODULES(SANE, sane-backends, has_sane=yes, has_sane=no)
-	if test $has_sane = "no"; then
-		# fall back to detecting the header for some distros
-		AC_CHECK_HEADER(sane/sane.h, has_sane=yes, has_sane=no)
-		if test $has_sane = "yes"; then
-			SANE_CFLAGS=""
-			SANE_LIBS="-lsane"
-			AC_SUBST(SANE_CFLAGS)
-			AC_SUBST(SANE_LIBS)
-		fi
-		if test x$enable_sane = xyes -a $has_sane = "no"; then
-			AC_MSG_ERROR([--enable-sane was specified and SANE was not found])
-		fi
-
-	fi
-fi
-AM_CONDITIONAL(HAVE_SANE, test x$has_sane = xyes)
-if test x$has_sane = xyes; then
-	AC_DEFINE(HAVE_SANE,1,[Use SANE support for detecting scanners])
-fi
 
 dnl **** Daemon is allowed to do FD fallback  ****
 AC_ARG_ENABLE(fd_fallback, AS_HELP_STRING([--enable-fd-fallback],[Enable file descriptor fallback]),
@@ -252,7 +247,9 @@ AC_DEFINE_UNQUOTED([DAEMON_USER], ["$daemon_user"], [Daemon user])
 dnl ---------------------------------------------------------------------------
 dnl - Build VALA support
 dnl ---------------------------------------------------------------------------
-if test x$found_introspection != xno; then
+AC_ARG_ENABLE(vala, AS_HELP_STRING([--enable-vala],[build vala bindings]),
+	      enable_vala=$enableval,enable_vala=no)
+if test x$found_introspection != xno -a x$enable_vala != xno; then
 	AC_PATH_PROG([VAPIGEN], [vapigen], [])
 	if test "x$VAPIGEN" = "x"; then
 		has_vapigen="no"
@@ -262,33 +259,34 @@ if test x$found_introspection != xno; then
 	fi
 else
 	has_vapigen="no"
-	AC_MSG_WARN([Not introspection found, will not build Vala binding])
+	if test x$found_introspection = xno; then
+		AC_MSG_WARN([introspection not found, will not build Vala binding])
+	fi
 fi
 AM_CONDITIONAL(HAVE_VAPIGEN, [test "x$has_vapigen" = "xyes"])
 
-# udev rules go in /lib, not /usr/lib
-if test "$prefix" = "/usr" -o "$prefix" = "/usr/local" ; then
-  slashlibdir=/lib
-else
-  slashlibdir=$prefix/lib
+dnl ---------------------------------------------------------------------------
+dnl - Build session helper example
+dnl ---------------------------------------------------------------------------
+AC_ARG_ENABLE(session-example, AS_HELP_STRING([--enable-session-example],[Enable session example]),
+	      enable_session_example=$enableval, enable_session_example=no)
+AM_CONDITIONAL(CD_BUILD_SESSION_EXAMPLE, test x$enable_session_example = xyes)
+if test x$enable_session_example != xno; then
+	PKG_CHECK_MODULES(GNOME_DESKTOP, gnome-desktop-3.0)
+	PKG_CHECK_MODULES(COLORD_GTK, colord-gtk >= 0.1.24)
 fi
-AC_SUBST(slashlibdir)
 
-dnl **** Check for GTK ****
-AC_ARG_ENABLE(gtk, AS_HELP_STRING([--enable-gtk],[Enable GTK support]),
-	      enable_gtk=$enableval)
-has_gtk=no
-if test x$enable_gtk != xno; then
-	PKG_CHECK_MODULES(GTK, gtk+-3.0, has_gtk=yes, has_gtk=no)
-	if test $has_gtk = "no"; then
-		if test x$enable_gtk = xyes -a $has_gtk = "no"; then
-			AC_MSG_ERROR([--enable-gtk was specified and GTK was not found])
-		fi
+dnl ---------------------------------------------------------------------------
+dnl - Build extra print profiles (requires argyllcms)
+dnl ---------------------------------------------------------------------------
+AC_ARG_ENABLE(print-profiles, AS_HELP_STRING([--enable-print-profiles],[Build extra print profiles]),
+	      enable_print_profiles=$enableval, enable_print_profiles=no)
+AM_CONDITIONAL(CD_BUILD_PRINT_PROFILES, test x$enable_print_profiles = xyes)
+if test x$enable_print_profiles != xno; then
+	AC_PATH_PROG(COLPROF, [colprof], false)
+	if test "$COLPROF" = "false"; then
+		AC_MSG_ERROR([colprof not found, please install argyllcms])
 	fi
-fi
-AM_CONDITIONAL(HAVE_GTK, test x$has_gtk = xyes)
-if test x$has_gtk = xyes; then
-	AC_DEFINE(HAVE_GTK,1,[Use GTK support])
 fi
 
 # per-machine directory
@@ -301,8 +299,7 @@ AC_CONFIG_FILES([
 Makefile
 etc/Makefile
 contrib/Makefile
-contrib/colord-sane/Makefile
-contrib/colord-sane/org.freedesktop.colord-sane.conf
+contrib/session-helper/Makefile
 examples/Makefile
 man/Makefile
 doc/Makefile
@@ -310,6 +307,9 @@ doc/api/Makefile
 doc/api/dbus/Makefile
 doc/api/version.xml
 data/Makefile
+data/figures/Makefile
+data/profiles/Makefile
+data/ti1/Makefile
 data/org.freedesktop.ColorManager.conf
 data/tests/Makefile
 policy/Makefile
@@ -317,13 +317,12 @@ rules/Makefile
 rules/69-cd-sensors.rules
 po/Makefile.in
 src/Makefile
+src/plugins/Makefile
 src/sensors/Makefile
 client/Makefile
 libcolord/cd-version.h
 libcolord/colord.pc
 libcolord/Makefile
-libcolord-gtk/colord-gtk.pc
-libcolord-gtk/Makefile
 ])
 AC_OUTPUT
 
@@ -342,11 +341,13 @@ echo "
         Reverse engineering tools: ${enable_reverse}
         File descriptor fallback:  ${enable_fd_fallback}
         External volume searching: ${enable_volume_search}
-        SANE support:              ${has_sane}
-        GTK support:               ${has_gtk}
         GUDEV support:             ${enable_gudev}
+        Extra print profiles:      ${enable_print_profiles}
         Vala API generator:        ${has_vapigen}
         Daemon user:               ${daemon_user}
+        udev rules.d dir:          ${with_udevrulesdir}
+        using libsystemd-login:    ${have_libsystemd_login}
+        systemd service dir:       ${with_systemdsystemunitdir}
 "
 
 

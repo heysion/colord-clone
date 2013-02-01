@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*-
  *
- * Copyright (C) 2010-2011 Richard Hughes <richard@hughsie.com>
+ * Copyright (C) 2010-2012 Richard Hughes <richard@hughsie.com>
  *
  * Licensed under the GNU Lesser General Public License Version 2.1
  *
@@ -69,6 +69,7 @@ struct _CdProfilePrivate
 	gboolean		 has_vcgt;
 	gboolean		 is_system_wide;
 	guint			 owner;
+	gchar			**warnings;
 	GHashTable		*metadata;
 };
 
@@ -88,6 +89,7 @@ enum {
 	PROP_IS_SYSTEM_WIDE,
 	PROP_SCOPE,
 	PROP_OWNER,
+	PROP_WARNINGS,
 	PROP_LAST
 };
 
@@ -306,6 +308,24 @@ cd_profile_get_owner (CdProfile *profile)
 }
 
 /**
+ * cd_profile_get_warnings:
+ * @profile: a #CdProfile instance.
+ *
+ * Gets the profile warnings as a string array.
+ *
+ * Return value: (transfer none): Any profile warnings, e.g. "vcgt-non-monotonic"
+ *
+ * Since: 0.1.25
+ **/
+gchar **
+cd_profile_get_warnings (CdProfile *profile)
+{
+	g_return_val_if_fail (CD_IS_PROFILE (profile), NULL);
+	g_return_val_if_fail (profile->priv->proxy != NULL, NULL);
+	return profile->priv->warnings;
+}
+
+/**
  * cd_profile_get_created:
  * @profile: a #CdProfile instance.
  *
@@ -405,7 +425,8 @@ cd_profile_get_is_system_wide (CdProfile *profile)
  *
  * Returns the profile metadata.
  *
- * Return value: (transfer full): a #GHashTable.
+ * Return value: (transfer full) (element-type utf8 utf8): a
+ *               #GHashTable.
  *
  * Since: 0.1.2
  **/
@@ -495,7 +516,7 @@ cd_profile_dbus_properties_changed_cb (GDBusProxy  *proxy,
 	g_return_if_fail (CD_IS_PROFILE (profile));
 
 	len = g_variant_iter_init (&iter, changed_properties);
-	for (i=0; i < len; i++) {
+	for (i = 0; i < len; i++) {
 		g_variant_get_child (changed_properties, i,
 				     "{sv}",
 				     &property_name,
@@ -591,6 +612,29 @@ cd_profile_connect_finish (CdProfile *profile,
 	return g_simple_async_result_get_op_res_gboolean (simple);
 }
 
+/**
+ * cd_profile_fixup_dbus_error:
+ **/
+static void
+cd_profile_fixup_dbus_error (GError *error)
+{
+	gchar *name = NULL;
+
+	g_return_if_fail (error != NULL);
+
+	/* is a remote error? */
+	if (!g_dbus_error_is_remote_error (error))
+		goto out;
+
+	/* parse the remote error */
+	name = g_dbus_error_get_remote_error (error);
+	error->domain = CD_PROFILE_ERROR;
+	error->code = cd_profile_error_from_string (name);
+	g_dbus_error_strip_remote_error (error);
+out:
+	g_free (name);
+}
+
 static void
 cd_profile_connect_cb (GObject *source_object,
 		       GAsyncResult *res,
@@ -599,7 +643,6 @@ cd_profile_connect_cb (GObject *source_object,
 	GError *error = NULL;
 	GVariant *filename = NULL;
 	GVariant *id = NULL;
-	GVariant *profiles = NULL;
 	GVariant *qualifier = NULL;
 	GVariant *format = NULL;
 	GVariant *title = NULL;
@@ -607,6 +650,7 @@ cd_profile_connect_cb (GObject *source_object,
 	GVariant *colorspace = NULL;
 	GVariant *scope = NULL;
 	GVariant *owner = NULL;
+	GVariant *warnings = NULL;
 	GVariant *created = NULL;
 	GVariant *has_vcgt = NULL;
 	GVariant *is_system_wide = NULL;
@@ -620,7 +664,7 @@ cd_profile_connect_cb (GObject *source_object,
 	if (profile->priv->proxy == NULL) {
 		g_simple_async_result_set_error (res_source,
 						 CD_PROFILE_ERROR,
-						 CD_PROFILE_ERROR_FAILED,
+						 CD_PROFILE_ERROR_INTERNAL,
 						 "Failed to connect to profile %s: %s",
 						 cd_profile_get_object_path (profile),
 						 error->message);
@@ -638,7 +682,7 @@ cd_profile_connect_cb (GObject *source_object,
 	if (id == NULL) {
 		g_simple_async_result_set_error (res_source,
 						 CD_PROFILE_ERROR,
-						 CD_PROFILE_ERROR_FAILED,
+						 CD_PROFILE_ERROR_INTERNAL,
 						 "Failed to connect to missing profile %s",
 						 cd_profile_get_object_path (profile));
 		goto out;
@@ -692,6 +736,12 @@ cd_profile_connect_cb (GObject *source_object,
 	if (owner != NULL)
 		profile->priv->owner = g_variant_get_uint32 (owner);
 
+	/* get warnings */
+	warnings = g_dbus_proxy_get_cached_property (profile->priv->proxy,
+						  CD_PROFILE_PROPERTY_WARNINGS);
+	if (warnings != NULL)
+		profile->priv->warnings = g_variant_dup_strv (warnings, NULL);
+
 	/* get created */
 	created = g_dbus_proxy_get_cached_property (profile->priv->proxy,
 						    CD_PROFILE_PROPERTY_CREATED);
@@ -741,6 +791,8 @@ out:
 		g_variant_unref (scope);
 	if (owner != NULL)
 		g_variant_unref (owner);
+	if (warnings != NULL)
+		g_variant_unref (warnings);
 	if (created != NULL)
 		g_variant_unref (created);
 	if (has_vcgt != NULL)
@@ -757,8 +809,6 @@ out:
 		g_variant_unref (format);
 	if (title != NULL)
 		g_variant_unref (title);
-	if (profiles != NULL)
-		g_variant_unref (profiles);
 	g_simple_async_result_complete_in_idle (res_source);
 	g_object_unref (res_source);
 }
@@ -855,7 +905,7 @@ cd_profile_set_property_cb (GObject *source_object,
 	if (result == NULL) {
 		g_simple_async_result_set_error (res_source,
 						 CD_PROFILE_ERROR,
-						 CD_PROFILE_ERROR_FAILED,
+						 CD_PROFILE_ERROR_INTERNAL,
 						 "Failed to SetProperty: %s",
 						 error->message);
 		g_error_free (error);
@@ -960,11 +1010,8 @@ cd_profile_install_system_wide_cb (GObject *source_object,
 					   res,
 					   &error);
 	if (result == NULL) {
-		g_simple_async_result_set_error (res_source,
-						 CD_PROFILE_ERROR,
-						 CD_PROFILE_ERROR_FAILED,
-						 "Failed to InstallSystemWide: %s",
-						 error->message);
+		cd_profile_fixup_dbus_error (error);
+		g_simple_async_result_set_from_error (res_source, error);
 		g_error_free (error);
 		goto out;
 	}
@@ -1165,6 +1212,9 @@ cd_profile_get_property (GObject *object, guint prop_id, GValue *value, GParamSp
 		break;
 	case PROP_OWNER:
 		g_value_set_uint (value, profile->priv->owner);
+		break;
+	case PROP_WARNINGS:
+		g_value_set_boxed (value, profile->priv->warnings);
 		break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -1394,6 +1444,20 @@ cd_profile_class_init (CdProfileClass *klass)
 							    0,
 							    G_PARAM_READABLE));
 
+	/**
+	 * CdProfile:warnings:
+	 *
+	 * The profile warnings, e.g. "vcgt-non-monotonic".
+	 *
+	 * Since: 0.1.25
+	 **/
+	g_object_class_install_property (object_class,
+					 PROP_WARNINGS,
+					 g_param_spec_boxed ("warnings",
+							     NULL, NULL,
+							     G_TYPE_STRV,
+							     G_PARAM_READABLE));
+
 	g_type_class_add_private (klass, sizeof (CdProfilePrivate));
 }
 
@@ -1430,6 +1494,7 @@ cd_profile_finalize (GObject *object)
 	g_free (profile->priv->qualifier);
 	g_free (profile->priv->format);
 	g_free (profile->priv->title);
+	g_strfreev (profile->priv->warnings);
 	if (profile->priv->proxy != NULL) {
 		ret = g_signal_handlers_disconnect_by_func (profile->priv->proxy,
 							    G_CALLBACK (cd_profile_dbus_signal_cb),

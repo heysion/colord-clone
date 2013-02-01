@@ -1,4 +1,5 @@
 SUBDIRS = 						\
+	plugins						\
 	sensors
 
 introspectiondir = $(datadir)/dbus-1/interfaces
@@ -8,12 +9,13 @@ dist_introspection_DATA = 				\
 	org.freedesktop.ColorManager.Sensor.xml		\
 	org.freedesktop.ColorManager.Profile.xml
 
-INCLUDES =						\
+AM_CPPFLAGS =						\
 	$(GLIB_CFLAGS)					\
 	$(POLKIT_CFLAGS)				\
 	$(LCMS_CFLAGS)					\
 	$(GUDEV_CFLAGS)					\
 	$(SQLITE_CFLAGS)				\
+	$(LIBSYSTEMD_LOGIN_CFLAGS)			\
 	-I$(top_srcdir)/libcolord			\
 	-DG_LOG_DOMAIN=\"Cd\"				\
 	-DLIBEXECDIR=\"$(libexecdir)\"			\
@@ -24,6 +26,7 @@ INCLUDES =						\
 	-DVERSION="\"$(VERSION)\""			\
 	-DDAEMON_USER="\"$(daemon_user)\""		\
 	-DCD_COMPILATION				\
+	-DCD_DISABLE_DEPRECATED				\
 	-DG_UDEV_API_IS_SUBJECT_TO_CHANGE		\
 	-DCD_SYSTEM_PROFILES_DIR="\"$(CD_SYSTEM_PROFILES_DIR)"\" \
 	-DLOCALEDIR=\""$(localedir)"\"
@@ -53,6 +56,8 @@ colord_SOURCES =					\
 	cd-inhibit.h					\
 	cd-mapping-db.c					\
 	cd-mapping-db.h					\
+	cd-plugin.c					\
+	cd-plugin.h					\
 	cd-profile-array.c				\
 	cd-profile-array.h				\
 	cd-profile.c					\
@@ -61,22 +66,26 @@ colord_SOURCES =					\
 	cd-profile-store.h				\
 	cd-sensor.c					\
 	cd-sensor.h					\
+	$(top_builddir)/libcolord/cd-color.c		\
+	$(top_builddir)/libcolord/cd-color.h		\
+	$(top_builddir)/libcolord/cd-enum.c		\
+	$(top_builddir)/libcolord/cd-enum.h		\
+	$(top_builddir)/libcolord/cd-math.c		\
+	$(top_builddir)/libcolord/cd-math.h		\
 	cd-main.c
 
 if HAVE_GUDEV
 colord_SOURCES +=					\
 	cd-sensor-client.c				\
-	cd-sensor-client.h				\
-	cd-udev-client.c				\
-	cd-udev-client.h
+	cd-sensor-client.h
 endif
 
 colord_LDADD =						\
-	$(COLORD_PRIVATE_LIBS)				\
 	$(SQLITE_LIBS)					\
 	$(POLKIT_LIBS)					\
 	$(LCMS_LIBS)					\
 	$(GUDEV_LIBS)					\
+	$(LIBSYSTEMD_LOGIN_LIBS)			\
 	$(GLIB_LIBS)
 
 colord_CFLAGS =						\
@@ -109,6 +118,7 @@ cd_self_test_LDADD =					\
 	$(POLKIT_LIBS)					\
 	$(LCMS_LIBS)					\
 	$(SQLITE_LIBS)					\
+	$(LIBSYSTEMD_LOGIN_LIBS)			\
 	$(GLIB_LIBS)
 
 cd_self_test_CFLAGS = $(WARNINGFLAGS_C)

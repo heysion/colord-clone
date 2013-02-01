@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*-
  *
- * Copyright (C) 2010-2011 Richard Hughes <richard@hughsie.com>
+ * Copyright (C) 2010-2012 Richard Hughes <richard@hughsie.com>
  *
  * Licensed under the GNU Lesser General Public License Version 2.1
  *
@@ -66,18 +66,6 @@ typedef struct
 	void (*_cd_profile_reserved8) (void);
 } CdProfileClass;
 
-/**
- * CdProfileError:
- * @CD_PROFILE_ERROR_FAILED: the transaction failed for an unknown reason
- *
- * Errors that can be thrown
- */
-typedef enum
-{
-	CD_PROFILE_ERROR_FAILED,
-	CD_PROFILE_ERROR_LAST
-} CdProfileError;
-
 GType		 cd_profile_get_type			(void);
 GQuark		 cd_profile_error_quark			(void);
 CdProfile	*cd_profile_new				(void);
@@ -119,6 +107,7 @@ CdProfileKind	 cd_profile_get_kind			(CdProfile	*profile);
 CdColorspace	 cd_profile_get_colorspace		(CdProfile	*profile);
 CdObjectScope	 cd_profile_get_scope			(CdProfile	*profile);
 guint		 cd_profile_get_owner			(CdProfile	*profile);
+gchar		**cd_profile_get_warnings		(CdProfile	*profile);
 gint64		 cd_profile_get_created			(CdProfile	*profile);
 gint64		 cd_profile_get_age			(CdProfile	*profile);
 gboolean	 cd_profile_get_has_vcgt		(CdProfile	*profile);

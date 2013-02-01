@@ -299,10 +299,10 @@ cd_it8_get_spectral (CdIt8 *it8)
 }
 
 /**
- * cd_it8_load_ti1:
+ * cd_it8_load_ti1_cal:
  **/
 static gboolean
-cd_it8_load_ti1 (CdIt8 *it8, cmsHANDLE it8_lcms, GError **error)
+cd_it8_load_ti1_cal (CdIt8 *it8, cmsHANDLE it8_lcms, GError **error)
 {
 	CdColorRGB *rgb;
 	CdColorXYZ *xyz;
@@ -325,9 +325,19 @@ cd_it8_load_ti1 (CdIt8 *it8, cmsHANDLE it8_lcms, GError **error)
 		rgb->R = cmsIT8GetDataRowColDbl(it8_lcms, i, 1);
 		rgb->G = cmsIT8GetDataRowColDbl(it8_lcms, i, 2);
 		rgb->B = cmsIT8GetDataRowColDbl(it8_lcms, i, 3);
+
+		/* ti1 files don't have NORMALIZED_TO_Y_100 so guess on
+		 * the asumption the first patch isn't black */
+		if (rgb->R > 1.0 || rgb->G > 1.0 || rgb->B > 1.0)
+			it8->priv->normalized = TRUE;
+		if (it8->priv->normalized) {
+			rgb->R /= 100.0f;
+			rgb->G /= 100.0f;
+			rgb->B /= 100.0f;
+		}
 		g_ptr_array_add (it8->priv->array_rgb, rgb);
 		xyz = cd_color_xyz_new ();
-		cd_color_set_xyz (xyz, 0.0, 0.0, 0.0);
+		cd_color_xyz_set (xyz, 0.0, 0.0, 0.0);
 		g_ptr_array_add (it8->priv->array_xyz, xyz);
 	}
 out:
@@ -526,6 +536,8 @@ cd_it8_load_from_data (CdIt8 *it8,
 		cd_it8_set_kind (it8, CD_IT8_KIND_TI3);
 	} else if (g_str_has_prefix (tmp, "CCMX")) {
 		cd_it8_set_kind (it8, CD_IT8_KIND_CCMX);
+	} else if (g_str_has_prefix (tmp, "CAL")) {
+		cd_it8_set_kind (it8, CD_IT8_KIND_CAL);
 	} else {
 		ret = FALSE;
 		g_set_error (error, 1, 0, "Invalid sheet type: %s", tmp);
@@ -533,8 +545,9 @@ cd_it8_load_from_data (CdIt8 *it8,
 	}
 
 	/* get ti1 and ti3 specific data */
-	if (it8->priv->kind == CD_IT8_KIND_TI1) {
-		ret = cd_it8_load_ti1 (it8, it8_lcms, error);
+	if (it8->priv->kind == CD_IT8_KIND_TI1 ||
+	    it8->priv->kind == CD_IT8_KIND_CAL) {
+		ret = cd_it8_load_ti1_cal (it8, it8_lcms, error);
 		if (!ret)
 			goto out;
 	} else if (it8->priv->kind == CD_IT8_KIND_TI3) {
@@ -617,6 +630,7 @@ cd_it8_save_to_file_ti1_ti3 (CdIt8 *it8, cmsHANDLE it8_lcms, GError **error)
 	CdColorRGB *rgb_tmp;
 	CdColorXYZ lumi_xyz;
 	CdColorXYZ *xyz_tmp;
+	gboolean is_white;
 	gboolean ret = TRUE;
 	gchar *lumi_str = NULL;
 	gdouble normalize = 0.0f;
@@ -624,14 +638,14 @@ cd_it8_save_to_file_ti1_ti3 (CdIt8 *it8, cmsHANDLE it8_lcms, GError **error)
 	guint luminance_samples = 0;
 
 	/* calculate the absolute XYZ in candelas per meter squared */
-	cd_color_clear_xyz (&lumi_xyz);
+	cd_color_xyz_clear (&lumi_xyz);
 	if (it8->priv->normalized) {
 		for (i = 0; i < it8->priv->array_rgb->len; i++) {
 			rgb_tmp = g_ptr_array_index (it8->priv->array_rgb, i);
 
 			/* is this 100% white? */
-			ret = cd_it8_color_match (rgb_tmp, 1.0f, 1.0f, 1.0f);
-			if (!ret)
+			is_white = cd_it8_color_match (rgb_tmp, 1.0f, 1.0f, 1.0f);
+			if (!is_white)
 				continue;
 			luminance_samples++;
 			xyz_tmp = g_ptr_array_index (it8->priv->array_xyz, i);
@@ -699,20 +713,62 @@ cd_it8_save_to_file_ti1_ti3 (CdIt8 *it8, cmsHANDLE it8_lcms, GError **error)
 		xyz_tmp = g_ptr_array_index (it8->priv->array_xyz, i);
 
 		cmsIT8SetDataRowColDbl(it8_lcms, i, 0, i + 1);
-		cmsIT8SetDataRowColDbl(it8_lcms, i, 1, rgb_tmp->R);
-		cmsIT8SetDataRowColDbl(it8_lcms, i, 2, rgb_tmp->G);
-		cmsIT8SetDataRowColDbl(it8_lcms, i, 3, rgb_tmp->B);
 		if (it8->priv->normalized) {
+			cmsIT8SetDataRowColDbl(it8_lcms, i, 1, rgb_tmp->R * 100.0f);
+			cmsIT8SetDataRowColDbl(it8_lcms, i, 2, rgb_tmp->G * 100.0f);
+			cmsIT8SetDataRowColDbl(it8_lcms, i, 3, rgb_tmp->B * 100.0f);
 			cmsIT8SetDataRowColDbl(it8_lcms, i, 4, xyz_tmp->X * normalize);
 			cmsIT8SetDataRowColDbl(it8_lcms, i, 5, xyz_tmp->Y * normalize);
 			cmsIT8SetDataRowColDbl(it8_lcms, i, 6, xyz_tmp->Z * normalize);
 		} else {
+			cmsIT8SetDataRowColDbl(it8_lcms, i, 1, rgb_tmp->R);
+			cmsIT8SetDataRowColDbl(it8_lcms, i, 2, rgb_tmp->G);
+			cmsIT8SetDataRowColDbl(it8_lcms, i, 3, rgb_tmp->B);
 			cmsIT8SetDataRowColDbl(it8_lcms, i, 4, xyz_tmp->X);
 			cmsIT8SetDataRowColDbl(it8_lcms, i, 5, xyz_tmp->Y);
 			cmsIT8SetDataRowColDbl(it8_lcms, i, 6, xyz_tmp->Z);
 		}
 	}
 out:
+	return ret;
+}
+
+/**
+ * cd_it8_save_to_file_cal:
+ **/
+static gboolean
+cd_it8_save_to_file_cal (CdIt8 *it8, cmsHANDLE it8_lcms, GError **error)
+{
+	CdColorRGB *rgb_tmp;
+	gboolean ret = TRUE;
+	guint i;
+
+	/* write data */
+	cmsIT8SetSheetType (it8_lcms, "CAL    ");
+	cmsIT8SetPropertyStr (it8_lcms, "DESCRIPTOR",
+			      "Device Calibration Curves");
+	cmsIT8SetPropertyStr (it8_lcms, "DEVICE_CLASS", "DISPLAY");
+	cmsIT8SetPropertyStr (it8_lcms, "COLOR_REP", "RGB");
+	if (it8->priv->instrument != NULL) {
+		cmsIT8SetPropertyStr (it8_lcms, "TARGET_INSTRUMENT",
+				      it8->priv->instrument);
+	}
+	cmsIT8SetPropertyDbl (it8_lcms, "NUMBER_OF_FIELDS", 4);
+	cmsIT8SetPropertyDbl (it8_lcms, "NUMBER_OF_SETS", it8->priv->array_rgb->len);
+	cmsIT8SetDataFormat (it8_lcms, 0, "RGB_I");
+	cmsIT8SetDataFormat (it8_lcms, 1, "RGB_R");
+	cmsIT8SetDataFormat (it8_lcms, 2, "RGB_G");
+	cmsIT8SetDataFormat (it8_lcms, 3, "RGB_B");
+
+	/* write to the it8 file */
+	for (i = 0; i < it8->priv->array_rgb->len; i++) {
+		rgb_tmp = g_ptr_array_index (it8->priv->array_rgb, i);
+		cmsIT8SetDataRowColDbl(it8_lcms, i, 0, 1.0f / (gdouble) (it8->priv->array_rgb->len - 1) * (gdouble) i);
+		cmsIT8SetDataRowColDbl(it8_lcms, i, 1, rgb_tmp->R);
+		cmsIT8SetDataRowColDbl(it8_lcms, i, 2, rgb_tmp->G);
+		cmsIT8SetDataRowColDbl(it8_lcms, i, 3, rgb_tmp->B);
+	}
+
 	return ret;
 }
 
@@ -756,29 +812,32 @@ cd_it8_save_to_file_ccmx (CdIt8 *it8, cmsHANDLE it8_lcms, GError **error)
 }
 
 /**
- * cd_it8_save_to_file:
+ * cd_it8_save_to_data:
  * @it8: a #CdIt8 instance.
- * @file: a #GFile
+ * @data: a pointer to returned data
+ * @size: size of @data
  * @error: a #GError, or %NULL
  *
- * Saves a it8 file to disk
+ * Saves a it8 file to an area of memory.
  *
  * Return value: %TRUE if it8 file was saved.
  *
- * Since: 0.1.20
+ * Since: 0.1.26
  **/
 gboolean
-cd_it8_save_to_file (CdIt8 *it8, GFile *file, GError **error)
+cd_it8_save_to_data (CdIt8 *it8,
+		     gchar **data,
+		     gsize *size,
+		     GError **error)
 {
 	cmsHANDLE it8_lcms = NULL;
 	const gchar *tmp;
 	gboolean ret;
-	gchar *data = NULL;
-	gsize size = 0;
+	gchar *data_tmp = NULL;
+	gsize size_tmp = 0;
 	guint i;
 
 	g_return_val_if_fail (CD_IS_IT8 (it8), FALSE);
-	g_return_val_if_fail (G_IS_FILE (file), FALSE);
 
 	/* set common data */
 	it8_lcms = cmsIT8Alloc (NULL);
@@ -801,6 +860,10 @@ cd_it8_save_to_file (CdIt8 *it8, GFile *file, GError **error)
 		ret = cd_it8_save_to_file_ti1_ti3 (it8, it8_lcms, error);
 		if (!ret)
 			goto out;
+	} else if (it8->priv->kind == CD_IT8_KIND_CAL) {
+		ret = cd_it8_save_to_file_cal (it8, it8_lcms, error);
+		if (!ret)
+			goto out;
 	} else if (it8->priv->kind == CD_IT8_KIND_CCMX) {
 		ret = cd_it8_save_to_file_ccmx (it8, it8_lcms, error);
 		if (!ret)
@@ -814,21 +877,58 @@ cd_it8_save_to_file (CdIt8 *it8, GFile *file, GError **error)
 	}
 
 	/* write the file */
-	ret = cmsIT8SaveToMem (it8_lcms, NULL, (cmsUInt32Number *) &size);
+	ret = cmsIT8SaveToMem (it8_lcms, NULL, (cmsUInt32Number *) &size_tmp);
 	g_assert (ret);
-	data = g_malloc (size);
-	ret = cmsIT8SaveToMem (it8_lcms, data, (cmsUInt32Number *) &size);
+	data_tmp = g_malloc (size_tmp);
+	ret = cmsIT8SaveToMem (it8_lcms, data_tmp, (cmsUInt32Number *) &size_tmp);
 	g_assert (ret);
 
-	/* save file (without the last '\0' byte) */
-	ret = g_file_replace_contents (file, data, size - 1, NULL,
+	/* save for caller */
+	if (data != NULL)
+		*data = g_strdup (data_tmp);
+	if (size != NULL)
+		*size = size_tmp;
+out:
+	if (it8_lcms != NULL)
+		cmsIT8Free (it8_lcms);
+	g_free (data_tmp);
+	return ret;
+}
+
+/**
+ * cd_it8_save_to_file:
+ * @it8: a #CdIt8 instance.
+ * @file: a #GFile
+ * @error: a #GError, or %NULL
+ *
+ * Saves a it8 file to disk
+ *
+ * Return value: %TRUE if it8 file was saved.
+ *
+ * Since: 0.1.20
+ **/
+gboolean
+cd_it8_save_to_file (CdIt8 *it8, GFile *file, GError **error)
+{
+	gboolean ret;
+	gchar *data = NULL;
+	gsize size = 0;
+
+	g_return_val_if_fail (CD_IS_IT8 (it8), FALSE);
+	g_return_val_if_fail (G_IS_FILE (file), FALSE);
+
+	/* get data */
+	ret = cd_it8_save_to_data (it8, &data, &size, error);
+	if (!ret)
+		goto out;
+
+	/* save file */
+	ret = g_file_replace_contents (file, data, size, NULL,
 				       FALSE, G_FILE_CREATE_NONE,
 				       NULL, NULL, error);
 	if (!ret)
 		goto out;
 out:
-	if (it8_lcms != NULL)
-		cmsIT8Free (it8_lcms);
 	g_free (data);
 	return ret;
 }
@@ -977,16 +1077,16 @@ cd_it8_add_data (CdIt8 *it8, const CdColorRGB *rgb, const CdColorXYZ *xyz)
 		rgb_tmp = cd_color_rgb_dup (rgb);
 	} else {
 		rgb_tmp = cd_color_rgb_new ();
-		cd_color_set_rgb (rgb_tmp, 0.0f, 0.0f, 0.0f);
+		cd_color_rgb_set (rgb_tmp, 0.0f, 0.0f, 0.0f);
 	}
 	g_ptr_array_add (it8->priv->array_rgb, rgb_tmp);
 
 	/* add XYZ */
-	if (rgb != NULL) {
+	if (xyz != NULL) {
 		xyz_tmp = cd_color_xyz_dup (xyz);
 	} else {
 		xyz_tmp = cd_color_xyz_new ();
-		cd_color_set_xyz (xyz_tmp, 0.0f, 0.0f, 0.0f);
+		cd_color_xyz_set (xyz_tmp, 0.0f, 0.0f, 0.0f);
 	}
 	g_ptr_array_add (it8->priv->array_xyz, xyz_tmp);
 }
@@ -1034,11 +1134,11 @@ cd_it8_get_data_item (CdIt8 *it8, guint idx, CdColorRGB *rgb, CdColorXYZ *xyz)
 		return FALSE;
 	if (rgb != NULL) {
 		rgb_tmp = g_ptr_array_index (it8->priv->array_rgb, idx);
-		cd_color_copy_rgb (rgb_tmp, rgb);
+		cd_color_rgb_copy (rgb_tmp, rgb);
 	}
 	if (xyz != NULL) {
 		xyz_tmp = g_ptr_array_index (it8->priv->array_xyz, idx);
-		cd_color_copy_xyz (xyz_tmp, xyz);
+		cd_color_xyz_copy (xyz_tmp, xyz);
 	}
 	return TRUE;
 }

@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*-
  *
- * Copyright (C) 2010-2011 Richard Hughes <richard@hughsie.com>
+ * Copyright (C) 2010-2012 Richard Hughes <richard@hughsie.com>
  *
  * Licensed under the GNU Lesser General Public License Version 2.1
  *
@@ -85,21 +85,6 @@ typedef struct
 	void (*_cd_client_reserved7) (void);
 	void (*_cd_client_reserved8) (void);
 } CdClientClass;
-
-/**
- * CdClientError:
- * @CD_CLIENT_ERROR_FAILED: the transaction failed for an unknown reason
- * @CD_CLIENT_ERROR_ALREADY_EXISTS: the device or profile already exists
- *
- * Errors that can be thrown
- */
-typedef enum
-{
-	CD_CLIENT_ERROR_FAILED,
-	CD_CLIENT_ERROR_ALREADY_EXISTS,
-	CD_CLIENT_ERROR_FILE_INVALID,
-	CD_CLIENT_ERROR_LAST
-} CdClientError;
 
 GType		 cd_client_get_type			(void);
 GQuark		 cd_client_error_quark			(void);
@@ -226,6 +211,23 @@ void		 cd_client_get_sensors			(CdClient	*client,
 							 GAsyncReadyCallback callback,
 							 gpointer	 user_data);
 GPtrArray	*cd_client_get_sensors_finish		(CdClient	*client,
+							 GAsyncResult	*res,
+							 GError		**error);
+void		cd_client_find_profile_by_property	(CdClient	*client,
+							 const gchar	*key,
+							 const gchar	*value,
+							 GCancellable	*cancellable,
+							 GAsyncReadyCallback callback,
+							 gpointer	 user_data);
+CdProfile	*cd_client_find_profile_by_property_finish (CdClient	*client,
+							 GAsyncResult	*res,
+							 GError		**error);
+void		cd_client_find_sensor			(CdClient	*client,
+							 const gchar	*id,
+							 GCancellable	*cancellable,
+							 GAsyncReadyCallback callback,
+							 gpointer	 user_data);
+CdSensor	*cd_client_find_sensor_finish 		(CdClient	*client,
 							 GAsyncResult	*res,
 							 GError		**error);
 

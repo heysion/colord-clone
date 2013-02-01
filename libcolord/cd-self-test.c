@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*-
  *
- * Copyright (C) 2010 Richard Hughes <richard@hughsie.com>
+ * Copyright (C) 2010-2012 Richard Hughes <richard@hughsie.com>
  *
  * Licensed under the GNU Lesser General Public License Version 2.1
  *
@@ -588,7 +588,7 @@ colord_client_random_func (void)
 								 qualifier1,
 								 NULL,
 								 &error);
-	g_assert_error (error, CD_DEVICE_ERROR, CD_DEVICE_ERROR_FAILED);
+	g_assert_error (error, CD_DEVICE_ERROR, CD_DEVICE_ERROR_NOTHING_MATCHED);
 	g_assert (profile_tmp == NULL);
 	g_clear_error (&error);
 
@@ -597,7 +597,7 @@ colord_client_random_func (void)
 						   profile,
 						   NULL,
 						   &error);
-	g_assert_error (error, CD_DEVICE_ERROR, CD_DEVICE_ERROR_FAILED);
+	g_assert_error (error, CD_DEVICE_ERROR, CD_DEVICE_ERROR_PROFILE_DOES_NOT_EXIST);
 	g_assert (relation == CD_DEVICE_RELATION_UNKNOWN);
 	g_clear_error (&error);
 
@@ -718,7 +718,7 @@ colord_client_random_func (void)
 	ret = cd_device_profiling_uninhibit_sync (device,
 						  NULL,
 						  &error);
-	g_assert_error (error, CD_DEVICE_ERROR, CD_DEVICE_ERROR_FAILED);
+	g_assert_error (error, CD_DEVICE_ERROR, CD_DEVICE_ERROR_FAILED_TO_UNINHIBIT);
 	g_assert (!ret);
 	g_clear_error (&error);
 
@@ -734,7 +734,7 @@ colord_client_random_func (void)
 								 qualifier2,
 								 NULL,
 								 &error);
-	g_assert_error (error, CD_DEVICE_ERROR, CD_DEVICE_ERROR_FAILED);
+	g_assert_error (error, CD_DEVICE_ERROR, CD_DEVICE_ERROR_PROFILING);
 	g_assert (profile_tmp == NULL);
 	g_clear_error (&error);
 
@@ -927,6 +927,9 @@ colord_icc_meta_dict_func (void)
 			 "f09e42aa86585d1bb6687d3c322ed0c1");
 	g_hash_table_unref (metadata);
 
+	/* check profile warnings */
+	g_assert_cmpint (g_strv_length (cd_profile_get_warnings (profile)), ==, 0);
+
 	/* create profile */
 	ret = cd_client_delete_profile_sync (client,
 					     profile,
@@ -1047,7 +1050,7 @@ colord_sensor_func (void)
 	ret = cd_sensor_lock_sync (sensor,
 				   NULL,
 				   &error);
-	g_assert_error (error, CD_SENSOR_ERROR, CD_SENSOR_ERROR_FAILED);
+	g_assert_error (error, CD_SENSOR_ERROR, CD_SENSOR_ERROR_ALREADY_LOCKED);
 	g_assert (!ret);
 
 	_g_test_loop_run_with_timeout (5);
@@ -1076,7 +1079,7 @@ colord_sensor_func (void)
 	g_assert_cmpfloat (values->Z - 0.3f, <, 0.01);
 //	g_assert_cmpfloat (ambient + 1.0f, >, -0.01);
 //	g_assert_cmpfloat (ambient + 1.0f, <, 0.01);
-	g_object_unref (values);
+	cd_color_xyz_free (values);
 
 	/* unlock */
 	ret = cd_sensor_unlock_sync (sensor,
@@ -1093,7 +1096,7 @@ colord_sensor_func (void)
 	ret = cd_sensor_unlock_sync (sensor,
 				     NULL,
 				     &error);
-	g_assert_error (error, CD_SENSOR_ERROR, CD_SENSOR_ERROR_FAILED);
+	g_assert_error (error, CD_SENSOR_ERROR, CD_SENSOR_ERROR_NOT_LOCKED);
 	g_assert (!ret);
 
 	_g_test_loop_run_with_timeout (5);
@@ -1106,6 +1109,58 @@ out:
 }
 
 static void
+colord_enum_func (void)
+{
+	CdClientError client_error;
+	CdDeviceError device_error;
+	CdProfileError profile_error;
+	CdProfileWarning warning;
+	CdSensorError sensor_error;
+	const gchar *tmp;
+	guint i;
+
+	/* CdSensorError */
+	for (i = 0; i < CD_SENSOR_ERROR_LAST; i++) {
+		tmp = cd_sensor_error_to_string (i);
+		g_assert_cmpstr (tmp, !=, NULL);
+		sensor_error = cd_sensor_error_from_string (tmp);
+		g_assert_cmpint (sensor_error, !=, CD_SENSOR_ERROR_LAST);
+	}
+
+	/* CdProfileError */
+	for (i = 0; i < CD_PROFILE_ERROR_LAST; i++) {
+		tmp = cd_profile_error_to_string (i);
+		g_assert_cmpstr (tmp, !=, NULL);
+		profile_error = cd_profile_error_from_string (tmp);
+		g_assert_cmpint (profile_error, !=, CD_PROFILE_ERROR_LAST);
+	}
+
+	/* CdDeviceError */
+	for (i = 0; i < CD_DEVICE_ERROR_LAST; i++) {
+		tmp = cd_device_error_to_string (i);
+		g_assert_cmpstr (tmp, !=, NULL);
+		device_error = cd_device_error_from_string (tmp);
+		g_assert_cmpint (device_error, !=, CD_DEVICE_ERROR_LAST);
+	}
+
+	/* CdClientError */
+	for (i = 0; i < CD_CLIENT_ERROR_LAST; i++) {
+		tmp = cd_client_error_to_string (i);
+		g_assert_cmpstr (tmp, !=, NULL);
+		client_error = cd_client_error_from_string (tmp);
+		g_assert_cmpint (client_error, !=, CD_CLIENT_ERROR_LAST);
+	}
+
+	/* CdProfileWarning */
+	for (i = 0; i < CD_PROFILE_WARNING_LAST; i++) {
+		tmp = cd_profile_warning_to_string (i);
+		g_assert_cmpstr (tmp, !=, "unknown");
+		warning = cd_profile_warning_from_string (tmp);
+		g_assert_cmpint (warning, !=, CD_PROFILE_WARNING_LAST);
+	}
+}
+
+static void
 colord_color_func (void)
 {
 	CdColorXYZ *xyz;
@@ -1115,12 +1170,12 @@ colord_color_func (void)
 	g_assert (xyz != NULL);
 
 	/* nothing set */
-	cd_color_convert_xyz_to_yxy (xyz, &yxy);
+	cd_color_xyz_to_yxy (xyz, &yxy);
 	g_assert_cmpfloat (fabs (yxy.x - 0.0f), <, 0.001f);
 
 	/* set dummy values */
-	cd_color_set_xyz (xyz, 0.125, 0.25, 0.5);
-	cd_color_convert_xyz_to_yxy (xyz, &yxy);
+	cd_color_xyz_set (xyz, 0.125, 0.25, 0.5);
+	cd_color_xyz_to_yxy (xyz, &yxy);
 
 	g_assert_cmpfloat (fabs (yxy.x - 0.142857143f), <, 0.001f);
 	g_assert_cmpfloat (fabs (yxy.y - 0.285714286f), <, 0.001f);
@@ -1542,7 +1597,7 @@ colord_delete_profile_bad_cb (GObject *object, GAsyncResult *res, gpointer user_
 	CdClient *client = CD_CLIENT (object);
 
 	ret = cd_client_delete_profile_finish (client, res, &error);
-	g_assert_error (error, CD_CLIENT_ERROR, CD_CLIENT_ERROR_FAILED);
+	g_assert_error (error, CD_CLIENT_ERROR, CD_CLIENT_ERROR_NOT_FOUND);
 	g_assert (!ret);
 
 	_g_test_loop_quit ();
@@ -1653,7 +1708,7 @@ colord_device_async_func (void)
 	g_debug ("connected to device in %f", g_test_timer_elapsed ());
 
 	/* set a property in another instance */
-	device_tmp = cd_device_new_with_object_path ("/org/freedesktop/ColorManager/devices/device_async_dave_hughsie");
+	device_tmp = cd_device_new_with_object_path ("/org/freedesktop/ColorManager/devices/device_async_dave_hughsie_1000");
 	ret = cd_device_connect_sync (device_tmp, NULL, &error);
 	g_assert_no_error (error);
 	g_assert (ret);
@@ -1663,7 +1718,7 @@ colord_device_async_func (void)
 	g_object_unref (device_tmp);
 
 	/* delete known device */
-	device_tmp = cd_device_new_with_object_path ("/org/freedesktop/ColorManager/devices/device_async_dave_hughsie");
+	device_tmp = cd_device_new_with_object_path ("/org/freedesktop/ColorManager/devices/device_async_dave_hughsie_1000");
 	ret = cd_client_delete_device_sync (client, device_tmp, NULL, &error);
 	g_assert_no_error (error);
 	g_assert (ret);
@@ -1744,11 +1799,86 @@ colord_device_func (void)
 
 	/* connect */
 	ret = cd_device_connect_sync (device, NULL, &error);
-	g_assert_error (error, CD_DEVICE_ERROR, CD_DEVICE_ERROR_FAILED);
+	g_assert_error (error, CD_DEVICE_ERROR, CD_DEVICE_ERROR_INTERNAL);
 	g_assert (!ret);
 	g_clear_error (&error);
 
 	g_object_unref (device);
+}
+
+static void
+colord_device_embedded_func (void)
+{
+	CdDevice *device;
+	gboolean ret;
+	GError *error = NULL;
+	GHashTable *device_props;
+	CdClient *client;
+
+	client = cd_client_new ();
+	ret = cd_client_connect_sync (client, NULL, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	/* create device */
+	device_props = g_hash_table_new_full (g_str_hash, g_str_equal,
+					      g_free, g_free);
+	g_hash_table_insert (device_props,
+			     g_strdup (CD_DEVICE_PROPERTY_EMBEDDED),
+			     NULL);
+	device = cd_client_create_device_sync (client,
+					       "device_embedded",
+					       CD_OBJECT_SCOPE_TEMP,
+					       device_props,
+					       NULL,
+					       &error);
+	g_assert_no_error (error);
+	g_assert (device != NULL);
+
+	/* connect */
+	ret = cd_device_connect_sync (device, NULL, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	/* check embedded */
+	g_assert (cd_device_get_embedded (device));
+
+	g_hash_table_unref (device_props);
+	g_object_unref (device);
+	g_object_unref (client);
+}
+
+static void
+colord_client_standard_space_func (void)
+{
+	CdClient *client;
+	CdProfile *profile;
+	gboolean ret;
+	GError *error = NULL;
+
+	client = cd_client_new ();
+	ret = cd_client_connect_sync (client, NULL, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	/* get profile */
+	profile = cd_client_get_standard_space_sync (client,
+						     CD_STANDARD_SPACE_SRGB,
+						     NULL,
+						     &error);
+	g_assert_no_error (error);
+	g_assert (profile != NULL);
+
+	/* connect */
+	ret = cd_profile_connect_sync (profile, NULL, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	g_assert_cmpstr (cd_profile_get_metadata_item (profile, CD_PROFILE_METADATA_STANDARD_SPACE), ==, "srgb");
+	g_assert (cd_profile_get_is_system_wide (profile));
+
+	g_object_unref (profile);
+	g_object_unref (client);
 }
 
 static void
@@ -1860,6 +1990,142 @@ colord_device_modified_func (void)
 	g_hash_table_unref (profile_props);
 	g_object_unref (profile);
 	g_hash_table_unref (device_props);
+	g_object_unref (device);
+	g_object_unref (client);
+}
+
+static void
+colord_device_seat_func (void)
+{
+	CdClient *client;
+	CdDevice *device;
+	const gchar *tmp;
+	gboolean ret;
+	GError *error = NULL;
+
+	/* ensure the seat is set */
+	client = cd_client_new ();
+	ret = cd_client_connect_sync (client, NULL, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+	device = cd_client_create_device_sync (client,
+					       "device_seat_test",
+					       CD_OBJECT_SCOPE_TEMP,
+					       NULL,
+					       NULL,
+					       &error);
+	g_assert_no_error (error);
+	g_assert (device != NULL);
+
+	/* connect */
+	ret = cd_device_connect_sync (device, NULL, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	/* check the seat */
+#ifdef HAVE_LIBSYSTEMD_LOGIN
+	tmp = cd_device_get_seat (device);
+	g_assert_cmpstr (tmp, ==, "seat0");
+#endif
+
+	/* delete device */
+	ret = cd_client_delete_device_sync (client,
+					    device,
+					    NULL,
+					    &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	g_object_unref (device);
+	g_object_unref (client);
+}
+
+static void
+colord_device_enabled_func (void)
+{
+	CdClient *client;
+	CdDevice *device;
+	gboolean ret;
+	GError *error = NULL;
+
+	/* ensure the device is enabled by default */
+	client = cd_client_new ();
+	ret = cd_client_connect_sync (client, NULL, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+	device = cd_client_create_device_sync (client,
+					       "device_enabled_test",
+					       CD_OBJECT_SCOPE_TEMP,
+					       NULL,
+					       NULL,
+					       &error);
+	g_assert_no_error (error);
+	g_assert (device != NULL);
+
+	/* connect */
+	ret = cd_device_connect_sync (device, NULL, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	/* disable the device */
+	ret = cd_device_set_enabled_sync (device,
+					  FALSE,
+					  NULL,
+					  &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+	g_assert (!cd_device_get_enabled (device));
+
+	/* disable the device (again, should be allowed) */
+	ret = cd_device_set_enabled_sync (device,
+					  FALSE,
+					  NULL,
+					  &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+	g_assert (!cd_device_get_enabled (device));
+
+	/* delete device */
+	ret = cd_client_delete_device_sync (client,
+					    device,
+					    NULL,
+					    &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+	g_object_unref (device);
+
+	/* check the device is disabled by default */
+	device = cd_client_create_device_sync (client,
+					       "device_enabled_test",
+					       CD_OBJECT_SCOPE_TEMP,
+					       NULL,
+					       NULL,
+					       &error);
+	g_assert_no_error (error);
+	g_assert (device != NULL);
+
+	/* connect */
+	ret = cd_device_connect_sync (device, NULL, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	/* enable the device */
+	ret = cd_device_set_enabled_sync (device,
+					  TRUE,
+					  NULL,
+					  &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+	g_assert (cd_device_get_enabled (device));
+
+	/* delete device */
+	ret = cd_client_delete_device_sync (client,
+					    device,
+					    NULL,
+					    &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
 	g_object_unref (device);
 	g_object_unref (client);
 }
@@ -2195,6 +2461,7 @@ main (int argc, char **argv)
 	g_log_set_fatal_mask (NULL, G_LOG_LEVEL_ERROR | G_LOG_LEVEL_CRITICAL);
 
 	/* tests go here */
+	g_test_add_func ("/colord/enum", colord_enum_func);
 	g_test_add_func ("/colord/color", colord_color_func);
 	g_test_add_func ("/colord/math", cd_test_math_func);
 	g_test_add_func ("/colord/it8-raw", colord_it8_raw_func);
@@ -2202,7 +2469,10 @@ main (int argc, char **argv)
 	g_test_add_func ("/colord/it8-ccmx", colord_it8_ccmx_func);
 	g_test_add_func ("/colord/device", colord_device_func);
 	g_test_add_func ("/colord/client", colord_client_func);
+	g_test_add_func ("/colord/device-embedded", colord_device_embedded_func);
 	g_test_add_func ("/colord/device-duplicate", colord_device_duplicate_func);
+	g_test_add_func ("/colord/device-seat", colord_device_seat_func);
+	g_test_add_func ("/colord/device-enabled", colord_device_enabled_func);
 	g_test_add_func ("/colord/profile-metadata", colord_icc_meta_dict_func);
 	g_test_add_func ("/colord/profile-ordering", colord_profile_ordering_func);
 	g_test_add_func ("/colord/profile-duplicate", colord_profile_duplicate_func);
@@ -2210,6 +2480,7 @@ main (int argc, char **argv)
 	g_test_add_func ("/colord/client-random", colord_client_random_func);
 	g_test_add_func ("/colord/sensor", colord_sensor_func);
 	g_test_add_func ("/colord/device-modified", colord_device_modified_func);
+	g_test_add_func ("/colord/client-standard-space", colord_client_standard_space_func);
 	g_test_add_func ("/colord/client-async", colord_client_async_func);
 	g_test_add_func ("/colord/device-async", colord_device_async_func);
 	if (g_test_thorough ())

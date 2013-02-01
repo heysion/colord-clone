@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*-
  *
- * Copyright (C) 2011 Richard Hughes <richard@hughsie.com>
+ * Copyright (C) 2011-2012 Richard Hughes <richard@hughsie.com>
  *
  * Licensed under the GNU Lesser General Public License Version 2.1
  *
@@ -46,6 +46,7 @@ typedef struct {
 	gboolean	 ret;
 	CdProfile	*profile;
 	CdDevice	*device;
+	CdSensor	*sensor;
 	GPtrArray	*array;
 } CdClientHelper;
 
@@ -321,7 +322,8 @@ cd_client_create_profile_finish_sync (CdClient *client,
  * @client: a #CdClient instance.
  * @id: identifier for the device
  * @scope: the scope of the profile
- * @properties: properties to set on the profile, or %NULL
+ * @properties: (element-type utf8 utf8) (allow-none): properties to
+ *   set on the profile, or %NULL
  * @cancellable: a #GCancellable, or %NULL
  * @error: a #GError, or %NULL
  *
@@ -434,7 +436,8 @@ cd_client_create_device_finish_sync (CdClient *client,
  * @client: a #CdClient instance.
  * @id: identifier for the device
  * @scope: the scope of the device
- * @properties: properties to set on the device, or %NULL
+ * @properties: (element-type utf8 utf8) (allow-none): properties to
+ *   set on the device, or %NULL
  * @cancellable: a #GCancellable, or %NULL
  * @error: a #GError, or %NULL
  *
@@ -499,8 +502,8 @@ cd_client_get_devices_finish_sync (CdClient *client,
  * WARNING: This function is synchronous, and may block.
  * Do not use it in GUI applications.
  *
- * Return value: (transfer full): an array of #CdDevice objects,
- *		 free with g_ptr_array_unref()
+ * Return value: (transfer full) (element-type CdDevice): an array of
+ *		 #CdDevice objects.
  *
  * Since: 0.1.0
  **/
@@ -552,8 +555,8 @@ cd_client_get_profiles_finish_sync (CdClient *client,
  * WARNING: This function is synchronous, and may block.
  * Do not use it in GUI applications.
  *
- * Return value: (transfer full): an array of #CdProfile objects,
- *		 free with g_ptr_array_unref()
+ * Return value: (transfer full) (element-type CdProfile): an array of
+ *		 #CdProfile objects.
  *
  * Since: 0.1.0
  **/
@@ -605,8 +608,8 @@ cd_client_get_sensors_finish_sync (CdClient *client,
  * WARNING: This function is synchronous, and may block.
  * Do not use it in GUI applications.
  *
- * Return value: (transfer full): an array of #CdSensor objects,
- *		 free with g_ptr_array_unref()
+ * Return value: (transfer full) (element-type CdSensor): an array of
+ *		 #CdSensor objects.
  *
  * Since: 0.1.0
  **/
@@ -821,8 +824,8 @@ cd_client_get_devices_by_kind_finish_sync (CdClient *client,
  * WARNING: This function is synchronous, and may block.
  * Do not use it in GUI applications.
  *
- * Return value: (transfer full): an array of #CdDevice objects,
- *		 free with g_ptr_array_unref()
+ * Return value: (transfer full) (element-type CdDevice): an array of
+ *		 #CdDevice objects.
  *
  * Since: 0.1.0
  **/
@@ -848,6 +851,114 @@ cd_client_get_devices_by_kind_sync (CdClient *client,
 	g_main_loop_unref (helper.loop);
 
 	return helper.array;
+}
+
+/**********************************************************************/
+
+static void
+cd_client_find_profile_by_property_finish_sync (CdClient *client,
+					       GAsyncResult *res,
+					       CdClientHelper *helper)
+{
+	helper->profile = cd_client_find_profile_by_property_finish (client,
+								     res,
+								     helper->error);
+	g_main_loop_quit (helper->loop);
+}
+
+/**
+ * cd_client_find_profile_by_property_sync:
+ * @client: a #CdClient instance.
+ * @key: The profile property key.
+ * @value: The profile property value.
+ * @cancellable: a #GCancellable or %NULL
+ * @error: a #GError, or %NULL.
+ *
+ * Finds a color profile that has a property value.
+ *
+ * WARNING: This function is synchronous, and may block.
+ * Do not use it in GUI applications.
+ *
+ * Return value: (transfer full): A #CdProfile object, or %NULL for error
+ *
+ * Since: 0.1.24
+ **/
+CdProfile *
+cd_client_find_profile_by_property_sync (CdClient *client,
+					 const gchar *key,
+					 const gchar *value,
+					 GCancellable *cancellable,
+					 GError **error)
+{
+	CdClientHelper helper;
+
+	/* create temp object */
+	helper.loop = g_main_loop_new (NULL, FALSE);
+	helper.error = error;
+
+	/* run async method */
+	cd_client_find_profile_by_property (client, key, value, cancellable,
+					    (GAsyncReadyCallback) cd_client_find_profile_by_property_finish_sync,
+					    &helper);
+	g_main_loop_run (helper.loop);
+
+	/* free temp object */
+	g_main_loop_unref (helper.loop);
+
+	return helper.profile;
+}
+
+/**********************************************************************/
+
+static void
+cd_client_find_sensor_finish_sync (CdClient *client,
+				   GAsyncResult *res,
+				   CdClientHelper *helper)
+{
+	helper->sensor = cd_client_find_sensor_finish (client,
+						       res,
+						       helper->error);
+	g_main_loop_quit (helper->loop);
+}
+
+/**
+ * cd_client_find_sensor_sync:
+ * @client: a #CdClient instance.
+ * @id: The sensor ID.
+ * @cancellable: a #GCancellable or %NULL
+ * @error: a #GError, or %NULL.
+ *
+ * Finds a color sensor.
+ *
+ * WARNING: This function is synchronous, and may block.
+ * Do not use it in GUI applications.
+ *
+ * Return value: (transfer full): A #CdSensor object, or %NULL for error
+ *
+ * Since: 0.1.26
+ **/
+CdSensor *
+cd_client_find_sensor_sync (CdClient *client,
+			    const gchar *id,
+			    GCancellable *cancellable,
+			    GError **error)
+{
+	CdClientHelper helper;
+
+	/* create temp object */
+	helper.loop = g_main_loop_new (NULL, FALSE);
+	helper.error = error;
+
+	/* run async method */
+	cd_client_find_sensor (client, id, cancellable,
+			       (GAsyncReadyCallback) cd_client_find_sensor_finish_sync,
+			       &helper);
+	g_main_loop_run (helper.loop);
+
+	/* free temp object */
+	g_main_loop_unref (helper.loop);
+
+	return helper.sensor;
 }
 
 /**********************************************************************/

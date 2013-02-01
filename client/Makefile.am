@@ -1,11 +1,11 @@
-INCLUDES =						\
+AM_CPPFLAGS =						\
 	$(GLIB_CFLAGS)					\
 	$(GTK_CFLAGS)					\
 	-I$(top_srcdir)					\
 	-I$(top_srcdir)/libcolord			\
-	-I$(top_srcdir)/libcolord-gtk			\
 	-DG_LOG_DOMAIN=\"Cd\"				\
 	-DCD_COMPILATION				\
+	-DCD_DISABLE_DEPRECATED				\
 	-DLIBEXECDIR=\"$(libexecdir)\"			\
 	-DDATADIR=\"$(datadir)\"			\
 	-DSYSCONFDIR=\""$(sysconfdir)"\"		\
@@ -14,9 +14,6 @@ INCLUDES =						\
 
 COLORD_LIBS =						\
 	$(top_builddir)/libcolord/libcolord.la
-
-COLORD_GTK_LIBS =					\
-	$(top_builddir)/libcolord-gtk/libcolord-gtk.la
 
 noinst_LIBRARIES = libclientprivate.a
 libclientprivate_a_SOURCES =				\
@@ -61,29 +58,11 @@ cd_create_profile_LDADD =				\
 	libclientprivate.a				\
 	$(GLIB_LIBS)					\
 	$(LCMS_LIBS)					\
+	$(COLORD_LIBS)					\
 	-lm
 
 cd_create_profile_CFLAGS =				\
 	$(WARNINGFLAGS_C)
-
-if HAVE_GTK
-noinst_PROGRAMS =					\
-	colord-convert
-
-colord_convert_SOURCES =				\
-	cd-convert.c
-
-colord_convert_LDADD =					\
-	$(LCMS_LIBS)					\
-	$(COLORD_LIBS)					\
-	$(COLORD_GTK_LIBS)				\
-	$(GTK_LIBS)					\
-	$(GLIB_LIBS)					\
-	-lm
-
-colord_convert_CFLAGS =					\
-	$(WARNINGFLAGS_C)
-endif
 
 bashcompletiondir = ${sysconfdir}/bash_completion.d
 dist_bashcompletion_DATA = colormgr-completion.bash
