@@ -1,0 +1,921 @@
+commit 17c9d56ad79bbcdc4339c0dd194634c5994c15d0
+Author: Christopher James Halse Rogers <raof@ubuntu.com>
+Date:   Fri Feb 1 10:20:08 2013 +0800
+
+    Reintroduce SANE support
+    
+    SANE is unsuitable for applications which want to poll scanners, as it leaks
+    resources on each poll.
+    
+    Work around this by reintroducing a colord-sane helper that querys SANE, updates
+    the colord device db, then quits, and a plugin to spawn the helper at appropriate
+    times.
+
+diff --git a/configure.ac b/configure.ac
+index 405a6fc..f4b8388 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -205,8 +205,9 @@ dnl ---------------------------------------------------------------------------
+ AC_ARG_ENABLE(examples, AS_HELP_STRING([--enable-examples],[enable DBus example code]),
+ 	      enable_examples=$enableval,enable_examples=yes)
+ AM_CONDITIONAL(CD_BUILD_EXAMPLES, test x$enable_examples = xyes)
+-if test x$enable_examples = xyes; then
+-	PKG_CHECK_MODULES(DBUS, dbus-1)
++PKG_CHECK_MODULES(DBUS, dbus-1, have_dbus=yes, have_dbus=no)
++if test x$enable_examples = xyes -a x$have_dbus=no ; then
++	AC_MSG_ERROR([DBus examples require dbus-1 package, not found])
+ fi
+ 
+ dnl ---------------------------------------------------------------------------
+@@ -216,6 +217,46 @@ AC_ARG_ENABLE(reverse, AS_HELP_STRING([--enable-reverse],[enable reverse enginee
+ 	      enable_reverse=$enableval,enable_reverse=no)
+ AM_CONDITIONAL(CD_BUILD_REVERSE, test x$enable_reverse = xyes)
+ 
++dnl **** Check for SANE ****
++AC_ARG_ENABLE(sane, AS_HELP_STRING([--enable-sane],[Enable SANE support]),
++	      enable_sane=$enableval)
++has_sane=no
++if test x$enable_sane != xno; then
++	PKG_CHECK_MODULES(SANE, sane-backends, has_sane=yes, has_sane=no)
++	if test $has_sane = "no"; then
++		# fall back to detecting the header for some distros
++		AC_CHECK_HEADER(sane/sane.h, has_sane=yes, has_sane=no)
++		if test $has_sane = "yes"; then
++			SANE_CFLAGS=""
++			SANE_LIBS="-lsane"
++			AC_SUBST(SANE_CFLAGS)
++			AC_SUBST(SANE_LIBS)
++		fi
++		if test x$enable_sane = xyes -a $has_sane = "no"; then
++			AC_MSG_ERROR([--enable-sane was specified and SANE was not found])
++		fi
++
++	fi
++        if test x$enable_gudev != xyes; then
++                has_sane=no
++                if test x$enable_sane = xyes; then
++                        AC_MSG_ERROR([--enable-sane was specified and SANE requires gudev support, not found])
++                fi
++                AC_MSG_WARN([gudev not found, SANE support will not be enabled])
++        fi
++        if test x$have_dbus != xyes; then
++                has_sane=no
++                if test x$enable_sane = xyes; then
++                        AC_MSG_ERROR([--enable-sane was specified and SANE requires dbus support, not found])
++                fi
++                AC_MSG_WARN([dbus not found, SANE support will not be enabled])
++        fi
++fi
++AM_CONDITIONAL(HAVE_SANE, test x$has_sane = xyes)
++if test x$has_sane = xyes; then
++	AC_DEFINE(HAVE_SANE,1,[Use SANE support for detecting scanners])
++fi
++
+ dnl **** Daemon is allowed to do FD fallback  ****
+ AC_ARG_ENABLE(fd_fallback, AS_HELP_STRING([--enable-fd-fallback],[Enable file descriptor fallback]),
+ 	      enable_fd_fallback=$enableval, enable_fd_fallback=yes)
+@@ -300,6 +341,7 @@ Makefile
+ etc/Makefile
+ contrib/Makefile
+ contrib/session-helper/Makefile
++contrib/colord-sane/Makefile
+ examples/Makefile
+ man/Makefile
+ doc/Makefile
+@@ -341,6 +383,7 @@ echo "
+         Reverse engineering tools: ${enable_reverse}
+         File descriptor fallback:  ${enable_fd_fallback}
+         External volume searching: ${enable_volume_search}
++        SANE support:              ${has_sane}
+         GUDEV support:             ${enable_gudev}
+         Extra print profiles:      ${enable_print_profiles}
+         Vala API generator:        ${has_vapigen}
+diff --git a/contrib/Makefile.am b/contrib/Makefile.am
+index f3e7ed1..954524c 100644
+--- a/contrib/Makefile.am
++++ b/contrib/Makefile.am
+@@ -1,5 +1,9 @@
+-
+ SUBDIRS = 						\
+ 	session-helper
+ 
++if HAVE_SANE
++SUBDIRS +=						\
++	colord-sane
++endif
++
+ -include $(top_srcdir)/git.mk
+diff --git a/contrib/colord-sane/Makefile.am b/contrib/colord-sane/Makefile.am
+new file mode 100644
+index 0000000..7f1990c
+--- /dev/null
++++ b/contrib/colord-sane/Makefile.am
+@@ -0,0 +1,41 @@
++if HAVE_SANE
++
++INCLUDES =						\
++	$(GLIB_CFLAGS)					\
++	$(GUDEV_CFLAGS)					\
++	$(SANE_CFLAGS)					\
++	$(DBUS_CFLAGS)					\
++	-I$(top_srcdir)					\
++	-I$(top_srcdir)/libcolord			\
++	-DG_LOG_DOMAIN=\"CdSane\"			\
++	-DLIBEXECDIR=\"$(libexecdir)\"			\
++	-DDATADIR=\"$(datadir)\"			\
++	-DVERSION="\"$(VERSION)\""			\
++	-DCD_COMPILATION				\
++	-DG_UDEV_API_IS_SUBJECT_TO_CHANGE		\
++	-DLOCALEDIR=\""$(localedir)"\"
++
++COLORD_LIBS =						\
++	$(top_builddir)/libcolord/libcolord.la
++
++libexec_PROGRAMS =					\
++	colord-sane
++
++colord_sane_SOURCES =					\
++	cd-main.c
++
++colord_sane_LDADD =					\
++	$(COLORD_LIBS)					\
++	$(GUDEV_LIBS)					\
++	$(SANE_LIBS)					\
++	$(GLIB_LIBS)					\
++	$(DBUS_LIBS)
++
++colord_sane_CFLAGS =					\
++	$(WARNINGFLAGS_C)
++
++DISTCLEANFILES =					\
++	$(dist_profile_DATA)
++
++-include $(top_srcdir)/git.mk
++endif
+diff --git a/contrib/colord-sane/cd-main.c b/contrib/colord-sane/cd-main.c
+new file mode 100644
+index 0000000..948905d
+--- /dev/null
++++ b/contrib/colord-sane/cd-main.c
+@@ -0,0 +1,402 @@
++/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*-
++ *
++ * Copyright (C) 2009-2012 Richard Hughes <richard@hughsie.com>
++ *
++ * Licensed under the GNU General Public License Version 2
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++ */
++
++#include "config.h"
++
++#include <gio/gio.h>
++#include <glib/gi18n.h>
++#include <locale.h>
++#include <sane/sane.h>
++#include <gudev/gudev.h>
++#include <dbus/dbus.h>
++
++#include "cd-client.h"
++#include "cd-device.h"
++#include "cd-device-sync.h"
++
++typedef struct {
++	CdClient	*client;
++	GMainLoop	*loop;
++	GPtrArray	*array; /* of CdMainDev's */
++} CdMainPrivate;
++
++typedef struct {
++	CdDevice	*device;
++	gchar		*id; /* note: we can get this from CdDevice, but we don't wan't to connect() */
++	gboolean	 valid;
++} CdMainDev;
++
++#define COLORD_SANE_CREATOR_PROP	"Created-By"
++#define COLORD_SANE_CREATOR_VAL		"colord-sane"
++
++/**
++ * cd_main_dev_free:
++ **/
++static void
++cd_main_dev_free (CdMainDev *tmp)
++{
++	g_object_unref (tmp->device);
++	g_free (tmp->id);
++	g_free (tmp);
++}
++
++/**
++ * cd_main_dev_find_by_id:
++ **/
++static CdMainDev *
++cd_main_dev_find_by_id (CdMainPrivate *priv,
++			const gchar *id)
++{
++	CdMainDev *tmp;
++	guint i;
++
++	/* nothing to find */
++	if (priv->array->len == 0)
++		goto out;
++	for (i = 0; i < priv->array->len; i++) {
++		tmp = g_ptr_array_index (priv->array, i);
++		if (g_strcmp0 (tmp->id, id) == 0)
++			return tmp;
++	}
++out:
++	return NULL;
++}
++
++/**
++ * cd_client_get_id_for_sane_device:
++ **/
++static gchar *
++cd_client_get_id_for_sane_device (const SANE_Device *sane_device)
++{
++	gchar *id;
++	id = g_strdup_printf ("sane-%s", sane_device->model);
++	return id;
++}
++
++typedef struct {
++	CdMainPrivate	*priv;
++	gchar		*id;
++} CdMainCreateDeviceHelper;
++
++/**
++ * cd_main_colord_create_device_cb:
++ **/
++static void
++cd_main_colord_create_device_cb (GObject *source_object,
++				 GAsyncResult *res,
++				 gpointer user_data)
++{
++	CdClient *client = CD_CLIENT (source_object);
++	CdDevice *device;
++	GError *error = NULL;
++
++	/* get result */
++	device = cd_client_create_device_finish (client, res, &error);
++	if (device == NULL) {
++		g_warning ("failed to create device: %s",
++			   error->message);
++		g_error_free (error);
++	}
++
++	if (device != NULL)
++		g_object_unref (device);
++}
++
++/**
++ * cd_sane_client_add:
++ **/
++static void
++cd_sane_client_add (CdMainPrivate *priv, const SANE_Device *sane_device)
++{
++	gchar *id = NULL;
++	gchar *model = NULL;
++	gchar *vendor = NULL;
++	CdMainDev *dev;
++	GHashTable *properties = NULL;
++
++	/* ignore noname, no support devices */
++	if (g_strcmp0 (sane_device->vendor, "Noname") == 0) {
++		g_debug ("CdSaneClient: Ignoring sane device %s",
++			 sane_device->name);
++		goto out;
++	}
++
++	/* convert device_id 'plustek:libusb:004:002' to suitable id */
++	id = cd_client_get_id_for_sane_device (sane_device);
++
++	/* see if this device already exists */
++	dev = cd_main_dev_find_by_id (priv, id);
++	if (dev != NULL) {
++		dev->valid = TRUE;
++		goto out;
++	}
++
++	/* Make human readable */
++	model = g_strdup (sane_device->model);
++	g_strdelimit (model, "_", ' ');
++	vendor = g_strdup (sane_device->vendor);
++	g_strdelimit (vendor, "_", ' ');
++
++	/* create initial device properties */
++	properties = g_hash_table_new_full (g_str_hash, g_str_equal,
++					      NULL, NULL);
++	g_hash_table_insert (properties,
++			     (gpointer) CD_DEVICE_PROPERTY_KIND,
++			     (gpointer) cd_device_kind_to_string (CD_DEVICE_KIND_SCANNER));
++	g_hash_table_insert (properties,
++			     (gpointer) CD_DEVICE_PROPERTY_MODE,
++			     (gpointer) cd_device_mode_to_string (CD_DEVICE_MODE_PHYSICAL));
++	g_hash_table_insert (properties,
++			     (gpointer) CD_DEVICE_PROPERTY_COLORSPACE,
++			     (gpointer) cd_colorspace_to_string (CD_COLORSPACE_RGB));
++	g_hash_table_insert (properties,
++			     (gpointer) CD_DEVICE_PROPERTY_VENDOR,
++			     (gpointer) vendor);
++	g_hash_table_insert (properties,
++			     (gpointer) CD_DEVICE_PROPERTY_MODEL,
++			     (gpointer) model);
++	g_hash_table_insert (properties,
++			     (gpointer) CD_DEVICE_PROPERTY_SERIAL,
++			     (gpointer) sane_device->name);
++	g_hash_table_insert (properties,
++			     (gpointer) COLORD_SANE_CREATOR_PROP,
++			     (gpointer) COLORD_SANE_CREATOR_VAL);
++	cd_client_create_device (priv->client,
++				 id,
++				 CD_OBJECT_SCOPE_NORMAL,
++				 properties,
++				 NULL,
++				 cd_main_colord_create_device_cb,
++				 NULL);
++out:
++	if (properties != NULL)
++		g_hash_table_unref (properties);
++	g_free (id);
++	g_free (model);
++	g_free (vendor);
++}
++
++/**
++ * cd_main_colord_delete_device_cb:
++ **/
++static void
++cd_main_colord_delete_device_cb (GObject *source_object,
++				 GAsyncResult *res,
++				 gpointer user_data)
++{
++	CdClient *client = CD_CLIENT (source_object);
++	gboolean ret;
++	GError *error = NULL;
++
++	/* get result */
++	ret = cd_client_delete_device_finish (client, res, &error);
++	if (!ret) {
++		g_warning ("failed to delete device: %s",
++			   error->message);
++		g_error_free (error);
++	}
++}
++
++/**
++ * cd_sane_client_remove:
++ **/
++static void
++cd_sane_client_remove (CdMainPrivate *priv, CdDevice *device)
++{
++	g_debug ("Deleting device: %s", cd_device_get_object_path (device));
++	cd_client_delete_device (priv->client,
++				 device,
++				 NULL,
++				 cd_main_colord_delete_device_cb,
++				 priv);
++}
++
++/**
++ * cd_sane_client_refresh:
++ **/
++static void
++cd_sane_client_refresh (CdMainPrivate *priv)
++{
++	CdMainDev *tmp;
++	const SANE_Device **device_list = NULL;
++	gint idx;
++	guint i;
++	SANE_Status status;
++
++	status = sane_init (NULL, NULL);
++	if (status != SANE_STATUS_GOOD) {
++		g_warning ("failed to init SANE: %s",
++			   sane_strstatus (status));
++		goto out;
++	}
++
++	/* get scanners on the local server */
++	status = sane_get_devices (&device_list, TRUE);
++	if (status != SANE_STATUS_GOOD) {
++		g_warning ("failed to get devices from SANE: %s",
++			   sane_strstatus (status));
++		goto out;
++	}
++
++	/* nothing */
++	if (device_list == NULL || device_list[0] == NULL)
++		goto out;
++
++	/* add them */
++	for (idx = 0; device_list[idx] != NULL; idx++)
++		cd_sane_client_add (priv, device_list[idx]);
++
++	/* remove any that are invalid */
++	for (i = 0; i < priv->array->len; i++) {
++		tmp = g_ptr_array_index (priv->array, i);
++		if (tmp->valid)
++			continue;
++		cd_sane_client_remove (priv, tmp->device);
++	}
++ out:
++	g_main_loop_quit (priv->loop);
++}
++
++static void
++cd_sane_add_device_if_from_colord_sane(gpointer data,
++				       gpointer user_data)
++{
++	CdDevice *device = (CdDevice *)data;
++	CdMainPrivate *priv = (CdMainPrivate *)user_data;
++	GError *error = NULL;
++	
++	cd_device_connect_sync (device, NULL, &error);
++
++	if (error != NULL) {
++		g_warning ("failed to receive list of devices: %s",
++			   error->message);
++		g_error_free (error);
++		return;
++	}	
++
++	if (g_strcmp0 (cd_device_get_metadata_item (device,
++						    COLORD_SANE_CREATOR_PROP),
++		       COLORD_SANE_CREATOR_VAL) == 0) {
++		CdMainDev *sane_device = g_new (CdMainDev, 1);
++		sane_device->device = g_object_ref (device);
++		sane_device->id = (gchar *)cd_device_get_id (device);
++		sane_device->valid = FALSE;
++		g_ptr_array_add (priv->array, sane_device);
++	}						    
++}
++
++/**
++ * cd_sane_client_populate_existing_devices
++ **/
++static void
++cd_sane_populate_existing_devices(GObject *source_object,
++				  GAsyncResult *res,
++				  gpointer user_data)
++{
++	CdMainPrivate *priv = (CdMainPrivate *) user_data;
++	GPtrArray *devices;
++	GError *error = NULL;
++	
++	devices = cd_client_get_devices_by_kind_finish (priv->client, res, &error);
++	if (error != NULL) {
++		g_warning ("failed to receive list of devices: %s",
++			   error->message);
++		g_error_free (error);
++		return;
++	}
++
++	g_ptr_array_foreach (devices,
++			     cd_sane_add_device_if_from_colord_sane,
++			     priv);
++
++	cd_sane_client_refresh (priv);
++}
++
++/**
++ * cd_main_colord_connect_cb:
++ **/
++static void
++cd_main_colord_connect_cb (GObject *source_object,
++			   GAsyncResult *res,
++			   gpointer user_data)
++{
++	CdMainPrivate *priv = (CdMainPrivate *) user_data;
++	gboolean ret;
++	GError *error = NULL;
++
++	/* get result */
++	ret = cd_client_connect_finish (priv->client, res, &error);
++	if (!ret) {
++		g_warning ("failed to connect to colord: %s",
++			   error->message);
++		g_error_free (error);
++		return;
++	}
++
++	cd_client_get_devices_by_kind(priv->client,
++				      CD_DEVICE_KIND_SCANNER,
++				      NULL,
++				      cd_sane_populate_existing_devices,
++				      priv);
++}
++
++/**
++ * main:
++ **/
++int
++main (int argc, char *argv[])
++{
++	CdMainPrivate *priv = NULL;
++	guint retval = 1;
++
++	/* We need to init DBus' threading support as libSANE uses raw DBus */
++	dbus_threads_init_default ();
++#if !GLIB_CHECK_VERSION(2,36,0)
++	g_type_init ();
++#endif
++
++	/* create new objects */
++	priv = g_new0 (CdMainPrivate, 1);
++	priv->loop = g_main_loop_new (NULL, FALSE);
++	priv->client = cd_client_new ();
++	priv->array = g_ptr_array_new_with_free_func ((GDestroyNotify) cd_main_dev_free);
++
++	/* connect to daemon */
++	cd_client_connect (priv->client,
++			   NULL,
++			   cd_main_colord_connect_cb,
++			   priv);
++
++	/* process */
++	g_main_loop_run (priv->loop);
++
++	/* success */
++	retval = 0;
++
++	if (priv != NULL) {
++		if (priv->array != NULL)
++			g_ptr_array_unref (priv->array);
++		if (priv->client != NULL)
++			g_object_unref (priv->client);
++		g_main_loop_unref (priv->loop);
++	}
++	return retval;
++}
+diff --git a/etc/colord.conf.in b/etc/colord.conf.in
+index d34f13c..635bae8 100644
+--- a/etc/colord.conf.in
++++ b/etc/colord.conf.in
+@@ -10,6 +10,17 @@ SearchVolumes=@enablevolumesearch@
+ # default=false
+ CreateDummySensor=false
+ 
++# If we should use SANE to add scanner and camera devices.
++#
++# If SANE support is installed then this will allow colord to manage
++# all scanners that SANE can detect, including remote scanners.
++#
++# If this is disabled then colord will only detect locally connected
++# scanners.
++#
++# default=false
++UseSANE=true
++
+ # Known profiles are specific colorspaces that applications may request,
+ # e.g. 'adobe-rgb' or 'srgb'.
+ # This key sets up any manual overrides that are not automatically added
+diff --git a/src/plugins/Makefile.am b/src/plugins/Makefile.am
+index c69b152..0dfaf24 100644
+--- a/src/plugins/Makefile.am
++++ b/src/plugins/Makefile.am
+@@ -4,13 +4,14 @@ AUTOMAKE_OPTIONS = 1.7
+ CD_GLIB2_LIBS =						\
+ 	$(top_builddir)/lib/packagekit-glib2/libpackagekit-glib2.la
+ 
+-AM_CPPFLAGS =						\
+-	$(GIO_CFLAGS)					\
+-	$(GLIB_CFLAGS)					\
+-	$(GUDEV_CFLAGS)					\
+-	-DG_LOG_DOMAIN=\"Cd\"				\
+-	-DCD_COMPILATION				\
+-	-DCD_DISABLE_DEPRECATED				\
++AM_CPPFLAGS =							\
++	$(GIO_CFLAGS)						\
++	$(GLIB_CFLAGS)						\
++	$(GUDEV_CFLAGS)						\
++	-DG_LOG_DOMAIN=\"Cd\"					\
++	-DCD_COMPILATION					\
++	-DCD_DISABLE_DEPRECATED					\
++	-DCOLORD_SANE_BINARY=\""$(libexecdir)/colord-sane"\"	\
+ 	-I$(top_srcdir)/src
+ 
+ # plugins
+@@ -38,6 +39,18 @@ libcd_plugin_scanner_la_SOURCES = cd-plugin-scanner.c
+ libcd_plugin_scanner_la_LIBADD = $(GUDEV_LIBS)
+ libcd_plugin_scanner_la_LDFLAGS = -module -avoid-version
+ libcd_plugin_scanner_la_CFLAGS = $(GUDEV_CFLAGS) $(WARNINGFLAGS_C)
+-endif
++
++if HAVE_SANE
++
++plugin_LTLIBRARIES +=					\
++	libcd_plugin_sane.la
++
++libcd_plugin_sane_la_SOURCES = cd-plugin-sane.c
++libcd_plugin_sane_la_LIBADD = $(GUDEV_LIBS)
++libcd_plugin_sane_la_LDFLAGS = -module -avoid-version
++libcd_plugin_sane_la_CFLAGS = $(GUDEV_CFLAGS) $(WARNINGFLAGS_C)
++
++endif # HAVE_SANE
++endif # HAVE_GUDEV
+ 
+ -include $(top_srcdir)/git.mk
+diff --git a/src/plugins/cd-plugin-sane.c b/src/plugins/cd-plugin-sane.c
+new file mode 100644
+index 0000000..c4bb7f6
+--- /dev/null
++++ b/src/plugins/cd-plugin-sane.c
+@@ -0,0 +1,152 @@
++/* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*-
++ *
++ * Copyright © Christopher James Halse Rogers <christopher.halse.rogers@canonical.com>
++ *
++ * Licensed under the GNU General Public License Version 2
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++ */
++
++#include <config.h>
++#include <cd-plugin.h>
++#include <gudev/gudev.h>
++#include <glib.h>
++
++struct CdPluginPrivate {
++	GUdevClient		*udev_client;
++	gboolean		scan_in_progress;
++};
++
++/**
++ * cd_plugin_get_description:
++ */
++const gchar *
++cd_plugin_get_description (void)
++{
++	return "Add and remove scanner devices using SANE";
++}
++
++/**
++ * cd_plugin_probe:
++ */
++gboolean
++cd_plugin_probe (CdConfig *config)
++{
++	return cd_config_get_boolean (config, "UseSANE");
++}
++
++/*
++ * cd_plugin_colord_sane_finished_cb
++ */
++static void
++cd_plugin_colord_sane_finished_cb(GPid pid,
++				  gint status,
++				  gpointer user_data)
++{
++	CdPluginPrivate *priv = (CdPluginPrivate *)user_data;
++
++	priv->scan_in_progress = FALSE;
++	g_spawn_close_pid (pid);
++}
++
++/*
++ * cd_plugin_probe_sane_devices
++ */
++static void
++cd_plugin_probe_sane_devices(CdPluginPrivate *priv)
++{
++	gchar *argv[2];
++	GError *error = NULL;
++	GPid colord_sane_pid;
++
++	argv[0] = (gchar *)COLORD_SANE_BINARY;
++	argv[1] = NULL;
++
++	if (priv->scan_in_progress)
++		return;
++	
++	g_spawn_async (NULL,
++		       argv,
++		       NULL,
++		       G_SPAWN_DO_NOT_REAP_CHILD,
++		       NULL,
++		       NULL,
++		       &colord_sane_pid,
++		       &error);
++
++	if (error != NULL) {
++		g_warning ("CdPlugin: failed to spawn colord-sane helper: %s",
++			   error->message);
++		g_error_free (error);
++		return;
++	}
++
++	priv->scan_in_progress = TRUE;
++	g_child_watch_add (colord_sane_pid,
++			   cd_plugin_colord_sane_finished_cb,
++			   priv);
++}
++
++
++/**
++ * cd_plugin_uevent_cb:
++ **/
++static void
++cd_plugin_uevent_cb (GUdevClient *udev_client,
++		     const gchar *action,
++		     GUdevDevice *udev_device,
++		     CdPlugin *plugin)
++{
++	if (g_strcmp0 (action, "remove") == 0 ||
++	    g_strcmp0 (action, "add") == 0) {
++		cd_plugin_probe_sane_devices(plugin->priv);
++	}
++}
++
++/**
++ * cd_plugin_coldplug:
++ */
++void
++cd_plugin_coldplug (CdPlugin *plugin)
++{
++	cd_plugin_probe_sane_devices(plugin->priv);
++
++	/* watch udev for changes */
++	g_signal_connect (plugin->priv->udev_client, "uevent",
++			  G_CALLBACK (cd_plugin_uevent_cb), plugin);
++}
++
++/**
++ * cd_plugin_initialize:
++ */
++void
++cd_plugin_initialize (CdPlugin *plugin)
++{
++	const gchar *subsystems[] = { "usb", "scsi", NULL };
++
++	/* create private */
++	plugin->priv = CD_PLUGIN_GET_PRIVATE (CdPluginPrivate);
++	plugin->priv->udev_client = g_udev_client_new (subsystems);
++	plugin->priv->scan_in_progress = FALSE;
++}
++
++/**
++ * cd_plugin_destroy:
++ */
++void
++cd_plugin_destroy (CdPlugin *plugin)
++{
++	g_object_unref (plugin->priv->udev_client);
++}
+diff --git a/src/plugins/cd-plugin-scanner.c b/src/plugins/cd-plugin-scanner.c
+index 48e6f98..13a5937 100644
+--- a/src/plugins/cd-plugin-scanner.c
++++ b/src/plugins/cd-plugin-scanner.c
+@@ -40,6 +40,15 @@ cd_plugin_get_description (void)
+ }
+ 
+ /**
++ * cd_plugin_probe:
++ */
++gboolean
++cd_plugin_probe (CdConfig *config)
++{
++	return !cd_config_get_boolean (config, "UseSANE");
++}
++
++/**
+  * cd_plugin_get_scanner_id_for_udev_device:
+  **/
+ static gchar *
+commit a999ec5139fe28594bc269adbcab9880d0e7cbf5
+Author: Christopher James Halse Rogers <raof@ubuntu.com>
+Date:   Thu Jan 31 17:50:28 2013 +0800
+
+    Add an interface for plugins to decline to load
+    
+    This allows plugins to determine whether they should be loaded based
+    on the colord config.
+    
+    Re-introducing the SANE plugin wants this, as the scanner and sane plugins
+    should be mutually exclusive.
+
+diff --git a/src/cd-main.c b/src/cd-main.c
+index c1b24ee..2c81504 100644
+--- a/src/cd-main.c
++++ b/src/cd-main.c
+@@ -2126,10 +2126,11 @@ cd_main_plugin_device_removed_cb (CdPlugin *plugin,
+ /**
+  * cd_main_load_plugin:
+  */
+-static void
++static gboolean
+ cd_main_load_plugin (CdMainPrivate *priv, const gchar *filename)
+ {
+ 	CdPluginGetDescFunc plugin_desc = NULL;
++	CdPluginProbeFunc plugin_probe = NULL;
+ 	CdPlugin *plugin;
+ 	gboolean ret;
+ 	GModule *module;
+@@ -2138,7 +2139,7 @@ cd_main_load_plugin (CdMainPrivate *priv, const gchar *filename)
+ 	if (module == NULL) {
+ 		g_warning ("failed to open plugin %s: %s",
+ 			   filename, g_module_error ());
+-		goto out;
++		return FALSE;
+ 	}
+ 
+ 	/* get description */
+@@ -2148,7 +2149,19 @@ cd_main_load_plugin (CdMainPrivate *priv, const gchar *filename)
+ 	if (!ret) {
+ 		g_warning ("Plugin %s requires description", filename);
+ 		g_module_close (module);
+-		goto out;
++		return FALSE;
++	}
++
++	/* give the module the option to opt-out */
++	ret = g_module_symbol (module,
++			       "cd_plugin_probe",
++			       (gpointer *) &plugin_probe);
++	if (ret) {
++		if (!plugin_probe (priv->config)) {
++			g_debug ("plugin %s refused to load", filename);
++			g_module_close (module);
++			return FALSE;
++		}
+ 	}
+ 
+ 	/* print what we know */
+@@ -2161,8 +2174,7 @@ cd_main_load_plugin (CdMainPrivate *priv, const gchar *filename)
+ 
+ 	/* add to array */
+ 	g_ptr_array_add (priv->plugins, plugin);
+-out:
+-	return;
++	return TRUE;
+ }
+ 
+ /**
+@@ -2198,8 +2210,11 @@ cd_main_load_plugins (CdMainPrivate *priv)
+ 		filename_plugin = g_build_filename (path,
+ 						    filename_tmp,
+ 						    NULL);
+-		cd_main_load_plugin (priv, filename_plugin);
+-		syslog (LOG_INFO, "Loading plugin %s", filename_tmp);
++		if (cd_main_load_plugin (priv, filename_plugin)) {
++			syslog (LOG_INFO, "Loading plugin %s", filename_tmp);
++		} else {
++			syslog (LOG_INFO, "Plugin %s not loaded", filename_tmp);
++		}
+ 		g_free (filename_plugin);
+ 	} while (TRUE);
+ out:
+diff --git a/src/cd-plugin.h b/src/cd-plugin.h
+index 5c5dc18..d21b6da 100644
+--- a/src/cd-plugin.h
++++ b/src/cd-plugin.h
+@@ -25,6 +25,7 @@
+ #include <glib-object.h>
+ 
+ #include "cd-device.h"
++#include "cd-config.h"
+ 
+ G_BEGIN_DECLS
+ 
+@@ -36,6 +37,7 @@ typedef void		 (*CdPluginFunc)		(CdPlugin	*plugin);
+ typedef void		 (*CdPluginDeviceFunc)		(CdPlugin	*plugin,
+ 							 CdDevice	*device,
+ 							 gpointer	 user_data);
++typedef gboolean	 (*CdPluginProbeFunc)		(CdConfig	*config);
+ 
+ struct CdPlugin {
+ 	GModule			*module;
+@@ -66,6 +68,9 @@ void		 cd_plugin_device_added			(CdPlugin	*plugin,
+ void		 cd_plugin_device_removed		(CdPlugin	*plugin,
+ 							 CdDevice	*device);
+ 
++/* optional probe function. Returns false if plugin should not be enabled */
++gboolean	 cd_plugin_probe			(CdConfig	*config);
++
+ G_END_DECLS
+ 
+ #endif /* __CD_PLUGIN_H */
