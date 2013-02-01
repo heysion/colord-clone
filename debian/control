@@ -22,6 +22,7 @@ Build-Depends:
  gtk-doc-tools,
  autopoint,
 Standards-Version: 3.9.2
+XS-Testsuite: autopkgtest
 Section: graphics
 Homepage: http://www.freedesktop.org/software/colord/
 Vcs-Git: git://git.debian.org/collab-maint/colord.git
