@@ -40,6 +40,15 @@ cd_plugin_get_description (void)
 }
 
 /**
+ * cd_plugin_probe:
+ */
+gboolean
+cd_plugin_probe (CdConfig *config)
+{
+	return !cd_config_get_boolean (config, "UseSANE");
+}
+
+/**
  * cd_plugin_get_scanner_id_for_udev_device:
  **/
 static gchar *
