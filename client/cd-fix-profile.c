@@ -81,7 +81,7 @@ cd_util_add (GPtrArray *array, const gchar *name, const gchar *description, CdUt
 
 	/* add each one */
 	names = g_strsplit (name, ",", -1);
-	for (i=0; names[i] != NULL; i++) {
+	for (i = 0; names[i] != NULL; i++) {
 		item = g_new0 (CdUtilItem, 1);
 		item->name = g_strdup (names[i]);
 		if (i == 0) {
@@ -111,7 +111,7 @@ cd_util_get_descriptions (GPtrArray *array)
 	guint max_len = 0;
 
 	/* get maximum command length */
-	for (i=0; i<array->len; i++) {
+	for (i = 0; i < array->len; i++) {
 		item = g_ptr_array_index (array, i);
 		len = strlen (item->name);
 		if (len > max_len)
@@ -124,7 +124,7 @@ cd_util_get_descriptions (GPtrArray *array)
 
 	/* print each command */
 	string = g_string_new ("");
-	for (i=0; i<array->len; i++) {
+	for (i = 0; i < array->len; i++) {
 		item = g_ptr_array_index (array, i);
 		g_string_append (string, "  ");
 		g_string_append (string, item->name);
@@ -154,7 +154,7 @@ cd_util_run (CdUtilPrivate *priv, const gchar *command, gchar **values, GError *
 	guint i;
 
 	/* find command */
-	for (i=0; i<priv->cmd_array->len; i++) {
+	for (i = 0; i < priv->cmd_array->len; i++) {
 		item = g_ptr_array_index (priv->cmd_array, i);
 		if (g_strcmp0 (item->name, command) == 0) {
 			ret = item->callback (priv, values, error);
@@ -167,7 +167,7 @@ cd_util_run (CdUtilPrivate *priv, const gchar *command, gchar **values, GError *
 	/* TRANSLATORS: error message */
 	g_string_append_printf (string, "%s\n",
 				_("Command not found, valid commands are:"));
-	for (i=0; i<priv->cmd_array->len; i++) {
+	for (i = 0; i < priv->cmd_array->len; i++) {
 		item = g_ptr_array_index (priv->cmd_array, i);
 		g_string_append_printf (string, " * %s\n", item->name);
 	}
@@ -259,9 +259,13 @@ out:
  * cd_util_set_info_text:
  **/
 static gboolean
-cd_util_set_info_text (CdUtilPrivate *priv, cmsTagSignature sig, gchar **values, GError **error)
+cd_util_set_info_text (CdUtilPrivate *priv,
+		       cmsTagSignature sig,
+		       gchar **values,
+		       GError **error)
 {
 	cmsHPROFILE lcms_profile = NULL;
+	const gchar *value;
 	gboolean ret = TRUE;
 
 	/* check arguments */
@@ -279,10 +283,18 @@ cd_util_set_info_text (CdUtilPrivate *priv, cmsTagSignature sig, gchar **values,
 		goto out;
 	}
 
+	/* these are default values */
+	if (sig == cmsSigCopyrightTag &&
+	    g_strcmp0 (values[0], "") == 0) {
+		value = CD_PROFILE_DEFAULT_COPYRIGHT_STRING;
+	} else {
+		value = values[0];
+	}
+
 	/* update value */
 	ret = cd_util_profile_set_text_acsii (lcms_profile,
 					      sig,
-					      values[0],
+					      value,
 					      error);
 	if (!ret)
 		goto out;
@@ -303,7 +315,7 @@ out:
 static gboolean
 cd_util_set_copyright (CdUtilPrivate *priv, gchar **values, GError **error)
 {
-	return cd_util_set_info_text (priv, cmsInfoCopyright, values, error);
+	return cd_util_set_info_text (priv, cmsSigCopyrightTag, values, error);
 }
 
 /**
@@ -384,11 +396,14 @@ cd_util_get_standard_space_filename (CdUtilPrivate *priv,
 				     CdStandardSpace standard_space,
 				     GError **error)
 {
-	CdProfile *profile_tmp;
+	CdProfile *profile_tmp = NULL;
 	gboolean ret;
 	gchar *filename = NULL;
 
 	/* try to find */
+	ret = cd_client_connect_sync (priv->client, NULL, error);
+	if (!ret)
+		goto out;
 	profile_tmp = cd_client_get_standard_space_sync (priv->client,
 							 standard_space,
 							 NULL,
@@ -547,6 +562,59 @@ cd_util_get_profile_coverage (CdUtilPrivate *priv,
 out:
 	g_free (filename);
 	return coverage;
+}
+
+/**
+ * cd_util_set_version:
+ **/
+static gboolean
+cd_util_set_version (CdUtilPrivate *priv, gchar **values, GError **error)
+{
+	cmsHPROFILE lcms_profile = NULL;
+	gboolean ret = TRUE;
+	gchar *endptr = NULL;
+	gdouble version;
+
+	/* check arguments */
+	if (g_strv_length (values) != 2) {
+		ret = FALSE;
+		g_set_error_literal (error, 1, 0,
+				     "invalid input, expect 'filename' 'version'");
+		goto out;
+	}
+
+	/* get version */
+	version = g_ascii_strtod (values[1], &endptr);
+	if (endptr != NULL && endptr[0] != '\0') {
+		ret = FALSE;
+		g_set_error (error, 1, 0,
+			     "failed to parse version: '%s'",
+			     values[1]);
+		goto out;
+	}
+	if (version < 1.0 || version > 6.0) {
+		ret = FALSE;
+		g_set_error (error, 1, 0,
+			     "invalid version %f", version);
+		goto out;
+	}
+
+	/* open profile and set version */
+	lcms_profile = cd_util_profile_read (values[0], error);
+	if (lcms_profile == NULL) {
+		ret = FALSE;
+		goto out;
+	}
+	cmsSetProfileVersion (lcms_profile, version);
+
+	/* write new file */
+	ret = cd_util_profile_write (lcms_profile, values[0], error);
+	if (!ret)
+		goto out;
+out:
+	if (lcms_profile != NULL)
+		cmsCloseProfile (lcms_profile);
+	return ret;
 }
 
 /**
@@ -896,8 +964,10 @@ out:
 static gboolean
 cd_util_dump (CdUtilPrivate *priv, gchar **values, GError **error)
 {
+	cmsCIExyY yxy;
 	cmsHANDLE dict;
 	cmsHPROFILE lcms_profile = NULL;
+	const cmsCIEXYZ *xyz;
 	const cmsDICTentry* entry;
 	gboolean ret = TRUE;
 	gchar ascii_name[1024];
@@ -915,7 +985,9 @@ cd_util_dump (CdUtilPrivate *priv, gchar **values, GError **error)
 	g_print ("Using filename %s\n", values[0]);
 	lcms_profile = cmsOpenProfileFromFile (values[0], "r");
 	if (lcms_profile == NULL) {
-		g_warning ("failed to open profile %s", values[0]);
+		g_set_error (error, 1, 0,
+			     "failed to open profile %s",
+			     values[0]);
 		ret = FALSE;
 		goto out;
 	}
@@ -947,6 +1019,95 @@ cd_util_dump (CdUtilPrivate *priv, gchar **values, GError **error)
 			g_print ("%s %s\t=\t%s\n",
 				 _("Metadata"), ascii_name, ascii_value);
 		}
+	}
+
+	/* show Yxy primaries */
+	xyz = cmsReadTag (lcms_profile, cmsSigRedColorantTag);
+	if (xyz != NULL) {
+		cmsXYZ2xyY (&yxy, xyz);
+		g_print ("%s:\t%0.3f, %0.3f\n", _("Red primary"), yxy.x, yxy.y);
+	}
+	xyz = cmsReadTag (lcms_profile, cmsSigGreenColorantTag);
+	if (xyz != NULL) {
+		cmsXYZ2xyY (&yxy, xyz);
+		g_print ("%s:\t%0.3f, %0.3f\n", _("Green primary"), yxy.x, yxy.y);
+	}
+	xyz = cmsReadTag (lcms_profile, cmsSigBlueColorantTag);
+	if (xyz != NULL) {
+		cmsXYZ2xyY (&yxy, xyz);
+		g_print ("%s:\t%0.3f, %0.3f\n", _("Blue primary"), yxy.x, yxy.y);
+	}
+	xyz = cmsReadTag (lcms_profile, cmsSigMediaWhitePointTag);
+	if (xyz != NULL) {
+		cmsXYZ2xyY (&yxy, xyz);
+		g_print ("%s:\t%0.3f, %0.3f\n", _("Whitepoint"), yxy.x, yxy.y);
+	}
+
+	/* success */
+	ret = TRUE;
+out:
+	if (lcms_profile != NULL)
+		cmsCloseProfile (lcms_profile);
+	return ret;
+}
+
+/**
+ * cd_util_generate_vcgt:
+ **/
+static gboolean
+cd_util_generate_vcgt (CdUtilPrivate *priv, gchar **values, GError **error)
+{
+	cmsHPROFILE lcms_profile = NULL;
+	gboolean ret = TRUE;
+	const cmsToneCurve **vcgt;
+	cmsFloat32Number in;
+	guint i;
+	guint size;
+
+	/* check arguments */
+	if (g_strv_length (values) != 2) {
+		ret = FALSE;
+		g_set_error_literal (error, 1, 0,
+				     "invalid input, expect 'filename' size'");
+		goto out;
+	}
+
+	/* invalid size */
+	size = atoi (values[1]);
+	if (size <= 1 || size > 1024) {
+		ret = FALSE;
+		g_set_error_literal (error, 1, 0,
+				     "invalid size,expected 2-1024");
+		goto out;
+	}
+
+	/* set value */
+	lcms_profile = cmsOpenProfileFromFile (values[0], "r");
+	if (lcms_profile == NULL) {
+		g_set_error (error, 1, 0,
+			     "failed to open profile %s",
+			     values[0]);
+		ret = FALSE;
+		goto out;
+	}
+
+	/* does profile have VCGT */
+	vcgt = cmsReadTag (lcms_profile, cmsSigVcgtTag);
+	if (vcgt == NULL || vcgt[0] == NULL) {
+		ret = FALSE;
+		g_set_error_literal (error, 1, 0,
+				     "profile does not have any VCGT data");
+		goto out;
+	}
+
+	/* output data */
+	g_print ("idx,red,green,blue\n");
+	for (i = 0; i < size; i++) {
+		in = (gdouble) i / (gdouble) (size - 1);
+		g_print ("%i,", i);
+		g_print ("%f,", cmsEvalToneCurveFloat(vcgt[0], in));
+		g_print ("%f,", cmsEvalToneCurveFloat(vcgt[1], in));
+		g_print ("%f\n", cmsEvalToneCurveFloat(vcgt[2], in));
 	}
 
 	/* success */
@@ -1008,12 +1169,6 @@ main (int argc, char *argv[])
 	/* create helper object */
 	priv = g_new0 (CdUtilPrivate, 1);
 	priv->client = cd_client_new ();
-	ret = cd_client_connect_sync (priv->client, NULL, &error);
-	if (!ret) {
-		g_print ("%s\n", error->message);
-		g_error_free (error);
-		goto out;
-	}
 
 	/* add commands */
 	priv->cmd_array = g_ptr_array_new_with_free_func ((GDestroyNotify) cd_util_item_free);
@@ -1022,6 +1177,11 @@ main (int argc, char *argv[])
 		     /* TRANSLATORS: command description */
 		     _("Show all the details about the profile"),
 		     cd_util_dump);
+	cd_util_add (priv->cmd_array,
+		     "extract-vcgt",
+		     /* TRANSLATORS: command description */
+		     _("Generate the VCGT calibration of a given size"),
+		     cd_util_generate_vcgt);
 	cd_util_add (priv->cmd_array,
 		     "md-clear",
 		     /* TRANSLATORS: command description */
@@ -1067,6 +1227,11 @@ main (int argc, char *argv[])
 		     /* TRANSLATORS: command description */
 		     _("Automatically fix metadata in the profile"),
 		     cd_util_set_fix_metadata);
+	cd_util_add (priv->cmd_array,
+		     "set-version",
+		     /* TRANSLATORS: command description */
+		     _("Set the ICC profile version"),
+		     cd_util_set_version);
 
 	/* sort by command name */
 	g_ptr_array_sort (priv->cmd_array,
@@ -1080,7 +1245,15 @@ main (int argc, char *argv[])
 	/* TRANSLATORS: program name */
 	g_set_application_name (_("Color Management"));
 	g_option_context_add_main_entries (priv->context, options, NULL);
-	g_option_context_parse (priv->context, &argc, &argv, NULL);
+	ret = g_option_context_parse (priv->context, &argc, &argv, &error);
+	if (!ret) {
+		/* TRANSLATORS: the user didn't read the man page */
+		g_print ("%s: %s\n",
+			 _("Failed to parse arguments"),
+			 error->message);
+		g_error_free (error);
+		goto out;
+	}
 
 	/* set verbose? */
 	if (verbose) {

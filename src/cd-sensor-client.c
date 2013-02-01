@@ -39,6 +39,7 @@ struct _CdSensorClientPrivate
 {
 	GUdevClient			*gudev_client;
 	GPtrArray			*array_sensors;
+	guint				 idx;
 };
 
 enum {
@@ -50,6 +51,28 @@ enum {
 static guint signals[SIGNAL_LAST] = { 0 };
 
 G_DEFINE_TYPE (CdSensorClient, cd_sensor_client, G_TYPE_OBJECT)
+
+/**
+ * cd_sensor_client_get_by_id:
+ **/
+CdSensor *
+cd_sensor_client_get_by_id (CdSensorClient *sensor_client,
+			    const gchar *sensor_id)
+{
+	CdSensorClientPrivate *priv = sensor_client->priv;
+	CdSensor *sensor = NULL;
+	CdSensor *sensor_tmp;
+	guint i;
+
+	for (i = 0; i < priv->array_sensors->len; i++) {
+		sensor_tmp = g_ptr_array_index (priv->array_sensors, i);
+		if (g_strcmp0 (cd_sensor_get_id (sensor_tmp), sensor_id) == 0) {
+			sensor = g_object_ref (sensor_tmp);
+			break;
+		}
+	}
+	return sensor;
+}
 
 /**
  * cd_sensor_client_add:
@@ -92,6 +115,9 @@ cd_sensor_client_add (CdSensorClient *sensor_client,
 		goto out;
 	}
 
+	/* set the index */
+	cd_sensor_set_index (sensor, sensor_client->priv->idx);
+
 	/* load the sensor */
 	ret = cd_sensor_load (sensor, &error);
 	if (!ret) {
@@ -104,6 +130,7 @@ cd_sensor_client_add (CdSensorClient *sensor_client,
 	/* signal the addition */
 	g_debug ("emit: added");
 	g_signal_emit (sensor_client, signals[SIGNAL_SENSOR_ADDED], 0, sensor);
+	sensor_client->priv->idx++;
 
 	/* keep track so we can remove with the same device */
 	g_ptr_array_add (sensor_client->priv->array_sensors, g_object_ref (sensor));
@@ -122,7 +149,7 @@ cd_sensor_client_remove (CdSensorClient *sensor_client,
 {
 	CdSensor *sensor;
 	const gchar *device_file;
-	const gchar *id;
+	const gchar *device_path;
 	gboolean ret;
 	guint i;
 
@@ -137,12 +164,12 @@ cd_sensor_client_remove (CdSensorClient *sensor_client,
 		goto out;
 
 	/* get data */
-	g_debug ("removing color management device: %s",
-		 g_udev_device_get_sysfs_path (device));
-	id = g_udev_device_get_property (device, "COLORD_SENSOR_KIND");
-	for (i=0; i<sensor_client->priv->array_sensors->len; i++) {
+	device_path = g_udev_device_get_sysfs_path (device);
+	g_debug ("removing color management device: %s [%s]",
+		 device_path, device_file);
+	for (i = 0; i < sensor_client->priv->array_sensors->len; i++) {
 		sensor = g_ptr_array_index (sensor_client->priv->array_sensors, i);
-		if (g_strcmp0 (cd_sensor_get_id (sensor), id) == 0) {
+		if (g_strcmp0 (cd_sensor_get_device_path (sensor), device_path) == 0) {
 			g_debug ("emit: removed");
 			g_signal_emit (sensor_client, signals[SIGNAL_SENSOR_REMOVED], 0, sensor);
 			g_ptr_array_remove_index_fast (sensor_client->priv->array_sensors, i);

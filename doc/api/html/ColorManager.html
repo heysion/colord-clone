@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>org.freedesktop.ColorManager</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
 <link rel="home" href="index.html" title="colord Reference Manual">
 <link rel="up" href="ref-dbus.html" title="D-Bus API Reference">
 <link rel="prev" href="ref-dbus.html" title="D-Bus API Reference">
@@ -43,56 +43,61 @@
 </tr></table></div>
 <div class="refsynopsisdiv">
 <h2>Methods</h2>
-<pre class="synopsis"><a class="link" href="ColorManager.html#ColorManager.GetDevices">GetDevices</a>            (out 'ao'    devices)
-<a class="link" href="ColorManager.html#ColorManager.GetDevicesByKind">GetDevicesByKind</a>      (in  's'     kind,
-                       out 'ao'    devices)
-<a class="link" href="ColorManager.html#ColorManager.FindDeviceById">FindDeviceById</a>        (in  's'     device_id,
-                       out 'o'     object_path)
-<a class="link" href="ColorManager.html#ColorManager.FindDeviceByProperty">FindDeviceByProperty</a>  (in  's'     key,
-                       in  's'     value,
-                       out 'o'     object_path)
-<a class="link" href="ColorManager.html#ColorManager.FindProfileById">FindProfileById</a>       (in  's'     profile_id,
-                       out 'o'     object_path)
-<a class="link" href="ColorManager.html#ColorManager.FindProfileByFilename">FindProfileByFilename</a> (in  's'     filename,
-                       out 'o'     object_path)
-<a class="link" href="ColorManager.html#ColorManager.GetStandardSpace">GetStandardSpace</a>      (in  's'     standard-space,
-                       out 'o'     object_path)
-<a class="link" href="ColorManager.html#ColorManager.GetProfiles">GetProfiles</a>           (out 'ao'    devices)
-<a class="link" href="ColorManager.html#ColorManager.GetSensors">GetSensors</a>            (out 'ao'    devices)
-<a class="link" href="ColorManager.html#ColorManager.GetProfilesByKind">GetProfilesByKind</a>     (in  's'     kind,
-                       out 'ao'    devices)
-<a class="link" href="ColorManager.html#ColorManager.CreateProfileWithFd">CreateProfileWithFd</a>   (in  's'     profile_id,
-                       in  's'     scope,
-                       in  'h'     handle,
-                       in  'a{ss}' properties,
-                       out 'o'     object_path)
-<a class="link" href="ColorManager.html#ColorManager.CreateProfile">CreateProfile</a>         (in  's'     profile_id,
-                       in  's'     scope,
-                       in  'a{ss}' properties,
-                       out 'o'     object_path)
-<a class="link" href="ColorManager.html#ColorManager.CreateDevice">CreateDevice</a>          (in  's'     device_id,
-                       in  's'     scope,
-                       in  'a{ss}' properties,
-                       out 'o'     object_path)
-<a class="link" href="ColorManager.html#ColorManager.DeleteDevice">DeleteDevice</a>          (in  'o'     object_path)
-<a class="link" href="ColorManager.html#ColorManager.DeleteProfile">DeleteProfile</a>         (in  'o'     object_path)
+<pre class="synopsis"><a class="link" href="ColorManager.html#ColorManager.GetDevices">GetDevices</a>(out'ao'devices)
+<a class="link" href="ColorManager.html#ColorManager.GetDevicesByKind">GetDevicesByKind</a>(in's'kind,
+out'ao'devices)
+<a class="link" href="ColorManager.html#ColorManager.FindDeviceById">FindDeviceById</a>(in's'device_id,
+out'o'object_path)
+<a class="link" href="ColorManager.html#ColorManager.FindSensorById">FindSensorById</a>(in's'sensor_id,
+out'o'object_path)
+<a class="link" href="ColorManager.html#ColorManager.FindDeviceByProperty">FindDeviceByProperty</a>(in's'key,
+in's'value,
+out'o'object_path)
+<a class="link" href="ColorManager.html#ColorManager.FindProfileById">FindProfileById</a>(in's'profile_id,
+out'o'object_path)
+<a class="link" href="ColorManager.html#ColorManager.FindProfileByProperty">FindProfileByProperty</a>(in's'key,
+in's'value,
+out'o'object_path)
+<a class="link" href="ColorManager.html#ColorManager.FindProfileByFilename">FindProfileByFilename</a>(in's'filename,
+out'o'object_path)
+<a class="link" href="ColorManager.html#ColorManager.GetStandardSpace">GetStandardSpace</a>(in's'standard-space,
+out'o'object_path)
+<a class="link" href="ColorManager.html#ColorManager.GetProfiles">GetProfiles</a>(out'ao'devices)
+<a class="link" href="ColorManager.html#ColorManager.GetSensors">GetSensors</a>(out'ao'devices)
+<a class="link" href="ColorManager.html#ColorManager.GetProfilesByKind">GetProfilesByKind</a>(in's'kind,
+out'ao'devices)
+<a class="link" href="ColorManager.html#ColorManager.CreateProfileWithFd">CreateProfileWithFd</a>(in's'profile_id,
+in's'scope,
+in'h'handle,
+in'a{ss}'properties,
+out'o'object_path)
+<a class="link" href="ColorManager.html#ColorManager.CreateProfile">CreateProfile</a>(in's'profile_id,
+in's'scope,
+in'a{ss}'properties,
+out'o'object_path)
+<a class="link" href="ColorManager.html#ColorManager.CreateDevice">CreateDevice</a>(in's'device_id,
+in's'scope,
+in'a{ss}'properties,
+out'o'object_path)
+<a class="link" href="ColorManager.html#ColorManager.DeleteDevice">DeleteDevice</a>(in'o'object_path)
+<a class="link" href="ColorManager.html#ColorManager.DeleteProfile">DeleteProfile</a>(in'o'object_path)
 </pre>
 </div>
 <div class="refsect1">
-<a name="id452942"></a><h2>Signals</h2>
-<pre class="synopsis"><a class="link" href="ColorManager.html#ColorManager::Changed">Changed</a>        ()
-<a class="link" href="ColorManager.html#ColorManager::DeviceAdded">DeviceAdded</a>    ('o' object_path)
-<a class="link" href="ColorManager.html#ColorManager::DeviceRemoved">DeviceRemoved</a>  ('o' object_path)
-<a class="link" href="ColorManager.html#ColorManager::DeviceChanged">DeviceChanged</a>  ('o' object_path)
-<a class="link" href="ColorManager.html#ColorManager::ProfileAdded">ProfileAdded</a>   ('o' object_path)
-<a class="link" href="ColorManager.html#ColorManager::ProfileRemoved">ProfileRemoved</a> ('o' object_path)
-<a class="link" href="ColorManager.html#ColorManager::SensorAdded">SensorAdded</a>    ('o' object_path)
-<a class="link" href="ColorManager.html#ColorManager::SensorRemoved">SensorRemoved</a>  ('o' object_path)
-<a class="link" href="ColorManager.html#ColorManager::ProfileChanged">ProfileChanged</a> ('o' object_path)
+<a name="idp7509808"></a><h2>Signals</h2>
+<pre class="synopsis"><a class="link" href="ColorManager.html#ColorManager::Changed">Changed</a>()
+<a class="link" href="ColorManager.html#ColorManager::DeviceAdded">DeviceAdded</a>('o'object_path)
+<a class="link" href="ColorManager.html#ColorManager::DeviceRemoved">DeviceRemoved</a>('o'object_path)
+<a class="link" href="ColorManager.html#ColorManager::DeviceChanged">DeviceChanged</a>('o'object_path)
+<a class="link" href="ColorManager.html#ColorManager::ProfileAdded">ProfileAdded</a>('o'object_path)
+<a class="link" href="ColorManager.html#ColorManager::ProfileRemoved">ProfileRemoved</a>('o'object_path)
+<a class="link" href="ColorManager.html#ColorManager::SensorAdded">SensorAdded</a>('o'object_path)
+<a class="link" href="ColorManager.html#ColorManager::SensorRemoved">SensorRemoved</a>('o'object_path)
+<a class="link" href="ColorManager.html#ColorManager::ProfileChanged">ProfileChanged</a>('o'object_path)
 </pre>
 </div>
 <div class="refsect1">
-<a name="id452542"></a><h2>Implemented Interfaces</h2>
+<a name="idp6256352"></a><h2>Implemented Interfaces</h2>
 <p>
     Objects implementing org.freedesktop.ColorManager also implements
     org.freedesktop.DBus.Introspectable,
@@ -100,12 +105,12 @@
     </p>
 </div>
 <div class="refsect1">
-<a name="id452559"></a><h2>Properties</h2>
-<pre class="synopsis"><a class="link" href="ColorManager.html#ColorManager:DaemonVersion">'DaemonVersion'</a> read      's'
+<a name="idp6258384"></a><h2>Properties</h2>
+<pre class="synopsis"><a class="link" href="ColorManager.html#ColorManager:DaemonVersion">'DaemonVersion'</a>read's'
 </pre>
 </div>
 <div class="refsect1">
-<a name="id452582"></a><h2>Description</h2>
+<a name="idp6261120"></a><h2>Description</h2>
 <p>
       
         </p>
@@ -117,17 +122,20 @@
     </p>
 </div>
 <div class="refsect1">
-<a name="id458477"></a><h2>Details</h2>
+<a name="idp6050352"></a><h2>Details</h2>
 <div class="refsect2">
-<a name="id458484"></a><h3>
+<a name="idp6051312"></a><h3>
 <a name="ColorManager.GetDevices"></a>GetDevices ()</h3>
-<pre class="programlisting">GetDevices (out 'ao' devices)</pre>
+<pre class="programlisting">GetDevices (out'ao'devices)</pre>
 </div>
 <p>
             Gets a list of all the devices which have assigned color profiles.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>devices</code></em>:</span></p></td>
 <td>
@@ -139,16 +147,19 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id458536"></a><h3>
+<a name="idp61472"></a><h3>
 <a name="ColorManager.GetDevicesByKind"></a>GetDevicesByKind ()</h3>
-<pre class="programlisting">GetDevicesByKind (in  's'  kind,
-                  out 'ao' devices)</pre>
+<pre class="programlisting">GetDevicesByKind (in's'kind,
+out'ao'devices)</pre>
 </div>
 <p>
             Gets a list of all the devices which have assigned color profiles.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>kind</code></em>:</span></p></td>
@@ -171,10 +182,10 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id457883"></a><h3>
+<a name="idp72528"></a><h3>
 <a name="ColorManager.FindDeviceById"></a>FindDeviceById ()</h3>
-<pre class="programlisting">FindDeviceById (in  's' device_id,
-                out 'o' object_path)</pre>
+<pre class="programlisting">FindDeviceById (in's'device_id,
+out'o'object_path)</pre>
 </div>
 <p>
             Gets a device path for the device ID.
@@ -183,8 +194,11 @@
             For instance, a device ID of "cups$34:dev' would have a object
             path of "/org/freedesktop/ColorManager/cups_34_dev".
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>device_id</code></em>:</span></p></td>
@@ -206,17 +220,54 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id446094"></a><h3>
+<a name="idp5397216"></a><h3>
+<a name="ColorManager.FindSensorById"></a>FindSensorById ()</h3>
+<pre class="programlisting">FindSensorById (in's'sensor_id,
+out'o'object_path)</pre>
+</div>
+<p>
+            Gets a sensor path for the sensor ID.
+          </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>sensor_id</code></em>:</span></p></td>
+<td>
+            <p>
+              A sensor ID.
+            </p>
+          </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object_path</code></em>:</span></p></td>
+<td>
+            <p>
+              A sensor path.
+            </p>
+          </td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<div class="refsect2">
+<a name="idp5404544"></a><h3>
 <a name="ColorManager.FindDeviceByProperty"></a>FindDeviceByProperty ()</h3>
-<pre class="programlisting">FindDeviceByProperty (in  's' key,
-                      in  's' value,
-                      out 'o' object_path)</pre>
+<pre class="programlisting">FindDeviceByProperty (in's'key,
+in's'value,
+out'o'object_path)</pre>
 </div>
 <p>
             Gets a device path for the device with the specified property.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>key</code></em>:</span></p></td>
@@ -246,16 +297,19 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id446183"></a><h3>
+<a name="idp5415168"></a><h3>
 <a name="ColorManager.FindProfileById"></a>FindProfileById ()</h3>
-<pre class="programlisting">FindProfileById (in  's' profile_id,
-                 out 'o' object_path)</pre>
+<pre class="programlisting">FindProfileById (in's'profile_id,
+out'o'object_path)</pre>
 </div>
 <p>
             Gets a profile path for the profile ID.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile_id</code></em>:</span></p></td>
@@ -277,16 +331,62 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id446244"></a><h3>
+<a name="idp5422544"></a><h3>
+<a name="ColorManager.FindProfileByProperty"></a>FindProfileByProperty ()</h3>
+<pre class="programlisting">FindProfileByProperty (in's'key,
+in's'value,
+out'o'object_path)</pre>
+</div>
+<p>
+            Gets a profile path for the profile with the specified property.
+          </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>key</code></em>:</span></p></td>
+<td>
+            <p>
+              A property key, e.g. <code class="literal">FILE_checksum</code>.
+            </p>
+          </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>value</code></em>:</span></p></td>
+<td>
+            <p>
+              A property value, e.g. <code class="literal">5b3855e8630c9d8a48177cc70680da93</code>.
+            </p>
+          </td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object_path</code></em>:</span></p></td>
+<td>
+            <p>
+              A profile path.
+            </p>
+          </td>
+</tr>
+</tbody>
+</table></div>
+<hr>
+<div class="refsect2">
+<a name="idp5433312"></a><h3>
 <a name="ColorManager.FindProfileByFilename"></a>FindProfileByFilename ()</h3>
-<pre class="programlisting">FindProfileByFilename (in  's' filename,
-                       out 'o' object_path)</pre>
+<pre class="programlisting">FindProfileByFilename (in's'filename,
+out'o'object_path)</pre>
 </div>
 <p>
             Gets a profile path for the profile filename.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>filename</code></em>:</span></p></td>
@@ -308,10 +408,10 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id446305"></a><h3>
+<a name="idp5440736"></a><h3>
 <a name="ColorManager.GetStandardSpace"></a>GetStandardSpace ()</h3>
-<pre class="programlisting">GetStandardSpace (in  's' standard-space,
-                  out 'o' object_path)</pre>
+<pre class="programlisting">GetStandardSpace (in's'standard-space,
+out'o'object_path)</pre>
 </div>
 <p>
             Gets a profile path for a defined profile space.
@@ -324,8 +424,11 @@
             NOTE: only system wide profiles are able to define
             themselves as standard spaces.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>standard-space</code></em>:</span></p></td>
@@ -348,15 +451,18 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id446397"></a><h3>
+<a name="idp5451808"></a><h3>
 <a name="ColorManager.GetProfiles"></a>GetProfiles ()</h3>
-<pre class="programlisting">GetProfiles (out 'ao' devices)</pre>
+<pre class="programlisting">GetProfiles (out'ao'devices)</pre>
 </div>
 <p>
             Gets a list of all the profiles recognised by the system.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>devices</code></em>:</span></p></td>
 <td>
@@ -368,15 +474,18 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id446448"></a><h3>
+<a name="idp5457984"></a><h3>
 <a name="ColorManager.GetSensors"></a>GetSensors ()</h3>
-<pre class="programlisting">GetSensors (out 'ao' devices)</pre>
+<pre class="programlisting">GetSensors (out'ao'devices)</pre>
 </div>
 <p>
             Gets a list of all the sensors recognised by the system.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>devices</code></em>:</span></p></td>
 <td>
@@ -388,16 +497,19 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id446500"></a><h3>
+<a name="idp5464128"></a><h3>
 <a name="ColorManager.GetProfilesByKind"></a>GetProfilesByKind ()</h3>
-<pre class="programlisting">GetProfilesByKind (in  's'  kind,
-                   out 'ao' devices)</pre>
+<pre class="programlisting">GetProfilesByKind (in's'kind,
+out'ao'devices)</pre>
 </div>
 <p>
             Gets a list of all the profiles of a specified type.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>kind</code></em>:</span></p></td>
@@ -420,13 +532,13 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id446579"></a><h3>
+<a name="idp5473632"></a><h3>
 <a name="ColorManager.CreateProfileWithFd"></a>CreateProfileWithFd ()</h3>
-<pre class="programlisting">CreateProfileWithFd (in  's'     profile_id,
-                     in  's'     scope,
-                     in  'h'     handle,
-                     in  'a{ss}' properties,
-                     out 'o'     object_path)</pre>
+<pre class="programlisting">CreateProfileWithFd (in's'profile_id,
+in's'scope,
+in'h'handle,
+in'a{ss}'properties,
+out'o'object_path)</pre>
 </div>
 <p>
             Creates a profile.
@@ -449,8 +561,11 @@
             which allows the daemon to read files inside the users
             home directory in a SELinux environment.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile_id</code></em>:</span></p></td>
@@ -511,12 +626,12 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id446737"></a><h3>
+<a name="idp5492352"></a><h3>
 <a name="ColorManager.CreateProfile"></a>CreateProfile ()</h3>
-<pre class="programlisting">CreateProfile (in  's'     profile_id,
-               in  's'     scope,
-               in  'a{ss}' properties,
-               out 'o'     object_path)</pre>
+<pre class="programlisting">CreateProfile (in's'profile_id,
+in's'scope,
+in'a{ss}'properties,
+out'o'object_path)</pre>
 </div>
 <p>
             Creates a profile without using a file descriptor.
@@ -524,8 +639,11 @@
             daemon may not be running as root and have read access
             to profiles in the users home directory.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>profile_id</code></em>:</span></p></td>
@@ -565,12 +683,12 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id446835"></a><h3>
+<a name="idp5503840"></a><h3>
 <a name="ColorManager.CreateDevice"></a>CreateDevice ()</h3>
-<pre class="programlisting">CreateDevice (in  's'     device_id,
-              in  's'     scope,
-              in  'a{ss}' properties,
-              out 'o'     object_path)</pre>
+<pre class="programlisting">CreateDevice (in's'device_id,
+in's'scope,
+in'a{ss}'properties,
+out'o'object_path)</pre>
 </div>
 <p>
             Creates a device.
@@ -583,8 +701,11 @@
             doing <code class="literal">RemoveProfile</code> on the relevant
             device object.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>device_id</code></em>:</span></p></td>
@@ -635,15 +756,18 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id446964"></a><h3>
+<a name="idp5518944"></a><h3>
 <a name="ColorManager.DeleteDevice"></a>DeleteDevice ()</h3>
-<pre class="programlisting">DeleteDevice (in  'o' object_path)</pre>
+<pre class="programlisting">DeleteDevice (in'o'object_path)</pre>
 </div>
 <p>
             Deletes a device.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>object_path</code></em>:</span></p></td>
 <td>
@@ -655,15 +779,18 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id447010"></a><h3>
+<a name="idp5524432"></a><h3>
 <a name="ColorManager.DeleteProfile"></a>DeleteProfile ()</h3>
-<pre class="programlisting">DeleteProfile (in  'o' object_path)</pre>
+<pre class="programlisting">DeleteProfile (in'o'object_path)</pre>
 </div>
 <p>
             Deletes a profile.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>object_path</code></em>:</span></p></td>
 <td>
@@ -675,9 +802,9 @@
 </table></div>
 </div>
 <div class="refsect1">
-<a name="id447057"></a><h2>Signal Details</h2>
+<a name="idp5530080"></a><h2>Signal Details</h2>
 <div class="refsect2">
-<a name="id447065"></a><h3>
+<a name="idp5531040"></a><h3>
 <a name="ColorManager::Changed"></a>The Changed signal</h3>
 <pre class="programlisting">Changed ()</pre>
 </div>
@@ -685,21 +812,27 @@
             Some value on the interface or the number of devices or
             profiles has changed.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody></tbody>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id447096"></a><h3>
+<a name="idp5534800"></a><h3>
 <a name="ColorManager::DeviceAdded"></a>The DeviceAdded signal</h3>
-<pre class="programlisting">DeviceAdded ('o' object_path)</pre>
+<pre class="programlisting">DeviceAdded ('o'object_path)</pre>
 </div>
 <p>
             A device has been added.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>object_path</code></em>:</span></p></td>
 <td>
@@ -711,15 +844,18 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id447139"></a><h3>
+<a name="idp5539920"></a><h3>
 <a name="ColorManager::DeviceRemoved"></a>The DeviceRemoved signal</h3>
-<pre class="programlisting">DeviceRemoved ('o' object_path)</pre>
+<pre class="programlisting">DeviceRemoved ('o'object_path)</pre>
 </div>
 <p>
             A device has been removed.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>object_path</code></em>:</span></p></td>
 <td>
@@ -731,15 +867,18 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id447182"></a><h3>
+<a name="idp5545056"></a><h3>
 <a name="ColorManager::DeviceChanged"></a>The DeviceChanged signal</h3>
-<pre class="programlisting">DeviceChanged ('o' object_path)</pre>
+<pre class="programlisting">DeviceChanged ('o'object_path)</pre>
 </div>
 <p>
             A device has changed.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>object_path</code></em>:</span></p></td>
 <td>
@@ -751,15 +890,18 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id447224"></a><h3>
+<a name="idp5550192"></a><h3>
 <a name="ColorManager::ProfileAdded"></a>The ProfileAdded signal</h3>
-<pre class="programlisting">ProfileAdded ('o' object_path)</pre>
+<pre class="programlisting">ProfileAdded ('o'object_path)</pre>
 </div>
 <p>
             A profile has been added.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>object_path</code></em>:</span></p></td>
 <td>
@@ -771,15 +913,18 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id447267"></a><h3>
+<a name="idp5555312"></a><h3>
 <a name="ColorManager::ProfileRemoved"></a>The ProfileRemoved signal</h3>
-<pre class="programlisting">ProfileRemoved ('o' object_path)</pre>
+<pre class="programlisting">ProfileRemoved ('o'object_path)</pre>
 </div>
 <p>
             A profile has been removed.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>object_path</code></em>:</span></p></td>
 <td>
@@ -791,15 +936,18 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id447310"></a><h3>
+<a name="idp5560448"></a><h3>
 <a name="ColorManager::SensorAdded"></a>The SensorAdded signal</h3>
-<pre class="programlisting">SensorAdded ('o' object_path)</pre>
+<pre class="programlisting">SensorAdded ('o'object_path)</pre>
 </div>
 <p>
             A sensor has been added.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>object_path</code></em>:</span></p></td>
 <td>
@@ -811,15 +959,18 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id447352"></a><h3>
+<a name="idp5565568"></a><h3>
 <a name="ColorManager::SensorRemoved"></a>The SensorRemoved signal</h3>
-<pre class="programlisting">SensorRemoved ('o' object_path)</pre>
+<pre class="programlisting">SensorRemoved ('o'object_path)</pre>
 </div>
 <p>
             A sensor has been removed.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>object_path</code></em>:</span></p></td>
 <td>
@@ -831,15 +982,18 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id447395"></a><h3>
+<a name="idp5570704"></a><h3>
 <a name="ColorManager::ProfileChanged"></a>The ProfileChanged signal</h3>
-<pre class="programlisting">ProfileChanged ('o' object_path)</pre>
+<pre class="programlisting">ProfileChanged ('o'object_path)</pre>
 </div>
 <p>
             A profile has been changed.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><em class="parameter"><code>object_path</code></em>:</span></p></td>
 <td>
@@ -851,18 +1005,21 @@
 </table></div>
 </div>
 <div class="refsect1">
-<a name="id447439"></a><h2>Property Details</h2>
+<a name="idp5576000"></a><h2>Property Details</h2>
 <div class="refsect2">
-<a name="id447447"></a><h3>
+<a name="idp5576960"></a><h3>
 <a name="ColorManager:DaemonVersion"></a>The "DaemonVersion" property</h3>
-<pre class="programlisting">'DaemonVersion'  read      's'
+<pre class="programlisting">'DaemonVersion'read's'
 </pre>
 </div>
 <p>
             The daemon version.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody></tbody>
 </table></div>
 </div>

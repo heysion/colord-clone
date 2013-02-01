@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>cd-sensor</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
 <link rel="home" href="index.html" title="colord Reference Manual">
 <link rel="up" href="libcolord.html" title="libcolord GObjects">
 <link rel="prev" href="colord-cd-profile.html" title="cd-profile">
@@ -39,7 +39,6 @@
 <a name="colord-cd-sensor.synopsis"></a><h2>Synopsis</h2>
 <pre class="synopsis">#define             <a class="link" href="colord-cd-sensor.html#CD-SENSOR-ERROR:CAPS" title="CD_SENSOR_ERROR">CD_SENSOR_ERROR</a>
 #define             <a class="link" href="colord-cd-sensor.html#CD-SENSOR-TYPE-ERROR:CAPS" title="CD_SENSOR_TYPE_ERROR">CD_SENSOR_TYPE_ERROR</a>
-enum                <a class="link" href="colord-cd-sensor.html#CdSensorError" title="enum CdSensorError">CdSensorError</a>;
 <span class="returnvalue">void</span>                (<a class="link" href="colord-cd-sensor.html#cd-sensor-reserved1" title="_cd_sensor_reserved1 ()">*_cd_sensor_reserved1</a>)             (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">void</span>                (<a class="link" href="colord-cd-sensor.html#cd-sensor-reserved2" title="_cd_sensor_reserved2 ()">*_cd_sensor_reserved2</a>)             (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">void</span>                (<a class="link" href="colord-cd-sensor.html#cd-sensor-reserved3" title="_cd_sensor_reserved3 ()">*_cd_sensor_reserved3</a>)             (<em class="parameter"><code><span class="type">void</span></code></em>);
@@ -61,6 +60,8 @@ enum                <a class="link" href="colord-cd-sensor.html#CdSensorError" t
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              <a class="link" href="colord-cd-sensor.html#cd-sensor-error-quark" title="cd_sensor_error_quark ()">cd_sensor_error_quark</a>               (<em class="parameter"><code><span class="type">void</span></code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="colord-cd-sensor.html#cd-sensor-get-caps" title="cd_sensor_get_caps ()">cd_sensor_get_caps</a>                  (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-sensor.html#cd-sensor-get-connected" title="cd_sensor_get_connected ()">cd_sensor_get_connected</a>             (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-sensor.html#cd-sensor-get-embedded" title="cd_sensor_get_embedded ()">cd_sensor_get_embedded</a>              (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-sensor.html#cd-sensor-get-id" title="cd_sensor_get_id ()">cd_sensor_get_id</a>                    (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
 <span class="returnvalue">CdSensorKind</span>        <a class="link" href="colord-cd-sensor.html#cd-sensor-get-kind" title="cd_sensor_get_kind ()">cd_sensor_get_kind</a>                  (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
 <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-sensor.html#cd-sensor-get-locked" title="cd_sensor_get_locked ()">cd_sensor_get_locked</a>                (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
 <span class="returnvalue">CdSensorCap</span>         <a class="link" href="colord-cd-sensor.html#cd-sensor-get-mode" title="cd_sensor_get_mode ()">cd_sensor_get_mode</a>                  (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
@@ -141,33 +142,6 @@ See also: <span class="type">CdClient</span>
 </div>
 <hr>
 <div class="refsect2">
-<a name="CdSensorError"></a><h3>enum CdSensorError</h3>
-<pre class="programlisting">typedef enum {
-	CD_SENSOR_ERROR_FAILED,
-	CD_SENSOR_ERROR_LAST
-} CdSensorError;
-</pre>
-<p>
-Errors that can be thrown
-</p>
-<div class="variablelist"><table border="0">
-<col align="left" valign="top">
-<tbody>
-<tr>
-<td><p><a name="CD-SENSOR-ERROR-FAILED:CAPS"></a><span class="term"><code class="literal">CD_SENSOR_ERROR_FAILED</code></span></p></td>
-<td>the transaction failed for an unknown reason
-</td>
-</tr>
-<tr>
-<td><p><a name="CD-SENSOR-ERROR-LAST:CAPS"></a><span class="term"><code class="literal">CD_SENSOR_ERROR_LAST</code></span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
-</table></div>
-</div>
-<hr>
-<div class="refsect2">
 <a name="cd-sensor-reserved1"></a><h3>_cd_sensor_reserved1 ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                (*_cd_sensor_reserved1)             (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>
@@ -239,8 +213,11 @@ Errors that can be thrown
 <p>
 Connects to the sensor.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
@@ -273,8 +250,11 @@ Connects to the sensor.
 <p>
 Gets the result from the asynchronous function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
@@ -307,8 +287,11 @@ Gets the result from the asynchronous function.
 <p>
 Tests two sensors for equality.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor1</code></em> :</span></p></td>
@@ -331,8 +314,11 @@ Tests two sensors for equality.
 <div class="refsect2">
 <a name="cd-sensor-error-quark"></a><h3>cd_sensor_error_quark ()</h3>
 <pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              cd_sensor_error_quark               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>An error quark.</td>
@@ -347,8 +333,11 @@ Tests two sensors for equality.
 <p>
 Returns the sensor metadata.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
@@ -356,7 +345,7 @@ Returns the sensor metadata.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="type">GHashTable</span></a>, free with <a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#g-hash-table-unref"><code class="function">g_hash_table_unref()</code></a>.</td>
+<td>The sensor capability bitfield.</td>
 </tr>
 </tbody>
 </table></div>
@@ -369,8 +358,11 @@ Returns the sensor metadata.
 <p>
 Gets if the sensor has been connected.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
@@ -387,13 +379,68 @@ Gets if the sensor has been connected.
 </div>
 <hr>
 <div class="refsect2">
+<a name="cd-sensor-get-embedded"></a><h3>cd_sensor_get_embedded ()</h3>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_sensor_get_embedded              (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
+<p>
+Returns if the sensor is embedded into the computer.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
+<td>a <span class="type">CdSensor</span> instance.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if embedded.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.1.26</p>
+</div>
+<hr>
+<div class="refsect2">
+<a name="cd-sensor-get-id"></a><h3>cd_sensor_get_id ()</h3>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_sensor_get_id                    (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
+<p>
+Gets the object ID for the sensor.
+</p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
+<td>a <span class="type">CdSensor</span> instance.</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>the object ID, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
+</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.1.26</p>
+</div>
+<hr>
+<div class="refsect2">
 <a name="cd-sensor-get-kind"></a><h3>cd_sensor_get_kind ()</h3>
 <pre class="programlisting"><span class="returnvalue">CdSensorKind</span>        cd_sensor_get_kind                  (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
 <p>
 Gets the sensor kind.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
@@ -415,8 +462,11 @@ Gets the sensor kind.
 <p>
 Returns if the sensor is locked.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
@@ -438,8 +488,11 @@ Returns if the sensor is locked.
 <p>
 Gets the sensor operating mode.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
@@ -461,8 +514,11 @@ Gets the sensor operating mode.
 <p>
 Gets the sensor model.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
@@ -483,8 +539,11 @@ Gets the sensor model.
 <p>
 Returns if the sensor has a native driver.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
@@ -506,8 +565,11 @@ Returns if the sensor has a native driver.
 <p>
 Gets the object path for the sensor.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
@@ -530,8 +592,11 @@ Gets the object path for the sensor.
 <p>
 Gets a specific sensor option.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
@@ -556,8 +621,11 @@ Gets a specific sensor option.
 <p>
 Gets any sensor options.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
@@ -565,7 +633,8 @@ Gets any sensor options.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A refcounted <a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="type">GHashTable</span></a> of (string, GVariant). <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+<td>A
+refcounted <a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="type">GHashTable</span></a> of (string, GVariant). <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> utf8 GVariant]</span>
 </td>
 </tr>
 </tbody>
@@ -583,8 +652,11 @@ Gets any sensor options.
 <p>
 Gets a color sample from a sensor
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
@@ -622,8 +694,11 @@ Gets a color sample from a sensor
 <p>
 Gets the result from the asynchronous function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
@@ -655,8 +730,11 @@ Gets the result from the asynchronous function.
 <p>
 Gets the sensor serial number.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
@@ -677,8 +755,11 @@ Gets the sensor serial number.
 <p>
 Gets the sensor state.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
@@ -700,8 +781,11 @@ Gets the sensor state.
 <p>
 Gets the sensor vendor.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
@@ -733,8 +817,11 @@ Gets the sensor vendor.
 <p>
 Locks the device so we can use it.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
@@ -767,8 +854,11 @@ Locks the device so we can use it.
 <p>
 Gets the result from the asynchronous function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
@@ -799,8 +889,11 @@ Gets the result from the asynchronous function.
 <p>
 Creates a new <span class="type">CdSensor</span> object.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody><tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>a new CdSensor object.</td>
@@ -815,8 +908,11 @@ Creates a new <span class="type">CdSensor</span> object.
 <p>
 Creates a new <span class="type">CdSensor</span> object with a known object path.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>object_path</code></em> :</span></p></td>
@@ -838,8 +934,11 @@ Creates a new <span class="type">CdSensor</span> object with a known object path
 <p>
 Sets the object path of the sensor.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
@@ -864,12 +963,20 @@ Sets the object path of the sensor.
 <p>
 Sets options on the sensor device.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
 <td>a <span class="type">CdSensor</span> instance.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>values</code></em> :</span></p></td>
+<td>the options. <span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> utf8 GVariant]</span>
+</td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
@@ -898,8 +1005,11 @@ Sets options on the sensor device.
 <p>
 Gets the result from the asynchronous function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
@@ -940,8 +1050,11 @@ Gets the result from the asynchronous function.
 <p>
 Unlocks the sensor for use by other programs.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
@@ -974,8 +1087,11 @@ Unlocks the sensor for use by other programs.
 <p>
 Gets the result from the asynchronous function.
 </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>

@@ -52,6 +52,7 @@ colord_profile_func (void)
 static void
 colord_device_func (void)
 {
+	CdDeviceDb *ddb;
 	CdDevice *device;
 	CdProfile *profile;
 	CdProfileArray *profile_array;
@@ -61,6 +62,15 @@ colord_device_func (void)
 	profile_array = cd_profile_array_new ();
 	device = cd_device_new ();
 	g_assert (device != NULL);
+
+	/* create device database */
+	ddb = cd_device_db_new ();
+	ret = cd_device_db_load (ddb, "/tmp/device.db", &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+	ret = cd_device_db_empty (ddb, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
 
 	cd_device_set_id (device, "dave");
 	g_assert_cmpstr (cd_device_get_id (device), ==, "dave");
@@ -84,7 +94,7 @@ colord_device_func (void)
 				     cd_profile_get_object_path (profile),
 				     0,
 				     &error);
-	g_assert_error (error, CD_MAIN_ERROR, CD_MAIN_ERROR_FAILED);
+	g_assert_error (error, CD_DEVICE_ERROR, CD_DEVICE_ERROR_PROFILE_ALREADY_ADDED);
 	g_assert (!ret);
 	g_clear_error (&error);
 
@@ -94,11 +104,12 @@ colord_device_func (void)
 				     "/dave",
 				     0,
 				     &error);
-	g_assert_error (error, CD_MAIN_ERROR, CD_MAIN_ERROR_FAILED);
+	g_assert_error (error, CD_DEVICE_ERROR, CD_DEVICE_ERROR_PROFILE_DOES_NOT_EXIST);
 	g_assert (!ret);
 	g_clear_error (&error);
 
 	g_object_unref (device);
+	g_object_unref (ddb);
 	g_object_unref (profile);
 	g_object_unref (profile_array);
 }
@@ -106,8 +117,20 @@ colord_device_func (void)
 static void
 colord_device_array_func (void)
 {
-	CdDevice *device;
 	CdDeviceArray *device_array;
+	CdDeviceDb *ddb;
+	CdDevice *device;
+	gboolean ret;
+	GError *error = NULL;
+
+	/* create device database */
+	ddb = cd_device_db_new ();
+	ret = cd_device_db_load (ddb, "/tmp/device.db", &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+	ret = cd_device_db_empty (ddb, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
 
 	device_array = cd_device_array_new ();
 	g_assert (device_array != NULL);
@@ -132,6 +155,7 @@ colord_device_array_func (void)
 	g_object_unref (device);
 
 	g_object_unref (device_array);
+	g_object_unref (ddb);
 }
 
 static void
@@ -254,7 +278,7 @@ cd_device_db_func (void)
 					   "device2",
 					   "xxx",
 					   &error);
-	g_assert_error (error, CD_MAIN_ERROR, CD_MAIN_ERROR_FAILED);
+	g_assert_error (error, CD_CLIENT_ERROR, CD_CLIENT_ERROR_INTERNAL);
 	g_assert (value == NULL);
 	g_clear_error (&error);
 	g_free (value);
@@ -295,7 +319,7 @@ cd_device_db_func (void)
 					   "device2",
 					   "kind",
 					   &error);
-	g_assert_error (error, CD_MAIN_ERROR, CD_MAIN_ERROR_FAILED);
+	g_assert_error (error, CD_CLIENT_ERROR, CD_CLIENT_ERROR_INTERNAL);
 	g_assert (value == NULL);
 	g_clear_error (&error);
 	g_free (value);

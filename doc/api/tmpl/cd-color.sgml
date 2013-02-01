@@ -56,24 +56,16 @@ cd-color
 </para>
 
 
-<!-- ##### FUNCTION cd_color_clear_xyz ##### -->
+<!-- ##### FUNCTION cd_color_get_blackbody_rgb ##### -->
 <para>
 
 </para>
 
-@dest: 
+@temp: 
+@result: 
 
 
-<!-- ##### FUNCTION cd_color_convert_rgb8_to_rgb ##### -->
-<para>
-
-</para>
-
-@src: 
-@dest: 
-
-
-<!-- ##### FUNCTION cd_color_convert_rgb_to_rgb8 ##### -->
+<!-- ##### FUNCTION cd_color_rgb8_to_rgb ##### -->
 <para>
 
 </para>
@@ -82,43 +74,7 @@ cd-color
 @dest: 
 
 
-<!-- ##### FUNCTION cd_color_convert_xyz_to_yxy ##### -->
-<para>
-
-</para>
-
-@src: 
-@dest: 
-
-
-<!-- ##### FUNCTION cd_color_convert_yxy_to_xyz ##### -->
-<para>
-
-</para>
-
-@src: 
-@dest: 
-
-
-<!-- ##### FUNCTION cd_color_copy_rgb ##### -->
-<para>
-
-</para>
-
-@src: 
-@dest: 
-
-
-<!-- ##### FUNCTION cd_color_copy_xyz ##### -->
-<para>
-
-</para>
-
-@src: 
-@dest: 
-
-
-<!-- ##### FUNCTION cd_color_copy_yxy ##### -->
+<!-- ##### FUNCTION cd_color_rgb_copy ##### -->
 <para>
 
 </para>
@@ -143,6 +99,17 @@ cd-color
 
 
 
+<!-- ##### FUNCTION cd_color_rgb_interpolate ##### -->
+<para>
+
+</para>
+
+@p1: 
+@p2: 
+@index: 
+@result: 
+
+
 <!-- ##### MACRO cd_color_rgb_new ##### -->
 <para>
 
@@ -150,7 +117,7 @@ cd-color
 
 
 
-<!-- ##### FUNCTION cd_color_set_rgb ##### -->
+<!-- ##### FUNCTION cd_color_rgb_set ##### -->
 <para>
 
 </para>
@@ -161,26 +128,30 @@ cd-color
 @B: 
 
 
-<!-- ##### FUNCTION cd_color_set_xyz ##### -->
+<!-- ##### FUNCTION cd_color_rgb_to_rgb8 ##### -->
+<para>
+
+</para>
+
+@src: 
+@dest: 
+
+
+<!-- ##### FUNCTION cd_color_xyz_clear ##### -->
 <para>
 
 </para>
 
 @dest: 
-@X: 
-@Y: 
-@Z: 
 
 
-<!-- ##### FUNCTION cd_color_set_yxy ##### -->
+<!-- ##### FUNCTION cd_color_xyz_copy ##### -->
 <para>
 
 </para>
 
+@src: 
 @dest: 
-@Y: 
-@x: 
-@y: 
 
 
 <!-- ##### FUNCTION cd_color_xyz_dup ##### -->
@@ -206,6 +177,35 @@ cd-color
 
 
 
+<!-- ##### FUNCTION cd_color_xyz_set ##### -->
+<para>
+
+</para>
+
+@dest: 
+@X: 
+@Y: 
+@Z: 
+
+
+<!-- ##### FUNCTION cd_color_xyz_to_yxy ##### -->
+<para>
+
+</para>
+
+@src: 
+@dest: 
+
+
+<!-- ##### FUNCTION cd_color_yxy_copy ##### -->
+<para>
+
+</para>
+
+@src: 
+@dest: 
+
+
 <!-- ##### FUNCTION cd_color_yxy_dup ##### -->
 <para>
 
@@ -227,5 +227,25 @@ cd-color
 
 </para>
 
+
+
+<!-- ##### FUNCTION cd_color_yxy_set ##### -->
+<para>
+
+</para>
+
+@dest: 
+@Y: 
+@x: 
+@y: 
+
+
+<!-- ##### FUNCTION cd_color_yxy_to_xyz ##### -->
+<para>
+
+</para>
+
+@src: 
+@dest: 
 
 

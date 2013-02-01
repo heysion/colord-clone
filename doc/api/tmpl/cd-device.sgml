@@ -34,14 +34,6 @@ cd-device
 
 
 
-<!-- ##### ENUM CdDeviceError ##### -->
-<para>
-
-</para>
-
-@CD_DEVICE_ERROR_FAILED: 
-@CD_DEVICE_ERROR_LAST: 
-
 <!-- ##### USER_FUNCTION _cd_device_reserved1 ##### -->
 <para>
 
@@ -199,6 +191,24 @@ cd-device
 
 
 <!-- ##### FUNCTION cd_device_get_default_profile ##### -->
+<para>
+
+</para>
+
+@device: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_device_get_embedded ##### -->
+<para>
+
+</para>
+
+@device: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_device_get_enabled ##### -->
 <para>
 
 </para>
@@ -371,6 +381,15 @@ cd-device
 @Returns: 
 
 
+<!-- ##### FUNCTION cd_device_get_seat ##### -->
+<para>
+
+</para>
+
+@device: 
+@Returns: 
+
+
 <!-- ##### FUNCTION cd_device_get_serial ##### -->
 <para>
 
@@ -487,6 +506,29 @@ cd-device
 
 
 <!-- ##### FUNCTION cd_device_remove_profile_finish ##### -->
+<para>
+
+</para>
+
+@device: 
+@res: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_device_set_enabled ##### -->
+<para>
+
+</para>
+
+@device: 
+@enabled: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION cd_device_set_enabled_finish ##### -->
 <para>
 
 </para>

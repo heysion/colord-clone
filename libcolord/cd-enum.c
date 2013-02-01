@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*-
  *
- * Copyright (C) 2010 Richard Hughes <richard@hughsie.com>
+ * Copyright (C) 2010-2012 Richard Hughes <richard@hughsie.com>
  *
  * Licensed under the GNU Lesser General Public License Version 2.1
  *
@@ -337,14 +337,16 @@ cd_sensor_kind_to_string (CdSensorKind sensor_kind)
 		return "dummy";
 	if (sensor_kind == CD_SENSOR_KIND_HUEY)
 		return "huey";
-	if (sensor_kind == CD_SENSOR_KIND_COLOR_MUNKI)
-		return "color-munki";
+	if (sensor_kind == CD_SENSOR_KIND_COLOR_MUNKI_PHOTO)
+		return "color-munki-photo";
 	if (sensor_kind == CD_SENSOR_KIND_SPYDER)
 		return "spyder";
 	if (sensor_kind == CD_SENSOR_KIND_SPYDER2)
 		return "spyder2";
 	if (sensor_kind == CD_SENSOR_KIND_SPYDER3)
 		return "spyder3";
+	if (sensor_kind == CD_SENSOR_KIND_SPYDER4)
+		return "spyder4";
 	if (sensor_kind == CD_SENSOR_KIND_DTP20)
 		return "dtp20";
 	if (sensor_kind == CD_SENSOR_KIND_DTP22)
@@ -353,18 +355,28 @@ cd_sensor_kind_to_string (CdSensorKind sensor_kind)
 		return "dtp41";
 	if (sensor_kind == CD_SENSOR_KIND_DTP51)
 		return "dtp51";
+	if (sensor_kind == CD_SENSOR_KIND_DTP92)
+		return "dtp92";
 	if (sensor_kind == CD_SENSOR_KIND_DTP94)
 		return "dtp94";
 	if (sensor_kind == CD_SENSOR_KIND_SPECTRO_SCAN)
 		return "spectro-scan";
 	if (sensor_kind == CD_SENSOR_KIND_I1_PRO)
 		return "i1-pro";
+	if (sensor_kind == CD_SENSOR_KIND_I1_MONITOR)
+		return "i1-monitor";
 	if (sensor_kind == CD_SENSOR_KIND_COLORIMTRE_HCFR)
 		return "colorimtre-hcfr";
+	if (sensor_kind == CD_SENSOR_KIND_I1_DISPLAY1)
+		return "i1-display1";
+	if (sensor_kind == CD_SENSOR_KIND_I1_DISPLAY2)
+		return "i1-display2";
 	if (sensor_kind == CD_SENSOR_KIND_I1_DISPLAY3)
 		return "i1-display3";
 	if (sensor_kind == CD_SENSOR_KIND_COLORHUG)
 		return "colorhug";
+	if (sensor_kind == CD_SENSOR_KIND_COLORHUG_SPECTRO)
+		return "colorhug-spectro";
 	return "unknown";
 }
 
@@ -383,10 +395,17 @@ cd_sensor_kind_from_string (const gchar *sensor_kind)
 		return CD_SENSOR_KIND_DUMMY;
 	if (g_strcmp0 (sensor_kind, "huey") == 0)
 		return CD_SENSOR_KIND_HUEY;
-	if (g_strcmp0 (sensor_kind, "color-munki") == 0)
-		return CD_SENSOR_KIND_COLOR_MUNKI;
+	if (g_strcmp0 (sensor_kind, "color-munki") == 0 ||
+	    g_strcmp0 (sensor_kind, "color-munki-photo") == 0)
+		return CD_SENSOR_KIND_COLOR_MUNKI_PHOTO;
 	if (g_strcmp0 (sensor_kind, "spyder") == 0)
 		return CD_SENSOR_KIND_SPYDER;
+	if (g_strcmp0 (sensor_kind, "spyder2") == 0)
+		return CD_SENSOR_KIND_SPYDER2;
+	if (g_strcmp0 (sensor_kind, "spyder3") == 0)
+		return CD_SENSOR_KIND_SPYDER3;
+	if (g_strcmp0 (sensor_kind, "spyder4") == 0)
+		return CD_SENSOR_KIND_SPYDER4;
 	if (g_strcmp0 (sensor_kind, "dtp20") == 0)
 		return CD_SENSOR_KIND_DTP20;
 	if (g_strcmp0 (sensor_kind, "dtp22") == 0)
@@ -407,6 +426,10 @@ cd_sensor_kind_from_string (const gchar *sensor_kind)
 		return CD_SENSOR_KIND_I1_DISPLAY3;
 	if (g_strcmp0 (sensor_kind, "colorhug") == 0)
 		return CD_SENSOR_KIND_COLORHUG;
+	if (g_strcmp0 (sensor_kind, "colorhug-spectro") == 0)
+		return CD_SENSOR_KIND_COLORHUG_SPECTRO;
+	if (g_strcmp0 (sensor_kind, "color-munki-smile") == 0)
+		return CD_SENSOR_KIND_COLOR_MUNKI_SMILE;
 	return CD_SENSOR_KIND_UNKNOWN;
 }
 
@@ -553,6 +576,148 @@ cd_standard_space_from_string (const gchar *standard_space)
 }
 
 /**
+ * cd_profile_warning_to_string:
+ *
+ * Converts a #CdProfileWarning to a string.
+ *
+ * Return value: identifier string
+ *
+ * Since: 0.1.25
+ **/
+const gchar *
+cd_profile_warning_to_string (CdProfileWarning kind_enum)
+{
+	const gchar *kind = NULL;
+	switch (kind_enum) {
+	case CD_PROFILE_WARNING_NONE:
+		kind = "none";
+		break;
+	case CD_PROFILE_WARNING_DESCRIPTION_MISSING:
+		kind = "description-missing";
+		break;
+	case CD_PROFILE_WARNING_COPYRIGHT_MISSING:
+		kind = "copyright-missing";
+		break;
+	case CD_PROFILE_WARNING_VCGT_NON_MONOTONIC:
+		kind = "vcgt-non-monotonic";
+		break;
+	case CD_PROFILE_WARNING_SCUM_DOT:
+		kind = "scum-dot";
+		break;
+	case CD_PROFILE_WARNING_GRAY_AXIS_INVALID:
+		kind = "gray-axis-invalid";
+		break;
+	case CD_PROFILE_WARNING_GRAY_AXIS_NON_MONOTONIC:
+		kind = "gray-axis-non-monotonic";
+		break;
+	case CD_PROFILE_WARNING_PRIMARIES_INVALID:
+		kind = "primaries-invalid";
+		break;
+	case CD_PROFILE_WARNING_PRIMARIES_NON_ADDITIVE:
+		kind = "primaries-non-additive";
+		break;
+	case CD_PROFILE_WARNING_PRIMARIES_UNLIKELY:
+		kind = "primaries-unlikely";
+		break;
+	case CD_PROFILE_WARNING_WHITEPOINT_INVALID:
+		kind = "whitepoint-invalid";
+		break;
+	default:
+		kind = "unknown";
+		break;
+	}
+	return kind;
+}
+
+/**
+ * cd_profile_warning_from_string:
+ *
+ * Converts a string to a #CdProfileWarning.
+ *
+ * Return value: enumerated value
+ *
+ * Since: 0.1.25
+ **/
+CdProfileWarning
+cd_profile_warning_from_string (const gchar *type)
+{
+	if (g_strcmp0 (type, "none") == 0)
+		return CD_PROFILE_WARNING_NONE;
+	if (g_strcmp0 (type, "description-missing") == 0)
+		return CD_PROFILE_WARNING_DESCRIPTION_MISSING;
+	if (g_strcmp0 (type, "copyright-missing") == 0)
+		return CD_PROFILE_WARNING_COPYRIGHT_MISSING;
+	if (g_strcmp0 (type, "vcgt-non-monotonic") == 0)
+		return CD_PROFILE_WARNING_VCGT_NON_MONOTONIC;
+	if (g_strcmp0 (type, "scum-dot") == 0)
+		return CD_PROFILE_WARNING_SCUM_DOT;
+	if (g_strcmp0 (type, "gray-axis-invalid") == 0)
+		return CD_PROFILE_WARNING_GRAY_AXIS_INVALID;
+	if (g_strcmp0 (type, "gray-axis-non-monotonic") == 0)
+		return CD_PROFILE_WARNING_GRAY_AXIS_NON_MONOTONIC;
+	if (g_strcmp0 (type, "primaries-invalid") == 0)
+		return CD_PROFILE_WARNING_PRIMARIES_INVALID;
+	if (g_strcmp0 (type, "primaries-non-additive") == 0)
+		return CD_PROFILE_WARNING_PRIMARIES_NON_ADDITIVE;
+	if (g_strcmp0 (type, "primaries-unlikely") == 0)
+		return CD_PROFILE_WARNING_PRIMARIES_UNLIKELY;
+	if (g_strcmp0 (type, "whitepoint-invalid") == 0)
+		return CD_PROFILE_WARNING_WHITEPOINT_INVALID;
+	return CD_PROFILE_WARNING_LAST;
+}
+
+/**
+ * cd_profile_quality_to_string:
+ *
+ * Converts a #CdProfileQuality to a string.
+ *
+ * Return value: identifier string
+ *
+ * Since: 0.1.27
+ **/
+const gchar *
+cd_profile_quality_to_string (CdProfileQuality quality_enum)
+{
+	const gchar *kind = NULL;
+	switch (quality_enum) {
+	case CD_PROFILE_QUALITY_LOW:
+		kind = "low";
+		break;
+	case CD_PROFILE_QUALITY_MEDIUM:
+		kind = "medium";
+		break;
+	case CD_PROFILE_QUALITY_HIGH:
+		kind = "high";
+		break;
+	default:
+		kind = "unknown";
+		break;
+	}
+	return kind;
+}
+
+/**
+ * cd_profile_quality_from_string:
+ *
+ * Converts a string to a #CdProfileQuality.
+ *
+ * Return value: enumerated value
+ *
+ * Since: 0.1.27
+ **/
+CdProfileQuality
+cd_profile_quality_from_string (const gchar *quality)
+{
+	if (g_strcmp0 (quality, "low") == 0)
+		return CD_PROFILE_QUALITY_LOW;
+	if (g_strcmp0 (quality, "medium") == 0)
+		return CD_PROFILE_QUALITY_MEDIUM;
+	if (g_strcmp0 (quality, "high") == 0)
+		return CD_PROFILE_QUALITY_HIGH;
+	return CD_PROFILE_QUALITY_LAST;
+}
+
+/**
  * cd_device_kind_to_profile_kind:
  * @device_kind: A #CdDeviceKind
  *
@@ -581,4 +746,256 @@ cd_device_kind_to_profile_kind (CdDeviceKind device_kind)
 		profile_kind = CD_PROFILE_KIND_UNKNOWN;
 	}
 	return profile_kind;
+}
+
+#define	CD_DBUS_INTERFACE_SENSOR	"org.freedesktop.ColorManager.Sensor"
+
+/**
+ * cd_sensor_error_to_string:
+ *
+ * Converts a #CdSensorError to a string.
+ *
+ * Return value: identifier string
+ *
+ * Since: 0.1.26
+ **/
+const gchar *
+cd_sensor_error_to_string (CdSensorError error_enum)
+{
+	if (error_enum == CD_SENSOR_ERROR_NO_SUPPORT)
+		return CD_DBUS_INTERFACE_SENSOR ".NoSupport";
+	if (error_enum == CD_SENSOR_ERROR_NO_DATA)
+		return CD_DBUS_INTERFACE_SENSOR ".NoData";
+	if (error_enum == CD_SENSOR_ERROR_INTERNAL)
+		return CD_DBUS_INTERFACE_SENSOR ".Internal";
+	if (error_enum == CD_SENSOR_ERROR_ALREADY_LOCKED)
+		return CD_DBUS_INTERFACE_SENSOR ".AlreadyLocked";
+	if (error_enum == CD_SENSOR_ERROR_NOT_LOCKED)
+		return CD_DBUS_INTERFACE_SENSOR ".NotLocked";
+	if (error_enum == CD_SENSOR_ERROR_IN_USE)
+		return CD_DBUS_INTERFACE_SENSOR ".InUse";
+	if (error_enum == CD_SENSOR_ERROR_FAILED_TO_AUTHENTICATE)
+		return CD_DBUS_INTERFACE_SENSOR ".FailedToAuthenticate";
+	if (error_enum == CD_SENSOR_ERROR_REQUIRED_POSITION_CALIBRATE)
+		return CD_DBUS_INTERFACE_SENSOR ".RequiredPositionCalibrate";
+	if (error_enum == CD_SENSOR_ERROR_REQUIRED_POSITION_SURFACE)
+		return CD_DBUS_INTERFACE_SENSOR ".RequiredPositionSurface";
+	return NULL;
+}
+
+/**
+ * cd_sensor_error_from_string:
+ *
+ * Converts a string to a #CdSensorError.
+ *
+ * Return value: enumerated value
+ *
+ * Since: 0.1.26
+ **/
+CdSensorError
+cd_sensor_error_from_string (const gchar *error_desc)
+{
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_SENSOR ".NoSupport") == 0)
+		return CD_SENSOR_ERROR_NO_SUPPORT;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_SENSOR ".NoData") == 0)
+		return CD_SENSOR_ERROR_NO_DATA;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_SENSOR ".Internal") == 0)
+		return CD_SENSOR_ERROR_INTERNAL;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_SENSOR ".AlreadyLocked") == 0)
+		return CD_SENSOR_ERROR_ALREADY_LOCKED;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_SENSOR ".NotLocked") == 0)
+		return CD_SENSOR_ERROR_NOT_LOCKED;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_SENSOR ".InUse") == 0)
+		return CD_SENSOR_ERROR_IN_USE;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_SENSOR ".FailedToAuthenticate") == 0)
+		return CD_SENSOR_ERROR_FAILED_TO_AUTHENTICATE;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_SENSOR ".RequiredPositionCalibrate") == 0)
+		return CD_SENSOR_ERROR_REQUIRED_POSITION_CALIBRATE;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_SENSOR ".RequiredPositionSurface") == 0)
+		return CD_SENSOR_ERROR_REQUIRED_POSITION_SURFACE;
+	return CD_SENSOR_ERROR_LAST;
+}
+
+#define	CD_DBUS_INTERFACE_PROFILE	"org.freedesktop.ColorManager.Profile"
+
+/**
+ * cd_profile_error_to_string:
+ *
+ * Converts a #CdProfileError to a string.
+ *
+ * Return value: identifier string
+ *
+ * Since: 0.1.26
+ **/
+const gchar *
+cd_profile_error_to_string (CdProfileError error_enum)
+{
+	if (error_enum == CD_PROFILE_ERROR_INTERNAL)
+		return CD_DBUS_INTERFACE_PROFILE ".Internal";
+	if (error_enum == CD_PROFILE_ERROR_ALREADY_INSTALLED)
+		return CD_DBUS_INTERFACE_PROFILE ".AlreadyInstalled";
+	if (error_enum == CD_PROFILE_ERROR_FAILED_TO_WRITE)
+		return CD_DBUS_INTERFACE_PROFILE ".FailedToWrite";
+	if (error_enum == CD_PROFILE_ERROR_FAILED_TO_PARSE)
+		return CD_DBUS_INTERFACE_PROFILE ".FailedToParse";
+	if (error_enum == CD_PROFILE_ERROR_FAILED_TO_READ)
+		return CD_DBUS_INTERFACE_PROFILE ".FailedToRead";
+	if (error_enum == CD_PROFILE_ERROR_FAILED_TO_AUTHENTICATE)
+		return CD_DBUS_INTERFACE_PROFILE ".FailedToAuthenticate";
+	return NULL;
+}
+
+/**
+ * cd_profile_error_from_string:
+ *
+ * Converts a string to a #CdProfileError.
+ *
+ * Return value: enumerated value
+ *
+ * Since: 0.1.26
+ **/
+CdProfileError
+cd_profile_error_from_string (const gchar *error_desc)
+{
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_PROFILE ".Internal") == 0)
+		return CD_PROFILE_ERROR_INTERNAL;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_PROFILE ".AlreadyInstalled") == 0)
+		return CD_PROFILE_ERROR_ALREADY_INSTALLED;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_PROFILE ".FailedToWrite") == 0)
+		return CD_PROFILE_ERROR_FAILED_TO_WRITE;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_PROFILE ".FailedToParse") == 0)
+		return CD_PROFILE_ERROR_FAILED_TO_PARSE;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_PROFILE ".FailedToRead") == 0)
+		return CD_PROFILE_ERROR_FAILED_TO_READ;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_PROFILE ".FailedToAuthenticate") == 0)
+		return CD_PROFILE_ERROR_FAILED_TO_AUTHENTICATE;
+	return CD_PROFILE_ERROR_LAST;
+}
+
+#define	CD_DBUS_INTERFACE_DEVICE	"org.freedesktop.ColorManager.Device"
+
+/**
+ * cd_device_error_to_string:
+ *
+ * Converts a #CdDeviceError to a string.
+ *
+ * Return value: identifier string
+ *
+ * Since: 0.1.26
+ **/
+const gchar *
+cd_device_error_to_string (CdDeviceError error_enum)
+{
+	if (error_enum == CD_DEVICE_ERROR_INTERNAL)
+		return CD_DBUS_INTERFACE_DEVICE ".Internal";
+	if (error_enum == CD_DEVICE_ERROR_PROFILE_DOES_NOT_EXIST)
+		return CD_DBUS_INTERFACE_DEVICE ".ProfileDoesNotExist";
+	if (error_enum == CD_DEVICE_ERROR_PROFILE_ALREADY_ADDED)
+		return CD_DBUS_INTERFACE_DEVICE ".ProfileAlreadyAdded";
+	if (error_enum == CD_DEVICE_ERROR_PROFILING)
+		return CD_DBUS_INTERFACE_DEVICE ".Profiling";
+	if (error_enum == CD_DEVICE_ERROR_NOTHING_MATCHED)
+		return CD_DBUS_INTERFACE_DEVICE ".NothingMatched";
+	if (error_enum == CD_DEVICE_ERROR_FAILED_TO_INHIBIT)
+		return CD_DBUS_INTERFACE_DEVICE ".FailedToInhibit";
+	if (error_enum == CD_DEVICE_ERROR_FAILED_TO_UNINHIBIT)
+		return CD_DBUS_INTERFACE_DEVICE ".FailedToUninhibit";
+	if (error_enum == CD_DEVICE_ERROR_FAILED_TO_AUTHENTICATE)
+		return CD_DBUS_INTERFACE_DEVICE ".FailedToAuthenticate";
+	if (error_enum == CD_DEVICE_ERROR_NOT_ENABLED)
+		return CD_DBUS_INTERFACE_DEVICE ".NotEnabled";
+	return NULL;
+}
+
+/**
+ * cd_device_error_from_string:
+ *
+ * Converts a string to a #CdDeviceError.
+ *
+ * Return value: enumerated value
+ *
+ * Since: 0.1.26
+ **/
+CdDeviceError
+cd_device_error_from_string (const gchar *error_desc)
+{
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_DEVICE ".Internal") == 0)
+		return CD_DEVICE_ERROR_INTERNAL;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_DEVICE ".ProfileDoesNotExist") == 0)
+		return CD_DEVICE_ERROR_PROFILE_DOES_NOT_EXIST;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_DEVICE ".ProfileAlreadyAdded") == 0)
+		return CD_DEVICE_ERROR_PROFILE_ALREADY_ADDED;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_DEVICE ".Profiling") == 0)
+		return CD_DEVICE_ERROR_PROFILING;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_DEVICE ".NothingMatched") == 0)
+		return CD_DEVICE_ERROR_NOTHING_MATCHED;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_DEVICE ".FailedToInhibit") == 0)
+		return CD_DEVICE_ERROR_FAILED_TO_INHIBIT;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_DEVICE ".FailedToUninhibit") == 0)
+		return CD_DEVICE_ERROR_FAILED_TO_UNINHIBIT;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_DEVICE ".FailedToAuthenticate") == 0)
+		return CD_DEVICE_ERROR_FAILED_TO_AUTHENTICATE;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_DEVICE ".NotEnabled") == 0)
+		return CD_DEVICE_ERROR_NOT_ENABLED;
+	return CD_DEVICE_ERROR_LAST;
+}
+
+#define	CD_DBUS_INTERFACE_DAEMON	"org.freedesktop.ColorManager"
+
+/**
+ * cd_client_error_to_string:
+ *
+ * Converts a #CdClientError to a string.
+ *
+ * Return value: identifier string
+ *
+ * Since: 0.1.26
+ **/
+const gchar *
+cd_client_error_to_string (CdClientError error_enum)
+{
+	if (error_enum == CD_CLIENT_ERROR_INTERNAL)
+		return CD_DBUS_INTERFACE_DAEMON ".Internal";
+	if (error_enum == CD_CLIENT_ERROR_ALREADY_EXISTS)
+		return CD_DBUS_INTERFACE_DAEMON ".AlreadyExists";
+	if (error_enum == CD_CLIENT_ERROR_FAILED_TO_AUTHENTICATE)
+		return CD_DBUS_INTERFACE_DAEMON ".FailedToAuthenticate";
+	if (error_enum == CD_CLIENT_ERROR_NOT_SUPPORTED)
+		return CD_DBUS_INTERFACE_DAEMON ".NotSupported";
+	if (error_enum == CD_CLIENT_ERROR_NOT_FOUND)
+		return CD_DBUS_INTERFACE_DAEMON ".NotFound";
+	if (error_enum == CD_CLIENT_ERROR_INPUT_INVALID)
+		return CD_DBUS_INTERFACE_DAEMON ".InputInvalid";
+	if (error_enum == CD_CLIENT_ERROR_FILE_INVALID)
+		return CD_DBUS_INTERFACE_DAEMON ".FileInvalid";
+	return NULL;
+}
+
+/**
+ * cd_client_error_from_string:
+ *
+ * Converts a string to a #CdClientError.
+ *
+ * Return value: enumerated value
+ *
+ * Since: 0.1.26
+ **/
+CdClientError
+cd_client_error_from_string (const gchar *error_desc)
+{
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_DAEMON ".Internal") == 0)
+		return CD_CLIENT_ERROR_INTERNAL;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_DAEMON ".AlreadyExists") == 0)
+		return CD_CLIENT_ERROR_ALREADY_EXISTS;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_DAEMON ".FailedToAuthenticate") == 0)
+		return CD_CLIENT_ERROR_FAILED_TO_AUTHENTICATE;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_DAEMON ".NotSupported") == 0)
+		return CD_CLIENT_ERROR_NOT_SUPPORTED;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_DAEMON ".NotFound") == 0)
+		return CD_CLIENT_ERROR_NOT_FOUND;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_DAEMON ".InputInvalid") == 0)
+		return CD_CLIENT_ERROR_INPUT_INVALID;
+	if (g_strcmp0 (error_desc, CD_DBUS_INTERFACE_DAEMON ".FileInvalid") == 0)
+		return CD_CLIENT_ERROR_FILE_INVALID;
+	return CD_CLIENT_ERROR_LAST;
 }

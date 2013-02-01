@@ -92,6 +92,27 @@ ch_strerror (ChError error_enum)
 	case CH_ERROR_INCOMPLETE_REQUEST:
 		str = "Incomplete previous request";
 		break;
+	case CH_ERROR_SELF_TEST_SENSOR:
+		str = "Self test failed: Sensor";
+		break;
+	case CH_ERROR_SELF_TEST_RED:
+		str = "Self test failed: Red";
+		break;
+	case CH_ERROR_SELF_TEST_GREEN:
+		str = "Self test failed: Green";
+		break;
+	case CH_ERROR_SELF_TEST_BLUE:
+		str = "Self test failed: Blue";
+		break;
+	case CH_ERROR_SELF_TEST_MULTIPLIER:
+		str = "Self test failed: Multiplier";
+		break;
+	case CH_ERROR_SELF_TEST_COLOR_SELECT:
+		str = "Self test failed: Color Select";
+		break;
+	case CH_ERROR_INVALID_CALIBRATION:
+		str = "Invalid calibration";
+		break;
 	default:
 		str = "Unknown error, please report";
 		break;
@@ -209,6 +230,15 @@ ch_command_to_string (guint8 cmd)
 	case CH_CMD_GET_HARDWARE_VERSION:
 		str = "get-hardware-version";
 		break;
+	case CH_CMD_GET_REMOTE_HASH:
+		str = "get-remote-hash";
+		break;
+	case CH_CMD_SET_REMOTE_HASH:
+		str = "set-remote-hash";
+		break;
+	case CH_CMD_SELF_TEST:
+		str = "self-test";
+		break;
 	default:
 		str = "unknown-command";
 		break;
@@ -234,7 +264,7 @@ ch_print_data_buffer (const gchar *title,
 		g_print ("%c[%dm", 0x1B, 34);
 	g_print ("%s\t", title);
 
-	for (i=0; i< length; i++)
+	for (i = 0; i <  length; i++)
 		g_print ("%02x [%c]\t", data[i], g_ascii_isprint (data[i]) ? data[i] : '?');
 
 	g_print ("%c[%dm\n", 0x1B, 0);
@@ -324,19 +354,20 @@ ch_device_reply_cb (GObject *source_object,
 	/* parse */
 	if (helper->buffer[CH_BUFFER_OUTPUT_RETVAL] != CH_ERROR_NONE ||
 	    helper->buffer[CH_BUFFER_OUTPUT_CMD] != helper->cmd ||
-	    actual_len != helper->buffer_out_len + CH_BUFFER_OUTPUT_DATA) {
+	    (actual_len != helper->buffer_out_len + CH_BUFFER_OUTPUT_DATA &&
+	     actual_len != CH_USB_HID_EP_SIZE)) {
 		error_enum = helper->buffer[CH_BUFFER_OUTPUT_RETVAL];
 		msg = g_strdup_printf ("Invalid read: retval=0x%02x [%s] "
 				       "cmd=0x%02x (expected 0x%x [%s]) "
-				       "len=%"G_GSIZE_FORMAT" "
-				       "(expected %"G_GSIZE_FORMAT")",
+				       "len=%" G_GSIZE_FORMAT " (expected %" G_GSIZE_FORMAT " or %i)",
 				       error_enum,
 				       ch_strerror (error_enum),
 				       helper->buffer[CH_BUFFER_OUTPUT_CMD],
 				       helper->cmd,
 				       ch_command_to_string (helper->cmd),
 				       actual_len,
-				       helper->buffer_out_len + CH_BUFFER_OUTPUT_DATA);
+				       helper->buffer_out_len + CH_BUFFER_OUTPUT_DATA,
+				       CH_USB_HID_EP_SIZE);
 		g_simple_async_result_set_error (helper->res, 1, 0, "%s", msg);
 		g_simple_async_result_complete_in_idle (helper->res);
 		ch_device_free_helper (helper);

@@ -143,9 +143,13 @@ get_profile_for_device_path (DBusConnection *con,
 
 	/* split qualifier */
 	split = split_qualifier(qualifier);
+	if (split == NULL)
+		goto out;
 
 	/* create the fallbacks */
 	key = calloc(6, sizeof(char*));
+	if (key == NULL)
+		goto out;
 
 	/* exact match */
 	snprintf(str, 256, "%s.%s.%s",
@@ -170,7 +174,7 @@ get_profile_for_device_path (DBusConnection *con,
 					 DBUS_TYPE_ARRAY,
 					 "s",
 					 &entry);
-	for (i=0; key[i] != NULL; i++) {
+	for (i = 0; key[i] != NULL; i++) {
 		dbus_message_iter_append_basic(&entry,
 					       DBUS_TYPE_STRING,
 					       &key[i]);
@@ -209,12 +213,12 @@ out:
 	if (reply != NULL)
 		dbus_message_unref(reply);
 	if (key != NULL) {
-		for (i=0; key[i] != NULL; i++)
+		for (i = 0; key[i] != NULL; i++)
 			free(key[i]);
 		free(key);
 	}
 	if (split != NULL) {
-		for (i=0; split[i] != NULL; i++)
+		for (i = 0; split[i] != NULL; i++)
 			free(split[i]);
 		free(split);
 	}

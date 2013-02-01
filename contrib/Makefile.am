@@ -1,4 +1,5 @@
+
 SUBDIRS = 						\
-	colord-sane
+	session-helper
 
 -include $(top_srcdir)/git.mk

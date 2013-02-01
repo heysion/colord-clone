@@ -34,14 +34,6 @@ cd-profile
 
 
 
-<!-- ##### ENUM CdProfileError ##### -->
-<para>
-
-</para>
-
-@CD_PROFILE_ERROR_FAILED: 
-@CD_PROFILE_ERROR_LAST: 
-
 <!-- ##### USER_FUNCTION _cd_profile_reserved1 ##### -->
 <para>
 
@@ -293,6 +285,15 @@ cd-profile
 
 
 <!-- ##### FUNCTION cd_profile_get_title ##### -->
+<para>
+
+</para>
+
+@profile: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_profile_get_warnings ##### -->
 <para>
 
 </para>

@@ -63,7 +63,7 @@ cd_profile_store_in_array (GPtrArray *array, const gchar *text)
 	const gchar *tmp;
 	guint i;
 
-	for (i=0; i<array->len; i++) {
+	for (i = 0; i < array->len; i++) {
 		tmp = g_ptr_array_index (array, i);
 		if (g_strcmp0 (text, tmp) == 0)
 			return TRUE;
@@ -129,7 +129,7 @@ cd_profile_store_get_by_checksum (CdProfileStore *profile_store,
 	g_return_val_if_fail (checksum != NULL, NULL);
 
 	/* find profile */
-	for (i=0; i<priv->profile_array->len; i++) {
+	for (i = 0; i < priv->profile_array->len; i++) {
 		profile_tmp = g_ptr_array_index (priv->profile_array, i);
 		checksum_tmp = cd_profile_get_checksum (profile_tmp);
 		if (g_strcmp0 (checksum, checksum_tmp) == 0) {
@@ -158,7 +158,7 @@ cd_profile_store_get_by_filename (CdProfileStore *profile_store,
 	g_return_val_if_fail (filename != NULL, NULL);
 
 	/* find profile */
-	for (i=0; i<priv->profile_array->len; i++) {
+	for (i = 0; i < priv->profile_array->len; i++) {
 		profile_tmp = g_ptr_array_index (priv->profile_array, i);
 		filename_tmp = cd_profile_get_filename (profile_tmp);
 		if (g_strcmp0 (filename, filename_tmp) == 0) {
@@ -181,8 +181,10 @@ cd_profile_store_add_profile (CdProfileStore *profile_store,
 	CdProfile *profile = NULL;
 	CdProfile *profile_tmp = NULL;
 	GError *error = NULL;
+	GFileInfo *info = NULL;
 	gchar *filename = NULL;
 	const gchar *checksum;
+	const gchar *type;
 	CdProfileStorePrivate *priv = profile_store->priv;
 
 	/* already added? */
@@ -190,6 +192,25 @@ cd_profile_store_add_profile (CdProfileStore *profile_store,
 	profile = cd_profile_store_get_by_filename (profile_store, filename);
 	if (profile != NULL)
 		goto out;
+
+	/* check is ICC file */
+	info = g_file_query_info (file,
+				  G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+				  G_FILE_QUERY_INFO_NONE,
+				  NULL,
+				  &error);
+	if (info == NULL) {
+		g_warning ("CdProfileStore: Failed to get content type of %s : %s",
+			   filename, error->message);
+		g_error_free (error);
+		goto out;
+	}
+	type = g_file_info_get_attribute_string (info, G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE);
+	if (g_strcmp0 (type, "application/vnd.iccprofile") != 0) {
+		g_debug ("CdProfileStore: Incorrect content type for %s, got %s",
+			 filename, type);
+		goto out;
+	}
 
 	/* is system wide? */
 	profile = cd_profile_new ();
@@ -214,6 +235,12 @@ cd_profile_store_add_profile (CdProfileStore *profile_store,
 		cd_profile_store_remove_profile (profile_store, profile_tmp);
 	}
 
+	/* ensure profiles have the checksum metadata item */
+	cd_profile_set_property_internal (profile,
+					  CD_PROFILE_METADATA_FILE_CHECKSUM,
+					  checksum,
+					  NULL);
+
 	/* add to array */
 	g_debug ("CdProfileStore: parsed new profile '%s'", filename);
 	g_ptr_array_add (priv->profile_array, g_object_ref (profile));
@@ -228,6 +255,8 @@ out:
 	g_free (filename);
 	if (profile_tmp != NULL)
 		g_object_unref (profile_tmp);
+	if (info != NULL)
+		g_object_unref (info);
 	if (profile != NULL)
 		g_object_unref (profile);
 	return ret;
@@ -242,8 +271,9 @@ cd_profile_store_file_monitor_changed_cb (GFileMonitor *monitor,
 					  GFileMonitorEvent event_type,
 					  CdProfileStore *profile_store)
 {
-	gchar *path = NULL;
+	gboolean ret;
 	gchar *parent_path = NULL;
+	gchar *path = NULL;
 	GFile *parent = NULL;
 
 	/* only care about created objects */
@@ -262,11 +292,15 @@ cd_profile_store_file_monitor_changed_cb (GFileMonitor *monitor,
 	parent_path = g_file_get_path (parent);
 	if (g_strcmp0 (parent_path, DATADIR) == 0) {
 		g_debug ("CdProfileStore: %s was added, rescanning", path);
-		cd_profile_store_search_path (profile_store, path);
+		ret = cd_profile_store_search_path (profile_store, path);
+		if (!ret)
+			g_debug ("CdProfileStore: no new profiles found in %s", path);
 	} else {
 		g_debug ("CdProfileStore: %s was added, rescanning parent %s",
 			 path, parent_path);
-		cd_profile_store_search_path (profile_store, parent_path);
+		ret = cd_profile_store_search_path (profile_store, parent_path);
+		if (!ret)
+			g_debug ("CdProfileStore: no new profiles found in %s", parent_path);
 	}
 out:
 	if (parent != NULL)

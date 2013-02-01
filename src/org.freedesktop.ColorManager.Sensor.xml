@@ -12,6 +12,17 @@
     </doc:doc>
 
     <!--***********************************************************-->
+    <property name='SensorId' type='s' access='read'>
+      <doc:doc>
+        <doc:description>
+          <doc:para>
+            The sensor id string.
+          </doc:para>
+        </doc:description>
+      </doc:doc>
+    </property>
+
+    <!--***********************************************************-->
     <property name='Kind' type='s' access='read'>
       <doc:doc>
         <doc:description>
@@ -97,6 +108,23 @@
     </property>
 
     <!--***********************************************************-->
+    <property name='Embedded' type='b' access='read'>
+      <doc:doc>
+        <doc:description>
+          <doc:para>
+            If the sensor is embedded into the laptop hardware, for
+            example the W700 device from Lenovo.
+          </doc:para>
+          <doc:para>
+            If this property is set then the calibration process should
+            show the color patch fullscreen and should emit an audible
+            alert when completed.
+          </doc:para>
+        </doc:description>
+      </doc:doc>
+    </property>
+
+    <!--***********************************************************-->
     <property name='Locked' type='b' access='read'>
       <doc:doc>
         <doc:description>
@@ -129,6 +157,18 @@
           <doc:para>
             This is a dictionary of property keys and values, e.g.
             <doc:tt>remote-profile-hash = deadbeef</doc:tt>.
+          </doc:para>
+        </doc:description>
+      </doc:doc>
+    </property>
+
+    <!--***********************************************************-->
+    <property name='Metadata' type='a{ss}' access='read'>
+      <doc:doc>
+        <doc:description>
+          <doc:para>
+            The metadata for the sensor, which may include optional
+            keys like <doc:tt>AttachImage</doc:tt>.
           </doc:para>
         </doc:description>
       </doc:doc>

@@ -67,18 +67,6 @@ typedef struct
 	void (*_cd_sensor_reserved8) (void);
 } CdSensorClass;
 
-/**
- * CdSensorError:
- * @CD_SENSOR_ERROR_FAILED: the transaction failed for an unknown reason
- *
- * Errors that can be thrown
- */
-typedef enum
-{
-	CD_SENSOR_ERROR_FAILED,
-	CD_SENSOR_ERROR_LAST
-} CdSensorError;
-
 GType		 cd_sensor_get_type			(void);
 GQuark		 cd_sensor_error_quark			(void);
 CdSensor	*cd_sensor_new				(void);
@@ -125,6 +113,7 @@ CdColorXYZ	*cd_sensor_get_sample_finish		(CdSensor	*sensor,
 
 /* getters */
 const gchar	*cd_sensor_get_object_path		(CdSensor	*sensor);
+const gchar	*cd_sensor_get_id			(CdSensor	*sensor);
 gboolean	 cd_sensor_get_connected		(CdSensor	*sensor);
 CdSensorKind	 cd_sensor_get_kind			(CdSensor	*sensor);
 CdSensorState	 cd_sensor_get_state			(CdSensor	*sensor);
@@ -133,12 +122,16 @@ const gchar	*cd_sensor_get_serial			(CdSensor	*sensor);
 const gchar	*cd_sensor_get_model			(CdSensor	*sensor);
 const gchar	*cd_sensor_get_vendor			(CdSensor	*sensor);
 gboolean	 cd_sensor_get_native			(CdSensor	*sensor);
+gboolean	 cd_sensor_get_embedded			(CdSensor	*sensor);
 gboolean	 cd_sensor_get_locked			(CdSensor	*sensor);
 guint		 cd_sensor_get_caps			(CdSensor	*sensor);
 gboolean	 cd_sensor_has_cap			(CdSensor	*sensor,
 							 CdSensorCap	 cap);
 GHashTable	*cd_sensor_get_options			(CdSensor	*sensor);
 const gchar	*cd_sensor_get_option			(CdSensor	*sensor,
+							 const gchar	*key);
+GHashTable	*cd_sensor_get_metadata			(CdSensor	*sensor);
+const gchar	*cd_sensor_get_metadata_item		(CdSensor	*sensor,
 							 const gchar	*key);
 
 /* utilities */

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>org.freedesktop.ColorManager.Profile</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
 <link rel="home" href="index.html" title="colord Reference Manual">
 <link rel="up" href="ref-dbus.html" title="D-Bus API Reference">
 <link rel="prev" href="Device.html" title="org.freedesktop.ColorManager.Device">
@@ -43,18 +43,18 @@
 </tr></table></div>
 <div class="refsynopsisdiv">
 <h2>Methods</h2>
-<pre class="synopsis"><a class="link" href="Profile.html#Profile.SetProperty">SetProperty</a>       (in  's' property_name,
-                   in  's' property_value)
-<a class="link" href="Profile.html#Profile.InstallSystemWide">InstallSystemWide</a> ()
+<pre class="synopsis"><a class="link" href="Profile.html#Profile.SetProperty">SetProperty</a>(in's'property_name,
+in's'property_value)
+<a class="link" href="Profile.html#Profile.InstallSystemWide">InstallSystemWide</a>()
 </pre>
 </div>
 <div class="refsect1">
-<a name="id462565"></a><h2>Signals</h2>
-<pre class="synopsis"><a class="link" href="Profile.html#Profile::Changed">Changed</a> ()
+<a name="idp9234144"></a><h2>Signals</h2>
+<pre class="synopsis"><a class="link" href="Profile.html#Profile::Changed">Changed</a>()
 </pre>
 </div>
 <div class="refsect1">
-<a name="id473316"></a><h2>Implemented Interfaces</h2>
+<a name="idp7290592"></a><h2>Implemented Interfaces</h2>
 <p>
     Objects implementing org.freedesktop.ColorManager.Profile also implements
     org.freedesktop.DBus.Introspectable,
@@ -62,24 +62,25 @@
     </p>
 </div>
 <div class="refsect1">
-<a name="id445961"></a><h2>Properties</h2>
-<pre class="synopsis"><a class="link" href="Profile.html#Profile:ProfileId">'ProfileId'</a>    read      's'
-<a class="link" href="Profile.html#Profile:Title">'Title'</a>        read      's'
-<a class="link" href="Profile.html#Profile:Metadata">'Metadata'</a>     read      'a{ss}'
-<a class="link" href="Profile.html#Profile:Qualifier">'Qualifier'</a>    read      's'
-<a class="link" href="Profile.html#Profile:Format">'Format'</a>       read      's'
-<a class="link" href="Profile.html#Profile:Kind">'Kind'</a>         read      's'
-<a class="link" href="Profile.html#Profile:Colorspace">'Colorspace'</a>   read      's'
-<a class="link" href="Profile.html#Profile:HasVcgt">'HasVcgt'</a>      read      'b'
-<a class="link" href="Profile.html#Profile:IsSystemWide">'IsSystemWide'</a> read      'b'
-<a class="link" href="Profile.html#Profile:Filename">'Filename'</a>     read      's'
-<a class="link" href="Profile.html#Profile:Created">'Created'</a>      read      'x'
-<a class="link" href="Profile.html#Profile:Scope">'Scope'</a>        read      's'
-<a class="link" href="Profile.html#Profile:Owner">'Owner'</a>        read      'u'
+<a name="idp7333312"></a><h2>Properties</h2>
+<pre class="synopsis"><a class="link" href="Profile.html#Profile:ProfileId">'ProfileId'</a>read's'
+<a class="link" href="Profile.html#Profile:Title">'Title'</a>read's'
+<a class="link" href="Profile.html#Profile:Metadata">'Metadata'</a>read'a{ss}'
+<a class="link" href="Profile.html#Profile:Qualifier">'Qualifier'</a>read's'
+<a class="link" href="Profile.html#Profile:Format">'Format'</a>read's'
+<a class="link" href="Profile.html#Profile:Kind">'Kind'</a>read's'
+<a class="link" href="Profile.html#Profile:Colorspace">'Colorspace'</a>read's'
+<a class="link" href="Profile.html#Profile:HasVcgt">'HasVcgt'</a>read'b'
+<a class="link" href="Profile.html#Profile:IsSystemWide">'IsSystemWide'</a>read'b'
+<a class="link" href="Profile.html#Profile:Filename">'Filename'</a>read's'
+<a class="link" href="Profile.html#Profile:Created">'Created'</a>read'x'
+<a class="link" href="Profile.html#Profile:Scope">'Scope'</a>read's'
+<a class="link" href="Profile.html#Profile:Owner">'Owner'</a>read'u'
+<a class="link" href="Profile.html#Profile:Warnings">'Warnings'</a>read'as'
 </pre>
 </div>
 <div class="refsect1">
-<a name="id463018"></a><h2>Description</h2>
+<a name="idp9113248"></a><h2>Description</h2>
 <p>
       
         </p>
@@ -91,18 +92,21 @@
     </p>
 </div>
 <div class="refsect1">
-<a name="id457319"></a><h2>Details</h2>
+<a name="idp9115552"></a><h2>Details</h2>
 <div class="refsect2">
-<a name="id457327"></a><h3>
+<a name="idp9116512"></a><h3>
 <a name="Profile.SetProperty"></a>SetProperty ()</h3>
-<pre class="programlisting">SetProperty (in  's' property_name,
-             in  's' property_value)</pre>
+<pre class="programlisting">SetProperty (in's'property_name,
+in's'property_value)</pre>
 </div>
 <p>
             Sets a property on the object.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>property_name</code></em>:</span></p></td>
@@ -125,7 +129,7 @@
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id470139"></a><h3>
+<a name="idp7252352"></a><h3>
 <a name="Profile.InstallSystemWide"></a>InstallSystemWide ()</h3>
 <pre class="programlisting">InstallSystemWide ()</pre>
 </div>
@@ -133,60 +137,72 @@
             Copies the profile system-wide so it can be used by all
             users on the system or when no users are logged-in.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody></tbody>
 </table></div>
 </div>
 <div class="refsect1">
-<a name="id456191"></a><h2>Signal Details</h2>
+<a name="idp7719232"></a><h2>Signal Details</h2>
 <div class="refsect2">
-<a name="id456199"></a><h3>
+<a name="idp7720192"></a><h3>
 <a name="Profile::Changed"></a>The Changed signal</h3>
 <pre class="programlisting">Changed ()</pre>
 </div>
 <p>
             Some value on the interface has changed.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody></tbody>
 </table></div>
 </div>
 <div class="refsect1">
-<a name="id456230"></a><h2>Property Details</h2>
+<a name="idp7723984"></a><h2>Property Details</h2>
 <div class="refsect2">
-<a name="id456238"></a><h3>
+<a name="idp7724944"></a><h3>
 <a name="Profile:ProfileId"></a>The "ProfileId" property</h3>
-<pre class="programlisting">'ProfileId'  read      's'
+<pre class="programlisting">'ProfileId'read's'
 </pre>
 </div>
 <p>
             The identification hash of the profile.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody></tbody>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id456268"></a><h3>
+<a name="idp7728544"></a><h3>
 <a name="Profile:Title"></a>The "Title" property</h3>
-<pre class="programlisting">'Title'  read      's'
+<pre class="programlisting">'Title'read's'
 </pre>
 </div>
 <p>
             The printable title for the profile.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody></tbody>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id456299"></a><h3>
+<a name="idp7732176"></a><h3>
 <a name="Profile:Metadata"></a>The "Metadata" property</h3>
-<pre class="programlisting">'Metadata'  read      'a{ss}'
+<pre class="programlisting">'Metadata'read'a{ss}'
 </pre>
 </div>
 <p>
@@ -195,15 +211,18 @@
             <code class="literal">EDID_manufacturer</code> that are set by several
             CMS frameworks.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody></tbody>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id485304"></a><h3>
+<a name="idp9251088"></a><h3>
 <a name="Profile:Qualifier"></a>The "Qualifier" property</h3>
-<pre class="programlisting">'Qualifier'  read      's'
+<pre class="programlisting">'Qualifier'read's'
 </pre>
 </div>
 <p>
@@ -213,101 +232,122 @@
             <code class="literal">High quality studio</code>doc:tt&gt; or something more
             programmable like <code class="literal">RGB.Plain.300dpi</code>.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody></tbody>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id485348"></a><h3>
+<a name="idp9256336"></a><h3>
 <a name="Profile:Format"></a>The "Format" property</h3>
-<pre class="programlisting">'Format'  read      's'
+<pre class="programlisting">'Format'read's'
 </pre>
 </div>
 <p>
             The qualifier format for the profile.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody></tbody>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id485378"></a><h3>
+<a name="idp9259968"></a><h3>
 <a name="Profile:Kind"></a>The "Kind" property</h3>
-<pre class="programlisting">'Kind'  read      's'
+<pre class="programlisting">'Kind'read's'
 </pre>
 </div>
 <p>
             The profile kind, e.g. <code class="literal">colorspace-conversion</code>,
             <code class="literal">abstract</code> or <code class="literal">display-device</code>.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody></tbody>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id485427"></a><h3>
+<a name="idp9265808"></a><h3>
 <a name="Profile:Colorspace"></a>The "Colorspace" property</h3>
-<pre class="programlisting">'Colorspace'  read      's'
+<pre class="programlisting">'Colorspace'read's'
 </pre>
 </div>
 <p>
             The profile colorspace, e.g. <code class="literal">rgb</code>.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody></tbody>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id485464"></a><h3>
+<a name="idp9270176"></a><h3>
 <a name="Profile:HasVcgt"></a>The "HasVcgt" property</h3>
-<pre class="programlisting">'HasVcgt'  read      'b'
+<pre class="programlisting">'HasVcgt'read'b'
 </pre>
 </div>
 <p>
             If the profile has a VCGT entry.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody></tbody>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id485494"></a><h3>
+<a name="idp9273888"></a><h3>
 <a name="Profile:IsSystemWide"></a>The "IsSystemWide" property</h3>
-<pre class="programlisting">'IsSystemWide'  read      'b'
+<pre class="programlisting">'IsSystemWide'read'b'
 </pre>
 </div>
 <p>
             If the profile is installed system wide and available
             for all users.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody></tbody>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id485526"></a><h3>
+<a name="idp9277664"></a><h3>
 <a name="Profile:Filename"></a>The "Filename" property</h3>
-<pre class="programlisting">'Filename'  read      's'
+<pre class="programlisting">'Filename'read's'
 </pre>
 </div>
 <p>
             The profile filename, if one exists.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody></tbody>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id485556"></a><h3>
+<a name="idp9281376"></a><h3>
 <a name="Profile:Created"></a>The "Created" property</h3>
-<pre class="programlisting">'Created'  read      'x'
+<pre class="programlisting">'Created'read'x'
 </pre>
 </div>
 <p>
@@ -319,37 +359,65 @@
             filename.
             This is the encoded date and time inside the ICC filename.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody></tbody>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id485592"></a><h3>
+<a name="idp9285680"></a><h3>
 <a name="Profile:Scope"></a>The "Scope" property</h3>
-<pre class="programlisting">'Scope'  read      's'
+<pre class="programlisting">'Scope'read's'
 </pre>
 </div>
 <p>
             The scope of the device, e.g. <code class="literal">normal</code>,
             <code class="literal">temp</code> or <code class="literal">disk</code>.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
 <tbody></tbody>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="id485640"></a><h3>
+<a name="idp9291472"></a><h3>
 <a name="Profile:Owner"></a>The "Owner" property</h3>
-<pre class="programlisting">'Owner'  read      'u'
+<pre class="programlisting">'Owner'read'u'
 </pre>
 </div>
 <p>
             The user ID of the account that created the profile.
           </p>
-<div class="variablelist"><table border="0">
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
 <col align="left" valign="top">
+<col>
+</colgroup>
+<tbody></tbody>
+</table></div>
+<hr>
+<div class="refsect2">
+<a name="idp9295104"></a><h3>
+<a name="Profile:Warnings"></a>The "Warnings" property</h3>
+<pre class="programlisting">'Warnings'read'as'
+</pre>
+</div>
+<p>
+            Any warnings for the profile, e.g.
+            '<code class="literal">description-missing</code>' or
+            '<code class="literal">vcgt-non-monotonic</code>'.
+          </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
 <tbody></tbody>
 </table></div>
 </div>

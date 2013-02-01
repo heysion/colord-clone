@@ -1,3 +1,4 @@
+<ANCHOR id="annotation-glossterm-allow-none" href="colord/ref-dbus.html#annotation-glossterm-allow-none">
 <ANCHOR id="annotation-glossterm-element-type" href="colord/ref-dbus.html#annotation-glossterm-element-type">
 <ANCHOR id="annotation-glossterm-transfer full" href="colord/ref-dbus.html#annotation-glossterm-transfer full">
 <ANCHOR id="annotation-glossterm-transfer none" href="colord/ref-dbus.html#annotation-glossterm-transfer none">
@@ -5,8 +6,10 @@
 <ANCHOR id="ColorManager.GetDevices" href="colord/ColorManager.html#ColorManager.GetDevices">
 <ANCHOR id="ColorManager.GetDevicesByKind" href="colord/ColorManager.html#ColorManager.GetDevicesByKind">
 <ANCHOR id="ColorManager.FindDeviceById" href="colord/ColorManager.html#ColorManager.FindDeviceById">
+<ANCHOR id="ColorManager.FindSensorById" href="colord/ColorManager.html#ColorManager.FindSensorById">
 <ANCHOR id="ColorManager.FindDeviceByProperty" href="colord/ColorManager.html#ColorManager.FindDeviceByProperty">
 <ANCHOR id="ColorManager.FindProfileById" href="colord/ColorManager.html#ColorManager.FindProfileById">
+<ANCHOR id="ColorManager.FindProfileByProperty" href="colord/ColorManager.html#ColorManager.FindProfileByProperty">
 <ANCHOR id="ColorManager.FindProfileByFilename" href="colord/ColorManager.html#ColorManager.FindProfileByFilename">
 <ANCHOR id="ColorManager.GetStandardSpace" href="colord/ColorManager.html#ColorManager.GetStandardSpace">
 <ANCHOR id="ColorManager.GetProfiles" href="colord/ColorManager.html#ColorManager.GetProfiles">
@@ -36,6 +39,7 @@
 <ANCHOR id="Device.GetProfileRelation" href="colord/Device.html#Device.GetProfileRelation">
 <ANCHOR id="Device.ProfilingInhibit" href="colord/Device.html#Device.ProfilingInhibit">
 <ANCHOR id="Device.ProfilingUninhibit" href="colord/Device.html#Device.ProfilingUninhibit">
+<ANCHOR id="Device.SetEnabled" href="colord/Device.html#Device.SetEnabled">
 <ANCHOR id="Device::Changed" href="colord/Device.html#Device::Changed">
 <ANCHOR id="Device:Created" href="colord/Device.html#Device:Created">
 <ANCHOR id="Device:Modified" href="colord/Device.html#Device:Modified">
@@ -50,6 +54,9 @@
 <ANCHOR id="Device:Format" href="colord/Device.html#Device:Format">
 <ANCHOR id="Device:Scope" href="colord/Device.html#Device:Scope">
 <ANCHOR id="Device:Owner" href="colord/Device.html#Device:Owner">
+<ANCHOR id="Device:Enabled" href="colord/Device.html#Device:Enabled">
+<ANCHOR id="Device:Seat" href="colord/Device.html#Device:Seat">
+<ANCHOR id="Device:Embedded" href="colord/Device.html#Device:Embedded">
 <ANCHOR id="Device:Metadata" href="colord/Device.html#Device:Metadata">
 <ANCHOR id="Device:ProfilingInhibitors" href="colord/Device.html#Device:ProfilingInhibitors">
 <ANCHOR id="Profile" href="colord/Profile.html">
@@ -69,12 +76,14 @@
 <ANCHOR id="Profile:Created" href="colord/Profile.html#Profile:Created">
 <ANCHOR id="Profile:Scope" href="colord/Profile.html#Profile:Scope">
 <ANCHOR id="Profile:Owner" href="colord/Profile.html#Profile:Owner">
+<ANCHOR id="Profile:Warnings" href="colord/Profile.html#Profile:Warnings">
 <ANCHOR id="Sensor" href="colord/Sensor.html">
 <ANCHOR id="Sensor.Lock" href="colord/Sensor.html#Sensor.Lock">
 <ANCHOR id="Sensor.Unlock" href="colord/Sensor.html#Sensor.Unlock">
 <ANCHOR id="Sensor.GetSample" href="colord/Sensor.html#Sensor.GetSample">
 <ANCHOR id="Sensor.SetOptions" href="colord/Sensor.html#Sensor.SetOptions">
 <ANCHOR id="Sensor::ButtonPressed" href="colord/Sensor.html#Sensor::ButtonPressed">
+<ANCHOR id="Sensor:SensorId" href="colord/Sensor.html#Sensor:SensorId">
 <ANCHOR id="Sensor:Kind" href="colord/Sensor.html#Sensor:Kind">
 <ANCHOR id="Sensor:State" href="colord/Sensor.html#Sensor:State">
 <ANCHOR id="Sensor:Mode" href="colord/Sensor.html#Sensor:Mode">
@@ -82,20 +91,17 @@
 <ANCHOR id="Sensor:Model" href="colord/Sensor.html#Sensor:Model">
 <ANCHOR id="Sensor:Vendor" href="colord/Sensor.html#Sensor:Vendor">
 <ANCHOR id="Sensor:Native" href="colord/Sensor.html#Sensor:Native">
+<ANCHOR id="Sensor:Embedded" href="colord/Sensor.html#Sensor:Embedded">
 <ANCHOR id="Sensor:Locked" href="colord/Sensor.html#Sensor:Locked">
 <ANCHOR id="Sensor:Capabilities" href="colord/Sensor.html#Sensor:Capabilities">
 <ANCHOR id="Sensor:Options" href="colord/Sensor.html#Sensor:Options">
+<ANCHOR id="Sensor:Metadata" href="colord/Sensor.html#Sensor:Metadata">
 <ANCHOR id="colord-cd-client" href="colord/colord-cd-client.html">
 <ANCHOR id="colord-cd-client.synopsis" href="colord/colord-cd-client.html#colord-cd-client.synopsis">
 <ANCHOR id="colord-cd-client.description" href="colord/colord-cd-client.html#colord-cd-client.description">
 <ANCHOR id="colord-cd-client.details" href="colord/colord-cd-client.html#colord-cd-client.details">
 <ANCHOR id="CD-CLIENT-ERROR:CAPS" href="colord/colord-cd-client.html#CD-CLIENT-ERROR:CAPS">
 <ANCHOR id="CD-CLIENT-TYPE-ERROR:CAPS" href="colord/colord-cd-client.html#CD-CLIENT-TYPE-ERROR:CAPS">
-<ANCHOR id="CdClientError" href="colord/colord-cd-client.html#CdClientError">
-<ANCHOR id="CD-CLIENT-ERROR-FAILED:CAPS" href="colord/colord-cd-client.html#CD-CLIENT-ERROR-FAILED:CAPS">
-<ANCHOR id="CD-CLIENT-ERROR-ALREADY-EXISTS:CAPS" href="colord/colord-cd-client.html#CD-CLIENT-ERROR-ALREADY-EXISTS:CAPS">
-<ANCHOR id="CD-CLIENT-ERROR-FILE-INVALID:CAPS" href="colord/colord-cd-client.html#CD-CLIENT-ERROR-FILE-INVALID:CAPS">
-<ANCHOR id="CD-CLIENT-ERROR-LAST:CAPS" href="colord/colord-cd-client.html#CD-CLIENT-ERROR-LAST:CAPS">
 <ANCHOR id="cd-client-reserved1" href="colord/colord-cd-client.html#cd-client-reserved1">
 <ANCHOR id="cd-client-reserved2" href="colord/colord-cd-client.html#cd-client-reserved2">
 <ANCHOR id="cd-client-reserved3" href="colord/colord-cd-client.html#cd-client-reserved3">
@@ -122,7 +128,11 @@
 <ANCHOR id="cd-client-find-profile" href="colord/colord-cd-client.html#cd-client-find-profile">
 <ANCHOR id="cd-client-find-profile-by-filename" href="colord/colord-cd-client.html#cd-client-find-profile-by-filename">
 <ANCHOR id="cd-client-find-profile-by-filename-finish" href="colord/colord-cd-client.html#cd-client-find-profile-by-filename-finish">
+<ANCHOR id="cd-client-find-profile-by-property" href="colord/colord-cd-client.html#cd-client-find-profile-by-property">
+<ANCHOR id="cd-client-find-profile-by-property-finish" href="colord/colord-cd-client.html#cd-client-find-profile-by-property-finish">
 <ANCHOR id="cd-client-find-profile-finish" href="colord/colord-cd-client.html#cd-client-find-profile-finish">
+<ANCHOR id="cd-client-find-sensor" href="colord/colord-cd-client.html#cd-client-find-sensor">
+<ANCHOR id="cd-client-find-sensor-finish" href="colord/colord-cd-client.html#cd-client-find-sensor-finish">
 <ANCHOR id="cd-client-get-connected" href="colord/colord-cd-client.html#cd-client-get-connected">
 <ANCHOR id="cd-client-get-daemon-version" href="colord/colord-cd-client.html#cd-client-get-daemon-version">
 <ANCHOR id="cd-client-get-devices" href="colord/colord-cd-client.html#cd-client-get-devices">
@@ -155,9 +165,6 @@
 <ANCHOR id="colord-cd-device.details" href="colord/colord-cd-device.html#colord-cd-device.details">
 <ANCHOR id="CD-DEVICE-ERROR:CAPS" href="colord/colord-cd-device.html#CD-DEVICE-ERROR:CAPS">
 <ANCHOR id="CD-DEVICE-TYPE-ERROR:CAPS" href="colord/colord-cd-device.html#CD-DEVICE-TYPE-ERROR:CAPS">
-<ANCHOR id="CdDeviceError" href="colord/colord-cd-device.html#CdDeviceError">
-<ANCHOR id="CD-DEVICE-ERROR-FAILED:CAPS" href="colord/colord-cd-device.html#CD-DEVICE-ERROR-FAILED:CAPS">
-<ANCHOR id="CD-DEVICE-ERROR-LAST:CAPS" href="colord/colord-cd-device.html#CD-DEVICE-ERROR-LAST:CAPS">
 <ANCHOR id="cd-device-reserved1" href="colord/colord-cd-device.html#cd-device-reserved1">
 <ANCHOR id="cd-device-reserved2" href="colord/colord-cd-device.html#cd-device-reserved2">
 <ANCHOR id="cd-device-reserved3" href="colord/colord-cd-device.html#cd-device-reserved3">
@@ -176,6 +183,8 @@
 <ANCHOR id="cd-device-get-connected" href="colord/colord-cd-device.html#cd-device-get-connected">
 <ANCHOR id="cd-device-get-created" href="colord/colord-cd-device.html#cd-device-get-created">
 <ANCHOR id="cd-device-get-default-profile" href="colord/colord-cd-device.html#cd-device-get-default-profile">
+<ANCHOR id="cd-device-get-embedded" href="colord/colord-cd-device.html#cd-device-get-embedded">
+<ANCHOR id="cd-device-get-enabled" href="colord/colord-cd-device.html#cd-device-get-enabled">
 <ANCHOR id="cd-device-get-format" href="colord/colord-cd-device.html#cd-device-get-format">
 <ANCHOR id="cd-device-get-id" href="colord/colord-cd-device.html#cd-device-get-id">
 <ANCHOR id="cd-device-get-kind" href="colord/colord-cd-device.html#cd-device-get-kind">
@@ -193,6 +202,7 @@
 <ANCHOR id="cd-device-get-profiles" href="colord/colord-cd-device.html#cd-device-get-profiles">
 <ANCHOR id="cd-device-get-profiling-inhibitors" href="colord/colord-cd-device.html#cd-device-get-profiling-inhibitors">
 <ANCHOR id="cd-device-get-scope" href="colord/colord-cd-device.html#cd-device-get-scope">
+<ANCHOR id="cd-device-get-seat" href="colord/colord-cd-device.html#cd-device-get-seat">
 <ANCHOR id="cd-device-get-serial" href="colord/colord-cd-device.html#cd-device-get-serial">
 <ANCHOR id="cd-device-get-vendor" href="colord/colord-cd-device.html#cd-device-get-vendor">
 <ANCHOR id="cd-device-make-profile-default" href="colord/colord-cd-device.html#cd-device-make-profile-default">
@@ -205,6 +215,8 @@
 <ANCHOR id="cd-device-profiling-uninhibit-finish" href="colord/colord-cd-device.html#cd-device-profiling-uninhibit-finish">
 <ANCHOR id="cd-device-remove-profile" href="colord/colord-cd-device.html#cd-device-remove-profile">
 <ANCHOR id="cd-device-remove-profile-finish" href="colord/colord-cd-device.html#cd-device-remove-profile-finish">
+<ANCHOR id="cd-device-set-enabled" href="colord/colord-cd-device.html#cd-device-set-enabled">
+<ANCHOR id="cd-device-set-enabled-finish" href="colord/colord-cd-device.html#cd-device-set-enabled-finish">
 <ANCHOR id="cd-device-set-object-path" href="colord/colord-cd-device.html#cd-device-set-object-path">
 <ANCHOR id="cd-device-set-property" href="colord/colord-cd-device.html#cd-device-set-property">
 <ANCHOR id="cd-device-set-property-finish" href="colord/colord-cd-device.html#cd-device-set-property-finish">
@@ -216,9 +228,6 @@
 <ANCHOR id="colord-cd-profile.details" href="colord/colord-cd-profile.html#colord-cd-profile.details">
 <ANCHOR id="CD-PROFILE-ERROR:CAPS" href="colord/colord-cd-profile.html#CD-PROFILE-ERROR:CAPS">
 <ANCHOR id="CD-PROFILE-TYPE-ERROR:CAPS" href="colord/colord-cd-profile.html#CD-PROFILE-TYPE-ERROR:CAPS">
-<ANCHOR id="CdProfileError" href="colord/colord-cd-profile.html#CdProfileError">
-<ANCHOR id="CD-PROFILE-ERROR-FAILED:CAPS" href="colord/colord-cd-profile.html#CD-PROFILE-ERROR-FAILED:CAPS">
-<ANCHOR id="CD-PROFILE-ERROR-LAST:CAPS" href="colord/colord-cd-profile.html#CD-PROFILE-ERROR-LAST:CAPS">
 <ANCHOR id="cd-profile-reserved1" href="colord/colord-cd-profile.html#cd-profile-reserved1">
 <ANCHOR id="cd-profile-reserved2" href="colord/colord-cd-profile.html#cd-profile-reserved2">
 <ANCHOR id="cd-profile-reserved3" href="colord/colord-cd-profile.html#cd-profile-reserved3">
@@ -248,6 +257,7 @@
 <ANCHOR id="cd-profile-get-qualifier" href="colord/colord-cd-profile.html#cd-profile-get-qualifier">
 <ANCHOR id="cd-profile-get-scope" href="colord/colord-cd-profile.html#cd-profile-get-scope">
 <ANCHOR id="cd-profile-get-title" href="colord/colord-cd-profile.html#cd-profile-get-title">
+<ANCHOR id="cd-profile-get-warnings" href="colord/colord-cd-profile.html#cd-profile-get-warnings">
 <ANCHOR id="cd-profile-has-access" href="colord/colord-cd-profile.html#cd-profile-has-access">
 <ANCHOR id="cd-profile-install-system-wide" href="colord/colord-cd-profile.html#cd-profile-install-system-wide">
 <ANCHOR id="cd-profile-install-system-wide-finish" href="colord/colord-cd-profile.html#cd-profile-install-system-wide-finish">
@@ -264,9 +274,6 @@
 <ANCHOR id="colord-cd-sensor.details" href="colord/colord-cd-sensor.html#colord-cd-sensor.details">
 <ANCHOR id="CD-SENSOR-ERROR:CAPS" href="colord/colord-cd-sensor.html#CD-SENSOR-ERROR:CAPS">
 <ANCHOR id="CD-SENSOR-TYPE-ERROR:CAPS" href="colord/colord-cd-sensor.html#CD-SENSOR-TYPE-ERROR:CAPS">
-<ANCHOR id="CdSensorError" href="colord/colord-cd-sensor.html#CdSensorError">
-<ANCHOR id="CD-SENSOR-ERROR-FAILED:CAPS" href="colord/colord-cd-sensor.html#CD-SENSOR-ERROR-FAILED:CAPS">
-<ANCHOR id="CD-SENSOR-ERROR-LAST:CAPS" href="colord/colord-cd-sensor.html#CD-SENSOR-ERROR-LAST:CAPS">
 <ANCHOR id="cd-sensor-reserved1" href="colord/colord-cd-sensor.html#cd-sensor-reserved1">
 <ANCHOR id="cd-sensor-reserved2" href="colord/colord-cd-sensor.html#cd-sensor-reserved2">
 <ANCHOR id="cd-sensor-reserved3" href="colord/colord-cd-sensor.html#cd-sensor-reserved3">
@@ -282,6 +289,8 @@
 <ANCHOR id="cd-sensor-error-quark" href="colord/colord-cd-sensor.html#cd-sensor-error-quark">
 <ANCHOR id="cd-sensor-get-caps" href="colord/colord-cd-sensor.html#cd-sensor-get-caps">
 <ANCHOR id="cd-sensor-get-connected" href="colord/colord-cd-sensor.html#cd-sensor-get-connected">
+<ANCHOR id="cd-sensor-get-embedded" href="colord/colord-cd-sensor.html#cd-sensor-get-embedded">
+<ANCHOR id="cd-sensor-get-id" href="colord/colord-cd-sensor.html#cd-sensor-get-id">
 <ANCHOR id="cd-sensor-get-kind" href="colord/colord-cd-sensor.html#cd-sensor-get-kind">
 <ANCHOR id="cd-sensor-get-locked" href="colord/colord-cd-sensor.html#cd-sensor-get-locked">
 <ANCHOR id="cd-sensor-get-mode" href="colord/colord-cd-sensor.html#cd-sensor-get-mode">
@@ -342,6 +351,7 @@
 <ANCHOR id="cd-it8-load-from-file" href="colord/colord-cd-it8.html#cd-it8-load-from-file">
 <ANCHOR id="cd-it8-new" href="colord/colord-cd-it8.html#cd-it8-new">
 <ANCHOR id="cd-it8-new-with-kind" href="colord/colord-cd-it8.html#cd-it8-new-with-kind">
+<ANCHOR id="cd-it8-save-to-data" href="colord/colord-cd-it8.html#cd-it8-save-to-data">
 <ANCHOR id="cd-it8-save-to-file" href="colord/colord-cd-it8.html#cd-it8-save-to-file">
 <ANCHOR id="cd-it8-set-instrument" href="colord/colord-cd-it8.html#cd-it8-set-instrument">
 <ANCHOR id="cd-it8-set-kind" href="colord/colord-cd-it8.html#cd-it8-set-kind">
@@ -363,7 +373,9 @@
 <ANCHOR id="cd-client-find-device-by-property-sync" href="colord/colord-cd-client-sync.html#cd-client-find-device-by-property-sync">
 <ANCHOR id="cd-client-find-device-sync" href="colord/colord-cd-client-sync.html#cd-client-find-device-sync">
 <ANCHOR id="cd-client-find-profile-by-filename-sync" href="colord/colord-cd-client-sync.html#cd-client-find-profile-by-filename-sync">
+<ANCHOR id="cd-client-find-profile-by-property-sync" href="colord/colord-cd-client-sync.html#cd-client-find-profile-by-property-sync">
 <ANCHOR id="cd-client-find-profile-sync" href="colord/colord-cd-client-sync.html#cd-client-find-profile-sync">
+<ANCHOR id="cd-client-find-sensor-sync" href="colord/colord-cd-client-sync.html#cd-client-find-sensor-sync">
 <ANCHOR id="cd-client-get-devices-by-kind-sync" href="colord/colord-cd-client-sync.html#cd-client-get-devices-by-kind-sync">
 <ANCHOR id="cd-client-get-devices-sync" href="colord/colord-cd-client-sync.html#cd-client-get-devices-sync">
 <ANCHOR id="cd-client-get-profiles-sync" href="colord/colord-cd-client-sync.html#cd-client-get-profiles-sync">
@@ -383,6 +395,7 @@
 <ANCHOR id="cd-device-profiling-uninhibit-sync" href="colord/colord-cd-device-sync.html#cd-device-profiling-uninhibit-sync">
 <ANCHOR id="cd-device-remove-profile-sync" href="colord/colord-cd-device-sync.html#cd-device-remove-profile-sync">
 <ANCHOR id="cd-device-set-colorspace-sync" href="colord/colord-cd-device-sync.html#cd-device-set-colorspace-sync">
+<ANCHOR id="cd-device-set-enabled-sync" href="colord/colord-cd-device-sync.html#cd-device-set-enabled-sync">
 <ANCHOR id="cd-device-set-kind-sync" href="colord/colord-cd-device-sync.html#cd-device-set-kind-sync">
 <ANCHOR id="cd-device-set-mode-sync" href="colord/colord-cd-device-sync.html#cd-device-set-mode-sync">
 <ANCHOR id="cd-device-set-model-sync" href="colord/colord-cd-device-sync.html#cd-device-set-model-sync">
@@ -431,6 +444,7 @@
 <ANCHOR id="cd-mat33-determinant" href="colord/colord-cd-math.html#cd-mat33-determinant">
 <ANCHOR id="cd-mat33-get-data" href="colord/colord-cd-math.html#cd-mat33-get-data">
 <ANCHOR id="cd-mat33-matrix-multiply" href="colord/colord-cd-math.html#cd-mat33-matrix-multiply">
+<ANCHOR id="cd-mat33-normalize" href="colord/colord-cd-math.html#cd-mat33-normalize">
 <ANCHOR id="cd-mat33-reciprocal" href="colord/colord-cd-math.html#cd-mat33-reciprocal">
 <ANCHOR id="cd-mat33-scalar-multiply" href="colord/colord-cd-math.html#cd-mat33-scalar-multiply">
 <ANCHOR id="cd-mat33-set-identity" href="colord/colord-cd-math.html#cd-mat33-set-identity">
@@ -458,23 +472,25 @@
 <ANCHOR id="CdColorRGB8" href="colord/colord-cd-color.html#CdColorRGB8">
 <ANCHOR id="CdColorXYZ-struct" href="colord/colord-cd-color.html#CdColorXYZ-struct">
 <ANCHOR id="CdColorYxy-struct" href="colord/colord-cd-color.html#CdColorYxy-struct">
-<ANCHOR id="cd-color-clear-xyz" href="colord/colord-cd-color.html#cd-color-clear-xyz">
-<ANCHOR id="cd-color-convert-rgb8-to-rgb" href="colord/colord-cd-color.html#cd-color-convert-rgb8-to-rgb">
-<ANCHOR id="cd-color-convert-rgb-to-rgb8" href="colord/colord-cd-color.html#cd-color-convert-rgb-to-rgb8">
-<ANCHOR id="cd-color-convert-xyz-to-yxy" href="colord/colord-cd-color.html#cd-color-convert-xyz-to-yxy">
-<ANCHOR id="cd-color-convert-yxy-to-xyz" href="colord/colord-cd-color.html#cd-color-convert-yxy-to-xyz">
-<ANCHOR id="cd-color-copy-rgb" href="colord/colord-cd-color.html#cd-color-copy-rgb">
-<ANCHOR id="cd-color-copy-xyz" href="colord/colord-cd-color.html#cd-color-copy-xyz">
-<ANCHOR id="cd-color-copy-yxy" href="colord/colord-cd-color.html#cd-color-copy-yxy">
+<ANCHOR id="cd-color-get-blackbody-rgb" href="colord/colord-cd-color.html#cd-color-get-blackbody-rgb">
+<ANCHOR id="cd-color-rgb8-to-rgb" href="colord/colord-cd-color.html#cd-color-rgb8-to-rgb">
+<ANCHOR id="cd-color-rgb-copy" href="colord/colord-cd-color.html#cd-color-rgb-copy">
 <ANCHOR id="cd-color-rgb-dup" href="colord/colord-cd-color.html#cd-color-rgb-dup">
 <ANCHOR id="cd-color-rgb-free" href="colord/colord-cd-color.html#cd-color-rgb-free">
+<ANCHOR id="cd-color-rgb-interpolate" href="colord/colord-cd-color.html#cd-color-rgb-interpolate">
 <ANCHOR id="cd-color-rgb-new" href="colord/colord-cd-color.html#cd-color-rgb-new">
-<ANCHOR id="cd-color-set-rgb" href="colord/colord-cd-color.html#cd-color-set-rgb">
-<ANCHOR id="cd-color-set-xyz" href="colord/colord-cd-color.html#cd-color-set-xyz">
-<ANCHOR id="cd-color-set-yxy" href="colord/colord-cd-color.html#cd-color-set-yxy">
+<ANCHOR id="cd-color-rgb-set" href="colord/colord-cd-color.html#cd-color-rgb-set">
+<ANCHOR id="cd-color-rgb-to-rgb8" href="colord/colord-cd-color.html#cd-color-rgb-to-rgb8">
+<ANCHOR id="cd-color-xyz-clear" href="colord/colord-cd-color.html#cd-color-xyz-clear">
+<ANCHOR id="cd-color-xyz-copy" href="colord/colord-cd-color.html#cd-color-xyz-copy">
 <ANCHOR id="cd-color-xyz-dup" href="colord/colord-cd-color.html#cd-color-xyz-dup">
 <ANCHOR id="cd-color-xyz-free" href="colord/colord-cd-color.html#cd-color-xyz-free">
 <ANCHOR id="cd-color-xyz-new" href="colord/colord-cd-color.html#cd-color-xyz-new">
+<ANCHOR id="cd-color-xyz-set" href="colord/colord-cd-color.html#cd-color-xyz-set">
+<ANCHOR id="cd-color-xyz-to-yxy" href="colord/colord-cd-color.html#cd-color-xyz-to-yxy">
+<ANCHOR id="cd-color-yxy-copy" href="colord/colord-cd-color.html#cd-color-yxy-copy">
 <ANCHOR id="cd-color-yxy-dup" href="colord/colord-cd-color.html#cd-color-yxy-dup">
 <ANCHOR id="cd-color-yxy-free" href="colord/colord-cd-color.html#cd-color-yxy-free">
 <ANCHOR id="cd-color-yxy-new" href="colord/colord-cd-color.html#cd-color-yxy-new">
+<ANCHOR id="cd-color-yxy-set" href="colord/colord-cd-color.html#cd-color-yxy-set">
+<ANCHOR id="cd-color-yxy-to-xyz" href="colord/colord-cd-color.html#cd-color-yxy-to-xyz">

@@ -34,16 +34,6 @@ cd-client
 
 
 
-<!-- ##### ENUM CdClientError ##### -->
-<para>
-
-</para>
-
-@CD_CLIENT_ERROR_FAILED: 
-@CD_CLIENT_ERROR_ALREADY_EXISTS: 
-@CD_CLIENT_ERROR_FILE_INVALID: 
-@CD_CLIENT_ERROR_LAST: 
-
 <!-- ##### USER_FUNCTION _cd_client_reserved1 ##### -->
 <para>
 
@@ -317,7 +307,54 @@ cd-client
 @Returns: 
 
 
+<!-- ##### FUNCTION cd_client_find_profile_by_property ##### -->
+<para>
+
+</para>
+
+@client: 
+@key: 
+@value: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION cd_client_find_profile_by_property_finish ##### -->
+<para>
+
+</para>
+
+@client: 
+@res: 
+@error: 
+@Returns: 
+
+
 <!-- ##### FUNCTION cd_client_find_profile_finish ##### -->
+<para>
+
+</para>
+
+@client: 
+@res: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_client_find_sensor ##### -->
+<para>
+
+</para>
+
+@client: 
+@id: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION cd_client_find_sensor_finish ##### -->
 <para>
 
 </para>

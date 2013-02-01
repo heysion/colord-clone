@@ -27,6 +27,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <pwd.h>
+#include <math.h>
 
 #include "cd-common.h"
 #include "cd-profile.h"
@@ -60,6 +61,7 @@ struct _CdProfilePrivate
 	gboolean			 is_system_wide;
 	gint64				 created;
 	guint				 owner;
+	gchar				**warnings;
 	GMappedFile			*mapped_file;
 };
 
@@ -80,6 +82,25 @@ enum {
 
 static guint signals[SIGNAL_LAST] = { 0 };
 G_DEFINE_TYPE (CdProfile, cd_profile, G_TYPE_OBJECT)
+
+/**
+ * cd_profile_error_quark:
+ **/
+GQuark
+cd_profile_error_quark (void)
+{
+	guint i;
+	static GQuark quark = 0;
+	if (!quark) {
+		quark = g_quark_from_static_string ("CdProfile");
+		for (i = 0; i < CD_PROFILE_ERROR_LAST; i++) {
+			g_dbus_error_register_error (quark,
+						     i,
+						     cd_profile_error_to_string (i));
+		}
+	}
+	return quark;
+}
 
 /**
  * cd_profile_get_scope:
@@ -171,19 +192,21 @@ cd_profile_set_object_path (CdProfile *profile)
 	gchar *path_owner;
 	struct passwd *pw;
 
-	/* make sure object path is sane */
-	path_tmp = cd_main_ensure_dbus_path (profile->priv->id);
 
 	/* append the uid to the object path */
 	pw = getpwuid (profile->priv->owner);
 	if (profile->priv->owner == 0 ||
 	    g_strcmp0 (pw->pw_name, DAEMON_USER) == 0) {
-		path_owner = g_strdup (path_tmp);
+		path_tmp = g_strdup (profile->priv->id);
 	} else {
-		path_owner = g_strdup_printf ("%s_%s",
-					      path_tmp,
-					      pw->pw_name);
+		path_tmp = g_strdup_printf ("%s_%s_%d",
+					    profile->priv->id,
+					    pw->pw_name,
+					    profile->priv->owner);
 	}
+	/* make sure object path is sane */
+	path_owner = cd_main_ensure_dbus_path (path_tmp);
+
 	profile->priv->object_path = g_build_filename (COLORD_DBUS_PATH,
 						       "profiles",
 						       path_owner,
@@ -302,8 +325,8 @@ cd_profile_install_system_wide (CdProfile *profile, GError **error)
 	if (priv->filename == NULL) {
 		ret = FALSE;
 		g_set_error (error,
-			     CD_MAIN_ERROR,
-			     CD_MAIN_ERROR_FAILED,
+			     CD_PROFILE_ERROR,
+			     CD_PROFILE_ERROR_INTERNAL,
 			     "icc filename not set");
 		goto out;
 	}
@@ -313,8 +336,8 @@ cd_profile_install_system_wide (CdProfile *profile, GError **error)
 			      CD_SYSTEM_PROFILES_DIR)) {
 		ret = FALSE;
 		g_set_error (error,
-			     CD_MAIN_ERROR,
-			     CD_MAIN_ERROR_FAILED,
+			     CD_PROFILE_ERROR,
+			     CD_PROFILE_ERROR_ALREADY_INSTALLED,
 			     "file %s already installed in /var",
 			     priv->filename);
 		goto out;
@@ -325,8 +348,8 @@ cd_profile_install_system_wide (CdProfile *profile, GError **error)
 			      DATADIR "/color")) {
 		ret = FALSE;
 		g_set_error (error,
-			     CD_MAIN_ERROR,
-			     CD_MAIN_ERROR_FAILED,
+			     CD_PROFILE_ERROR,
+			     CD_PROFILE_ERROR_ALREADY_INSTALLED,
 			     "file %s already installed in /usr",
 			     priv->filename);
 		goto out;
@@ -353,8 +376,8 @@ cd_profile_install_system_wide (CdProfile *profile, GError **error)
 		if (!ret) {
 			ret = FALSE;
 			g_set_error (error,
-				     CD_MAIN_ERROR,
-				     CD_MAIN_ERROR_FAILED,
+				     CD_PROFILE_ERROR,
+				     CD_PROFILE_ERROR_FAILED_TO_WRITE,
 				     "failed to write mapped file %s: %s",
 				     priv->filename,
 				     error_local->message);
@@ -368,8 +391,8 @@ cd_profile_install_system_wide (CdProfile *profile, GError **error)
 		if (!ret) {
 			ret = FALSE;
 			g_set_error (error,
-				     CD_MAIN_ERROR,
-				     CD_MAIN_ERROR_FAILED,
+				     CD_PROFILE_ERROR,
+				     CD_PROFILE_ERROR_FAILED_TO_WRITE,
 				     "failed to copy %s: %s",
 				     priv->filename,
 				     error_local->message);
@@ -485,7 +508,7 @@ out:
  * cd_profile_dbus_method_call:
  **/
 static void
-cd_profile_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
+cd_profile_dbus_method_call (GDBusConnection *connection, const gchar *sender,
 			    const gchar *object_path, const gchar *interface_name,
 			    const gchar *method_name, GVariant *parameters,
 			    GDBusMethodInvocation *invocation, gpointer user_data)
@@ -500,10 +523,18 @@ cd_profile_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 	if (g_strcmp0 (method_name, "SetProperty") == 0) {
 
 		/* require auth */
-		ret = cd_main_sender_authenticated (invocation,
-						    "org.freedesktop.color-manager.modify-profile");
-		if (!ret)
+		ret = cd_main_sender_authenticated (connection,
+						    sender,
+						    "org.freedesktop.color-manager.modify-profile",
+						    &error);
+		if (!ret) {
+			g_dbus_method_invocation_return_error (invocation,
+							       CD_PROFILE_ERROR,
+							       CD_PROFILE_ERROR_FAILED_TO_AUTHENTICATE,
+							       "%s", error->message);
+			g_error_free (error);
 			goto out;
+		}
 
 		/* set, and parse */
 		g_variant_get (parameters, "(&s&s)",
@@ -516,10 +547,8 @@ cd_profile_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 							property_value,
 							&error);
 		if (!ret) {
-			g_dbus_method_invocation_return_error (invocation,
-							       CD_MAIN_ERROR,
-							       CD_MAIN_ERROR_FAILED,
-							       "%s", error->message);
+			g_dbus_method_invocation_return_gerror (invocation,
+								error);
 			g_error_free (error);
 			goto out;
 		}
@@ -533,18 +562,24 @@ cd_profile_dbus_method_call (GDBusConnection *connection_, const gchar *sender,
 		/* require auth */
 		g_debug ("CdProfile %s:InstallSystemWide() on %s",
 			 sender, profile->priv->object_path);
-		ret = cd_main_sender_authenticated (invocation,
-						    "org.freedesktop.color-manager.install-system-wide");
-		if (!ret)
+		ret = cd_main_sender_authenticated (connection,
+						    sender,
+						    "org.freedesktop.color-manager.install-system-wide",
+						    &error);
+		if (!ret) {
+			g_dbus_method_invocation_return_error (invocation,
+							       CD_PROFILE_ERROR,
+							       CD_PROFILE_ERROR_FAILED_TO_AUTHENTICATE,
+							       "%s", error->message);
+			g_error_free (error);
 			goto out;
+		}
 
 		/* copy systemwide */
 		ret = cd_profile_install_system_wide (profile, &error);
 		if (!ret) {
-			g_dbus_method_invocation_return_error (invocation,
-							       CD_MAIN_ERROR,
-							       CD_MAIN_ERROR_FAILED,
-							       "%s", error->message);
+			g_dbus_method_invocation_return_gerror (invocation,
+								error);
 			g_error_free (error);
 			goto out;
 		}
@@ -624,6 +659,15 @@ cd_profile_dbus_get_property (GDBusConnection *connection_, const gchar *sender,
 		retval = g_variant_new_uint32 (profile->priv->owner);
 		goto out;
 	}
+	if (g_strcmp0 (property_name, CD_PROFILE_PROPERTY_WARNINGS) == 0) {
+		if (profile->priv->warnings != NULL) {
+			retval = g_variant_new_strv ((const gchar * const *) profile->priv->warnings, -1);
+		} else {
+			const gchar *tmp[] = { NULL };
+			retval = g_variant_new_strv (tmp, -1);
+		}
+		goto out;
+	}
 
 	g_critical ("failed to set property %s", property_name);
 out:
@@ -659,8 +703,8 @@ cd_profile_register_object (CdProfile *profile,
 		&error_local); /* GError** */
 	if (profile->priv->registration_id == 0) {
 		g_set_error (error,
-			     CD_MAIN_ERROR,
-			     CD_MAIN_ERROR_FAILED,
+			     CD_PROFILE_ERROR,
+			     CD_PROFILE_ERROR_INTERNAL,
 			     "failed to register object: %s",
 			     error_local->message);
 		g_error_free (error_local);
@@ -712,7 +756,7 @@ cd_profile_get_precooked_md5 (cmsHPROFILE lcms_profile)
 
 	/* check to see if we have a pre-cooked MD5 */
 	cmsGetHeaderProfileID (lcms_profile, profile_id);
-	for (i=0; i<16; i++) {
+	for (i = 0; i < 16; i++) {
 		if (profile_id[i] != 0) {
 			md5_precooked = TRUE;
 			break;
@@ -723,7 +767,7 @@ cd_profile_get_precooked_md5 (cmsHPROFILE lcms_profile)
 
 	/* convert to a hex string */
 	md5 = g_new0 (gchar, 32 + 1);
-	for (i=0; i<16; i++)
+	for (i = 0; i < 16; i++)
 		g_snprintf (md5 + i*2, 3, "%02x", profile_id[i]);
 out:
 	return md5;
@@ -808,6 +852,349 @@ out:
 }
 
 /**
+ * cd_profile_check_vcgt:
+ **/
+static CdProfileWarning
+cd_profile_check_vcgt (cmsHPROFILE profile)
+{
+	CdProfileWarning warning = CD_PROFILE_WARNING_NONE;
+	cmsFloat32Number in;
+	cmsFloat32Number now[3];
+	cmsFloat32Number previous[3] = { -1, -1, -1};
+	const cmsToneCurve **vcgt;
+	const guint size = 32;
+	guint i;
+
+	/* does profile have monotonic VCGT */
+	vcgt = cmsReadTag (profile, cmsSigVcgtTag);
+	if (vcgt == NULL)
+		goto out;
+	for (i = 0; i < size; i++) {
+		in = (gdouble) i / (gdouble) (size - 1);
+		now[0] = cmsEvalToneCurveFloat(vcgt[0], in);
+		now[1] = cmsEvalToneCurveFloat(vcgt[1], in);
+		now[2] = cmsEvalToneCurveFloat(vcgt[2], in);
+
+		/* check VCGT is increasing */
+		if (i > 0) {
+			if (now[0] < previous[0] ||
+			    now[1] < previous[1] ||
+			    now[2] < previous[2]) {
+				warning = CD_PROFILE_WARNING_VCGT_NON_MONOTONIC;
+				goto out;
+			}
+		}
+		previous[0] = now[0];
+		previous[1] = now[1];
+		previous[2] = now[2];
+	}
+out:
+	return warning;
+}
+
+/**
+ * cd_profile_check_scum_dot:
+ **/
+static CdProfileWarning
+cd_profile_check_scum_dot (cmsHPROFILE profile)
+{
+	CdProfileWarning warning = CD_PROFILE_WARNING_NONE;
+	cmsCIELab white;
+	cmsHPROFILE profile_lab;
+	cmsHTRANSFORM transform;
+	guint8 rgb[3] = { 0, 0, 0 };
+
+	/* do Lab to RGB transform of 100,0,0 */
+	profile_lab = cmsCreateLab2Profile (cmsD50_xyY ());
+	transform = cmsCreateTransform (profile_lab, TYPE_Lab_DBL,
+					profile, TYPE_RGB_8,
+					INTENT_RELATIVE_COLORIMETRIC,
+					cmsFLAGS_NOOPTIMIZE);
+	if (transform == NULL) {
+		g_warning ("failed to setup Lab -> RGB transform");
+		goto out;
+	}
+	white.L = 100.0;
+	white.a = 0.0;
+	white.b = 0.0;
+	cmsDoTransform (transform, &white, rgb, 1);
+	if (rgb[0] != 255 || rgb[1] != 255 || rgb[2] != 255) {
+		warning = CD_PROFILE_WARNING_SCUM_DOT;
+		goto out;
+	}
+out:
+	if (profile_lab != NULL)
+		cmsCloseProfile (profile_lab);
+	if (transform != NULL)
+		cmsDeleteTransform (transform);
+	return warning;
+}
+
+/**
+ * cd_profile_check_primaries:
+ **/
+static CdProfileWarning
+cd_profile_check_primaries (cmsHPROFILE profile)
+{
+	CdProfileWarning warning = CD_PROFILE_WARNING_NONE;
+	cmsCIEXYZ *tmp;
+
+	/* check red */
+	tmp = cmsReadTag (profile, cmsSigRedColorantTag);
+	if (tmp == NULL)
+		goto out;
+	if (tmp->X < 0.0f || tmp->Y < 0.0f || tmp->Z < 0.0f) {
+		warning = CD_PROFILE_WARNING_PRIMARIES_INVALID;
+		goto out;
+	}
+
+	/* check green */
+	tmp = cmsReadTag (profile, cmsSigGreenColorantTag);
+	if (tmp == NULL)
+		goto out;
+	if (tmp->X < 0.0f || tmp->Y < 0.0f || tmp->Z < 0.0f) {
+		warning = CD_PROFILE_WARNING_PRIMARIES_INVALID;
+		goto out;
+	}
+
+	/* check blue */
+	tmp = cmsReadTag (profile, cmsSigBlueColorantTag);
+	if (tmp == NULL)
+		goto out;
+	if (tmp->X < 0.0f || tmp->Y < 0.0f || tmp->Z < 0.0f) {
+		warning = CD_PROFILE_WARNING_PRIMARIES_INVALID;
+		goto out;
+	}
+out:
+	return warning;
+}
+
+/**
+ * cd_profile_check_gray_axis:
+ **/
+static CdProfileWarning
+cd_profile_check_gray_axis (cmsHPROFILE profile)
+{
+	CdProfileWarning warning = CD_PROFILE_WARNING_NONE;
+	cmsCIELab gray[16];
+	cmsHPROFILE profile_lab = NULL;
+	cmsHTRANSFORM transform = NULL;
+	const gdouble gray_error = 5.0f;
+	gdouble last_l = -1;
+	guint8 rgb[3*16];
+	guint8 tmp;
+	guint i;
+
+	/* only do this for display profiles */
+	if (cmsGetDeviceClass (profile) != cmsSigDisplayClass)
+		goto out;
+
+	/* do Lab to RGB transform of 100,0,0 */
+	profile_lab = cmsCreateLab2Profile (cmsD50_xyY ());
+	transform = cmsCreateTransform (profile, TYPE_RGB_8,
+					profile_lab, TYPE_Lab_DBL,
+					INTENT_RELATIVE_COLORIMETRIC,
+					cmsFLAGS_NOOPTIMIZE);
+	if (transform == NULL) {
+		g_warning ("failed to setup RGB -> Lab transform");
+		goto out;
+	}
+
+	/* run a 16 item gray ramp through the transform */
+	for (i = 0; i < 16; i++) {
+		tmp = (255.0f / (16.0f - 1)) * i;
+		rgb[(i * 3) + 0] = tmp;
+		rgb[(i * 3) + 1] = tmp;
+		rgb[(i * 3) + 2] = tmp;
+	}
+	cmsDoTransform (transform, rgb, gray, 16);
+
+	/* check a/b is small */
+	for (i = 0; i < 16; i++) {
+		if (gray[i].a > gray_error ||
+		    gray[i].b > gray_error) {
+			warning = CD_PROFILE_WARNING_GRAY_AXIS_INVALID;
+			goto out;
+		}
+	}
+
+	/* check it's monotonic */
+	for (i = 0; i < 16; i++) {
+		if (last_l > 0 && gray[i].L < last_l) {
+			warning = CD_PROFILE_WARNING_GRAY_AXIS_NON_MONOTONIC;
+			goto out;
+		}
+		last_l = gray[i].L;
+	}
+out:
+	if (profile_lab != NULL)
+		cmsCloseProfile (profile_lab);
+	if (transform != NULL)
+		cmsDeleteTransform (transform);
+	return warning;
+}
+
+/**
+ * cd_profile_check_d50_whitepoint:
+ **/
+static CdProfileWarning
+cd_profile_check_d50_whitepoint (cmsHPROFILE profile)
+{
+	CdProfileWarning warning = CD_PROFILE_WARNING_NONE;
+	cmsCIExyY tmp;
+	cmsCIEXYZ additive;
+	cmsCIEXYZ primaries[4];
+	cmsHPROFILE profile_lab;
+	cmsHTRANSFORM transform;
+	const cmsCIEXYZ *d50;
+	const gdouble rgb_error = 0.05;
+	const gdouble additive_error = 0.1f;
+	const gdouble white_error = 0.05;
+	guint8 rgb[3*4];
+	guint i;
+
+	/* do Lab to RGB transform to get primaries */
+	profile_lab = cmsCreateXYZProfile ();
+	transform = cmsCreateTransform (profile, TYPE_RGB_8,
+					profile_lab, TYPE_XYZ_DBL,
+					INTENT_RELATIVE_COLORIMETRIC,
+					cmsFLAGS_NOOPTIMIZE);
+	if (transform == NULL) {
+		g_warning ("failed to setup RGB -> XYZ transform");
+		goto out;
+	}
+
+	/* Run RGBW through the transform */
+	rgb[0 + 0] = 255;
+	rgb[0 + 1] = 0;
+	rgb[0 + 2] = 0;
+	rgb[3 + 0] = 0;
+	rgb[3 + 1] = 255;
+	rgb[3 + 2] = 0;
+	rgb[6 + 0] = 0;
+	rgb[6 + 1] = 0;
+	rgb[6 + 2] = 255;
+	rgb[9 + 0] = 255;
+	rgb[9 + 1] = 255;
+	rgb[9 + 2] = 255;
+	cmsDoTransform (transform, rgb, primaries, 4);
+
+	/* check red is in gamut */
+	cmsXYZ2xyY (&tmp, &primaries[0]);
+	if (tmp.x - 0.735 > rgb_error || 0.265 - tmp.y > rgb_error) {
+		warning = CD_PROFILE_WARNING_PRIMARIES_UNLIKELY;
+		goto out;
+	}
+
+	/* check green is in gamut */
+	cmsXYZ2xyY (&tmp, &primaries[1]);
+	if (0.160 - tmp.x > rgb_error || tmp.y - 0.840 > rgb_error) {
+		warning = CD_PROFILE_WARNING_PRIMARIES_UNLIKELY;
+		goto out;
+	}
+
+	/* check blue is in gamut */
+	cmsXYZ2xyY (&tmp, &primaries[2]);
+	if (0.037 - tmp.x > rgb_error || tmp.y - 0.358 > rgb_error) {
+		warning = CD_PROFILE_WARNING_PRIMARIES_UNLIKELY;
+		goto out;
+	}
+
+	/* only do the rest for display profiles */
+	if (cmsGetDeviceClass (profile) != cmsSigDisplayClass)
+		goto out;
+
+	/* check white is D50 */
+	d50 = cmsD50_XYZ();
+	if (fabs (primaries[3].X - d50->X) > white_error ||
+	    fabs (primaries[3].Y - d50->Y) > white_error ||
+	    fabs (primaries[3].Z - d50->Z) > white_error) {
+		warning = CD_PROFILE_WARNING_WHITEPOINT_INVALID;
+		goto out;
+	}
+
+	/* check primaries add up to D50 */
+	additive.X = 0;
+	additive.Y = 0;
+	additive.Z = 0;
+	for (i = 0; i < 3; i++) {
+		additive.X += primaries[i].X;
+		additive.Y += primaries[i].Y;
+		additive.Z += primaries[i].Z;
+	}
+	if (fabs (additive.X - d50->X) > additive_error ||
+	    fabs (additive.Y - d50->Y) > additive_error ||
+	    fabs (additive.Z - d50->Z) > additive_error) {
+		warning = CD_PROFILE_WARNING_PRIMARIES_NON_ADDITIVE;
+		goto out;
+	}
+out:
+	if (profile_lab != NULL)
+		cmsCloseProfile (profile_lab);
+	if (transform != NULL)
+		cmsDeleteTransform (transform);
+	return warning;
+}
+
+/**
+ * cd_profile_get_warnings:
+ **/
+static GArray *
+cd_profile_get_warnings (cmsHPROFILE profile)
+{
+	GArray *flags;
+	gboolean ret;
+	gchar ascii_name[1024];
+	CdProfileWarning warning;
+
+	flags = g_array_new (FALSE, FALSE, sizeof (CdProfileWarning));
+
+	/* check that the profile has a description and a copyright */
+	ret = cmsGetProfileInfoASCII (profile, cmsInfoDescription, "en", "US", ascii_name, 1024);
+	if (!ret || ascii_name[0] == '\0') {
+		warning = CD_PROFILE_WARNING_DESCRIPTION_MISSING;
+		g_array_append_val (flags, warning);
+	}
+	ret = cmsGetProfileInfoASCII (profile, cmsInfoCopyright, "en", "US", ascii_name, 1024);
+	if (!ret || ascii_name[0] == '\0') {
+		warning = CD_PROFILE_WARNING_COPYRIGHT_MISSING;
+		g_array_append_val (flags, warning);
+	}
+
+	/* not a RGB space */
+	if (cmsGetColorSpace (profile) != cmsSigRgbData)
+		goto out;
+
+	/* does profile have monotonic VCGT */
+	warning = cd_profile_check_vcgt (profile);
+	if (warning != CD_PROFILE_WARNING_NONE)
+		g_array_append_val (flags, warning);
+
+	/* if Lab 100,0,0 does not map to RGB 255,255,255 for relative
+	 * colorimetric then white it will not work on printers */
+	warning = cd_profile_check_scum_dot (profile);
+	if (warning != CD_PROFILE_WARNING_NONE)
+		g_array_append_val (flags, warning);
+
+	/* gray should give low a/b and should be monotonic */
+	warning = cd_profile_check_gray_axis (profile);
+	if (warning != CD_PROFILE_WARNING_NONE)
+		g_array_append_val (flags, warning);
+
+	/* tristimulus values cannot be negative */
+	warning = cd_profile_check_primaries (profile);
+	if (warning != CD_PROFILE_WARNING_NONE)
+		g_array_append_val (flags, warning);
+
+	/* check whitepoint works out to D50 */
+	warning = cd_profile_check_d50_whitepoint (profile);
+	if (warning != CD_PROFILE_WARNING_NONE)
+		g_array_append_val (flags, warning);
+out:
+	return flags;
+}
+
+/**
  * cd_profile_set_from_profile:
  **/
 static gboolean
@@ -815,12 +1202,15 @@ cd_profile_set_from_profile (CdProfile *profile,
 			     cmsHPROFILE lcms_profile,
 			     GError **error)
 {
+	CdProfilePrivate *priv = profile->priv;
+	CdProfileWarning warning;
 	cmsColorSpaceSignature color_space;
+	const gchar *value;
+	GArray *flags = NULL;
 	gboolean ret = FALSE;
 	gchar text[1024];
+	guint i;
 	struct tm created;
-	const gchar *value;
-	CdProfilePrivate *priv = profile->priv;
 
 	/* get the description as the title */
 	cmsGetProfileInfoASCII (lcms_profile,
@@ -930,8 +1320,20 @@ cd_profile_set_from_profile (CdProfile *profile,
 	/* get the checksum for the profile if we can */
 	priv->checksum = cd_profile_get_precooked_md5 (lcms_profile);
 
+	/* get any warnings for the profile */
+	flags = cd_profile_get_warnings (lcms_profile);
+	priv->warnings = g_new0 (gchar *, flags->len + 1);
+	if (flags->len > 0) {
+		for (i = 0; i < flags->len; i++) {
+			warning = g_array_index (flags, CdProfileWarning, i);
+			priv->warnings[i] = g_strdup (cd_profile_warning_to_string (warning));
+		}
+	}
+
 	/* success */
 	ret = TRUE;
+	if (flags != NULL)
+		g_array_unref (flags);
 	return ret;
 }
 
@@ -1021,8 +1423,8 @@ cd_profile_set_filename (CdProfile *profile,
 		/* we're not allowing the dameon to open the file */
 		ret = FALSE;
 		g_set_error (error,
-			     CD_MAIN_ERROR,
-			     CD_MAIN_ERROR_FAILED,
+			     CD_PROFILE_ERROR,
+			     CD_PROFILE_ERROR_INTERNAL,
 			     "Failed to open %s as client did not send FD and "
 			     "daemon is not compiled with --enable-fd-fallback",
 			     filename);
@@ -1034,8 +1436,8 @@ cd_profile_set_filename (CdProfile *profile,
 	lcms_profile = cmsOpenProfileFromFile (filename, "r");
 	if (lcms_profile == NULL) {
 		g_set_error (error,
-			     CD_MAIN_ERROR,
-			     CD_MAIN_ERROR_FAILED,
+			     CD_PROFILE_ERROR,
+			     CD_PROFILE_ERROR_FAILED_TO_PARSE,
 			     "failed to parse %s",
 			     filename);
 		goto out;
@@ -1099,8 +1501,8 @@ cd_profile_set_fd (CdProfile *profile,
 	/* check we're not already set */
 	if (priv->kind != CD_PROFILE_KIND_UNKNOWN) {
 		g_set_error (error,
-			     CD_MAIN_ERROR,
-			     CD_MAIN_ERROR_FAILED,
+			     CD_PROFILE_ERROR,
+			     CD_PROFILE_ERROR_INTERNAL,
 			     "profile '%s' already set",
 			     priv->object_path);
 		goto out;
@@ -1110,8 +1512,8 @@ cd_profile_set_fd (CdProfile *profile,
 	stream = fdopen (fd, "r");
 	if (stream == NULL) {
 		g_set_error (error,
-			     CD_MAIN_ERROR,
-			     CD_MAIN_ERROR_FAILED,
+			     CD_PROFILE_ERROR,
+			     CD_PROFILE_ERROR_FAILED_TO_READ,
 			     "failed to open stream from fd %i",
 			     fd);
 		goto out;
@@ -1122,8 +1524,8 @@ cd_profile_set_fd (CdProfile *profile,
 	priv->mapped_file = g_mapped_file_new_from_fd (fd, FALSE, error);
 	if (priv->mapped_file == NULL) {
 		g_set_error (error,
-			     CD_MAIN_ERROR,
-			     CD_MAIN_ERROR_FAILED,
+			     CD_PROFILE_ERROR,
+			     CD_PROFILE_ERROR_FAILED_TO_READ,
 			     "failed to create mapped file from fd %i",
 			     fd);
 		goto out;
@@ -1134,8 +1536,8 @@ cd_profile_set_fd (CdProfile *profile,
 	lcms_profile = cmsOpenProfileFromStream (stream, "r");
 	if (lcms_profile == NULL) {
 		g_set_error_literal (error,
-				     CD_MAIN_ERROR,
-				     CD_MAIN_ERROR_FAILED,
+				     CD_PROFILE_ERROR,
+				     CD_PROFILE_ERROR_FAILED_TO_READ,
 				     "failed to open stream");
 		goto out;
 	}
@@ -1408,6 +1810,7 @@ cd_profile_finalize (GObject *object)
 	g_free (priv->id);
 	g_free (priv->checksum);
 	g_free (priv->object_path);
+	g_strfreev (priv->warnings);
 	g_hash_table_unref (priv->metadata);
 
 	G_OBJECT_CLASS (cd_profile_parent_class)->finalize (object);

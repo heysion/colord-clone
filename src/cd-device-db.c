@@ -24,6 +24,7 @@
 #include <gio/gio.h>
 #include <glib-object.h>
 #include <sqlite3.h>
+#include <syslog.h>
 
 #include "cd-common.h"
 #include "cd-device-db.h"
@@ -65,12 +66,13 @@ cd_device_db_load (CdDeviceDb *ddb,
 		goto out;
 
 	g_debug ("CdDeviceDb: trying to open database '%s'", filename);
+	syslog (LOG_INFO, "Using device database file %s", filename);
 	rc = sqlite3_open (filename, &ddb->priv->db);
 	if (rc != SQLITE_OK) {
 		ret = FALSE;
 		g_set_error (error,
-			     CD_MAIN_ERROR,
-			     CD_MAIN_ERROR_FAILED,
+			     CD_CLIENT_ERROR,
+			     CD_CLIENT_ERROR_INTERNAL,
 			     "Can't open database: %s\n",
 			     sqlite3_errmsg (ddb->priv->db));
 		sqlite3_close (ddb->priv->db);
@@ -91,10 +93,17 @@ cd_device_db_load (CdDeviceDb *ddb,
 			    "device_id TEXT PRIMARY KEY,"
 			    "device TEXT);";
 		sqlite3_exec (ddb->priv->db, statement, NULL, NULL, NULL);
-		statement = "CREATE TABLE properties ("
+	}
+
+	/* check properties version 2 */
+	rc = sqlite3_exec (ddb->priv->db, "SELECT * FROM properties_v2 LIMIT 1",
+			   NULL, NULL, &error_msg);
+	if (rc != SQLITE_OK) {
+		statement = "CREATE TABLE properties_v2 ("
 			    "device_id TEXT,"
 			    "property TEXT,"
-			    "value TEXT);";
+			    "value TEXT,"
+			    "PRIMARY KEY (device_id, property));";
 		sqlite3_exec (ddb->priv->db, statement, NULL, NULL, NULL);
 	}
 out:
@@ -117,14 +126,14 @@ cd_device_db_empty (CdDeviceDb *ddb,
 	g_return_val_if_fail (CD_IS_DEVICE_DB (ddb), FALSE);
 	g_return_val_if_fail (ddb->priv->db != NULL, FALSE);
 
-	statement = "DELETE FROM devices;DELETE FROM properties;";
+	statement = "DELETE FROM devices;DELETE FROM properties_v2;";
 	rc = sqlite3_exec (ddb->priv->db, statement,
 			   NULL, NULL, &error_msg);
 	if (rc != SQLITE_OK) {
 		ret = FALSE;
 		g_set_error (error,
-			     CD_MAIN_ERROR,
-			     CD_MAIN_ERROR_FAILED,
+			     CD_CLIENT_ERROR,
+			     CD_CLIENT_ERROR_INTERNAL,
 			     "SQL error: %s",
 			     error_msg);
 		sqlite3_free (error_msg);
@@ -159,8 +168,8 @@ cd_device_db_add (CdDeviceDb *ddb,
 	rc = sqlite3_exec (ddb->priv->db, statement, NULL, NULL, &error_msg);
 	if (rc != SQLITE_OK) {
 		g_set_error (error,
-			     CD_MAIN_ERROR,
-			     CD_MAIN_ERROR_FAILED,
+			     CD_CLIENT_ERROR,
+			     CD_CLIENT_ERROR_INTERNAL,
 			     "SQL error: %s",
 			     error_msg);
 		sqlite3_free (error_msg);
@@ -190,18 +199,18 @@ cd_device_db_set_property (CdDeviceDb *ddb,
 	g_return_val_if_fail (CD_IS_DEVICE_DB (ddb), FALSE);
 	g_return_val_if_fail (ddb->priv->db != NULL, FALSE);
 
-	g_debug ("CdDeviceDb: add device %s [%s=%s]", device_id, property, value);
-	statement = sqlite3_mprintf ("INSERT INTO properties (device_id, "
-				     "property, value) "
-				     "VALUES ('%q', '%q', '%q')",
+	g_debug ("CdDeviceDb: add device property %s [%s=%s]",
+		 device_id, property, value);
+	statement = sqlite3_mprintf ("INSERT OR REPLACE INTO properties_v2 (device_id, property, value) "
+				     "VALUES ('%q', '%q', '%q');",
 				     device_id, property, value);
 
 	/* insert the entry */
 	rc = sqlite3_exec (ddb->priv->db, statement, NULL, NULL, &error_msg);
 	if (rc != SQLITE_OK) {
 		g_set_error (error,
-			     CD_MAIN_ERROR,
-			     CD_MAIN_ERROR_FAILED,
+			     CD_CLIENT_ERROR,
+			     CD_CLIENT_ERROR_INTERNAL,
 			     "SQL error: %s",
 			     error_msg);
 		sqlite3_free (error_msg);
@@ -238,22 +247,22 @@ cd_device_db_remove (CdDeviceDb *ddb,
 	rc = sqlite3_exec (ddb->priv->db, statement1, NULL, NULL, &error_msg);
 	if (rc != SQLITE_OK) {
 		g_set_error (error,
-			     CD_MAIN_ERROR,
-			     CD_MAIN_ERROR_FAILED,
+			     CD_CLIENT_ERROR,
+			     CD_CLIENT_ERROR_INTERNAL,
 			     "SQL error: %s",
 			     error_msg);
 		sqlite3_free (error_msg);
 		ret = FALSE;
 		goto out;
 	}
-	statement2 = sqlite3_mprintf ("DELETE FROM properties WHERE "
+	statement2 = sqlite3_mprintf ("DELETE FROM properties_v2 WHERE "
 				     "device_id = '%q';",
 				     device_id);
 	rc = sqlite3_exec (ddb->priv->db, statement2, NULL, NULL, &error_msg);
 	if (rc != SQLITE_OK) {
 		g_set_error (error,
-			     CD_MAIN_ERROR,
-			     CD_MAIN_ERROR_FAILED,
+			     CD_CLIENT_ERROR,
+			     CD_CLIENT_ERROR_INTERNAL,
 			     "SQL error: %s",
 			     error_msg);
 		sqlite3_free (error_msg);
@@ -302,7 +311,7 @@ cd_device_db_get_property (CdDeviceDb *ddb,
 	g_return_val_if_fail (ddb->priv->db != NULL, FALSE);
 
 	g_debug ("CdDeviceDb: get property %s for %s", property, device_id);
-	statement = sqlite3_mprintf ("SELECT value FROM properties WHERE "
+	statement = sqlite3_mprintf ("SELECT value FROM properties_v2 WHERE "
 				     "device_id = '%q' AND "
 				     "property = '%q' LIMIT 1;",
 				     device_id, property);
@@ -316,8 +325,8 @@ cd_device_db_get_property (CdDeviceDb *ddb,
 			   &error_msg);
 	if (rc != SQLITE_OK) {
 		g_set_error (error,
-			     CD_MAIN_ERROR,
-			     CD_MAIN_ERROR_FAILED,
+			     CD_CLIENT_ERROR,
+			     CD_CLIENT_ERROR_INTERNAL,
 			     "SQL error: %s",
 			     error_msg);
 		sqlite3_free (error_msg);
@@ -327,8 +336,8 @@ cd_device_db_get_property (CdDeviceDb *ddb,
 	/* never set */
 	if (array_tmp->len == 0) {
 		g_set_error (error,
-			     CD_MAIN_ERROR,
-			     CD_MAIN_ERROR_FAILED,
+			     CD_CLIENT_ERROR,
+			     CD_CLIENT_ERROR_INTERNAL,
 			     "no such property %s for %s",
 			     property, device_id);
 		goto out;
@@ -369,8 +378,8 @@ cd_device_db_get_devices (CdDeviceDb *ddb,
 			   &error_msg);
 	if (rc != SQLITE_OK) {
 		g_set_error (error,
-			     CD_MAIN_ERROR,
-			     CD_MAIN_ERROR_FAILED,
+			     CD_CLIENT_ERROR,
+			     CD_CLIENT_ERROR_INTERNAL,
 			     "SQL error: %s",
 			     error_msg);
 		sqlite3_free (error_msg);
@@ -404,7 +413,7 @@ cd_device_db_get_properties (CdDeviceDb *ddb,
 
 	/* get all the devices */
 	g_debug ("CdDeviceDb: get properties for device %s", device_id);
-	statement = sqlite3_mprintf ("SELECT property FROM properties "
+	statement = sqlite3_mprintf ("SELECT property FROM properties_v2 "
 				     "WHERE device_id = '%q';",
 				     device_id);
 	array_tmp = g_ptr_array_new_with_free_func (g_free);
@@ -415,8 +424,8 @@ cd_device_db_get_properties (CdDeviceDb *ddb,
 			   &error_msg);
 	if (rc != SQLITE_OK) {
 		g_set_error (error,
-			     CD_MAIN_ERROR,
-			     CD_MAIN_ERROR_FAILED,
+			     CD_CLIENT_ERROR,
+			     CD_CLIENT_ERROR_INTERNAL,
 			     "SQL error: %s",
 			     error_msg);
 		sqlite3_free (error_msg);

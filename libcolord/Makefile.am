@@ -5,7 +5,7 @@ INTROSPECTION_SCANNER_ARGS = --add-include-path=$(srcdir)
 INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
 endif
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	$(GLIB_CFLAGS)						\
 	$(LCMS_CFLAGS)						\
 	-I$(top_srcdir)						\
@@ -38,6 +38,7 @@ libcolordbase_include_HEADERS =					\
 	cd-client.h						\
 	cd-client-sync.h					\
 	cd-color.h						\
+	cd-deprecated.h						\
 	cd-device.h						\
 	cd-device-sync.h					\
 	cd-enum.h						\
@@ -54,6 +55,7 @@ libcolord_la_SOURCES =						\
 	cd-client.c						\
 	cd-client-sync.c					\
 	cd-color.c						\
+	cd-deprecated.c						\
 	cd-device.c						\
 	cd-device-sync.c					\
 	cd-enum.c						\
@@ -111,9 +113,9 @@ introspection_sources =						\
 
 Colord-1.0.gir: libcolord.la
 Colord_1_0_gir_INCLUDES = GObject-2.0 Gio-2.0
-Colord_1_0_gir_CFLAGS = $(INCLUDES)
+Colord_1_0_gir_CFLAGS = $(AM_CPPFLAGS) -DCD_DISABLE_DEPRECATED
 Colord_1_0_gir_SCANNERFLAGS = --identifier-prefix=Cd \
-				--symbol-prefix=cd_ \
+				--symbol-prefix=cd \
 				--warn-all \
 				--add-include-path=$(srcdir) \
 				--c-include="colord.h"

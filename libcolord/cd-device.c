@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*-
  *
- * Copyright (C) 2011 Richard Hughes <richard@hughsie.com>
+ * Copyright (C) 2012 Richard Hughes <richard@hughsie.com>
  *
  * Licensed under the GNU Lesser General Public License Version 2.1
  *
@@ -61,6 +61,7 @@ struct _CdDevicePrivate
 	gchar			*id;
 	gchar			*model;
 	gchar			*serial;
+	gchar			*seat;
 	gchar			*format;
 	gchar			*vendor;
 	gchar			**profiling_inhibitors;
@@ -71,6 +72,8 @@ struct _CdDevicePrivate
 	CdColorspace		 colorspace;
 	CdDeviceMode		 mode;
 	CdObjectScope		 scope;
+	gboolean		 enabled;
+	gboolean		 embedded;
 	guint			 owner;
 	GHashTable		*metadata;
 };
@@ -85,6 +88,7 @@ enum {
 	PROP_MODEL,
 	PROP_VENDOR,
 	PROP_SERIAL,
+	PROP_SEAT,
 	PROP_FORMAT,
 	PROP_KIND,
 	PROP_COLORSPACE,
@@ -92,6 +96,8 @@ enum {
 	PROP_SCOPE,
 	PROP_OWNER,
 	PROP_PROFILING_INHIBITORS,
+	PROP_ENABLED,
+	PROP_EMBEDDED,
 	PROP_LAST
 };
 
@@ -207,6 +213,24 @@ cd_device_get_serial (CdDevice *device)
 	g_return_val_if_fail (CD_IS_DEVICE (device), NULL);
 	g_return_val_if_fail (device->priv->proxy != NULL, NULL);
 	return device->priv->serial;
+}
+
+/**
+ * cd_device_get_seat:
+ * @device: a #CdDevice instance.
+ *
+ * Gets the device seat identifier.
+ *
+ * Return value: A string, or %NULL for invalid
+ *
+ * Since: 0.1.24
+ **/
+const gchar *
+cd_device_get_seat (CdDevice *device)
+{
+	g_return_val_if_fail (CD_IS_DEVICE (device), NULL);
+	g_return_val_if_fail (device->priv->proxy != NULL, NULL);
+	return device->priv->seat;
 }
 
 /**
@@ -336,6 +360,43 @@ cd_device_get_mode (CdDevice *device)
 }
 
 /**
+ * cd_device_get_enabled:
+ * @device: a #CdDevice instance.
+ *
+ * Gets the device enabled state.
+ *
+ * Return value: %TRUE if the device is enabled
+ *
+ * Since: 0.1.26
+ **/
+gboolean
+cd_device_get_enabled (CdDevice *device)
+{
+	g_return_val_if_fail (CD_IS_DEVICE (device), FALSE);
+	g_return_val_if_fail (device->priv->proxy != NULL, FALSE);
+	return device->priv->enabled;
+}
+
+/**
+ * cd_device_get_embedded:
+ * @device: a #CdDevice instance.
+ *
+ * Returns if the device is embedded in the computer and cannot be
+ * removed.
+ *
+ * Return value: %TRUE if embedded.
+ *
+ * Since: 0.1.27
+ **/
+gboolean
+cd_device_get_embedded (CdDevice *device)
+{
+	g_return_val_if_fail (CD_IS_DEVICE (device), FALSE);
+	g_return_val_if_fail (device->priv->proxy != NULL, FALSE);
+	return device->priv->embedded;
+}
+
+/**
  * cd_device_get_scope:
  * @device: a #CdDevice instance.
  *
@@ -395,7 +456,8 @@ cd_device_get_profiles (CdDevice *device)
  * cd_device_get_default_profile:
  * @device: a #CdDevice instance.
  *
- * Gets the default device profile.
+ * Gets the default device profile. A profile will not be returned
+ * if the device is being profiled or is disabled.
  *
  * Return value: (transfer full): A #CdProfile's or NULL
  *
@@ -409,6 +471,10 @@ cd_device_get_default_profile (CdDevice *device)
 	if (device->priv->profiles == NULL)
 		return NULL;
 	if (device->priv->profiles->len == 0)
+		return NULL;
+	if (!device->priv->enabled)
+		return NULL;
+	if (g_strv_length (device->priv->profiling_inhibitors) > 0)
 		return NULL;
 	return g_object_ref (g_ptr_array_index (device->priv->profiles, 0));
 }
@@ -429,7 +495,7 @@ cd_device_set_profiles_array_from_variant (CdDevice *device,
 	if (profiles == NULL)
 		goto out;
 	len = g_variant_n_children (profiles);
-	for (i=0; i<len; i++) {
+	for (i = 0; i < len; i++) {
 		g_variant_get_child (profiles, i,
 				     "o", &object_path_tmp);
 		profile_tmp = cd_profile_new_with_object_path (object_path_tmp);
@@ -446,7 +512,8 @@ out:
  *
  * Returns the device metadata.
  *
- * Return value: (transfer full): a #GHashTable, free with g_hash_table_unref().
+ * Return value: (transfer full) (element-type utf8 utf8): a
+ *               #GHashTable.
  *
  * Since: 0.1.5
  **/
@@ -536,7 +603,7 @@ cd_device_dbus_properties_changed_cb (GDBusProxy  *proxy,
 	g_return_if_fail (CD_IS_DEVICE (device));
 
 	len = g_variant_iter_init (&iter, changed_properties);
-	for (i=0; i < len; i++) {
+	for (i = 0; i < len; i++) {
 		g_variant_get_child (changed_properties, i,
 				     "{sv}",
 				     &property_name,
@@ -547,6 +614,9 @@ cd_device_dbus_properties_changed_cb (GDBusProxy  *proxy,
 		} else if (g_strcmp0 (property_name, CD_DEVICE_PROPERTY_SERIAL) == 0) {
 			g_free (device->priv->serial);
 			device->priv->serial = cd_device_get_nullable_str (property_value);
+		} else if (g_strcmp0 (property_name, CD_DEVICE_PROPERTY_SEAT) == 0) {
+			g_free (device->priv->seat);
+			device->priv->seat = cd_device_get_nullable_str (property_value);
 		} else if (g_strcmp0 (property_name, CD_DEVICE_PROPERTY_FORMAT) == 0) {
 			g_free (device->priv->format);
 			device->priv->format = cd_device_get_nullable_str (property_value);
@@ -570,12 +640,18 @@ cd_device_dbus_properties_changed_cb (GDBusProxy  *proxy,
 								   property_value);
 		} else if (g_strcmp0 (property_name, CD_DEVICE_PROPERTY_CREATED) == 0) {
 			device->priv->created = g_variant_get_uint64 (property_value);
+		} else if (g_strcmp0 (property_name, CD_DEVICE_PROPERTY_ENABLED) == 0) {
+			device->priv->enabled = g_variant_get_boolean (property_value);
+		} else if (g_strcmp0 (property_name, CD_DEVICE_PROPERTY_EMBEDDED) == 0) {
+			device->priv->embedded = g_variant_get_boolean (property_value);
 		} else if (g_strcmp0 (property_name, CD_DEVICE_PROPERTY_MODIFIED) == 0) {
 			device->priv->modified = g_variant_get_uint64 (property_value);
 		} else if (g_strcmp0 (property_name, CD_DEVICE_PROPERTY_METADATA) == 0) {
 			cd_device_set_metadata_from_variant (device, property_value);
 		} else if (g_strcmp0 (property_name, CD_DEVICE_PROPERTY_OWNER) == 0) {
 			device->priv->owner = g_variant_get_uint32 (property_value);
+		} else if (g_strcmp0 (property_name, CD_DEVICE_PROPERTY_SCOPE) == 0) {
+			device->priv->scope = cd_object_scope_from_string (g_variant_get_string (property_value, NULL));
 		} else if (g_strcmp0 (property_name, CD_DEVICE_PROPERTY_ID) == 0) {
 			/* ignore this, we don't support it changing */;
 		} else {
@@ -652,11 +728,14 @@ cd_device_connect_cb (GObject *source_object,
 	GVariant *kind = NULL;
 	GVariant *model = NULL;
 	GVariant *serial = NULL;
+	GVariant *seat = NULL;
 	GVariant *format = NULL;
 	GVariant *vendor = NULL;
 	GVariant *profiling_inhibitors = NULL;
 	GVariant *colorspace = NULL;
 	GVariant *scope = NULL;
+	GVariant *enabled = NULL;
+	GVariant *embedded = NULL;
 	GVariant *owner = NULL;
 	GVariant *mode = NULL;
 	GVariant *profiles = NULL;
@@ -670,7 +749,7 @@ cd_device_connect_cb (GObject *source_object,
 	if (device->priv->proxy == NULL) {
 		g_simple_async_result_set_error (res_source,
 						 CD_DEVICE_ERROR,
-						 CD_DEVICE_ERROR_FAILED,
+						 CD_DEVICE_ERROR_INTERNAL,
 						 "Failed to connect to device %s: %s",
 						 cd_device_get_object_path (device),
 						 error->message);
@@ -688,7 +767,7 @@ cd_device_connect_cb (GObject *source_object,
 	if (id == NULL) {
 		g_simple_async_result_set_error (res_source,
 						 CD_DEVICE_ERROR,
-						 CD_DEVICE_ERROR_FAILED,
+						 CD_DEVICE_ERROR_INTERNAL,
 						 "Failed to connect to missing device %s",
 						 cd_device_get_object_path (device));
 		goto out;
@@ -715,6 +794,12 @@ cd_device_connect_cb (GObject *source_object,
 		device->priv->scope =
 			cd_object_scope_from_string (g_variant_get_string (scope, NULL));
 
+	/* get enabled */
+	enabled = g_dbus_proxy_get_cached_property (device->priv->proxy,
+						    CD_DEVICE_PROPERTY_ENABLED);
+	if (enabled != NULL)
+		device->priv->enabled = g_variant_get_boolean (enabled);
+
 	/* get owner */
 	owner = g_dbus_proxy_get_cached_property (device->priv->proxy,
 						  CD_DEVICE_PROPERTY_OWNER);
@@ -739,6 +824,12 @@ cd_device_connect_cb (GObject *source_object,
 						   CD_DEVICE_PROPERTY_SERIAL);
 	if (serial != NULL)
 		device->priv->serial = cd_device_get_nullable_str (serial);
+
+	/* get seat */
+	seat = g_dbus_proxy_get_cached_property (device->priv->proxy,
+						 CD_DEVICE_PROPERTY_SEAT);
+	if (seat != NULL)
+		device->priv->seat = cd_device_get_nullable_str (seat);
 
 	/* get format */
 	format = g_dbus_proxy_get_cached_property (device->priv->proxy,
@@ -775,6 +866,12 @@ cd_device_connect_cb (GObject *source_object,
 						     CD_DEVICE_PROPERTY_PROFILES);
 	cd_device_set_profiles_array_from_variant (device, profiles);
 
+	/* get embedded */
+	embedded = g_dbus_proxy_get_cached_property (device->priv->proxy,
+						     CD_DEVICE_PROPERTY_EMBEDDED);
+	if (embedded != NULL)
+		device->priv->embedded = g_variant_get_boolean (embedded);
+
 	/* get metadata */
 	metadata = g_dbus_proxy_get_cached_property (device->priv->proxy,
 						     CD_DEVICE_PROPERTY_METADATA);
@@ -806,12 +903,18 @@ out:
 		g_variant_unref (profiling_inhibitors);
 	if (serial != NULL)
 		g_variant_unref (serial);
+	if (seat != NULL)
+		g_variant_unref (seat);
 	if (format != NULL)
 		g_variant_unref (format);
 	if (colorspace != NULL)
 		g_variant_unref (colorspace);
 	if (scope != NULL)
 		g_variant_unref (scope);
+	if (enabled != NULL)
+		g_variant_unref (enabled);
+	if (embedded != NULL)
+		g_variant_unref (embedded);
 	if (owner != NULL)
 		g_variant_unref (owner);
 	if (mode != NULL)
@@ -907,6 +1010,29 @@ cd_device_set_property_finish (CdDevice *device,
 	return g_simple_async_result_get_op_res_gboolean (simple);
 }
 
+/**
+ * cd_device_fixup_dbus_error:
+ **/
+static void
+cd_device_fixup_dbus_error (GError *error)
+{
+	gchar *name = NULL;
+
+	g_return_if_fail (error != NULL);
+
+	/* is a remote error? */
+	if (!g_dbus_error_is_remote_error (error))
+		goto out;
+
+	/* parse the remote error */
+	name = g_dbus_error_get_remote_error (error);
+	error->domain = CD_DEVICE_ERROR;
+	error->code = cd_device_error_from_string (name);
+	g_dbus_error_strip_remote_error (error);
+out:
+	g_free (name);
+}
+
 static void
 cd_device_set_property_cb (GObject *source_object,
 			    GAsyncResult *res,
@@ -920,11 +1046,8 @@ cd_device_set_property_cb (GObject *source_object,
 					   res,
 					   &error);
 	if (result == NULL) {
-		g_simple_async_result_set_error (res_source,
-						 CD_DEVICE_ERROR,
-						 CD_DEVICE_ERROR_FAILED,
-						 "Failed to SetProperty: %s",
-						 error->message);
+		cd_device_fixup_dbus_error (error);
+		g_simple_async_result_set_from_error (res_source, error);
 		g_error_free (error);
 		goto out;
 	}
@@ -1026,11 +1149,8 @@ cd_device_add_profile_cb (GObject *source_object,
 					   res,
 					   &error);
 	if (result == NULL) {
-		g_simple_async_result_set_error (res_source,
-						 CD_DEVICE_ERROR,
-						 CD_DEVICE_ERROR_FAILED,
-						 "Failed to AddProfile: %s",
-						 error->message);
+		cd_device_fixup_dbus_error (error);
+		g_simple_async_result_set_from_error (res_source, error);
 		g_error_free (error);
 		goto out;
 	}
@@ -1132,11 +1252,8 @@ cd_device_remove_profile_cb (GObject *source_object,
 					   res,
 					   &error);
 	if (result == NULL) {
-		g_simple_async_result_set_error (res_source,
-						 CD_DEVICE_ERROR,
-						 CD_DEVICE_ERROR_FAILED,
-						 "Failed to RemoveProfile: %s",
-						 error->message);
+		cd_device_fixup_dbus_error (error);
+		g_simple_async_result_set_from_error (res_source, error);
 		g_error_free (error);
 		goto out;
 	}
@@ -1235,11 +1352,8 @@ cd_device_make_profile_default_cb (GObject *source_object,
 					   res,
 					   &error);
 	if (result == NULL) {
-		g_simple_async_result_set_error (res_source,
-						 CD_DEVICE_ERROR,
-						 CD_DEVICE_ERROR_FAILED,
-						 "Failed to MakeProfileDefault: %s",
-						 error->message);
+		cd_device_fixup_dbus_error (error);
+		g_simple_async_result_set_from_error (res_source, error);
 		g_error_free (error);
 		goto out;
 	}
@@ -1338,11 +1452,8 @@ cd_device_profiling_inhibit_cb (GObject *source_object,
 					   res,
 					   &error);
 	if (result == NULL) {
-		g_simple_async_result_set_error (res_source,
-						 CD_DEVICE_ERROR,
-						 CD_DEVICE_ERROR_FAILED,
-						 "Failed to ProfilingInhibit: %s",
-						 error->message);
+		cd_device_fixup_dbus_error (error);
+		g_simple_async_result_set_from_error (res_source, error);
 		g_error_free (error);
 		goto out;
 	}
@@ -1438,11 +1549,8 @@ cd_device_profiling_uninhibit_cb (GObject *source_object,
 					   res,
 					   &error);
 	if (result == NULL) {
-		g_simple_async_result_set_error (res_source,
-						 CD_DEVICE_ERROR,
-						 CD_DEVICE_ERROR_FAILED,
-						 "Failed to ProfilingUninhibit: %s",
-						 error->message);
+		cd_device_fixup_dbus_error (error);
+		g_simple_async_result_set_from_error (res_source, error);
 		g_error_free (error);
 		goto out;
 	}
@@ -1540,11 +1648,8 @@ cd_device_get_profile_for_qualifiers_cb (GObject *source_object,
 					   res,
 					   &error);
 	if (result == NULL) {
-		g_simple_async_result_set_error (res_source,
-						 CD_DEVICE_ERROR,
-						 CD_DEVICE_ERROR_FAILED,
-						 "Failed to GetProfileForQualifiers: %s",
-						 error->message);
+		cd_device_fixup_dbus_error (error);
+		g_simple_async_result_set_from_error (res_source, error);
 		g_error_free (error);
 		goto out;
 	}
@@ -1596,7 +1701,7 @@ cd_device_get_profile_for_qualifiers (CdDevice *device,
 
 	/* squash char** into an array of strings */
 	g_variant_builder_init (&builder, G_VARIANT_TYPE ("as"));
-	for (i=0; qualifiers[i] != NULL; i++)
+	for (i = 0; qualifiers[i] != NULL; i++)
 		g_variant_builder_add (&builder, "s", qualifiers[i]);
 
 	res = g_simple_async_result_new (G_OBJECT (device),
@@ -1661,11 +1766,8 @@ cd_device_get_profile_relation_cb (GObject *source_object,
 					   res,
 					   &error);
 	if (result == NULL) {
-		g_simple_async_result_set_error (res_source,
-						 CD_DEVICE_ERROR,
-						 CD_DEVICE_ERROR_FAILED,
-						 "Failed to GetProfileRelation: %s",
-						 error->message);
+		cd_device_fixup_dbus_error (error);
+		g_simple_async_result_set_from_error (res_source, error);
 		g_error_free (error);
 		goto out;
 	}
@@ -1721,6 +1823,104 @@ cd_device_get_profile_relation (CdDevice *device,
 			   -1,
 			   cancellable,
 			   cd_device_get_profile_relation_cb,
+			   res);
+}
+
+/**********************************************************************/
+
+/**
+ * cd_device_set_enabled_finish:
+ * @device: a #CdDevice instance.
+ * @res: the #GAsyncResult
+ * @error: A #GError or %NULL
+ *
+ * Gets the result from the asynchronous function.
+ *
+ * Return value: success
+ *
+ * Since: 0.1.26
+ **/
+gboolean
+cd_device_set_enabled_finish (CdDevice *device,
+			      GAsyncResult *res,
+			      GError **error)
+{
+	GSimpleAsyncResult *simple;
+
+	g_return_val_if_fail (CD_IS_DEVICE (device), FALSE);
+	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), FALSE);
+	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+	simple = G_SIMPLE_ASYNC_RESULT (res);
+	if (g_simple_async_result_propagate_error (simple, error))
+		return FALSE;
+
+	return g_simple_async_result_get_op_res_gboolean (simple);
+}
+
+static void
+cd_device_set_enabled_cb (GObject *source_object,
+				   GAsyncResult *res,
+				   gpointer user_data)
+{
+	GError *error = NULL;
+	GVariant *result;
+	GSimpleAsyncResult *res_source = G_SIMPLE_ASYNC_RESULT (user_data);
+
+	result = g_dbus_proxy_call_finish (G_DBUS_PROXY (source_object),
+					   res,
+					   &error);
+	if (result == NULL) {
+		cd_device_fixup_dbus_error (error);
+		g_simple_async_result_set_from_error (res_source, error);
+		g_error_free (error);
+		goto out;
+	}
+
+	/* success */
+	g_simple_async_result_set_op_res_gboolean (res_source, TRUE);
+	g_variant_unref (result);
+out:
+	g_simple_async_result_complete_in_idle (res_source);
+	g_object_unref (res_source);
+}
+
+/**
+ * cd_device_set_enabled:
+ * @device: a #CdDevice instance.
+ * @enabled: the enabled state
+ * @cancellable: a #GCancellable, or %NULL
+ * @callback: the function to run on completion
+ * @user_data: the data to pass to @callback
+ *
+ * Enables or disables a device.
+ *
+ * Since: 0.1.26
+ **/
+void
+cd_device_set_enabled (CdDevice *device,
+		       gboolean enabled,
+		       GCancellable *cancellable,
+		       GAsyncReadyCallback callback,
+		       gpointer user_data)
+{
+	GSimpleAsyncResult *res;
+
+	g_return_if_fail (CD_IS_DEVICE (device));
+	g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
+	g_return_if_fail (device->priv->proxy != NULL);
+
+	res = g_simple_async_result_new (G_OBJECT (device),
+					 callback,
+					 user_data,
+					 cd_device_set_enabled);
+	g_dbus_proxy_call (device->priv->proxy,
+			   "SetEnabled",
+			   g_variant_new ("(b)", enabled),
+			   G_DBUS_CALL_FLAGS_NONE,
+			   -1,
+			   cancellable,
+			   cd_device_set_enabled_cb,
 			   res);
 }
 
@@ -1862,6 +2062,9 @@ cd_device_get_property (GObject *object, guint prop_id, GValue *value, GParamSpe
 	case PROP_SERIAL:
 		g_value_set_string (value, device->priv->serial);
 		break;
+	case PROP_SEAT:
+		g_value_set_string (value, device->priv->seat);
+		break;
 	case PROP_FORMAT:
 		g_value_set_string (value, device->priv->format);
 		break;
@@ -1883,8 +2086,14 @@ cd_device_get_property (GObject *object, guint prop_id, GValue *value, GParamSpe
 	case PROP_SCOPE:
 		g_value_set_uint (value, device->priv->scope);
 		break;
+	case PROP_ENABLED:
+		g_value_set_boolean (value, device->priv->enabled);
+		break;
 	case PROP_OWNER:
 		g_value_set_uint (value, device->priv->owner);
+		break;
+	case PROP_EMBEDDED:
+		g_value_set_boolean (value, device->priv->embedded);
 		break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -2010,6 +2219,19 @@ cd_device_class_init (CdDeviceClass *klass)
 							      NULL,
 							      G_PARAM_READABLE));
 	/**
+	 * CdDevice:seat:
+	 *
+	 * The device seat identifier.
+	 *
+	 * Since: 0.1.24
+	 **/
+	g_object_class_install_property (object_class,
+					 PROP_SEAT,
+					 g_param_spec_string ("seat",
+							      NULL, NULL,
+							      NULL,
+							      G_PARAM_READABLE));
+	/**
 	 * CdDevice:format:
 	 *
 	 * The device format.
@@ -2051,7 +2273,7 @@ cd_device_class_init (CdDeviceClass *klass)
 	/**
 	 * CdDevice:kind:
 	 *
-	 * The device kind, e.g. %CD_DEVICE_KIND_KEYBOARD.
+	 * The device kind, e.g. %CD_DEVICE_KIND_DISPLAY.
 	 *
 	 * Since: 0.1.0
 	 **/
@@ -2112,6 +2334,20 @@ cd_device_class_init (CdDeviceClass *klass)
 							    G_PARAM_READABLE));
 
 	/**
+	 * CdDevice:enabled:
+	 *
+	 * The device enabled state.
+	 *
+	 * Since: 0.1.26
+	 **/
+	g_object_class_install_property (object_class,
+					 PROP_ENABLED,
+					 g_param_spec_boolean ("enabled",
+							       NULL, NULL,
+							       FALSE,
+							       G_PARAM_READABLE));
+
+	/**
 	 * CdDevice:owner:
 	 *
 	 * The device owner, e.g. 500.
@@ -2126,6 +2362,19 @@ cd_device_class_init (CdDeviceClass *klass)
 							    G_MAXUINT,
 							    0,
 							    G_PARAM_READABLE));
+	/**
+	 * CdDevice:embedded:
+	 *
+	 * If the device is embedded in the device and cannot be removed.
+	 *
+	 * Since: 0.1.27
+	 **/
+	g_object_class_install_property (object_class,
+					 PROP_EMBEDDED,
+					 g_param_spec_string ("embedded",
+							      NULL, NULL,
+							      FALSE,
+							      G_PARAM_READABLE));
 
 	g_type_class_add_private (klass, sizeof (CdDevicePrivate));
 }
@@ -2162,6 +2411,7 @@ cd_device_finalize (GObject *object)
 	g_free (device->priv->id);
 	g_free (device->priv->model);
 	g_free (device->priv->serial);
+	g_free (device->priv->seat);
 	g_free (device->priv->format);
 	g_free (device->priv->vendor);
 	g_strfreev (device->priv->profiling_inhibitors);

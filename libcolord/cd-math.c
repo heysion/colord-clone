@@ -167,7 +167,7 @@ cd_vec3_get_data (const CdVec3 *src)
 /**
  * cd_vec3_squared_error:
  * @src1: the vector source
- * @src1: another vector source
+ * @src2: another vector source
  *
  * Gets the mean squared error for a pair of vectors
  *
@@ -194,7 +194,7 @@ cd_mat33_clear (const CdMat3x3 *src)
 {
 	guint i;
 	gdouble *temp = (gdouble *) src;
-	for (i=0; i<3*3; i++)
+	for (i = 0; i < 3*3; i++)
 		temp[i] = 0.0f;
 }
 
@@ -264,6 +264,31 @@ cd_mat33_determinant (const CdMat3x3 *src)
 }
 
 /**
+ * cd_mat33_normalize:
+ * @src: the source matrix
+ * @dest: the destination matrix
+ *
+ * Normalizes a matrix
+ *
+ * The arguments @src and @dest can be the same value.
+ **/
+void
+cd_mat33_normalize (const CdMat3x3 *src, CdMat3x3 *dest)
+{
+	gdouble *data_dest;
+	gdouble *data_src;
+	gdouble det;
+	guint i;
+
+	data_src = cd_mat33_get_data (src);
+	data_dest = cd_mat33_get_data (dest);
+	det = cd_mat33_determinant (src);
+	for (i = 0; i < 9; i++)
+		data_dest[i] = data_src[i] / det;
+}
+
+
+/**
  * cd_mat33_vector_multiply:
  * @mat_src: the matrix source
  * @vec_src: the vector source
@@ -330,8 +355,8 @@ cd_mat33_matrix_multiply (const CdMat3x3 *mat_src1, const CdMat3x3 *mat_src2, Cd
 	g_return_if_fail (mat_src1 != mat_dest);
 	g_return_if_fail (mat_src2 != mat_dest);
 
-	for (i=0; i<3; i++) {
-		for (j=0; j<3; j++) {
+	for (i = 0; i < 3; i++) {
+		for (j = 0; j < 3; j++) {
 			for (k=0; k<3; k++) {
 				dest[3 * i + j] += src1[i * 3 + k] * src2[k * 3 + j];
 			}
@@ -386,8 +411,6 @@ cd_mat33_reciprocal (const CdMat3x3 *src, CdMat3x3 *dest)
  *
  * Copies the matrix.
  * The arguments @src and @dest cannot be the same value.
- *
- * Return value: %FALSE if det is zero (singular).
  **/
 void
 cd_mat33_copy (const CdMat3x3 *src, CdMat3x3 *dest)

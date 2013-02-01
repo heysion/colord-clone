@@ -80,7 +80,7 @@ cd_parse_beagle_process_entry_huey (CdParseEntry *entry)
 	}
 
 	output = g_string_new ("");
-	for (j=0; j<8; j++) {
+	for (j = 0; j < 8; j++) {
 		command_as_text = NULL;
 		cmd = g_ascii_strtoll (tok[j], NULL, 16);
 		if (j == 0 && entry->direction == CD_PARSE_ENTRY_DIRECTION_REPLY) {
@@ -183,7 +183,7 @@ cd_parse_beagle_process_entry_colormunki (CdParseEntry *entry)
 	}
 
 	/* unknown command */
-	for (j=0; j<tok_len; j++) {
+	for (j = 0; j < tok_len; j++) {
 		cmd = g_ascii_strtoll (tok[j], NULL, 16);
 		g_string_append_printf (output, "%02x ", cmd);
 	}
@@ -251,7 +251,7 @@ cd_parse_beagle_process_entry (CdSensorKind kind, CdParseEntry *entry)
 	/* sexify the output */
 	if (kind == CD_SENSOR_KIND_HUEY)
 		cd_parse_beagle_process_entry_huey (entry);
-	else if (kind == CD_SENSOR_KIND_COLOR_MUNKI)
+	else if (kind == CD_SENSOR_KIND_COLOR_MUNKI_PHOTO)
 		cd_parse_beagle_process_entry_colormunki (entry);
 	retval = g_strdup_printf ("dev%02i ep%02i(%s)\t%s\t%s\n",
 				  entry->dev, entry->ep,
@@ -286,7 +286,7 @@ main (gint argc, gchar *argv[])
 	}
 	kind = cd_sensor_kind_from_string (argv[1]);
 	if (kind != CD_SENSOR_KIND_HUEY &&
-	    kind != CD_SENSOR_KIND_COLOR_MUNKI) {
+	    kind != CD_SENSOR_KIND_COLOR_MUNKI_PHOTO) {
 		g_print ("only huey and colormunki device kinds supported\n");
 		goto out;
 	}
@@ -304,7 +304,7 @@ main (gint argc, gchar *argv[])
 
 	/* parse string */
 	split = g_strsplit (data, "\n", -1);
-	for (i=0; split[i] != NULL; i++) {
+	for (i = 0; split[i] != NULL; i++) {
 
 		/* comment or blank line */
 		if (split[i][0] == '#' ||

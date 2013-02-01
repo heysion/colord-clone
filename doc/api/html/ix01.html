@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Index</title>
-<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<meta name="generator" content="DocBook XSL Stylesheets V1.77.1">
 <link rel="home" href="index.html" title="colord Reference Manual">
 <link rel="up" href="index.html" title="colord Reference Manual">
 <link rel="prev" href="colord-cd-color.html" title="cd-color">
@@ -20,8 +20,8 @@
 <td><a accesskey="n" href="license.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
 </tr></table>
 <div class="index">
-<div class="titlepage"><div><div><h2 class="title">
-<a name="id406031"></a>Index</h2></div></div></div>
+<div class="titlepage"><div><div><h1 class="title">
+<a name="idp1827584"></a>Index</h1></div></div></div>
 <div class="index">
 <div class="indexdiv">
 <h3>Symbols</h3>
@@ -112,7 +112,7 @@
 <h3>A</h3>
 <dl>
 <dt>AddProfile</dt>
-<dd><dl><dt>Device, <a class="indexterm" href="Device.html#id470377">AddProfile ()</a>
+<dd><dl><dt>Device, <a class="indexterm" href="Device.html#idp8648320">AddProfile ()</a>
 </dt></dl></dd>
 </dl>
 </div>
@@ -120,7 +120,7 @@
 <h3>B</h3>
 <dl>
 <dt>ButtonPressed</dt>
-<dd><dl><dt>Sensor, <a class="indexterm" href="Sensor.html#id485703">The ButtonPressed signal</a>
+<dd><dl><dt>Sensor, <a class="indexterm" href="Sensor.html#idp9306384">The ButtonPressed signal</a>
 </dt></dl></dd>
 <dt>button_pressed, <a class="indexterm" href="colord-cd-sensor.html#button-pressed">button_pressed ()</a>
 </dt>
@@ -130,10 +130,8 @@
 <h3>C</h3>
 <dl>
 <dt>Capabilities</dt>
-<dd><dl><dt>Sensor, <a class="indexterm" href="Sensor.html#id486054">The "Capabilities" property</a>
+<dd><dl><dt>Sensor, <a class="indexterm" href="Sensor.html#idp9356480">The "Capabilities" property</a>
 </dt></dl></dd>
-<dt>CdClientError, <a class="indexterm" href="colord-cd-client.html#CdClientError">enum CdClientError</a>
-</dt>
 <dt>CdColorLab, <a class="indexterm" href="colord-cd-color.html#CdColorLab">CdColorLab</a>
 </dt>
 <dt>CdColorRGB, <a class="indexterm" href="colord-cd-color.html#CdColorRGB-struct">CdColorRGB</a>
@@ -144,17 +142,11 @@
 </dt>
 <dt>CdColorYxy, <a class="indexterm" href="colord-cd-color.html#CdColorYxy-struct">CdColorYxy</a>
 </dt>
-<dt>CdDeviceError, <a class="indexterm" href="colord-cd-device.html#CdDeviceError">enum CdDeviceError</a>
-</dt>
 <dt>CdIt8Error, <a class="indexterm" href="colord-cd-it8.html#CdIt8Error">enum CdIt8Error</a>
 </dt>
 <dt>CdIt8Kind, <a class="indexterm" href="colord-cd-it8.html#CdIt8Kind">enum CdIt8Kind</a>
 </dt>
 <dt>CdMat3x3, <a class="indexterm" href="colord-cd-math.html#CdMat3x3">CdMat3x3</a>
-</dt>
-<dt>CdProfileError, <a class="indexterm" href="colord-cd-profile.html#CdProfileError">enum CdProfileError</a>
-</dt>
-<dt>CdSensorError, <a class="indexterm" href="colord-cd-sensor.html#CdSensorError">enum CdSensorError</a>
 </dt>
 <dt>CdVec3, <a class="indexterm" href="colord-cd-math.html#CdVec3">CdVec3</a>
 </dt>
@@ -214,9 +206,21 @@
 </dt>
 <dt>cd_client_find_profile_by_filename_sync, <a class="indexterm" href="colord-cd-client-sync.html#cd-client-find-profile-by-filename-sync">cd_client_find_profile_by_filename_sync ()</a>
 </dt>
+<dt>cd_client_find_profile_by_property, <a class="indexterm" href="colord-cd-client.html#cd-client-find-profile-by-property">cd_client_find_profile_by_property ()</a>
+</dt>
+<dt>cd_client_find_profile_by_property_finish, <a class="indexterm" href="colord-cd-client.html#cd-client-find-profile-by-property-finish">cd_client_find_profile_by_property_finish ()</a>
+</dt>
+<dt>cd_client_find_profile_by_property_sync, <a class="indexterm" href="colord-cd-client-sync.html#cd-client-find-profile-by-property-sync">cd_client_find_profile_by_property_sync ()</a>
+</dt>
 <dt>cd_client_find_profile_finish, <a class="indexterm" href="colord-cd-client.html#cd-client-find-profile-finish">cd_client_find_profile_finish ()</a>
 </dt>
 <dt>cd_client_find_profile_sync, <a class="indexterm" href="colord-cd-client-sync.html#cd-client-find-profile-sync">cd_client_find_profile_sync ()</a>
+</dt>
+<dt>cd_client_find_sensor, <a class="indexterm" href="colord-cd-client.html#cd-client-find-sensor">cd_client_find_sensor ()</a>
+</dt>
+<dt>cd_client_find_sensor_finish, <a class="indexterm" href="colord-cd-client.html#cd-client-find-sensor-finish">cd_client_find_sensor_finish ()</a>
+</dt>
+<dt>cd_client_find_sensor_sync, <a class="indexterm" href="colord-cd-client-sync.html#cd-client-find-sensor-sync">cd_client_find_sensor_sync ()</a>
 </dt>
 <dt>cd_client_get_connected, <a class="indexterm" href="colord-cd-client.html#cd-client-get-connected">cd_client_get_connected ()</a>
 </dt>
@@ -264,33 +268,27 @@
 </dt>
 <dt>CD_CLIENT_TYPE_ERROR, <a class="indexterm" href="colord-cd-client.html#CD-CLIENT-TYPE-ERROR:CAPS">CD_CLIENT_TYPE_ERROR</a>
 </dt>
-<dt>cd_color_clear_xyz, <a class="indexterm" href="colord-cd-color.html#cd-color-clear-xyz">cd_color_clear_xyz ()</a>
+<dt>cd_color_get_blackbody_rgb, <a class="indexterm" href="colord-cd-color.html#cd-color-get-blackbody-rgb">cd_color_get_blackbody_rgb ()</a>
 </dt>
-<dt>cd_color_convert_rgb8_to_rgb, <a class="indexterm" href="colord-cd-color.html#cd-color-convert-rgb8-to-rgb">cd_color_convert_rgb8_to_rgb ()</a>
+<dt>cd_color_rgb8_to_rgb, <a class="indexterm" href="colord-cd-color.html#cd-color-rgb8-to-rgb">cd_color_rgb8_to_rgb ()</a>
 </dt>
-<dt>cd_color_convert_rgb_to_rgb8, <a class="indexterm" href="colord-cd-color.html#cd-color-convert-rgb-to-rgb8">cd_color_convert_rgb_to_rgb8 ()</a>
-</dt>
-<dt>cd_color_convert_xyz_to_yxy, <a class="indexterm" href="colord-cd-color.html#cd-color-convert-xyz-to-yxy">cd_color_convert_xyz_to_yxy ()</a>
-</dt>
-<dt>cd_color_convert_yxy_to_xyz, <a class="indexterm" href="colord-cd-color.html#cd-color-convert-yxy-to-xyz">cd_color_convert_yxy_to_xyz ()</a>
-</dt>
-<dt>cd_color_copy_rgb, <a class="indexterm" href="colord-cd-color.html#cd-color-copy-rgb">cd_color_copy_rgb ()</a>
-</dt>
-<dt>cd_color_copy_xyz, <a class="indexterm" href="colord-cd-color.html#cd-color-copy-xyz">cd_color_copy_xyz ()</a>
-</dt>
-<dt>cd_color_copy_yxy, <a class="indexterm" href="colord-cd-color.html#cd-color-copy-yxy">cd_color_copy_yxy ()</a>
+<dt>cd_color_rgb_copy, <a class="indexterm" href="colord-cd-color.html#cd-color-rgb-copy">cd_color_rgb_copy ()</a>
 </dt>
 <dt>cd_color_rgb_dup, <a class="indexterm" href="colord-cd-color.html#cd-color-rgb-dup">cd_color_rgb_dup ()</a>
 </dt>
 <dt>cd_color_rgb_free, <a class="indexterm" href="colord-cd-color.html#cd-color-rgb-free">cd_color_rgb_free</a>
 </dt>
+<dt>cd_color_rgb_interpolate, <a class="indexterm" href="colord-cd-color.html#cd-color-rgb-interpolate">cd_color_rgb_interpolate ()</a>
+</dt>
 <dt>cd_color_rgb_new, <a class="indexterm" href="colord-cd-color.html#cd-color-rgb-new">cd_color_rgb_new</a>
 </dt>
-<dt>cd_color_set_rgb, <a class="indexterm" href="colord-cd-color.html#cd-color-set-rgb">cd_color_set_rgb ()</a>
+<dt>cd_color_rgb_set, <a class="indexterm" href="colord-cd-color.html#cd-color-rgb-set">cd_color_rgb_set ()</a>
 </dt>
-<dt>cd_color_set_xyz, <a class="indexterm" href="colord-cd-color.html#cd-color-set-xyz">cd_color_set_xyz ()</a>
+<dt>cd_color_rgb_to_rgb8, <a class="indexterm" href="colord-cd-color.html#cd-color-rgb-to-rgb8">cd_color_rgb_to_rgb8 ()</a>
 </dt>
-<dt>cd_color_set_yxy, <a class="indexterm" href="colord-cd-color.html#cd-color-set-yxy">cd_color_set_yxy ()</a>
+<dt>cd_color_xyz_clear, <a class="indexterm" href="colord-cd-color.html#cd-color-xyz-clear">cd_color_xyz_clear ()</a>
+</dt>
+<dt>cd_color_xyz_copy, <a class="indexterm" href="colord-cd-color.html#cd-color-xyz-copy">cd_color_xyz_copy ()</a>
 </dt>
 <dt>cd_color_xyz_dup, <a class="indexterm" href="colord-cd-color.html#cd-color-xyz-dup">cd_color_xyz_dup ()</a>
 </dt>
@@ -298,11 +296,21 @@
 </dt>
 <dt>cd_color_xyz_new, <a class="indexterm" href="colord-cd-color.html#cd-color-xyz-new">cd_color_xyz_new</a>
 </dt>
+<dt>cd_color_xyz_set, <a class="indexterm" href="colord-cd-color.html#cd-color-xyz-set">cd_color_xyz_set ()</a>
+</dt>
+<dt>cd_color_xyz_to_yxy, <a class="indexterm" href="colord-cd-color.html#cd-color-xyz-to-yxy">cd_color_xyz_to_yxy ()</a>
+</dt>
+<dt>cd_color_yxy_copy, <a class="indexterm" href="colord-cd-color.html#cd-color-yxy-copy">cd_color_yxy_copy ()</a>
+</dt>
 <dt>cd_color_yxy_dup, <a class="indexterm" href="colord-cd-color.html#cd-color-yxy-dup">cd_color_yxy_dup ()</a>
 </dt>
 <dt>cd_color_yxy_free, <a class="indexterm" href="colord-cd-color.html#cd-color-yxy-free">cd_color_yxy_free</a>
 </dt>
 <dt>cd_color_yxy_new, <a class="indexterm" href="colord-cd-color.html#cd-color-yxy-new">cd_color_yxy_new</a>
+</dt>
+<dt>cd_color_yxy_set, <a class="indexterm" href="colord-cd-color.html#cd-color-yxy-set">cd_color_yxy_set ()</a>
+</dt>
+<dt>cd_color_yxy_to_xyz, <a class="indexterm" href="colord-cd-color.html#cd-color-yxy-to-xyz">cd_color_yxy_to_xyz ()</a>
 </dt>
 <dt>cd_device_add_profile, <a class="indexterm" href="colord-cd-device.html#cd-device-add-profile">cd_device_add_profile ()</a>
 </dt>
@@ -329,6 +337,10 @@
 <dt>cd_device_get_created, <a class="indexterm" href="colord-cd-device.html#cd-device-get-created">cd_device_get_created ()</a>
 </dt>
 <dt>cd_device_get_default_profile, <a class="indexterm" href="colord-cd-device.html#cd-device-get-default-profile">cd_device_get_default_profile ()</a>
+</dt>
+<dt>cd_device_get_embedded, <a class="indexterm" href="colord-cd-device.html#cd-device-get-embedded">cd_device_get_embedded ()</a>
+</dt>
+<dt>cd_device_get_enabled, <a class="indexterm" href="colord-cd-device.html#cd-device-get-enabled">cd_device_get_enabled ()</a>
 </dt>
 <dt>cd_device_get_format, <a class="indexterm" href="colord-cd-device.html#cd-device-get-format">cd_device_get_format ()</a>
 </dt>
@@ -368,6 +380,8 @@
 </dt>
 <dt>cd_device_get_scope, <a class="indexterm" href="colord-cd-device.html#cd-device-get-scope">cd_device_get_scope ()</a>
 </dt>
+<dt>cd_device_get_seat, <a class="indexterm" href="colord-cd-device.html#cd-device-get-seat">cd_device_get_seat ()</a>
+</dt>
 <dt>cd_device_get_serial, <a class="indexterm" href="colord-cd-device.html#cd-device-get-serial">cd_device_get_serial ()</a>
 </dt>
 <dt>cd_device_get_vendor, <a class="indexterm" href="colord-cd-device.html#cd-device-get-vendor">cd_device_get_vendor ()</a>
@@ -401,6 +415,12 @@
 <dt>cd_device_remove_profile_sync, <a class="indexterm" href="colord-cd-device-sync.html#cd-device-remove-profile-sync">cd_device_remove_profile_sync ()</a>
 </dt>
 <dt>cd_device_set_colorspace_sync, <a class="indexterm" href="colord-cd-device-sync.html#cd-device-set-colorspace-sync">cd_device_set_colorspace_sync ()</a>
+</dt>
+<dt>cd_device_set_enabled, <a class="indexterm" href="colord-cd-device.html#cd-device-set-enabled">cd_device_set_enabled ()</a>
+</dt>
+<dt>cd_device_set_enabled_finish, <a class="indexterm" href="colord-cd-device.html#cd-device-set-enabled-finish">cd_device_set_enabled_finish ()</a>
+</dt>
+<dt>cd_device_set_enabled_sync, <a class="indexterm" href="colord-cd-device-sync.html#cd-device-set-enabled-sync">cd_device_set_enabled_sync ()</a>
 </dt>
 <dt>cd_device_set_kind_sync, <a class="indexterm" href="colord-cd-device-sync.html#cd-device-set-kind-sync">cd_device_set_kind_sync ()</a>
 </dt>
@@ -462,6 +482,8 @@
 </dt>
 <dt>cd_it8_new_with_kind, <a class="indexterm" href="colord-cd-it8.html#cd-it8-new-with-kind">cd_it8_new_with_kind ()</a>
 </dt>
+<dt>cd_it8_save_to_data, <a class="indexterm" href="colord-cd-it8.html#cd-it8-save-to-data">cd_it8_save_to_data ()</a>
+</dt>
 <dt>cd_it8_save_to_file, <a class="indexterm" href="colord-cd-it8.html#cd-it8-save-to-file">cd_it8_save_to_file ()</a>
 </dt>
 <dt>cd_it8_set_instrument, <a class="indexterm" href="colord-cd-it8.html#cd-it8-set-instrument">cd_it8_set_instrument ()</a>
@@ -495,6 +517,8 @@
 <dt>cd_mat33_get_data, <a class="indexterm" href="colord-cd-math.html#cd-mat33-get-data">cd_mat33_get_data ()</a>
 </dt>
 <dt>cd_mat33_matrix_multiply, <a class="indexterm" href="colord-cd-math.html#cd-mat33-matrix-multiply">cd_mat33_matrix_multiply ()</a>
+</dt>
+<dt>cd_mat33_normalize, <a class="indexterm" href="colord-cd-math.html#cd-mat33-normalize">cd_mat33_normalize ()</a>
 </dt>
 <dt>cd_mat33_reciprocal, <a class="indexterm" href="colord-cd-math.html#cd-mat33-reciprocal">cd_mat33_reciprocal ()</a>
 </dt>
@@ -556,6 +580,8 @@
 </dt>
 <dt>cd_profile_get_title, <a class="indexterm" href="colord-cd-profile.html#cd-profile-get-title">cd_profile_get_title ()</a>
 </dt>
+<dt>cd_profile_get_warnings, <a class="indexterm" href="colord-cd-profile.html#cd-profile-get-warnings">cd_profile_get_warnings ()</a>
+</dt>
 <dt>cd_profile_has_access, <a class="indexterm" href="colord-cd-profile.html#cd-profile-has-access">cd_profile_has_access ()</a>
 </dt>
 <dt>cd_profile_install_system_wide, <a class="indexterm" href="colord-cd-profile.html#cd-profile-install-system-wide">cd_profile_install_system_wide ()</a>
@@ -599,6 +625,10 @@
 <dt>cd_sensor_get_caps, <a class="indexterm" href="colord-cd-sensor.html#cd-sensor-get-caps">cd_sensor_get_caps ()</a>
 </dt>
 <dt>cd_sensor_get_connected, <a class="indexterm" href="colord-cd-sensor.html#cd-sensor-get-connected">cd_sensor_get_connected ()</a>
+</dt>
+<dt>cd_sensor_get_embedded, <a class="indexterm" href="colord-cd-sensor.html#cd-sensor-get-embedded">cd_sensor_get_embedded ()</a>
+</dt>
+<dt>cd_sensor_get_id, <a class="indexterm" href="colord-cd-sensor.html#cd-sensor-get-id">cd_sensor_get_id ()</a>
 </dt>
 <dt>cd_sensor_get_kind, <a class="indexterm" href="colord-cd-sensor.html#cd-sensor-get-kind">cd_sensor_get_kind ()</a>
 </dt>
@@ -678,37 +708,37 @@
 </dt>
 <dt>Changed</dt>
 <dd><dl>
-<dt>ColorManager, <a class="indexterm" href="ColorManager.html#id447065">The Changed signal</a>
+<dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp5531040">The Changed signal</a>
 </dt>
-<dt>Device, <a class="indexterm" href="Device.html#id484683">The Changed signal</a>
+<dt>Device, <a class="indexterm" href="Device.html#idp7893424">The Changed signal</a>
 </dt>
-<dt>Profile, <a class="indexterm" href="Profile.html#id456199">The Changed signal</a>
+<dt>Profile, <a class="indexterm" href="Profile.html#idp7720192">The Changed signal</a>
 </dt>
 </dl></dd>
 <dt>changed, <a class="indexterm" href="colord-cd-client.html#changed">changed ()</a>, <a class="indexterm" href="colord-cd-client.html#changed">changed ()</a>, <a class="indexterm" href="colord-cd-client.html#changed">changed ()</a>
 </dt>
 <dt>Colorspace</dt>
 <dd><dl>
-<dt>Device, <a class="indexterm" href="Device.html#id484877">The "Colorspace" property</a>
+<dt>Device, <a class="indexterm" href="Device.html#idp7916544">The "Colorspace" property</a>
 </dt>
-<dt>Profile, <a class="indexterm" href="Profile.html#id485427">The "Colorspace" property</a>
+<dt>Profile, <a class="indexterm" href="Profile.html#idp9265808">The "Colorspace" property</a>
 </dt>
 </dl></dd>
 <dt>Created</dt>
 <dd><dl>
-<dt>Device, <a class="indexterm" href="Device.html#id484724">The "Created" property</a>
+<dt>Device, <a class="indexterm" href="Device.html#idp7898176">The "Created" property</a>
 </dt>
-<dt>Profile, <a class="indexterm" href="Profile.html#id485556">The "Created" property</a>
+<dt>Profile, <a class="indexterm" href="Profile.html#idp9281376">The "Created" property</a>
 </dt>
 </dl></dd>
 <dt>CreateDevice</dt>
-<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#id446835">CreateDevice ()</a>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp5503840">CreateDevice ()</a>
 </dt></dl></dd>
 <dt>CreateProfile</dt>
-<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#id446737">CreateProfile ()</a>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp5492352">CreateProfile ()</a>
 </dt></dl></dd>
 <dt>CreateProfileWithFd</dt>
-<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#id446579">CreateProfileWithFd ()</a>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp5473632">CreateProfileWithFd ()</a>
 </dt></dl></dd>
 </dl>
 </div>
@@ -716,25 +746,25 @@
 <h3>D</h3>
 <dl>
 <dt>DaemonVersion</dt>
-<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#id447447">The "DaemonVersion" property</a>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp5576960">The "DaemonVersion" property</a>
 </dt></dl></dd>
 <dt>DeleteDevice</dt>
-<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#id446964">DeleteDevice ()</a>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp5518944">DeleteDevice ()</a>
 </dt></dl></dd>
 <dt>DeleteProfile</dt>
-<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#id447010">DeleteProfile ()</a>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp5524432">DeleteProfile ()</a>
 </dt></dl></dd>
 <dt>DeviceAdded</dt>
-<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#id447096">The DeviceAdded signal</a>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp5534800">The DeviceAdded signal</a>
 </dt></dl></dd>
 <dt>DeviceChanged</dt>
-<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#id447182">The DeviceChanged signal</a>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp5545056">The DeviceChanged signal</a>
 </dt></dl></dd>
 <dt>DeviceId</dt>
-<dd><dl><dt>Device, <a class="indexterm" href="Device.html#id484969">The "DeviceId" property</a>
+<dd><dl><dt>Device, <a class="indexterm" href="Device.html#idp7927472">The "DeviceId" property</a>
 </dt></dl></dd>
 <dt>DeviceRemoved</dt>
-<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#id447139">The DeviceRemoved signal</a>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp5539920">The DeviceRemoved signal</a>
 </dt></dl></dd>
 <dt>device_added, <a class="indexterm" href="colord-cd-client.html#device-added">device_added ()</a>
 </dt>
@@ -745,28 +775,49 @@
 </dl>
 </div>
 <div class="indexdiv">
+<h3>E</h3>
+<dl>
+<dt>Embedded</dt>
+<dd><dl>
+<dt>Device, <a class="indexterm" href="Device.html#idp8854288">The "Embedded" property</a>
+</dt>
+<dt>Sensor, <a class="indexterm" href="Sensor.html#idp9348368">The "Embedded" property</a>
+</dt>
+</dl></dd>
+<dt>Enabled</dt>
+<dd><dl><dt>Device, <a class="indexterm" href="Device.html#idp7956432">The "Enabled" property</a>
+</dt></dl></dd>
+</dl>
+</div>
+<div class="indexdiv">
 <h3>F</h3>
 <dl>
 <dt>Filename</dt>
-<dd><dl><dt>Profile, <a class="indexterm" href="Profile.html#id485526">The "Filename" property</a>
+<dd><dl><dt>Profile, <a class="indexterm" href="Profile.html#idp9277664">The "Filename" property</a>
 </dt></dl></dd>
 <dt>FindDeviceById</dt>
-<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#id457883">FindDeviceById ()</a>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp72528">FindDeviceById ()</a>
 </dt></dl></dd>
 <dt>FindDeviceByProperty</dt>
-<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#id446094">FindDeviceByProperty ()</a>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp5404544">FindDeviceByProperty ()</a>
 </dt></dl></dd>
 <dt>FindProfileByFilename</dt>
-<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#id446244">FindProfileByFilename ()</a>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp5433312">FindProfileByFilename ()</a>
 </dt></dl></dd>
 <dt>FindProfileById</dt>
-<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#id446183">FindProfileById ()</a>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp5415168">FindProfileById ()</a>
+</dt></dl></dd>
+<dt>FindProfileByProperty</dt>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp5422544">FindProfileByProperty ()</a>
+</dt></dl></dd>
+<dt>FindSensorById</dt>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp5397216">FindSensorById ()</a>
 </dt></dl></dd>
 <dt>Format</dt>
 <dd><dl>
-<dt>Device, <a class="indexterm" href="Device.html#id485094">The "Format" property</a>
+<dt>Device, <a class="indexterm" href="Device.html#idp7942640">The "Format" property</a>
 </dt>
-<dt>Profile, <a class="indexterm" href="Profile.html#id485348">The "Format" property</a>
+<dt>Profile, <a class="indexterm" href="Profile.html#idp9256336">The "Format" property</a>
 </dt>
 </dl></dd>
 </dl>
@@ -775,31 +826,31 @@
 <h3>G</h3>
 <dl>
 <dt>GetDevices</dt>
-<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#id458484">GetDevices ()</a>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp6051312">GetDevices ()</a>
 </dt></dl></dd>
 <dt>GetDevicesByKind</dt>
-<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#id458536">GetDevicesByKind ()</a>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp61472">GetDevicesByKind ()</a>
 </dt></dl></dd>
 <dt>GetProfileForQualifiers</dt>
-<dd><dl><dt>Device, <a class="indexterm" href="Device.html#id484442">GetProfileForQualifiers ()</a>
+<dd><dl><dt>Device, <a class="indexterm" href="Device.html#idp7536816">GetProfileForQualifiers ()</a>
 </dt></dl></dd>
 <dt>GetProfileRelation</dt>
-<dd><dl><dt>Device, <a class="indexterm" href="Device.html#id484520">GetProfileRelation ()</a>
+<dd><dl><dt>Device, <a class="indexterm" href="Device.html#idp7868640">GetProfileRelation ()</a>
 </dt></dl></dd>
 <dt>GetProfiles</dt>
-<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#id446397">GetProfiles ()</a>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp5451808">GetProfiles ()</a>
 </dt></dl></dd>
 <dt>GetProfilesByKind</dt>
-<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#id446500">GetProfilesByKind ()</a>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp5464128">GetProfilesByKind ()</a>
 </dt></dl></dd>
 <dt>GetSample</dt>
-<dd><dl><dt>Sensor, <a class="indexterm" href="Sensor.html#id449820">GetSample ()</a>
+<dd><dl><dt>Sensor, <a class="indexterm" href="Sensor.html#idp4579456">GetSample ()</a>
 </dt></dl></dd>
 <dt>GetSensors</dt>
-<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#id446448">GetSensors ()</a>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp5457984">GetSensors ()</a>
 </dt></dl></dd>
 <dt>GetStandardSpace</dt>
-<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#id446305">GetStandardSpace ()</a>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp5440736">GetStandardSpace ()</a>
 </dt></dl></dd>
 </dl>
 </div>
@@ -807,7 +858,7 @@
 <h3>H</h3>
 <dl>
 <dt>HasVcgt</dt>
-<dd><dl><dt>Profile, <a class="indexterm" href="Profile.html#id485464">The "HasVcgt" property</a>
+<dd><dl><dt>Profile, <a class="indexterm" href="Profile.html#idp9270176">The "HasVcgt" property</a>
 </dt></dl></dd>
 </dl>
 </div>
@@ -815,10 +866,10 @@
 <h3>I</h3>
 <dl>
 <dt>InstallSystemWide</dt>
-<dd><dl><dt>Profile, <a class="indexterm" href="Profile.html#id470139">InstallSystemWide ()</a>
+<dd><dl><dt>Profile, <a class="indexterm" href="Profile.html#idp7252352">InstallSystemWide ()</a>
 </dt></dl></dd>
 <dt>IsSystemWide</dt>
-<dd><dl><dt>Profile, <a class="indexterm" href="Profile.html#id485494">The "IsSystemWide" property</a>
+<dd><dl><dt>Profile, <a class="indexterm" href="Profile.html#idp9273888">The "IsSystemWide" property</a>
 </dt></dl></dd>
 </dl>
 </div>
@@ -827,11 +878,11 @@
 <dl>
 <dt>Kind</dt>
 <dd><dl>
-<dt>Device, <a class="indexterm" href="Device.html#id484915">The "Kind" property</a>
+<dt>Device, <a class="indexterm" href="Device.html#idp7920912">The "Kind" property</a>
 </dt>
-<dt>Profile, <a class="indexterm" href="Profile.html#id485378">The "Kind" property</a>
+<dt>Profile, <a class="indexterm" href="Profile.html#idp9259968">The "Kind" property</a>
 </dt>
-<dt>Sensor, <a class="indexterm" href="Sensor.html#id485743">The "Kind" property</a>
+<dt>Sensor, <a class="indexterm" href="Sensor.html#idp9314864">The "Kind" property</a>
 </dt>
 </dl></dd>
 </dl>
@@ -840,10 +891,10 @@
 <h3>L</h3>
 <dl>
 <dt>Lock</dt>
-<dd><dl><dt>Sensor, <a class="indexterm" href="Sensor.html#id450319">Lock ()</a>
+<dd><dl><dt>Sensor, <a class="indexterm" href="Sensor.html#idp7267552">Lock ()</a>
 </dt></dl></dd>
 <dt>Locked</dt>
-<dd><dl><dt>Sensor, <a class="indexterm" href="Sensor.html#id486023">The "Locked" property</a>
+<dd><dl><dt>Sensor, <a class="indexterm" href="Sensor.html#idp9352768">The "Locked" property</a>
 </dt></dl></dd>
 </dl>
 </div>
@@ -851,31 +902,33 @@
 <h3>M</h3>
 <dl>
 <dt>MakeProfileDefault</dt>
-<dd><dl><dt>Device, <a class="indexterm" href="Device.html#id484395">MakeProfileDefault ()</a>
+<dd><dl><dt>Device, <a class="indexterm" href="Device.html#idp7531328">MakeProfileDefault ()</a>
 </dt></dl></dd>
 <dt>Metadata</dt>
 <dd><dl>
-<dt>Device, <a class="indexterm" href="Device.html#id485210">The "Metadata" property</a>
+<dt>Device, <a class="indexterm" href="Device.html#idp8858080">The "Metadata" property</a>
 </dt>
-<dt>Profile, <a class="indexterm" href="Profile.html#id456299">The "Metadata" property</a>
+<dt>Profile, <a class="indexterm" href="Profile.html#idp7732176">The "Metadata" property</a>
+</dt>
+<dt>Sensor, <a class="indexterm" href="Sensor.html#idp9365680">The "Metadata" property</a>
 </dt>
 </dl></dd>
 <dt>Mode</dt>
 <dd><dl>
-<dt>Device, <a class="indexterm" href="Device.html#id485031">The "Mode" property</a>
+<dt>Device, <a class="indexterm" href="Device.html#idp7935008">The "Mode" property</a>
 </dt>
-<dt>Sensor, <a class="indexterm" href="Sensor.html#id485828">The "Mode" property</a>
+<dt>Sensor, <a class="indexterm" href="Sensor.html#idp9325008">The "Mode" property</a>
 </dt>
 </dl></dd>
 <dt>Model</dt>
 <dd><dl>
-<dt>Device, <a class="indexterm" href="Device.html#id484786">The "Model" property</a>
+<dt>Device, <a class="indexterm" href="Device.html#idp7905648">The "Model" property</a>
 </dt>
-<dt>Sensor, <a class="indexterm" href="Sensor.html#id485917">The "Model" property</a>
+<dt>Sensor, <a class="indexterm" href="Sensor.html#idp9335776">The "Model" property</a>
 </dt>
 </dl></dd>
 <dt>Modified</dt>
-<dd><dl><dt>Device, <a class="indexterm" href="Device.html#id484754">The "Modified" property</a>
+<dd><dl><dt>Device, <a class="indexterm" href="Device.html#idp7901808">The "Modified" property</a>
 </dt></dl></dd>
 </dl>
 </div>
@@ -883,7 +936,7 @@
 <h3>N</h3>
 <dl>
 <dt>Native</dt>
-<dd><dl><dt>Sensor, <a class="indexterm" href="Sensor.html#id485991">The "Native" property</a>
+<dd><dl><dt>Sensor, <a class="indexterm" href="Sensor.html#idp9344576">The "Native" property</a>
 </dt></dl></dd>
 </dl>
 </div>
@@ -891,13 +944,13 @@
 <h3>O</h3>
 <dl>
 <dt>Options</dt>
-<dd><dl><dt>Sensor, <a class="indexterm" href="Sensor.html#id486090">The "Options" property</a>
+<dd><dl><dt>Sensor, <a class="indexterm" href="Sensor.html#idp9360816">The "Options" property</a>
 </dt></dl></dd>
 <dt>Owner</dt>
 <dd><dl>
-<dt>Device, <a class="indexterm" href="Device.html#id485180">The "Owner" property</a>
+<dt>Device, <a class="indexterm" href="Device.html#idp7952800">The "Owner" property</a>
 </dt>
-<dt>Profile, <a class="indexterm" href="Profile.html#id485640">The "Owner" property</a>
+<dt>Profile, <a class="indexterm" href="Profile.html#idp9291472">The "Owner" property</a>
 </dt>
 </dl></dd>
 </dl>
@@ -906,19 +959,19 @@
 <h3>P</h3>
 <dl>
 <dt>ProfileAdded</dt>
-<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#id447224">The ProfileAdded signal</a>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp5550192">The ProfileAdded signal</a>
 </dt></dl></dd>
 <dt>ProfileChanged</dt>
-<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#id447395">The ProfileChanged signal</a>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp5570704">The ProfileChanged signal</a>
 </dt></dl></dd>
 <dt>ProfileId</dt>
-<dd><dl><dt>Profile, <a class="indexterm" href="Profile.html#id456238">The "ProfileId" property</a>
+<dd><dl><dt>Profile, <a class="indexterm" href="Profile.html#idp7724944">The "ProfileId" property</a>
 </dt></dl></dd>
 <dt>ProfileRemoved</dt>
-<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#id447267">The ProfileRemoved signal</a>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp5555312">The ProfileRemoved signal</a>
 </dt></dl></dd>
 <dt>Profiles</dt>
-<dd><dl><dt>Device, <a class="indexterm" href="Device.html#id485000">The "Profiles" property</a>
+<dd><dl><dt>Device, <a class="indexterm" href="Device.html#idp7931104">The "Profiles" property</a>
 </dt></dl></dd>
 <dt>profile_added, <a class="indexterm" href="colord-cd-client.html#profile-added">profile_added ()</a>
 </dt>
@@ -927,13 +980,13 @@
 <dt>profile_removed, <a class="indexterm" href="colord-cd-client.html#profile-removed">profile_removed ()</a>
 </dt>
 <dt>ProfilingInhibit</dt>
-<dd><dl><dt>Device, <a class="indexterm" href="Device.html#id484588">ProfilingInhibit ()</a>
+<dd><dl><dt>Device, <a class="indexterm" href="Device.html#idp7876784">ProfilingInhibit ()</a>
 </dt></dl></dd>
 <dt>ProfilingInhibitors</dt>
-<dd><dl><dt>Device, <a class="indexterm" href="Device.html#id485247">The "ProfilingInhibitors" property</a>
+<dd><dl><dt>Device, <a class="indexterm" href="Device.html#idp8862544">The "ProfilingInhibitors" property</a>
 </dt></dl></dd>
 <dt>ProfilingUninhibit</dt>
-<dd><dl><dt>Device, <a class="indexterm" href="Device.html#id484642">ProfilingUninhibit ()</a>
+<dd><dl><dt>Device, <a class="indexterm" href="Device.html#idp7883024">ProfilingUninhibit ()</a>
 </dt></dl></dd>
 </dl>
 </div>
@@ -941,7 +994,7 @@
 <h3>Q</h3>
 <dl>
 <dt>Qualifier</dt>
-<dd><dl><dt>Profile, <a class="indexterm" href="Profile.html#id485304">The "Qualifier" property</a>
+<dd><dl><dt>Profile, <a class="indexterm" href="Profile.html#idp9251088">The "Qualifier" property</a>
 </dt></dl></dd>
 </dl>
 </div>
@@ -949,7 +1002,7 @@
 <h3>R</h3>
 <dl>
 <dt>RemoveProfile</dt>
-<dd><dl><dt>Device, <a class="indexterm" href="Device.html#id470484">RemoveProfile ()</a>
+<dd><dl><dt>Device, <a class="indexterm" href="Device.html#idp7525168">RemoveProfile ()</a>
 </dt></dl></dd>
 </dl>
 </div>
@@ -958,16 +1011,22 @@
 <dl>
 <dt>Scope</dt>
 <dd><dl>
-<dt>Device, <a class="indexterm" href="Device.html#id485132">The "Scope" property</a>
+<dt>Device, <a class="indexterm" href="Device.html#idp7947008">The "Scope" property</a>
 </dt>
-<dt>Profile, <a class="indexterm" href="Profile.html#id485592">The "Scope" property</a>
+<dt>Profile, <a class="indexterm" href="Profile.html#idp9285680">The "Scope" property</a>
 </dt>
 </dl></dd>
+<dt>Seat</dt>
+<dd><dl><dt>Device, <a class="indexterm" href="Device.html#idp8850528">The "Seat" property</a>
+</dt></dl></dd>
 <dt>SensorAdded</dt>
-<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#id447310">The SensorAdded signal</a>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp5560448">The SensorAdded signal</a>
+</dt></dl></dd>
+<dt>SensorId</dt>
+<dd><dl><dt>Sensor, <a class="indexterm" href="Sensor.html#idp9311232">The "SensorId" property</a>
 </dt></dl></dd>
 <dt>SensorRemoved</dt>
-<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#id447352">The SensorRemoved signal</a>
+<dd><dl><dt>ColorManager, <a class="indexterm" href="ColorManager.html#idp5565568">The SensorRemoved signal</a>
 </dt></dl></dd>
 <dt>sensor_added, <a class="indexterm" href="colord-cd-client.html#sensor-added">sensor_added ()</a>
 </dt>
@@ -977,23 +1036,26 @@
 </dt>
 <dt>Serial</dt>
 <dd><dl>
-<dt>Device, <a class="indexterm" href="Device.html#id484817">The "Serial" property</a>
+<dt>Device, <a class="indexterm" href="Device.html#idp7909280">The "Serial" property</a>
 </dt>
-<dt>Sensor, <a class="indexterm" href="Sensor.html#id485881">The "Serial" property</a>
+<dt>Sensor, <a class="indexterm" href="Sensor.html#idp9331424">The "Serial" property</a>
 </dt>
 </dl></dd>
+<dt>SetEnabled</dt>
+<dd><dl><dt>Device, <a class="indexterm" href="Device.html#idp7886896">SetEnabled ()</a>
+</dt></dl></dd>
 <dt>SetOptions</dt>
-<dd><dl><dt>Sensor, <a class="indexterm" href="Sensor.html#id471165">SetOptions ()</a>
+<dd><dl><dt>Sensor, <a class="indexterm" href="Sensor.html#idp5863888">SetOptions ()</a>
 </dt></dl></dd>
 <dt>SetProperty</dt>
 <dd><dl>
-<dt>Device, <a class="indexterm" href="Device.html#id479804">SetProperty ()</a>
+<dt>Device, <a class="indexterm" href="Device.html#idp4782512">SetProperty ()</a>
 </dt>
-<dt>Profile, <a class="indexterm" href="Profile.html#id457327">SetProperty ()</a>
+<dt>Profile, <a class="indexterm" href="Profile.html#idp9116512">SetProperty ()</a>
 </dt>
 </dl></dd>
 <dt>State</dt>
-<dd><dl><dt>Sensor, <a class="indexterm" href="Sensor.html#id485779">The "State" property</a>
+<dd><dl><dt>Sensor, <a class="indexterm" href="Sensor.html#idp9319216">The "State" property</a>
 </dt></dl></dd>
 </dl>
 </div>
@@ -1001,7 +1063,7 @@
 <h3>T</h3>
 <dl>
 <dt>Title</dt>
-<dd><dl><dt>Profile, <a class="indexterm" href="Profile.html#id456268">The "Title" property</a>
+<dd><dl><dt>Profile, <a class="indexterm" href="Profile.html#idp7728544">The "Title" property</a>
 </dt></dl></dd>
 </dl>
 </div>
@@ -1009,7 +1071,7 @@
 <h3>U</h3>
 <dl>
 <dt>Unlock</dt>
-<dd><dl><dt>Sensor, <a class="indexterm" href="Sensor.html#id450358">Unlock ()</a>
+<dd><dl><dt>Sensor, <a class="indexterm" href="Sensor.html#idp4575824">Unlock ()</a>
 </dt></dl></dd>
 </dl>
 </div>
@@ -1018,11 +1080,19 @@
 <dl>
 <dt>Vendor</dt>
 <dd><dl>
-<dt>Device, <a class="indexterm" href="Device.html#id484847">The "Vendor" property</a>
+<dt>Device, <a class="indexterm" href="Device.html#idp7912912">The "Vendor" property</a>
 </dt>
-<dt>Sensor, <a class="indexterm" href="Sensor.html#id485954">The "Vendor" property</a>
+<dt>Sensor, <a class="indexterm" href="Sensor.html#idp9340176">The "Vendor" property</a>
 </dt>
 </dl></dd>
+</dl>
+</div>
+<div class="indexdiv">
+<h3>W</h3>
+<dl>
+<dt>Warnings</dt>
+<dd><dl><dt>Profile, <a class="indexterm" href="Profile.html#idp9295104">The "Warnings" property</a>
+</dt></dl></dd>
 </dl>
 </div>
 </div>

@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*-
  *
- * Copyright (C) 2010-2011 Richard Hughes <richard@hughsie.com>
+ * Copyright (C) 2010-2012 Richard Hughes <richard@hughsie.com>
  *
  * Licensed under the GNU General Public License Version 2
  *
@@ -35,6 +35,7 @@ G_BEGIN_DECLS
 #define CD_IS_DEVICE(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), CD_TYPE_DEVICE))
 #define CD_IS_DEVICE_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), CD_TYPE_DEVICE))
 #define CD_DEVICE_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), CD_TYPE_DEVICE, CdDeviceClass))
+#define CD_DEVICE_ERROR		cd_device_error_quark()
 
 typedef struct _CdDevicePrivate	CdDevicePrivate;
 typedef struct _CdDevice	CdDevice;
@@ -54,6 +55,7 @@ struct _CdDeviceClass
 
 GType		 cd_device_get_type			(void);
 CdDevice	*cd_device_new				(void);
+GQuark		 cd_device_error_quark			(void);
 
 /* accessors */
 CdObjectScope	 cd_device_get_scope			(CdDevice	*device);
@@ -62,6 +64,9 @@ void		 cd_device_set_scope			(CdDevice	*device,
 void		 cd_device_set_owner			(CdDevice	*device,
 							 guint		 owner);
 guint		 cd_device_get_owner			(CdDevice	*device);
+void		 cd_device_set_seat			(CdDevice	*device,
+							 const gchar	*seat);
+const gchar	*cd_device_get_seat			(CdDevice	*device);
 CdDeviceMode	 cd_device_get_mode			(CdDevice	*device);
 void		 cd_device_set_mode			(CdDevice	*device,
 							 CdDeviceMode	 mode);
