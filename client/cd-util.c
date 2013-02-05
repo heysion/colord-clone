@@ -27,12 +27,7 @@
 #include <pwd.h>
 #include <stdlib.h>
 #include <stdio.h>
-
-#include "cd-client-sync.h"
-#include "cd-device-sync.h"
-#include "cd-enum.h"
-#include "cd-profile-sync.h"
-#include "cd-sensor-sync.h"
+#include <colord/colord.h>
 
 typedef struct {
 	CdClient		*client;
@@ -264,7 +259,12 @@ cd_util_show_device (CdDevice *device)
 	cd_util_print_field (_("Serial"),
 			     cd_device_get_serial (device));
 
-	/* TRANSLATORS: the device seat identifier */
+	/* TRANSLATORS: the device seat identifier, where a seat is
+	 * defined as a monitor, keyboard and mouse.
+	 * For instance, in a public library one central computer can
+	 * have 3 keyboards, 3 displays and 3 mice plugged in and with
+	 * systemd these can be setup as three independant seats with
+	 * different sessions running on them */
 	cd_util_print_field (_("Seat"),
 			     cd_device_get_seat (device));
 
@@ -338,6 +338,58 @@ cd_util_idle_loop_quit_cb (gpointer user_data)
 	g_main_loop_quit (loop);
 	return FALSE;
 }
+/**
+ * cd_util_sensor_cap_to_string:
+ **/
+static const gchar *
+cd_util_sensor_cap_to_string (CdSensorCap sensor_cap)
+{
+	if (sensor_cap == CD_SENSOR_CAP_CRT) {
+		/* TRANSLATORS: this is the display technology,
+		 * and an abbreviation for "Cathode Ray Tube" */
+		return _("CRT");
+	}
+	if (sensor_cap == CD_SENSOR_CAP_PRINTER) {
+		/* TRANSLATORS: this is a desktop printer */
+		return _("Printer");
+	}
+	if (sensor_cap == CD_SENSOR_CAP_PROJECTOR) {
+		/* TRANSLATORS: a beamer used for presentations */
+		return _("Projector");
+	}
+	if (sensor_cap == CD_SENSOR_CAP_SPOT) {
+		/* TRANSLATORS: a spot measurement, e.g.
+		 * getting the color from a color swatch */
+		return _("Spot");
+	}
+	if (sensor_cap == CD_SENSOR_CAP_AMBIENT) {
+		/* TRANSLATORS: the sensor can get a reading of the
+		 * ambient light level */
+		return _("Ambient");
+	}
+	if (sensor_cap == CD_SENSOR_CAP_CALIBRATION) {
+		/* TRANSLATORS: this is the display technology */
+		return _("Calibration");
+	}
+	if (sensor_cap == CD_SENSOR_CAP_LCD) {
+		/* TRANSLATORS: this is the display technology,
+		 * where LCD stands for 'Liquid Crystal Display' */
+		return _("LCD Generic");
+	}
+	if (sensor_cap == CD_SENSOR_CAP_LED) {
+		/* TRANSLATORS: this is the display technology where
+		 * LED stands for 'Light Emitted Diode' */
+		return _("LED Generic");
+	}
+	if (sensor_cap == CD_SENSOR_CAP_PLASMA) {
+		/* TRANSLATORS: this is the display technology,
+		 * sometimes called PDP displays. See
+		 * http://en.wikipedia.org/wiki/Plasma_display */
+		return _("Plasma");
+	}
+	/* TRANSLATORS: this an unknown display technology */
+	return _("Unknown");
+}
 
 /**
  * cd_util_show_sensor:
@@ -351,10 +403,13 @@ cd_util_show_sensor (CdSensor *sensor)
 	gboolean ret;
 	gchar *str_tmp;
 	GError *error = NULL;
+	GString *caps_str = NULL;
 	GHashTable *options = NULL;
 	GList *l;
 	GList *list = NULL;
 	GMainLoop *loop = NULL;
+	guint caps;
+	guint i;
 	GVariant *value_tmp;
 	GHashTable *metadata = NULL;
 
@@ -458,29 +513,21 @@ cd_util_show_sensor (CdSensor *sensor)
 	cd_util_print_field (_("Locked"),
 			     cd_sensor_get_locked (sensor) ? "Yes" : "No");
 
-	/* TRANSLATORS: if the sensor supports calibrating an LCD display */
-	cd_util_print_field (_("LCD"),
-			     cd_sensor_has_cap (sensor, CD_SENSOR_CAP_LCD) ? "Yes" : "No");
-
-	/* TRANSLATORS: if the sensor supports calibrating a CRT display */
-	cd_util_print_field (_("CRT"),
-			     cd_sensor_has_cap (sensor, CD_SENSOR_CAP_CRT) ? "Yes" : "No");
-
-	/* TRANSLATORS: if the sensor supports calibrating a printer */
-	cd_util_print_field (_("Printer"),
-			     cd_sensor_has_cap (sensor, CD_SENSOR_CAP_PRINTER) ? "Yes" : "No");
-
-	/* TRANSLATORS: if the sensor supports spot measurements */
-	cd_util_print_field (_("Spot"),
-			     cd_sensor_has_cap (sensor, CD_SENSOR_CAP_SPOT) ? "Yes" : "No");
-
-	/* TRANSLATORS: if the sensor supports calibrating a projector */
-	cd_util_print_field (_("Projector"),
-			     cd_sensor_has_cap (sensor, CD_SENSOR_CAP_PROJECTOR) ? "Yes" : "No");
-
-	/* TRANSLATORS: if the sensor supports getting the ambient light level */
-	cd_util_print_field (_("Ambient"),
-			     cd_sensor_has_cap (sensor, CD_SENSOR_CAP_AMBIENT) ? "Yes" : "No");
+	/* get sensor caps */
+	caps = cd_sensor_get_caps (sensor);
+	caps_str = g_string_new ("");
+	for (i = 0; i < CD_SENSOR_CAP_LAST; i++) {
+		ret = cd_bitfield_contain (caps, i);
+		if (ret) {
+			g_string_append_printf (caps_str, "%s, ",
+						cd_util_sensor_cap_to_string (i));
+		}
+	}
+	if (caps_str->len > 0)
+		g_string_set_size (caps_str, caps_str->len - 2);
+	/* TRANSLATORS: if the sensor supports calibrating different
+	 * display types, e.g. LCD, LED, Projector */
+	cd_util_print_field (_("Capabilities"), caps_str->str);
 
 	/* unlock */
 	ret = cd_sensor_unlock_sync (sensor,
@@ -496,6 +543,8 @@ out:
 	if (metadata != NULL)
 		g_hash_table_unref (metadata);
 	g_list_free (list);
+	if (caps_str != NULL)
+		g_string_free (caps_str, TRUE);
 	if (options != NULL)
 		g_hash_table_unref (options);
 	if (loop != NULL)
@@ -1031,21 +1080,30 @@ cd_util_create_device (CdUtilPrivate *priv, gchar **values, GError **error)
 	CdDevice *device = NULL;
 	gboolean ret = TRUE;
 	guint mask;
+	GHashTable *device_props = NULL;
 
-	if (g_strv_length (values) < 2) {
+	if (g_strv_length (values) < 3) {
 		ret = FALSE;
 		g_set_error_literal (error,
 				     1, 0,
 				     "Not enough arguments, "
-				     "expected device id, scope "
-				     "e.g. 'epson-stylus-800 disk'");
+				     "expected device id, scope, kind "
+				     "e.g. 'epson-stylus-800 disk display'");
 		goto out;
 	}
 
 	/* execute sync method */
 	mask = cd_object_scope_from_string (values[1]);
+	device_props = g_hash_table_new_full (g_str_hash, g_str_equal,
+					      g_free, g_free);
+	g_hash_table_insert (device_props,
+			     g_strdup (CD_DEVICE_PROPERTY_KIND),
+			     g_strdup (values[2]));
 	device = cd_client_create_device_sync (priv->client, values[0],
-					       mask, NULL, NULL, error);
+					       mask,
+					       device_props,
+					       NULL,
+					       error);
 	if (device == NULL) {
 		ret = FALSE;
 		goto out;
@@ -1056,6 +1114,8 @@ cd_util_create_device (CdUtilPrivate *priv, gchar **values, GError **error)
 		goto out;
 	cd_util_show_device (device);
 out:
+	if (device_props != NULL)
+		g_hash_table_unref (device_props);
 	if (device != NULL)
 		g_object_unref (device);
 	return ret;
@@ -1959,16 +2019,36 @@ out:
 }
 
 /**
+ * cd_util_ignore_cb:
+ **/
+static void
+cd_util_ignore_cb (const gchar *log_domain, GLogLevelFlags log_level,
+		   const gchar *message, gpointer user_data)
+{
+}
+
+/**
  * main:
  **/
 int
 main (int argc, char *argv[])
 {
+	CdUtilPrivate *priv;
 	gboolean ret;
+	gboolean verbose = FALSE;
+	gboolean version = FALSE;
+	gchar *cmd_descriptions = NULL;
 	GError *error = NULL;
 	guint retval = 1;
-	CdUtilPrivate *priv;
-	gchar *cmd_descriptions = NULL;
+	const GOptionEntry options[] = {
+		{ "verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose,
+			/* TRANSLATORS: command line option */
+			_("Show extra debugging information"), NULL },
+		{ "version", '\0', 0, G_OPTION_ARG_NONE, &version,
+			/* TRANSLATORS: command line option */
+			_("Show client and daemon versions"), NULL },
+		{ NULL}
+	};
 
 	setlocale (LC_ALL, "");
 
@@ -2135,7 +2215,24 @@ main (int argc, char *argv[])
 
 	/* TRANSLATORS: program name */
 	g_set_application_name (_("Color Management"));
-	g_option_context_parse (priv->context, &argc, &argv, NULL);
+	g_option_context_add_main_entries (priv->context, options, NULL);
+	ret = g_option_context_parse (priv->context, &argc, &argv, &error);
+	if (!ret) {
+		/* TRANSLATORS: the user didn't read the man page */
+		g_print ("%s: %s\n",
+			 _("Failed to parse arguments"),
+			 error->message);
+		g_error_free (error);
+		goto out;
+	}
+
+	/* set verbose? */
+	if (verbose) {
+		g_setenv ("COLORD_VERBOSE", "1", FALSE);
+	} else {
+		g_log_set_handler (G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG,
+				   cd_util_ignore_cb, NULL);
+	}
 
 	/* get connection to colord */
 	priv->client = cd_client_new ();
@@ -2145,6 +2242,15 @@ main (int argc, char *argv[])
 		g_print ("%s %s\n", _("No connection to colord:"),
 			 error->message);
 		g_error_free (error);
+		goto out;
+	}
+
+	/* get version */
+	if (version) {
+		g_print ("%s\t%s\n", _("Client version:"),
+			 PACKAGE_VERSION);
+		g_print ("%s\t%s\n", _("Daemon version:"),
+			 cd_client_get_daemon_version (priv->client));
 		goto out;
 	}
 
@@ -2160,7 +2266,8 @@ main (int argc, char *argv[])
 	retval = 0;
 out:
 	if (priv != NULL) {
-		g_object_unref (priv->client);
+		if (priv->client != NULL)
+			g_object_unref (priv->client);
 		if (priv->cmd_array != NULL)
 			g_ptr_array_unref (priv->cmd_array);
 		g_option_context_free (priv->context);

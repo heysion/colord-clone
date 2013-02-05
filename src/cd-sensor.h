@@ -26,14 +26,14 @@
 
 #include <glib-object.h>
 #include <gio/gio.h>
+#include <gusb.h>
+#include <colord-private.h>
 
 #ifdef HAVE_GUDEV
 #include <gudev/gudev.h>
 #endif
 
 #include "cd-common.h"
-#include "cd-enum.h"
-#include "cd-color.h"
 
 G_BEGIN_DECLS
 
@@ -60,6 +60,12 @@ struct _CdSensorClass
 	GObjectClass	 parent_class;
 };
 
+typedef enum {
+	CD_SENSOR_DEBUG_MODE_REQUEST,
+	CD_SENSOR_DEBUG_MODE_RESPONSE,
+	CD_SENSOR_DEBUG_MODE_UNKNOWN
+} CdSensorDebugMode;
+
 /* when the data is unavailable */
 #define CD_SENSOR_NO_VALUE			-1.0f
 
@@ -78,6 +84,11 @@ gboolean	 cd_sensor_register_object	(CdSensor		*sensor,
 #ifdef HAVE_GUDEV
 gboolean	 cd_sensor_set_from_device	(CdSensor		*sensor,
 						 GUdevDevice		*device,
+						 GError			**error);
+GUdevDevice	*cd_sensor_get_device		(CdSensor		*sensor);
+GUsbDevice	*cd_sensor_open_usb_device	(CdSensor		*sensor,
+						 gint			 config,
+						 gint			 interface,
 						 GError			**error);
 void		 cd_sensor_set_index		(CdSensor		*sensor,
 						 guint			 idx);
@@ -101,6 +112,8 @@ void		 cd_sensor_set_serial		(CdSensor		*sensor,
 void		 cd_sensor_add_option		(CdSensor		*sensor,
 						 const gchar		*key,
 						 GVariant		*value);
+void		 cd_sensor_add_cap		(CdSensor		*sensor,
+						 CdSensorCap		 cap);
 
 /* GModule */
 void		 cd_sensor_get_sample_async	(CdSensor		*sensor,
@@ -123,6 +136,13 @@ void		 cd_sensor_lock_async		(CdSensor		*sensor,
 gboolean	 cd_sensor_lock_finish		(CdSensor		*sensor,
 						 GAsyncResult		*res,
 						 GError			**error);
+void		 _cd_sensor_lock_async		(CdSensor		*sensor,
+						 GCancellable		*cancellable,
+						 GAsyncReadyCallback	 callback,
+						 gpointer		 user_data);
+gboolean	 _cd_sensor_lock_finish		(CdSensor		*sensor,
+						 GAsyncResult		*res,
+						 GError			**error);
 void		 cd_sensor_unlock_async		(CdSensor		*sensor,
 						 GCancellable		*cancellable,
 						 GAsyncReadyCallback	 callback,
@@ -138,7 +158,9 @@ void		 cd_sensor_set_options_async	(CdSensor		*sensor,
 gboolean	 cd_sensor_set_options_finish	(CdSensor		*sensor,
 						 GAsyncResult		*res,
 						 GError			**error);
-
+void		 cd_sensor_debug_data		(CdSensorDebugMode	 debug_mode,
+						 const guint8		*data,
+						 gsize			 length);
 G_END_DECLS
 
 #endif /* __CD_SENSOR_H */

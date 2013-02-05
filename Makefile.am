@@ -8,7 +8,7 @@ SUBDIRS = 						\
 	etc						\
 	policy						\
 	man						\
-	libcolord					\
+	lib						\
 	rules						\
 	po
 
@@ -31,6 +31,7 @@ DISTCHECK_CONFIGURE_FLAGS =				\
 	--enable-introspection				\
 	--enable-fd-fallback				\
 	--enable-gtk					\
+	--enable-sane					\
 	--disable-print-profiles			\
 	--enable-gtk-doc				\
 	--with-udevrulesdir=$$dc_install_base/$(udevrulesdir) \
@@ -79,7 +80,7 @@ GITIGNOREFILES =					\
 coverity:
 	$(MAKE);					\
 	cd src; $(MAKE) clean; cd -;			\
-	cd libcolord; $(MAKE) clean; cd -;		\
+	cd lib; $(MAKE) clean; cd -;			\
 	cd examples; $(MAKE) clean; cd -;		\
 	cd client; $(MAKE) clean; cd -;			\
 	cd contrib/session-helper; $(MAKE) clean; cd -;	\

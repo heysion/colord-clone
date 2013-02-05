@@ -63,6 +63,7 @@ typedef struct {
 	GPtrArray		*sensors;
 	GHashTable		*standard_spaces;
 	GPtrArray		*plugins;
+	GMainLoop		*loop;
 } CdMainPrivate;
 
 /**
@@ -265,32 +266,41 @@ out:
 }
 
 /**
- * cd_main_device_auto_add_profile_md:
+ * cd_main_auto_add_from_md:
  **/
 static gboolean
-cd_main_device_auto_add_profile_md (CdDevice *device, CdProfile *profile)
+cd_main_auto_add_from_md (CdMainPrivate *priv,
+			  CdDevice *device,
+			  CdProfile *profile)
 {
 	const gchar *device_id;
+	const gchar *profile_id;
 	gboolean ret = FALSE;
 	GError *error = NULL;
+	guint64 timestamp;
 
-	/* does the profile have device metadata */
-	device_id = cd_profile_get_metadata_item (profile,
-						  CD_PROFILE_METADATA_MAPPING_DEVICE_ID);
-	if (device_id == NULL)
+	/* check device and profile hasn't been manually removed */
+	profile_id = cd_profile_get_id (profile);
+	device_id = cd_device_get_id (device);
+	timestamp = cd_mapping_db_get_timestamp (priv->mapping_db,
+						 device_id,
+						 profile_id,
+						 &error);
+	if (timestamp == G_MAXUINT64) {
+		g_debug ("CdMain: no existing mapping found: %s",
+			 error->message);
+		g_clear_error (&error);
+	} else if (timestamp == 0) {
+		g_debug ("CdMain: Not doing MD add %s to %s due to removal",
+			 profile_id, device_id);
 		goto out;
-
-	/* does this device match? */
-	if (g_strcmp0 (cd_device_get_id (device), device_id) != 0)
-		goto out;
+	}
 
 	/* auto-add soft relationship */
 	g_debug ("CdMain: Automatically MD add %s to %s",
-		 cd_profile_get_id (profile),
-		 cd_device_get_object_path (device));
+		 profile_id, device_id);
 	syslog (LOG_INFO, "Automatic metadata add %s to %s",
-		cd_profile_get_id (profile),
-		cd_device_get_id (device));
+		profile_id, device_id);
 	ret = cd_device_add_profile (device,
 				     CD_DEVICE_RELATION_SOFT,
 				     cd_profile_get_object_path (profile),
@@ -307,12 +317,12 @@ out:
 }
 
 /**
- * cd_main_device_auto_add_profile_db:
+ * cd_main_auto_add_from_db:
  **/
 static gboolean
-cd_main_device_auto_add_profile_db (CdMainPrivate *priv,
-				    CdDevice *device,
-				    CdProfile *profile)
+cd_main_auto_add_from_db (CdMainPrivate *priv,
+			  CdDevice *device,
+			  CdProfile *profile)
 {
 	gboolean ret = FALSE;
 	GError *error = NULL;
@@ -350,41 +360,43 @@ out:
 }
 
 /**
- * cd_main_device_auto_add_profile:
+ * cd_main_device_auto_add_from_md:
  **/
-static gboolean
-cd_main_device_auto_add_profile (CdMainPrivate *priv,
-				 CdDevice *device,
-				 CdProfile *profile)
+static void
+cd_main_device_auto_add_from_md (CdMainPrivate *priv,
+				 CdDevice *device)
 {
-	gboolean ret;
+	CdProfile *profile_tmp;
+	GPtrArray *array;
+	guint i;
 
-	/* try adding devices from the mapping db -- we do this first
-	 * as the database entries might be hard */
-	ret = cd_main_device_auto_add_profile_db (priv, device, profile);
-	if (ret)
+	/* get all the profiles, and check to see if any of them contain
+	 * MAPPING_device_id that matches the device */
+	array = cd_profile_array_get_by_metadata (priv->profiles_array,
+						  CD_PROFILE_METADATA_MAPPING_DEVICE_ID,
+						  cd_device_get_id (device));
+	if (array == NULL)
 		goto out;
-
-	/* first try finding profile metadata to the device,
-	 * which will be added soft */
-	ret = cd_main_device_auto_add_profile_md (device, profile);
-	if (ret)
-		goto out;
+	for (i = 0; i < array->len; i++) {
+		profile_tmp = g_ptr_array_index (array, i);
+		cd_main_auto_add_from_md (priv, device, profile_tmp);
+	}
 out:
-	return ret;
+	if (array != NULL)
+		g_ptr_array_unref (array);
 }
 
 /**
- * cd_main_device_auto_add_profiles:
+ * cd_main_device_auto_add_from_db:
  **/
 static void
-cd_main_device_auto_add_profiles (CdMainPrivate *priv,
-				  CdDevice *device)
+cd_main_device_auto_add_from_db (CdMainPrivate *priv, CdDevice *device)
 {
 	CdProfile *profile_tmp;
 	const gchar *object_id_tmp;
 	GError *error = NULL;
 	GPtrArray *array;
+	guint64 timestamp;
 	guint i;
 
 	/* get data */
@@ -401,18 +413,37 @@ cd_main_device_auto_add_profiles (CdMainPrivate *priv,
 	/* try to add them */
 	for (i = 0; i < array->len; i++) {
 		object_id_tmp = g_ptr_array_index (array, i);
+
+		/* ensure timestamp is still valid */
+		timestamp = cd_mapping_db_get_timestamp (priv->mapping_db,
+							 cd_device_get_id (device),
+							 object_id_tmp,
+							 &error);
+		if (timestamp == G_MAXUINT64) {
+			g_warning ("CdMain: failed to get timestamp: %s",
+				   error->message);
+			g_clear_error (&error);
+			continue;
+		}
+		if (timestamp == 0) {
+			g_debug ("CdMain: timestamp zero for %s and %s",
+				 cd_device_get_id (device),
+				 object_id_tmp);
+			continue;
+		}
+
 		profile_tmp = cd_profile_array_get_by_id_owner (priv->profiles_array,
 								object_id_tmp,
 								cd_device_get_owner (device));
-		if (profile_tmp != NULL) {
-			cd_main_device_auto_add_profile (priv,
-							 device,
-							 profile_tmp);
-			g_object_unref (profile_tmp);
-		} else {
-			g_debug ("CdMain: profile %s is not (yet) available",
-				 object_id_tmp);
+		if (profile_tmp == NULL) {
+			g_debug ("CdMain: profile %s with owner %i is not (yet) available",
+				 object_id_tmp, cd_device_get_owner (device));
+			continue;
 		}
+
+		/* does the profile have the correct device metadata */
+		cd_main_auto_add_from_db (priv, device, profile_tmp);
+		g_object_unref (profile_tmp);
 	}
 out:
 	if (array != NULL)
@@ -493,8 +524,9 @@ cd_main_device_add (CdMainPrivate *priv,
 	/* add to array */
 	cd_device_array_add (priv->devices_array, device);
 
-	/* auto add profiles from the database */
-	cd_main_device_auto_add_profiles (priv, device);
+	/* auto add profiles from the database and metadata */
+	cd_main_device_auto_add_from_db (priv, device);
+	cd_main_device_auto_add_from_md (priv, device);
 out:
 	return ret;
 }
@@ -505,18 +537,32 @@ out:
 static gchar *
 cd_main_get_seat_for_process (guint pid)
 {
+	gchar *seat = NULL;
+#ifdef HAVE_LIBSYSTEMD_LOGIN
 	char *sd_seat = NULL;
 	char *sd_session = NULL;
-	gchar *seat = NULL;
+	gint rc;
 
-#ifdef HAVE_LIBSYSTEMD_LOGIN
-	if (sd_pid_get_session (pid, &sd_session) == 0)
-		sd_session_get_seat (sd_session, &sd_seat);
+	/* get session the process belongs to */
+	rc = sd_pid_get_session (pid, &sd_session);
+	if (rc != 0) {
+		g_warning ("failed to get session [pid %i]: %s",
+			   pid, strerror (rc));
+		goto out;
+	}
+
+	/* get the seat the session is on */
+	rc = sd_session_get_seat (sd_session, &sd_seat);
+	if (rc != 0) {
+		g_warning ("failed to get seat for session %s [pid %i]: %s",
+			   sd_session, pid, strerror (rc));
+		goto out;
+	}
 	seat = g_strdup (sd_seat);
-#endif
-
+out:
 	free (sd_seat);
 	free (sd_session);
+#endif
 	return seat;
 }
 
@@ -656,11 +702,11 @@ cd_main_sensor_array_to_variant (GPtrArray *array)
 }
 
 /**
- * cd_main_profile_auto_add_to_device:
+ * cd_main_profile_auto_add_from_db:
  **/
 static void
-cd_main_profile_auto_add_to_device (CdMainPrivate *priv,
-				    CdProfile *profile)
+cd_main_profile_auto_add_from_db (CdMainPrivate *priv,
+				  CdProfile *profile)
 {
 	CdDevice *device_tmp;
 	const gchar *device_id_tmp;
@@ -692,19 +738,42 @@ cd_main_profile_auto_add_to_device (CdMainPrivate *priv,
 		device_tmp = cd_device_array_get_by_id_owner (priv->devices_array,
 							      device_id_tmp,
 							      cd_profile_get_owner (profile));
-		if (device_tmp != NULL) {
-			cd_main_device_auto_add_profile (priv,
-							 device_tmp,
-							 profile);
-			g_object_unref (device_tmp);
-		} else {
-			g_debug ("CdMain: device %s is not (yet) available",
-				 device_id_tmp);
-		}
+		if (device_tmp == NULL)
+			continue;
+
+		/* hard add */
+		cd_main_auto_add_from_db (priv, device_tmp, profile);
+		g_object_unref (device_tmp);
 	}
 out:
 	if (array != NULL)
 		g_ptr_array_unref (array);
+}
+
+/**
+ * cd_main_profile_auto_add_from_md:
+ **/
+static void
+cd_main_profile_auto_add_from_md (CdMainPrivate *priv,
+				  CdProfile *profile)
+{
+	CdDevice *device = NULL;
+	const gchar *device_id;
+
+	/* does the device exists that matches the md */
+	device_id = cd_profile_get_metadata_item (profile,
+						  CD_PROFILE_METADATA_MAPPING_DEVICE_ID);
+	if (device_id == NULL)
+		goto out;
+	device = cd_device_array_get_by_id_owner (priv->devices_array,
+						  device_id,
+						  cd_profile_get_owner (profile));
+	if (device == NULL)
+		goto out;
+	cd_main_auto_add_from_md (priv, device, profile);
+out:
+	if (device != NULL)
+		g_object_unref (device);
 }
 
 /**
@@ -766,29 +835,69 @@ static CdProfile *
 cd_main_get_standard_space_metadata (CdMainPrivate *priv,
 				     const gchar *standard_space)
 {
+	CdProfile *profile_best = NULL;
 	CdProfile *profile = NULL;
 	CdProfile *profile_tmp;
-	gboolean ret;
 	GPtrArray *array;
 	guint i;
+	guint score_best = 0;
+	guint score_tmp;
 
 	/* get all the profiles with this metadata */
 	array = cd_profile_array_get_by_metadata (priv->profiles_array,
 						  CD_PROFILE_METADATA_STANDARD_SPACE,
 						  standard_space);
 
-	/* just use the first system-wide profile */
+	/* use the profile with the largest score */
 	for (i = 0; i < array->len; i++) {
 		profile_tmp = g_ptr_array_index (array, i);
-		ret = cd_profile_get_is_system_wide (profile_tmp);
-		if (ret) {
-			profile = g_object_ref (profile_tmp);
-			goto out;
+		score_tmp = cd_profile_get_score (profile_tmp);
+		if (score_tmp > score_best) {
+			score_best = score_tmp;
+			profile_best = profile_tmp;
 		}
 	}
+	if (profile_best == NULL)
+		goto out;
+
+	/* success */
+	profile = g_object_ref (profile_best);
 out:
 	g_ptr_array_unref (array);
 	return profile;
+}
+
+/**
+ * cd_main_get_cmdline_for_pid:
+ **/
+static gchar *
+cd_main_get_cmdline_for_pid (guint pid)
+{
+	gboolean ret;
+	gchar *cmdline = NULL;
+	gchar *proc_path;
+	GError *error = NULL;
+	gsize len = 0;
+	guint i;
+
+	/* just read the link */
+	proc_path = g_strdup_printf ("/proc/%i/cmdline", pid);
+	ret = g_file_get_contents (proc_path, &cmdline, &len, &error);
+	if (!ret || len == 0) {
+		g_warning ("CdMain: failed to read %s: %s",
+			   proc_path, error->message);
+		g_error_free (error);
+		goto out;
+	}
+
+	/* turn all the \0's into spaces */
+	for (i = 0; i < len; i++) {
+		if (cmdline[i] == '\0')
+			cmdline[i] = ' ';
+	}
+out:
+	g_free (proc_path);
+	return cmdline;
 }
 
 /**
@@ -801,6 +910,7 @@ cd_main_daemon_method_call (GDBusConnection *connection, const gchar *sender,
 			    GDBusMethodInvocation *invocation, gpointer user_data)
 {
 	CdDevice *device = NULL;
+	CdDeviceKind device_kind;
 	CdMainPrivate *priv = (CdMainPrivate *) user_data;
 	CdObjectScope scope;
 	CdProfile *profile = NULL;
@@ -811,9 +921,11 @@ cd_main_daemon_method_call (GDBusConnection *connection, const gchar *sender,
 	gboolean ret;
 	const gchar *device_id = NULL;
 	const gchar *scope_tmp = NULL;
+	gchar *cmdline = NULL;
 	GError *error = NULL;
 	GPtrArray *array = NULL;
 	GVariantIter *iter = NULL;
+	GVariant *dict = NULL;
 	GVariant *tuple = NULL;
 	GVariant *value = NULL;
 	gint fd = -1;
@@ -870,8 +982,17 @@ cd_main_daemon_method_call (GDBusConnection *connection, const gchar *sender,
 		g_variant_get (parameters, "(&s)", &device_id);
 		g_debug ("CdMain: %s:GetDevicesByKind(%s)",
 			 sender, device_id);
+		device_kind = cd_device_kind_from_string (device_id);
+		if (device_kind == CD_DEVICE_KIND_UNKNOWN) {
+			g_dbus_method_invocation_return_error (invocation,
+							       CD_CLIENT_ERROR,
+							       CD_CLIENT_ERROR_INPUT_INVALID,
+							       "device kind %s not recognised",
+							       device_id);
+			goto out;
+		}
 		array = cd_device_array_get_by_kind (priv->devices_array,
-						     device_id);
+						     device_kind);
 
 		/* format the value */
 		value = cd_main_device_array_to_variant (array);
@@ -1099,10 +1220,10 @@ cd_main_daemon_method_call (GDBusConnection *connection, const gchar *sender,
 		}
 
 		/* does already exist */
-		g_variant_get (parameters, "(&s&sa{ss})",
+		g_variant_get (parameters, "(&s&s@a{ss})",
 			       &device_id,
 			       &scope_tmp,
-			       &iter);
+			       &dict);
 		g_debug ("CdMain: %s:CreateDevice(%s)", sender, device_id);
 
 		/* check ID is valid */
@@ -1111,6 +1232,27 @@ cd_main_daemon_method_call (GDBusConnection *connection, const gchar *sender,
 							       CD_CLIENT_ERROR,
 							       CD_CLIENT_ERROR_INPUT_INVALID,
 							       "device id cannot be blank");
+			goto out;
+		}
+
+		/* check kind is supplied and recognised */
+		ret = g_variant_lookup (dict,
+					CD_DEVICE_PROPERTY_KIND,
+					"&s", &prop_value);
+		if (!ret) {
+			g_dbus_method_invocation_return_error (invocation,
+							       CD_CLIENT_ERROR,
+							       CD_CLIENT_ERROR_INPUT_INVALID,
+							       "required device type not specified");
+			goto out;
+		}
+		device_kind = cd_device_kind_from_string (prop_value);
+		if (device_kind == CD_DEVICE_KIND_UNKNOWN) {
+			g_dbus_method_invocation_return_error (invocation,
+							       CD_CLIENT_ERROR,
+							       CD_CLIENT_ERROR_INPUT_INVALID,
+							       "device type %s not recognised",
+							       prop_value);
 			goto out;
 		}
 
@@ -1176,11 +1318,33 @@ cd_main_daemon_method_call (GDBusConnection *connection, const gchar *sender,
 		}
 
 		/* set the properties */
+		cd_device_set_kind (device, device_kind);
+		iter = g_variant_iter_new (dict);
 		while (g_variant_iter_next (iter, "{&s&s}",
 					    &prop_key, &prop_value)) {
+			if (g_strcmp0 (prop_key, CD_DEVICE_PROPERTY_KIND) == 0)
+				continue;
 			ret = cd_device_set_property_internal (device,
 							       prop_key,
 							       prop_value,
+							       (scope == CD_OBJECT_SCOPE_DISK),
+							       &error);
+			if (!ret) {
+				g_warning ("CdMain: failed to set property on device: %s",
+					   error->message);
+				g_dbus_method_invocation_return_gerror (invocation,
+									error);
+				g_error_free (error);
+				goto out;
+			}
+		}
+
+		/* add any extra metadata */
+		cmdline = cd_main_get_cmdline_for_pid (pid);
+		if (cmdline != NULL) {
+			ret = cd_device_set_property_internal (device,
+							       CD_DEVICE_METADATA_OWNER_CMDLINE,
+							       cmdline,
 							       (scope == CD_OBJECT_SCOPE_DISK),
 							       &error);
 			if (!ret) {
@@ -1375,9 +1539,6 @@ cd_main_daemon_method_call (GDBusConnection *connection, const gchar *sender,
 			goto out;
 		}
 
-		/* auto add profiles from the database */
-		cd_main_profile_auto_add_to_device (priv, profile);
-
 		/* get any file descriptor in the message */
 		message = g_dbus_method_invocation_get_message (invocation);
 		fd_list = g_dbus_message_get_unix_fd_list (message);
@@ -1421,6 +1582,10 @@ cd_main_daemon_method_call (GDBusConnection *connection, const gchar *sender,
 			}
 		}
 
+		/* auto add profiles from the database and metadata */
+		cd_main_profile_auto_add_from_db (priv, profile);
+		cd_main_profile_auto_add_from_md (priv, profile);
+
 		/* register on bus */
 		ret = cd_main_profile_register_on_bus (priv, profile, &error);
 		if (!ret) {
@@ -1440,8 +1605,11 @@ cd_main_daemon_method_call (GDBusConnection *connection, const gchar *sender,
 	/* we suck */
 	g_critical ("failed to process method %s", method_name);
 out:
+	g_free (cmdline);
 	if (iter != NULL)
 		g_variant_iter_free (iter);
+	if (dict != NULL)
+		g_variant_unref (dict);
 	if (array != NULL)
 		g_ptr_array_unref (array);
 	if (device != NULL)
@@ -1908,9 +2076,9 @@ cd_main_on_name_lost_cb (GDBusConnection *connection,
 			 const gchar *name,
 			 gpointer user_data)
 {
-	GMainLoop *loop = (GMainLoop *) user_data;
+	CdMainPrivate *priv = (CdMainPrivate *) user_data;
 	g_debug ("CdMain: lost name: %s", name);
-	g_main_loop_quit (loop);
+	g_main_loop_quit (priv->loop);
 }
 
 #ifdef HAVE_GUDEV
@@ -2053,18 +2221,25 @@ cd_main_plugin_device_removed_cb (CdPlugin *plugin,
 /**
  * cd_main_load_plugin:
  */
-static void
-cd_main_load_plugin (CdMainPrivate *priv, const gchar *filename)
+static gboolean
+cd_main_load_plugin (CdMainPrivate *priv,
+		     const gchar *filename,
+		     GError **error)
 {
+	CdPluginConfigEnabledFunc plugin_config_enabled = NULL;
 	CdPluginGetDescFunc plugin_desc = NULL;
 	CdPlugin *plugin;
-	gboolean ret;
+	gboolean ret = FALSE;
 	GModule *module;
 
+	/* open the plugin and import all symbols */
 	module = g_module_open (filename, 0);
 	if (module == NULL) {
-		g_warning ("failed to open plugin %s: %s",
-			   filename, g_module_error ());
+		g_set_error (error,
+			     CD_CLIENT_ERROR,
+			     CD_CLIENT_ERROR_FILE_INVALID,
+			     "failed to open: %s",
+			     g_module_error ());
 		goto out;
 	}
 
@@ -2073,9 +2248,28 @@ cd_main_load_plugin (CdMainPrivate *priv, const gchar *filename)
 			       "cd_plugin_get_description",
 			       (gpointer *) &plugin_desc);
 	if (!ret) {
-		g_warning ("Plugin %s requires description", filename);
+		g_set_error_literal (error,
+				     CD_CLIENT_ERROR,
+				     CD_CLIENT_ERROR_INTERNAL,
+				     "plugin requires description");
 		g_module_close (module);
 		goto out;
+	}
+
+	/* give the module the option to opt-out */
+	ret = g_module_symbol (module,
+			       "cd_plugin_config_enabled",
+			       (gpointer *) &plugin_config_enabled);
+	if (ret) {
+		if (!plugin_config_enabled (priv->config)) {
+			ret = FALSE;
+			g_set_error_literal (error,
+					     CD_CLIENT_ERROR,
+					     CD_CLIENT_ERROR_NOT_SUPPORTED,
+					     "plugin refused to load");
+			g_module_close (module);
+			goto out;
+		}
 	}
 
 	/* print what we know */
@@ -2084,12 +2278,14 @@ cd_main_load_plugin (CdMainPrivate *priv, const gchar *filename)
 	plugin->module = module;
 	plugin->device_added = cd_main_plugin_device_added_cb;
 	plugin->device_removed = cd_main_plugin_device_removed_cb;
-	g_debug ("opened plugin %s: %s", filename, plugin_desc ());
 
 	/* add to array */
 	g_ptr_array_add (priv->plugins, plugin);
+
+	/* success */
+	ret = TRUE;
 out:
-	return;
+	return ret;
 }
 
 /**
@@ -2099,6 +2295,7 @@ static void
 cd_main_load_plugins (CdMainPrivate *priv)
 {
 	const gchar *filename_tmp;
+	gboolean ret;
 	gchar *filename_plugin;
 	gchar *path;
 	GDir *dir;
@@ -2125,8 +2322,25 @@ cd_main_load_plugins (CdMainPrivate *priv)
 		filename_plugin = g_build_filename (path,
 						    filename_tmp,
 						    NULL);
-		cd_main_load_plugin (priv, filename_plugin);
-		syslog (LOG_INFO, "Loading plugin %s", filename_tmp);
+		ret = cd_main_load_plugin (priv, filename_plugin, &error);
+		if (ret) {
+			syslog (LOG_INFO,
+				"loaded plugin %s",
+				filename_tmp);
+		} else {
+			if (g_error_matches (error,
+					     CD_CLIENT_ERROR,
+					     CD_CLIENT_ERROR_NOT_SUPPORTED)) {
+				g_debug ("CdMain: %s", error->message);
+			} else {
+				g_warning ("CdMain: %s", error->message);
+			}
+			syslog (LOG_INFO,
+				"plugin %s not loaded: %s",
+				filename_plugin,
+				error->message);
+			g_clear_error (&error);
+		}
 		g_free (filename_plugin);
 	} while (TRUE);
 out:
@@ -2146,7 +2360,6 @@ main (int argc, char *argv[])
 	gboolean ret;
 	gboolean timed_exit = FALSE;
 	GError *error = NULL;
-	GMainLoop *loop;
 	GOptionContext *context;
 	guint owner_id = 0;
 	guint retval = 1;
@@ -2183,7 +2396,7 @@ main (int argc, char *argv[])
 	priv->config = cd_config_new ();
 
 	/* create new objects */
-	loop = g_main_loop_new (NULL, FALSE);
+	priv->loop = g_main_loop_new (NULL, FALSE);
 	priv->devices_array = cd_device_array_new ();
 	priv->profiles_array = cd_profile_array_new ();
 	priv->sensors = g_ptr_array_new_with_free_func ((GDestroyNotify) g_object_unref);
@@ -2276,9 +2489,9 @@ main (int argc, char *argv[])
 	/* Only timeout and close the mainloop if we have specified it
 	 * on the command line */
 	if (immediate_exit)
-		g_idle_add (cd_main_timed_exit_cb, loop);
+		g_idle_add (cd_main_timed_exit_cb, priv->loop);
 	else if (timed_exit)
-		g_timeout_add_seconds (5, cd_main_timed_exit_cb, loop);
+		g_timeout_add_seconds (5, cd_main_timed_exit_cb, priv->loop);
 
 	/* load plugins */
 	priv->plugins = g_ptr_array_new_with_free_func ((GDestroyNotify) cd_main_plugin_free);
@@ -2287,7 +2500,7 @@ main (int argc, char *argv[])
 
 	/* wait */
 	syslog (LOG_INFO, "Daemon ready for requests");
-	g_main_loop_run (loop);
+	g_main_loop_run (priv->loop);
 
 	/* run the plugins */
 	cd_main_plugin_phase (priv, CD_PLUGIN_PHASE_DESTROY);
@@ -2298,9 +2511,12 @@ main (int argc, char *argv[])
 out:
 	if (owner_id > 0)
 		g_bus_unown_name (owner_id);
-	g_main_loop_unref (loop);
-	g_ptr_array_unref (priv->sensors);
-	g_ptr_array_unref (priv->plugins);
+	if (priv->loop != NULL)
+		g_main_loop_unref (priv->loop);
+	if (priv->sensors != NULL)
+		g_ptr_array_unref (priv->sensors);
+	if (priv->plugins != NULL)
+		g_ptr_array_unref (priv->plugins);
 	g_hash_table_destroy (priv->standard_spaces);
 #ifdef HAVE_GUDEV
 	if (priv->sensor_client != NULL)

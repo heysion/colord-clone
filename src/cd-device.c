@@ -62,7 +62,7 @@ struct _CdDevicePrivate
 	gchar				*colorspace;
 	gchar				*format;
 	gchar				*mode;
-	gchar				*kind;
+	CdDeviceKind			 kind;
 	gchar				*object_path;
 	GDBusConnection			*connection;
 	GPtrArray			*profiles; /* of CdDeviceProfileItem */
@@ -269,11 +269,22 @@ cd_device_get_model (CdDevice *device)
 /**
  * cd_device_get_kind:
  **/
-const gchar *
+CdDeviceKind
 cd_device_get_kind (CdDevice *device)
 {
-	g_return_val_if_fail (CD_IS_DEVICE (device), NULL);
+	g_return_val_if_fail (CD_IS_DEVICE (device), CD_DEVICE_KIND_UNKNOWN);
 	return device->priv->kind;
+}
+
+/**
+ * cd_device_set_kind:
+ **/
+void
+cd_device_set_kind (CdDevice *device, CdDeviceKind kind)
+{
+	g_return_if_fail (CD_IS_DEVICE (device));
+	g_return_if_fail (kind != CD_DEVICE_KIND_UNKNOWN);
+	device->priv->kind = kind;
 }
 
 /**
@@ -679,7 +690,7 @@ _cd_device_relation_to_string (CdDeviceRelation device_relation)
 }
 
 /**
- * cd_device_add_profile:
+ * cd_device_profile_item_sort_cb:
  **/
 static gint
 cd_device_profile_item_sort_cb (gconstpointer a, gconstpointer b)
@@ -709,6 +720,7 @@ cd_device_add_profile (CdDevice *device,
 	CdDevicePrivate *priv = device->priv;
 	CdDeviceProfileItem *item;
 	CdProfile *profile = NULL;
+	gboolean create_item = TRUE;
 	gboolean ret = TRUE;
 	guint i;
 
@@ -740,6 +752,19 @@ cd_device_add_profile (CdDevice *device,
 		item = g_ptr_array_index (priv->profiles, i);
 		if (g_strcmp0 (cd_profile_get_object_path (profile),
 			       cd_profile_get_object_path (item->profile)) == 0) {
+
+			/* if we soft added this profile, and now the
+			 * user hard adds it as well then we need to
+			 * change the kind and not re-add it */
+			if (relation == CD_DEVICE_RELATION_HARD &&
+			    item->relation == CD_DEVICE_RELATION_SOFT) {
+				g_debug ("CdDevice: converting %s hard->soft",
+					 cd_profile_get_id (profile));
+				item->relation = CD_DEVICE_RELATION_HARD;
+				create_item = FALSE;
+				break;
+			}
+
 			ret = FALSE;
 			g_set_error (error,
 				     CD_DEVICE_ERROR,
@@ -751,17 +776,19 @@ cd_device_add_profile (CdDevice *device,
 	}
 
 	/* add to the array */
-	g_debug ("Adding %s [%s] to %s",
-		 cd_profile_get_id (profile),
-		 _cd_device_relation_to_string (relation),
-		 device->priv->id);
-	item = g_new0 (CdDeviceProfileItem, 1);
-	item->profile = g_object_ref (profile);
-	item->relation = relation;
-	item->timestamp = timestamp;
-	g_ptr_array_add (priv->profiles, item);
-	g_ptr_array_sort (priv->profiles,
-			  cd_device_profile_item_sort_cb);
+	if (create_item) {
+		g_debug ("Adding %s [%s] to %s",
+			 cd_profile_get_id (profile),
+			 _cd_device_relation_to_string (relation),
+			 device->priv->id);
+		item = g_new0 (CdDeviceProfileItem, 1);
+		item->profile = g_object_ref (profile);
+		item->relation = relation;
+		item->timestamp = timestamp;
+		g_ptr_array_add (priv->profiles, item);
+		g_ptr_array_sort (priv->profiles,
+				  cd_device_profile_item_sort_cb);
+	}
 
 	/* reset modification time */
 	cd_device_reset_modified (device);
@@ -902,9 +929,9 @@ cd_device_set_model (CdDevice *device, const gchar *model)
 	tmp = g_string_new (model);
 
 	/* remove the kind suffix */
-	if (g_strcmp0 (priv->kind, "printer") == 0)
+	if (priv->kind == CD_DEVICE_KIND_PRINTER)
 		cd_device_string_remove_suffix (tmp->str, "Printer");
-	if (g_strcmp0 (priv->kind, "display") == 0) {
+	if (priv->kind == CD_DEVICE_KIND_DISPLAY) {
 		cd_device_string_remove_suffix (tmp->str, "Monitor");
 		cd_device_string_remove_suffix (tmp->str, "Screen");
 	}
@@ -944,8 +971,7 @@ cd_device_set_property_internal (CdDevice *device,
 	if (g_strcmp0 (property, CD_DEVICE_PROPERTY_MODEL) == 0) {
 		cd_device_set_model (device, value);
 	} else if (g_strcmp0 (property, CD_DEVICE_PROPERTY_KIND) == 0) {
-		g_free (priv->kind);
-		priv->kind = g_strdup (value);
+		priv->kind = cd_device_kind_from_string (value);
 	} else if (g_strcmp0 (property, CD_DEVICE_PROPERTY_VENDOR) == 0) {
 		cd_device_set_vendor (device, value);
 	} else if (g_strcmp0 (property, CD_DEVICE_PROPERTY_SERIAL) == 0) {
@@ -1261,11 +1287,12 @@ cd_device_dbus_method_call (GDBusConnection *connection, const gchar *sender,
 		id = cd_profile_get_id (profile);
 		g_object_unref (profile);
 
-		/* save this to the permanent database */
-		ret = cd_mapping_db_remove (priv->mapping_db,
-					    priv->id,
-					    id,
-					    &error);
+		/* leave the entry in the database to it never gets
+		 * soft added, even if there if metadata */
+		ret = cd_mapping_db_clear_timestamp (priv->mapping_db,
+						     priv->id,
+						     id,
+						     &error);
 		if (!ret) {
 			g_warning ("CdDevice: failed to save mapping to database: %s",
 				   error->message);
@@ -1399,10 +1426,10 @@ cd_device_dbus_method_call (GDBusConnection *connection, const gchar *sender,
 		g_object_unref (profile);
 
 		/* save new timestamp in database */
-		ret = cd_mapping_db_update_timestamp (priv->mapping_db,
-						      priv->id,
-						      id,
-						      &error);
+		ret = cd_mapping_db_add (priv->mapping_db,
+					 priv->id,
+					 id,
+					 &error);
 		if (!ret)
 			goto out;
 
@@ -1615,7 +1642,7 @@ cd_device_dbus_get_property (GDBusConnection *connection_, const gchar *sender,
 		goto out;
 	}
 	if (g_strcmp0 (property_name, CD_DEVICE_PROPERTY_KIND) == 0) {
-		retval = cd_device_get_nullable_for_string (priv->kind);
+		retval = cd_device_get_nullable_for_string (cd_device_kind_to_string (priv->kind));
 		goto out;
 	}
 	if (g_strcmp0 (property_name, CD_DEVICE_PROPERTY_ID) == 0) {
@@ -1880,7 +1907,6 @@ cd_device_finalize (GObject *object)
 	g_free (priv->format);
 	g_free (priv->mode);
 	g_free (priv->serial);
-	g_free (priv->kind);
 	g_free (priv->seat);
 	g_free (priv->object_path);
 	g_ptr_array_unref (priv->profiles);

@@ -80,7 +80,7 @@
               <doc:tt>Quality</doc:tt> : (u) The calibration quality, where 0 is low, 1 is medium and
               2 is high.
               <doc:tt>Whitepoint</doc:tt> : (u) The target whitepoint in Kelvin, or 0 or native.
-              <doc:tt>Title</doc:tt>doc:tt> : (s) The profile title, e.g. <doc:tt>Lenovo T61</doc:tt>.
+              <doc:tt>Title</doc:tt> : (s) The profile title, e.g. <doc:tt>Lenovo T61</doc:tt>.
               <doc:tt>DeviceKind</doc:tt> : (u) The CdSensorCap for the display.
               <doc:tt>Brightness</doc:tt> : (u) The display brightness.
             </doc:para>
@@ -130,11 +130,16 @@
           </doc:summary>
         </doc:doc>
       </arg>
-      <arg type='s' name='error_details' direction='out'>
+      <arg type='a{sv}' name='details' direction='out'>
         <doc:doc>
           <doc:summary>
             <doc:para>
-              Any additional (untranslated) error output for debugging.
+              Extra data from the calibration that may be useful to
+              client software.
+              Known keys are:
+              <doc:tt>ProfileId</doc:tt> : (s) The ID of the profile.
+              <doc:tt>ProfilePath</doc:tt> : (s) The object path of the profile.
+              <doc:tt>ErrorDetails</doc:tt>: (s) Any untranslated error detail string.
             </doc:para>
           </doc:summary>
         </doc:doc>

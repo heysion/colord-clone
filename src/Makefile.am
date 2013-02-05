@@ -14,9 +14,12 @@ AM_CPPFLAGS =						\
 	$(POLKIT_CFLAGS)				\
 	$(LCMS_CFLAGS)					\
 	$(GUDEV_CFLAGS)					\
+	$(GUSB_CFLAGS)					\
 	$(SQLITE_CFLAGS)				\
 	$(LIBSYSTEMD_LOGIN_CFLAGS)			\
-	-I$(top_srcdir)/libcolord			\
+	-I$(top_srcdir)/lib				\
+	-I$(top_builddir)/lib				\
+	-I$(top_srcdir)/lib/colord			\
 	-DG_LOG_DOMAIN=\"Cd\"				\
 	-DLIBEXECDIR=\"$(libexecdir)\"			\
 	-DLIBDIR=\"$(libdir)\"				\
@@ -28,13 +31,12 @@ AM_CPPFLAGS =						\
 	-DCD_COMPILATION				\
 	-DCD_DISABLE_DEPRECATED				\
 	-DG_UDEV_API_IS_SUBJECT_TO_CHANGE		\
+	-DG_USB_API_IS_SUBJECT_TO_CHANGE		\
 	-DCD_SYSTEM_PROFILES_DIR="\"$(CD_SYSTEM_PROFILES_DIR)"\" \
 	-DLOCALEDIR=\""$(localedir)"\"
 
-COLORD_LIBS =						\
-	$(top_builddir)/libcolord/libcolord.la
 COLORD_PRIVATE_LIBS =					\
-	$(top_builddir)/libcolord/libcolordprivate.a
+	$(top_builddir)/lib/colord/libcolordprivate.la
 
 libexec_PROGRAMS =					\
 	colord
@@ -66,12 +68,6 @@ colord_SOURCES =					\
 	cd-profile-store.h				\
 	cd-sensor.c					\
 	cd-sensor.h					\
-	$(top_builddir)/libcolord/cd-color.c		\
-	$(top_builddir)/libcolord/cd-color.h		\
-	$(top_builddir)/libcolord/cd-enum.c		\
-	$(top_builddir)/libcolord/cd-enum.h		\
-	$(top_builddir)/libcolord/cd-math.c		\
-	$(top_builddir)/libcolord/cd-math.h		\
 	cd-main.c
 
 if HAVE_GUDEV
@@ -85,7 +81,9 @@ colord_LDADD =						\
 	$(POLKIT_LIBS)					\
 	$(LCMS_LIBS)					\
 	$(GUDEV_LIBS)					\
+	$(GUSB_LIBS)					\
 	$(LIBSYSTEMD_LOGIN_LIBS)			\
+	$(COLORD_PRIVATE_LIBS)				\
 	$(GLIB_LIBS)
 
 colord_CFLAGS =						\

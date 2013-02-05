@@ -43,9 +43,28 @@ static gpointer cd_mapping_db_object = NULL;
 G_DEFINE_TYPE (CdMappingDb, cd_mapping_db, G_TYPE_OBJECT)
 
 /**
+ * cd_mapping_db_convert_cb:
+ **/
+static gint
+cd_mapping_db_convert_cb (void *data, gint argc, gchar **argv, gchar **col_name)
+{
+	CdMappingDb *mdb = (CdMappingDb *) data;
+	gchar *statement;
+	gint rc;
+
+	statement = sqlite3_mprintf ("INSERT INTO mappings_v2 (device, profile, timestamp) "
+				     "VALUES ('%q', '%q', '%q')",
+				     argv[0], argv[1], argv[2]);
+	rc = sqlite3_exec (mdb->priv->db, statement,
+			   NULL, NULL, NULL);
+	sqlite3_free (statement);
+	return rc;
+}
+
+/**
  * cd_mapping_db_load:
  **/
-gboolean  
+gboolean
 cd_mapping_db_load (CdMappingDb *mdb,
 		    const gchar *filename,
 		    GError  **error)
@@ -106,6 +125,52 @@ cd_mapping_db_load (CdMappingDb *mdb,
 		statement = "ALTER TABLE mappings ADD COLUMN timestamp INTEGER DEFAULT 0;";
 		sqlite3_exec (mdb->priv->db, statement, NULL, NULL, NULL);
 	}
+
+	/* check mappings version 2 exists (since 0.1.29) */
+	rc = sqlite3_exec (mdb->priv->db, "SELECT * FROM mappings_v2 LIMIT 1",
+			   NULL, NULL, &error_msg);
+	if (rc != SQLITE_OK) {
+		g_debug ("CdMappingDb: altering table to convert: %s", error_msg);
+		sqlite3_free (error_msg);
+		statement = "CREATE TABLE mappings_v2 ("
+			    "timestamp INTEGER DEFAULT 0,"
+			    "device TEXT,"
+			    "profile TEXT,"
+			    "PRIMARY KEY (device, profile));";
+		sqlite3_exec (mdb->priv->db, statement, NULL, NULL, NULL);
+
+		/* copy all the mapping data from v1 to v2 */
+		statement = "SELECT device, profile, timestamp FROM mappings;";
+		rc = sqlite3_exec (mdb->priv->db,
+				   statement,
+				   cd_mapping_db_convert_cb,
+				   mdb,
+				   &error_msg);
+		if (rc != SQLITE_OK) {
+			g_set_error (error,
+				     CD_CLIENT_ERROR,
+				     CD_CLIENT_ERROR_INTERNAL,
+				     "Failed to migrate mappings: SQL error: %s",
+				     error_msg);
+			sqlite3_free (error_msg);
+			goto out;
+		}
+
+		/* remove old table data */
+		statement = "DELETE FROM mappings;";
+		rc = sqlite3_exec (mdb->priv->db, statement,
+				   NULL, NULL, &error_msg);
+		if (rc != SQLITE_OK) {
+			ret = FALSE;
+			g_set_error (error,
+				     CD_CLIENT_ERROR,
+				     CD_CLIENT_ERROR_INTERNAL,
+				     "Failed to migrate mappings: SQL error: %s",
+				     error_msg);
+			sqlite3_free (error_msg);
+			goto out;
+		}
+	}
 out:
 	g_free (path);
 	return ret;
@@ -114,7 +179,7 @@ out:
 /**
  * cd_mapping_db_empty:
  **/
-gboolean  
+gboolean
 cd_mapping_db_empty (CdMappingDb *mdb,
 		     GError  **error)
 {
@@ -126,7 +191,7 @@ cd_mapping_db_empty (CdMappingDb *mdb,
 	g_return_val_if_fail (CD_IS_MAPPING_DB (mdb), FALSE);
 	g_return_val_if_fail (mdb->priv->db != NULL, FALSE);
 
-	statement = "DELETE FROM mappings;";
+	statement = "DELETE FROM mappings_v2;";
 	rc = sqlite3_exec (mdb->priv->db, statement,
 			   NULL, NULL, &error_msg);
 	if (rc != SQLITE_OK) {
@@ -146,7 +211,7 @@ out:
 /**
  * cd_mapping_db_add:
  **/
-gboolean  
+gboolean
 cd_mapping_db_add (CdMappingDb *mdb,
 		   const gchar *device_id,
 		   const gchar *profile_id,
@@ -164,7 +229,7 @@ cd_mapping_db_add (CdMappingDb *mdb,
 	g_debug ("CdMappingDb: add %s<=>%s",
 		 device_id, profile_id);
 	timestamp = g_get_real_time ();
-	statement = sqlite3_mprintf ("INSERT INTO mappings (device, profile, timestamp) "
+	statement = sqlite3_mprintf ("INSERT OR REPLACE INTO mappings_v2 (device, profile, timestamp) "
 				     "VALUES ('%q', '%q', %"G_GINT64_FORMAT")",
 				     device_id, profile_id, timestamp);
 
@@ -184,30 +249,34 @@ out:
 	sqlite3_free (statement);
 	return ret;
 }
+
 /**
- * cd_mapping_db_update_timestamp:
+ * cd_mapping_db_clear_timestamp:
+ *
+ * Setting a timestamp to zero means that the soft-auto-add should not
+ * be done as the user has explicitly removed it.
+ *
+ * If the mapping does not exist then it will be automatically added.
  **/
 gboolean
-cd_mapping_db_update_timestamp (CdMappingDb *mdb,
-				const gchar *device_id,
-				const gchar *profile_id,
-				GError  **error)
+cd_mapping_db_clear_timestamp (CdMappingDb *mdb,
+			       const gchar *device_id,
+			       const gchar *profile_id,
+			       GError  **error)
 {
 	gboolean ret = TRUE;
 	gchar *error_msg = NULL;
 	gchar *statement;
 	gint rc;
-	gint64 timestamp;
 
 	g_return_val_if_fail (CD_IS_MAPPING_DB (mdb), FALSE);
 	g_return_val_if_fail (mdb->priv->db != NULL, FALSE);
 
-	g_debug ("CdMappingDb: update timestamp %s<=>%s",
+	g_debug ("CdMappingDb: clearing timestamp %s<=>%s",
 		 device_id, profile_id);
-	timestamp = g_get_real_time ();
-	statement = sqlite3_mprintf ("UPDATE mappings SET timestamp = %"G_GINT64_FORMAT
-				     " WHERE device = '%q' AND profile = '%q';",
-				     timestamp, device_id, profile_id);
+	statement = sqlite3_mprintf ("INSERT OR REPLACE INTO mappings_v2 (device, profile, timestamp) "
+				     "VALUES ('%q', '%q', 0);",
+				     device_id, profile_id);
 
 	/* update the entry */
 	rc = sqlite3_exec (mdb->priv->db, statement, NULL, NULL, &error_msg);
@@ -228,8 +297,11 @@ out:
 
 /**
  * cd_mapping_db_remove:
+ *
+ * You probably don't want to use this function. See the related
+ * cd_mapping_db_clear_timestamp() for more details.
  **/
-gboolean  
+gboolean
 cd_mapping_db_remove (CdMappingDb *mdb,
 		      const gchar *device_id,
 		      const gchar *profile_id,
@@ -244,7 +316,7 @@ cd_mapping_db_remove (CdMappingDb *mdb,
 	g_return_val_if_fail (mdb->priv->db != NULL, FALSE);
 
 	g_debug ("CdMappingDb: remove %s<=>%s", device_id, profile_id);
-	statement = sqlite3_mprintf ("DELETE FROM mappings WHERE "
+	statement = sqlite3_mprintf ("DELETE FROM mappings_v2 WHERE "
 				     "device = '%q' AND profile = '%q';",
 				     device_id, profile_id);
 
@@ -303,8 +375,9 @@ cd_mapping_db_get_profiles (CdMappingDb *mdb,
 	g_return_val_if_fail (mdb->priv->db != NULL, FALSE);
 
 	g_debug ("CdMappingDb: get profiles for %s", device_id);
-	statement = sqlite3_mprintf ("SELECT profile FROM mappings WHERE "
-				     "device = '%q' ORDER BY timestamp ASC;", device_id);
+	statement = sqlite3_mprintf ("SELECT profile FROM mappings_v2 WHERE "
+				     "device = '%q' AND timestamp > 0 "
+				     "ORDER BY timestamp ASC;", device_id);
 
 	/* remove the entry */
 	array_tmp = g_ptr_array_new_with_free_func (g_free);
@@ -352,8 +425,9 @@ cd_mapping_db_get_devices (CdMappingDb *mdb,
 	g_return_val_if_fail (mdb->priv->db != NULL, FALSE);
 
 	g_debug ("CdMappingDb: get devices for %s", profile_id);
-	statement = sqlite3_mprintf ("SELECT device FROM mappings WHERE "
-				     "profile = '%q' ORDER BY timestamp ASC;", profile_id);
+	statement = sqlite3_mprintf ("SELECT device FROM mappings_v2 WHERE "
+				     "profile = '%q' AND timestamp > 0 "
+				     "ORDER BY timestamp ASC;", profile_id);
 
 	/* remove the entry */
 	array_tmp = g_ptr_array_new_with_free_func (g_free);
@@ -401,6 +475,8 @@ cd_mapping_db_sqlite_timestamp_cb (void *data,
  * cd_mapping_db_get_timestamp:
  *
  * Gets when the profile was added to the device.
+ *
+ * Return value: %G_MAXUINT64 for error or not found
  **/
 guint64
 cd_mapping_db_get_timestamp (CdMappingDb *mdb,
@@ -413,12 +489,12 @@ cd_mapping_db_get_timestamp (CdMappingDb *mdb,
 	gint rc;
 	guint64 timestamp = G_MAXUINT64;
 
-	g_return_val_if_fail (CD_IS_MAPPING_DB (mdb), FALSE);
-	g_return_val_if_fail (mdb->priv->db != NULL, FALSE);
+	g_return_val_if_fail (CD_IS_MAPPING_DB (mdb), G_MAXUINT64);
+	g_return_val_if_fail (mdb->priv->db != NULL, G_MAXUINT64);
 
 	g_debug ("CdMappingDb: get checksum for %s<->%s",
 		 device_id, profile_id);
-	statement = sqlite3_mprintf ("SELECT timestamp FROM mappings WHERE "
+	statement = sqlite3_mprintf ("SELECT timestamp FROM mappings_v2 WHERE "
 				     "device = '%q' AND profile = '%q' "
 				     "LIMIT 1;", device_id, profile_id);
 
@@ -435,6 +511,16 @@ cd_mapping_db_get_timestamp (CdMappingDb *mdb,
 			     "SQL error: %s",
 			     error_msg);
 		sqlite3_free (error_msg);
+		goto out;
+	}
+
+	/* nothing found */
+	if (timestamp == G_MAXUINT64) {
+		g_set_error (error,
+			     CD_CLIENT_ERROR,
+			     CD_CLIENT_ERROR_INTERNAL,
+			     "device and profile %s<>%s not found",
+			     device_id, profile_id);
 		goto out;
 	}
 out:

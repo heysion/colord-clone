@@ -25,6 +25,7 @@
 #include <locale.h>
 
 #include "cd-sensor.h"
+#include "cd-debug.h"
 
 static void
 cd_sensor_dump_lock_cb (GObject *source_object,
@@ -36,7 +37,7 @@ cd_sensor_dump_lock_cb (GObject *source_object,
 	CdSensor *sensor = CD_SENSOR (source_object);
 	GMainLoop *loop = (GMainLoop *) user_data;
 
-	ret = cd_sensor_lock_finish (sensor, res, &error);
+	ret = _cd_sensor_lock_finish (sensor, res, &error);
 	if (!ret) {
 		g_warning ("failed to lock: %s", error->message);
 		g_error_free (error);
@@ -73,7 +74,8 @@ main (int argc, char **argv)
 
 	/* get the default sensor */
 	sensor = cd_sensor_new ();
-	cd_sensor_set_kind (sensor, CD_SENSOR_KIND_HUEY);
+	cd_debug_setup (TRUE);
+	cd_sensor_set_kind (sensor, CD_SENSOR_KIND_DTP94);
 	ret = cd_sensor_load (sensor, &error);
 	if (!ret) {
 		g_print ("FAILED: Failed to load sensor: %s\n",
@@ -84,7 +86,7 @@ main (int argc, char **argv)
 
 	/* lock the sensor */
 	loop = g_main_loop_new (NULL, FALSE);
-	cd_sensor_lock_async (sensor, NULL, cd_sensor_dump_lock_cb, loop);
+	_cd_sensor_lock_async (sensor, NULL, cd_sensor_dump_lock_cb, loop);
 	g_main_loop_run (loop);
 
 	/* dump details */

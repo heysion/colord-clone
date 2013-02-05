@@ -25,10 +25,10 @@
 #include <gio/gio.h>
 #include <sys/time.h>
 #include <gmodule.h>
+#include <colord-private.h>
 
 #include "cd-common.h"
 #include "cd-sensor.h"
-#include "cd-enum.h"
 
 static void cd_sensor_finalize			 (GObject *object);
 
@@ -89,11 +89,13 @@ struct _CdSensorPrivate
 	gchar				*serial;
 	gchar				*model;
 	gchar				*vendor;
-	gchar				*device_path;
+#ifdef HAVE_GUDEV
+	GUdevDevice			*device;
+#endif
 	gboolean			 native;
 	gboolean			 embedded;
 	gboolean			 locked;
-	gchar				**caps;
+	guint64				 caps;
 	gchar				*object_path;
 	guint				 watcher_id;
 	GDBusConnection			*connection;
@@ -101,6 +103,8 @@ struct _CdSensorPrivate
 	CdSensorIface			*desc;
 	GHashTable			*options;
 	GHashTable			*metadata;
+	GUsbContext			*usb_ctx;
+	GUsbDeviceList			*device_list;
 };
 
 enum {
@@ -309,10 +313,12 @@ cd_sensor_load (CdSensor *sensor, GError **error)
 	/* can we load a module? */
 	backend_name = g_strdup_printf ("libcolord_sensor_%s." G_MODULE_SUFFIX,
 					cd_sensor_kind_to_string (sensor->priv->kind));
-	g_debug ("Trying to load : %s", backend_name);
 	path = g_build_filename (LIBDIR, "colord-sensors", backend_name, NULL);
+	g_debug ("Trying to load sensor driver: %s", path);
 	handle = g_module_open (path, G_MODULE_BIND_LOCAL);
 	if (handle == NULL) {
+		g_debug ("opening module %s failed : %s",
+			 backend_name, g_module_error ());
 		g_debug ("Trying to fall back to : libcolord_sensor_argyll");
 		path_fallback = g_build_filename (LIBDIR,
 						  "colord-sensors",
@@ -357,6 +363,68 @@ out:
 }
 
 /**
+ * cd_sensor_set_locked:
+ **/
+static void
+cd_sensor_set_locked (CdSensor *sensor, gboolean locked)
+{
+	sensor->priv->locked = locked;
+	cd_sensor_dbus_emit_property_changed (sensor,
+					      "Locked",
+					      g_variant_new_boolean (locked));
+}
+
+/**
+ * _cd_sensor_lock_async:
+ *
+ * Lock the sensor. You don't ever need to call this, and this method
+ * should only be used from the internal self check program.
+ **/
+void
+_cd_sensor_lock_async (CdSensor *sensor,
+		       GCancellable *cancellable,
+		       GAsyncReadyCallback callback,
+		       gpointer user_data)
+{
+	g_return_if_fail (CD_IS_SENSOR (sensor));
+	g_return_if_fail (sensor->priv->desc != NULL);
+
+	/* proxy up */
+	if (sensor->priv->desc->lock_async) {
+		sensor->priv->desc->lock_async (sensor,
+						cancellable,
+						callback,
+						user_data);
+	}
+}
+
+/**
+ * _cd_sensor_lock_finish:
+ *
+ * Finish locking the sensor. You don't ever need to call this, and this
+ * method should only be used from the internal self check program.
+ **/
+gboolean
+_cd_sensor_lock_finish (CdSensor *sensor,
+			GAsyncResult *res,
+			GError **error)
+{
+	gboolean ret = TRUE;
+
+	g_return_val_if_fail (CD_IS_SENSOR (sensor), FALSE);
+	g_return_val_if_fail (sensor->priv->desc != NULL, FALSE);
+
+	/* proxy up */
+	if (sensor->priv->desc->lock_finish) {
+		ret = sensor->priv->desc->lock_finish (sensor,
+						       res,
+						       error);
+	}
+	cd_sensor_set_locked (sensor, TRUE);
+	return ret;
+}
+
+/**
  * cd_sensor_set_state:
  * @sensor: a valid #CdSensor instance
  * @state: the sensor state, e.g %CD_SENSOR_STATE_IDLE
@@ -391,18 +459,6 @@ CdSensorCap
 cd_sensor_get_mode (CdSensor *sensor)
 {
 	return sensor->priv->mode;
-}
-
-/**
- * cd_sensor_set_locked:
- **/
-static void
-cd_sensor_set_locked (CdSensor *sensor, gboolean locked)
-{
-	sensor->priv->locked = locked;
-	cd_sensor_dbus_emit_property_changed (sensor,
-					      "Locked",
-					      g_variant_new_boolean (locked));
 }
 
 /**
@@ -952,6 +1008,25 @@ cd_sensor_get_nullable_for_string (const gchar *value)
 }
 
 /**
+ * cd_sensor_get_variant_for_caps:
+ **/
+static GVariant *
+cd_sensor_get_variant_for_caps (guint64 caps)
+{
+	guint i;
+	GVariantBuilder builder;
+
+	g_variant_builder_init (&builder, G_VARIANT_TYPE ("as"));
+	for (i = 0; i < CD_SENSOR_CAP_LAST; i++) {
+		if (!cd_bitfield_contain (caps, i))
+			continue;
+		g_variant_builder_add (&builder, "s",
+				       cd_sensor_cap_to_string (i));
+	}
+	return g_variant_new ("as", &builder);
+}
+
+/**
  * cd_sensor_dbus_get_property:
  **/
 static GVariant *
@@ -1007,7 +1082,7 @@ cd_sensor_dbus_get_property (GDBusConnection *connection_, const gchar *sender,
 		goto out;
 	}
 	if (g_strcmp0 (property_name, CD_SENSOR_PROPERTY_CAPABILITIES) == 0) {
-		retval = g_variant_new_strv ((const gchar * const*) priv->caps, -1);
+		retval = cd_sensor_get_variant_for_caps (priv->caps);
 		goto out;
 	}
 	if (g_strcmp0 (property_name, CD_SENSOR_PROPERTY_OPTIONS) == 0) {
@@ -1076,10 +1151,86 @@ out:
 const gchar *
 cd_sensor_get_device_path (CdSensor *sensor)
 {
-	return sensor->priv->device_path;
+#ifdef HAVE_GUDEV
+	return g_udev_device_get_sysfs_path (sensor->priv->device);
+#else
+	return NULL;
+#endif
+}
+
+/**
+ * cd_sensor_open_usb_device:
+ **/
+GUsbDevice *
+cd_sensor_open_usb_device (CdSensor *sensor,
+			   gint config,
+			   gint interface,
+			   GError **error)
+{
+	CdSensorPrivate *priv = sensor->priv;
+	gboolean ret;
+	guint8 busnum;
+	guint8 devnum;
+	GUsbDevice *device;
+	GUsbDevice *device_success = NULL;
+
+	/* convert from GUdevDevice to GUsbDevice */
+	busnum = g_udev_device_get_sysfs_attr_as_int (priv->device, "busnum");
+	devnum = g_udev_device_get_sysfs_attr_as_int (priv->device, "devnum");
+	device = g_usb_device_list_find_by_bus_address (priv->device_list,
+							busnum,
+							devnum,
+							error);
+	if (device == NULL)
+		goto out;
+
+	/* open device, set config and claim interface */
+	ret = g_usb_device_open (device, error);
+	if (!ret)
+		goto out;
+	ret = g_usb_device_set_configuration (device,
+					      config,
+					      error);
+	if (!ret)
+		goto out;
+	ret = g_usb_device_claim_interface (device,
+					    interface,
+					    G_USB_DEVICE_CLAIM_INTERFACE_BIND_KERNEL_DRIVER,
+					    error);
+	if (!ret)
+		goto out;
+
+	/* success */
+	device_success = g_object_ref (device);
+out:
+	if (device != NULL)
+		g_object_unref (device);
+	return device_success;
+}
+
+/**
+ * cd_sensor_add_cap:
+ **/
+void
+cd_sensor_add_cap (CdSensor *sensor, CdSensorCap cap)
+{
+	cd_bitfield_add (sensor->priv->caps, cap);
+	cd_sensor_dbus_emit_property_changed (sensor,
+					      "Capabilities",
+					      cd_sensor_get_variant_for_caps (sensor->priv->caps));
+
 }
 
 #ifdef HAVE_GUDEV
+/**
+ * cd_sensor_get_device:
+ **/
+GUdevDevice *
+cd_sensor_get_device (CdSensor *sensor)
+{
+	return sensor->priv->device;
+}
+
 /**
  * cd_sensor_set_from_device:
  **/
@@ -1088,16 +1239,21 @@ cd_sensor_set_from_device (CdSensor *sensor,
 			   GUdevDevice *device,
 			   GError **error)
 {
+	CdSensorCap cap;
 	CdSensorPrivate *priv = sensor->priv;
 	const gchar *images[] = { "attach", "calibrate", "screen", NULL };
+	const gchar *images_md[] = { CD_SENSOR_METADATA_IMAGE_ATTACH,
+				     CD_SENSOR_METADATA_IMAGE_CALIBRATE,
+				     CD_SENSOR_METADATA_IMAGE_SCREEN,
+				     NULL };
 	const gchar *kind_str;
 	const gchar *model_tmp = NULL;
 	const gchar *vendor_tmp = NULL;
+	const gchar * const *caps_str;
 	gboolean ret;
 	gboolean use_database;
 	gchar *tmp;
 	guint i;
-	guint idx = 0;
 
 	/* only use the database if we found both the VID and the PID */
 	use_database = g_udev_device_has_property (device, "ID_VENDOR_FROM_DATABASE") &&
@@ -1143,31 +1299,19 @@ cd_sensor_set_from_device (CdSensor *sensor,
 	}
 
 	/* get caps */
-	ret = g_udev_device_get_property_as_boolean (device,
-						     "COLORD_SENSOR_CAP_LCD");
-	if (ret)
-		priv->caps[idx++] = g_strdup ("lcd");
-	ret = g_udev_device_get_property_as_boolean (device,
-						     "COLORD_SENSOR_CAP_CRT");
-	if (ret)
-		priv->caps[idx++] = g_strdup ("crt");
-	ret = g_udev_device_get_property_as_boolean (device,
-						     "COLORD_SENSOR_CAP_PROJECTOR");
-	if (ret)
-		priv->caps[idx++] = g_strdup ("projector");
-	ret = g_udev_device_get_property_as_boolean (device,
-						     "COLORD_SENSOR_CAP_PRINTER");
-	if (ret)
-		priv->caps[idx++] = g_strdup ("printer");
-	ret = g_udev_device_get_property_as_boolean (device,
-						     "COLORD_SENSOR_CAP_SPOT");
-	if (ret)
-		priv->caps[idx++] = g_strdup ("spot");
-	ret = g_udev_device_get_property_as_boolean (device,
-						     "COLORD_SENSOR_CAP_AMBIENT");
-	if (ret)
-		priv->caps[idx++] = g_strdup ("ambient");
-	priv->caps[idx] = NULL;
+	caps_str = g_udev_device_get_property_as_strv (device,
+						       "COLORD_SENSOR_CAPS");
+	if (caps_str != NULL) {
+		for (i = 0; caps_str[i] != NULL; i++) {
+			cap = cd_sensor_cap_from_string (caps_str[i]);
+			if (cap != CD_SENSOR_CAP_UNKNOWN) {
+				cd_bitfield_add (priv->caps, cap);
+			} else {
+				g_warning ("Unknown sensor cap %s on %s",
+					   caps_str[i], kind_str);
+			}
+		}
+	}
 
 	/* is the sensor embeded, e.g. on the W700? */
 	ret = g_udev_device_get_property_as_boolean (device,
@@ -1182,7 +1326,7 @@ cd_sensor_set_from_device (CdSensor *sensor,
 		if (g_file_test (tmp, G_FILE_TEST_EXISTS)) {
 			g_debug ("helper image %s found", tmp);
 			g_hash_table_insert (priv->metadata,
-					     g_strdup (CD_SENSOR_METADATA_IMAGE_ATTACH),
+					     g_strdup (images_md[i]),
 					     tmp);
 		} else {
 			g_debug ("helper image %s not found", tmp);
@@ -1190,17 +1334,9 @@ cd_sensor_set_from_device (CdSensor *sensor,
 		}
 	}
 
-	/* no caps */
-	if (idx == 0) {
-		ret = FALSE;
-		g_set_error (error, 1, 0,
-			     "device %s - %s  had no reported caps",
-			     vendor_tmp, model_tmp);
-		goto out;
-	}
-
-	/* save device path */
-	priv->device_path = g_strdup (g_udev_device_get_sysfs_path (device));
+	/* some properties might not be valid in the GUdevDevice if the
+	 * device changes as this is only a snapshot */
+	priv->device = g_object_ref (device);
 
 	/* success */
 	ret = TRUE;
@@ -1242,6 +1378,30 @@ cd_sensor_add_option (CdSensor *sensor,
 	cd_sensor_dbus_emit_property_changed (sensor,
 					      "Options",
 					      options);
+}
+
+/**
+ * cd_sensor_debug_data:
+ * @debug_mode: the debug mode, e.g %CD_SENSOR_DEBUG_MODE_REQUEST
+ * @data: the data of size @length
+ * @length: the size of data
+ *
+ * Prints some debugging of the request to the console if debugging mode
+ * is enabled.
+ **/
+void
+cd_sensor_debug_data (CdSensorDebugMode debug_mode,
+		      const guint8 *data,
+		      gsize length)
+{
+	guint i;
+	if (debug_mode == CD_SENSOR_DEBUG_MODE_REQUEST)
+		g_print ("%c[%dm request\t", 0x1B, 31);
+	else if (debug_mode == CD_SENSOR_DEBUG_MODE_RESPONSE)
+		g_print ("%c[%dm response\t", 0x1B, 34);
+	for (i = 0; i <  length; i++)
+		g_print ("%02x [%c]\t", data[i], g_ascii_isprint (data[i]) ? data[i] : '?');
+	g_print ("%c[%dm\n", 0x1B, 0);
 }
 
 /**
@@ -1304,7 +1464,7 @@ cd_sensor_set_property (GObject *object, guint prop_id, const GValue *value, GPa
 		cd_sensor_set_kind (sensor, g_value_get_uint (value));
 		break;
 	case PROP_CAPS:
-		priv->caps = g_strdupv (g_value_get_boxed (value));
+		priv->caps = g_value_get_uint64 (value);
 		break;
 	case PROP_SERIAL:
 		cd_sensor_set_serial (sensor, g_value_get_string (value));
@@ -1370,9 +1530,9 @@ cd_sensor_class_init (CdSensorClass *klass)
 	/**
 	 * CdSensor:caps:
 	 */
-	pspec = g_param_spec_boxed ("caps", NULL, NULL,
-				    G_TYPE_STRV,
-				    G_PARAM_READWRITE);
+	pspec = g_param_spec_uint64 ("caps", NULL, NULL,
+				     0, G_MAXUINT64, 0,
+				     G_PARAM_READWRITE);
 	g_object_class_install_property (object_class, PROP_CAPS, pspec);
 
 	/**
@@ -1409,9 +1569,10 @@ static void
 cd_sensor_init (CdSensor *sensor)
 {
 	sensor->priv = CD_SENSOR_GET_PRIVATE (sensor);
-	sensor->priv->caps = g_new0 (gchar *, CD_SENSOR_CAP_LAST);
 	sensor->priv->state = CD_SENSOR_STATE_IDLE;
 	sensor->priv->mode = CD_SENSOR_CAP_UNKNOWN;
+	sensor->priv->usb_ctx = g_usb_context_new (NULL);
+	sensor->priv->device_list = g_usb_device_list_new (sensor->priv->usb_ctx);
 	sensor->priv->options = g_hash_table_new_full (g_str_hash,
 						       g_str_equal,
 						       (GDestroyNotify) g_free,
@@ -1440,15 +1601,19 @@ cd_sensor_finalize (GObject *object)
 	}
 	if (priv->watcher_id != 0)
 		g_bus_unwatch_name (priv->watcher_id);
-	g_strfreev (priv->caps);
 	g_free (priv->model);
 	g_free (priv->vendor);
 	g_free (priv->serial);
 	g_free (priv->id);
-	g_free (priv->device_path);
 	g_free (priv->object_path);
 	g_hash_table_unref (priv->options);
 	g_hash_table_unref (priv->metadata);
+	g_object_unref (priv->usb_ctx);
+	g_object_unref (priv->device_list);
+#ifdef HAVE_GUDEV
+	if (priv->device != NULL)
+		g_object_unref (priv->device);
+#endif
 
 	G_OBJECT_CLASS (cd_sensor_parent_class)->finalize (object);
 }
