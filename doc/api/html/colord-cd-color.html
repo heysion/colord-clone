@@ -8,7 +8,7 @@
 <link rel="up" href="libcolord-glib-helpers.html" title="libcolord-glib helpers">
 <link rel="prev" href="colord-cd-math.html" title="cd-math">
 <link rel="next" href="ix01.html" title="Index">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -44,7 +44,7 @@
                     <a class="link" href="colord-cd-color.html#CdColorRGB8" title="CdColorRGB8">CdColorRGB8</a>;
                     <a class="link" href="colord-cd-color.html#CdColorXYZ-struct" title="CdColorXYZ">CdColorXYZ</a>;
                     <a class="link" href="colord-cd-color.html#CdColorYxy-struct" title="CdColorYxy">CdColorYxy</a>;
-<span class="returnvalue">void</span>                <a class="link" href="colord-cd-color.html#cd-color-get-blackbody-rgb" title="cd_color_get_blackbody_rgb ()">cd_color_get_blackbody_rgb</a>          (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> temp</code></em>,
+<span class="returnvalue">void</span>                <a class="link" href="colord-cd-color.html#cd-color-get-blackbody-rgb" title="cd_color_get_blackbody_rgb ()">cd_color_get_blackbody_rgb</a>          (<em class="parameter"><code><span class="type">guint</span> temp</code></em>,
                                                          <em class="parameter"><code><a class="link" href="colord-cd-color.html#CdColorRGB"><span class="type">CdColorRGB</span></a> *result</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-color.html#cd-color-rgb8-to-rgb" title="cd_color_rgb8_to_rgb ()">cd_color_rgb8_to_rgb</a>                (<em class="parameter"><code>const <a class="link" href="colord-cd-color.html#CdColorRGB8" title="CdColorRGB8"><span class="type">CdColorRGB8</span></a> *src</code></em>,
                                                          <em class="parameter"><code><a class="link" href="colord-cd-color.html#CdColorRGB"><span class="type">CdColorRGB</span></a> *dest</code></em>);
@@ -54,13 +54,13 @@
 #define             <a class="link" href="colord-cd-color.html#cd-color-rgb-free" title="cd_color_rgb_free">cd_color_rgb_free</a>
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-color.html#cd-color-rgb-interpolate" title="cd_color_rgb_interpolate ()">cd_color_rgb_interpolate</a>            (<em class="parameter"><code>const <a class="link" href="colord-cd-color.html#CdColorRGB"><span class="type">CdColorRGB</span></a> *p1</code></em>,
                                                          <em class="parameter"><code>const <a class="link" href="colord-cd-color.html#CdColorRGB"><span class="type">CdColorRGB</span></a> *p2</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> index</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> index</code></em>,
                                                          <em class="parameter"><code><a class="link" href="colord-cd-color.html#CdColorRGB"><span class="type">CdColorRGB</span></a> *result</code></em>);
 #define             <a class="link" href="colord-cd-color.html#cd-color-rgb-new" title="cd_color_rgb_new">cd_color_rgb_new</a>
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-color.html#cd-color-rgb-set" title="cd_color_rgb_set ()">cd_color_rgb_set</a>                    (<em class="parameter"><code><a class="link" href="colord-cd-color.html#CdColorRGB"><span class="type">CdColorRGB</span></a> *dest</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> R</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> G</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> B</code></em>);
+                                                         <em class="parameter"><code><span class="type">gdouble</span> R</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> G</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> B</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-color.html#cd-color-rgb-to-rgb8" title="cd_color_rgb_to_rgb8 ()">cd_color_rgb_to_rgb8</a>                (<em class="parameter"><code>const <a class="link" href="colord-cd-color.html#CdColorRGB"><span class="type">CdColorRGB</span></a> *src</code></em>,
                                                          <em class="parameter"><code><a class="link" href="colord-cd-color.html#CdColorRGB8" title="CdColorRGB8"><span class="type">CdColorRGB8</span></a> *dest</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-color.html#cd-color-xyz-clear" title="cd_color_xyz_clear ()">cd_color_xyz_clear</a>                  (<em class="parameter"><code><a class="link" href="colord-cd-color.html#CdColorXYZ"><span class="type">CdColorXYZ</span></a> *dest</code></em>);
@@ -70,9 +70,9 @@
 #define             <a class="link" href="colord-cd-color.html#cd-color-xyz-free" title="cd_color_xyz_free">cd_color_xyz_free</a>
 #define             <a class="link" href="colord-cd-color.html#cd-color-xyz-new" title="cd_color_xyz_new">cd_color_xyz_new</a>
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-color.html#cd-color-xyz-set" title="cd_color_xyz_set ()">cd_color_xyz_set</a>                    (<em class="parameter"><code><a class="link" href="colord-cd-color.html#CdColorXYZ"><span class="type">CdColorXYZ</span></a> *dest</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> X</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> Y</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> Z</code></em>);
+                                                         <em class="parameter"><code><span class="type">gdouble</span> X</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> Y</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> Z</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-color.html#cd-color-xyz-to-yxy" title="cd_color_xyz_to_yxy ()">cd_color_xyz_to_yxy</a>                 (<em class="parameter"><code>const <a class="link" href="colord-cd-color.html#CdColorXYZ"><span class="type">CdColorXYZ</span></a> *src</code></em>,
                                                          <em class="parameter"><code><a class="link" href="colord-cd-color.html#CdColorYxy"><span class="type">CdColorYxy</span></a> *dest</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-color.html#cd-color-yxy-copy" title="cd_color_yxy_copy ()">cd_color_yxy_copy</a>                   (<em class="parameter"><code>const <a class="link" href="colord-cd-color.html#CdColorYxy"><span class="type">CdColorYxy</span></a> *src</code></em>,
@@ -81,9 +81,9 @@
 #define             <a class="link" href="colord-cd-color.html#cd-color-yxy-free" title="cd_color_yxy_free">cd_color_yxy_free</a>
 #define             <a class="link" href="colord-cd-color.html#cd-color-yxy-new" title="cd_color_yxy_new">cd_color_yxy_new</a>
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-color.html#cd-color-yxy-set" title="cd_color_yxy_set ()">cd_color_yxy_set</a>                    (<em class="parameter"><code><a class="link" href="colord-cd-color.html#CdColorYxy"><span class="type">CdColorYxy</span></a> *dest</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> Y</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>);
+                                                         <em class="parameter"><code><span class="type">gdouble</span> Y</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> y</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-color.html#cd-color-yxy-to-xyz" title="cd_color_yxy_to_xyz ()">cd_color_yxy_to_xyz</a>                 (<em class="parameter"><code>const <a class="link" href="colord-cd-color.html#CdColorYxy"><span class="type">CdColorYxy</span></a> *src</code></em>,
                                                          <em class="parameter"><code><a class="link" href="colord-cd-color.html#CdColorXYZ"><span class="type">CdColorXYZ</span></a> *dest</code></em>);
 </pre>
@@ -173,7 +173,7 @@ Functions to manipulate color values.
 <hr>
 <div class="refsect2">
 <a name="cd-color-get-blackbody-rgb"></a><h3>cd_color_get_blackbody_rgb ()</h3>
-<pre class="programlisting"><span class="returnvalue">void</span>                cd_color_get_blackbody_rgb          (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> temp</code></em>,
+<pre class="programlisting"><span class="returnvalue">void</span>                cd_color_get_blackbody_rgb          (<em class="parameter"><code><span class="type">guint</span> temp</code></em>,
                                                          <em class="parameter"><code><a class="link" href="colord-cd-color.html#CdColorRGB"><span class="type">CdColorRGB</span></a> *result</code></em>);</pre>
 <p>
 Get the blackbody color for a specific temperature.
@@ -194,6 +194,7 @@ Get the blackbody color for a specific temperature.
 </tr>
 </tbody>
 </table></div>
+<p class="since">Since 0.1.26</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -219,6 +220,7 @@ Convert from one color format to another.
 </tr>
 </tbody>
 </table></div>
+<p class="since">Since 0.1.27</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -244,11 +246,13 @@ Deep copies a color value.
 </tr>
 </tbody>
 </table></div>
+<p class="since">Since 0.1.27</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="cd-color-rgb-dup"></a><h3>cd_color_rgb_dup ()</h3>
 <pre class="programlisting"><a class="link" href="colord-cd-color.html#CdColorRGB"><span class="returnvalue">CdColorRGB</span></a> *        cd_color_rgb_dup                    (<em class="parameter"><code>const <a class="link" href="colord-cd-color.html#CdColorRGB"><span class="type">CdColorRGB</span></a> *src</code></em>);</pre>
+<p class="since">Since 0.1.27</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -263,8 +267,9 @@ Deep copies a color value.
 <a name="cd-color-rgb-interpolate"></a><h3>cd_color_rgb_interpolate ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_color_rgb_interpolate            (<em class="parameter"><code>const <a class="link" href="colord-cd-color.html#CdColorRGB"><span class="type">CdColorRGB</span></a> *p1</code></em>,
                                                          <em class="parameter"><code>const <a class="link" href="colord-cd-color.html#CdColorRGB"><span class="type">CdColorRGB</span></a> *p2</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> index</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> index</code></em>,
                                                          <em class="parameter"><code><a class="link" href="colord-cd-color.html#CdColorRGB"><span class="type">CdColorRGB</span></a> *result</code></em>);</pre>
+<p class="since">Since 0.1.26</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -278,9 +283,9 @@ Deep copies a color value.
 <div class="refsect2">
 <a name="cd-color-rgb-set"></a><h3>cd_color_rgb_set ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_color_rgb_set                    (<em class="parameter"><code><a class="link" href="colord-cd-color.html#CdColorRGB"><span class="type">CdColorRGB</span></a> *dest</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> R</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> G</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> B</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">gdouble</span> R</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> G</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> B</code></em>);</pre>
 <p>
 Initialises a color value.
 </p>
@@ -308,6 +313,7 @@ Initialises a color value.
 </tr>
 </tbody>
 </table></div>
+<p class="since">Since 0.1.27</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -333,6 +339,7 @@ Convert from one color format to another.
 </tr>
 </tbody>
 </table></div>
+<p class="since">Since 0.1.27</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -351,6 +358,7 @@ Initialises a color value.
 <td>the destination color</td>
 </tr></tbody>
 </table></div>
+<p class="since">Since 0.1.27</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -376,11 +384,13 @@ Deep copies a color value.
 </tr>
 </tbody>
 </table></div>
+<p class="since">Since 0.1.27</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="cd-color-xyz-dup"></a><h3>cd_color_xyz_dup ()</h3>
 <pre class="programlisting"><a class="link" href="colord-cd-color.html#CdColorXYZ"><span class="returnvalue">CdColorXYZ</span></a> *        cd_color_xyz_dup                    (<em class="parameter"><code>const <a class="link" href="colord-cd-color.html#CdColorXYZ"><span class="type">CdColorXYZ</span></a> *src</code></em>);</pre>
+<p class="since">Since 0.1.27</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -402,9 +412,9 @@ Deep copies a color value.
 <div class="refsect2">
 <a name="cd-color-xyz-set"></a><h3>cd_color_xyz_set ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_color_xyz_set                    (<em class="parameter"><code><a class="link" href="colord-cd-color.html#CdColorXYZ"><span class="type">CdColorXYZ</span></a> *dest</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> X</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> Y</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> Z</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">gdouble</span> X</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> Y</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> Z</code></em>);</pre>
 <p>
 Initialises a color value.
 </p>
@@ -432,6 +442,7 @@ Initialises a color value.
 </tr>
 </tbody>
 </table></div>
+<p class="since">Since 0.1.27</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -457,6 +468,7 @@ Convert from one color format to another.
 </tr>
 </tbody>
 </table></div>
+<p class="since">Since 0.1.27</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -482,11 +494,13 @@ Deep copies a color value.
 </tr>
 </tbody>
 </table></div>
+<p class="since">Since 0.1.27</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="cd-color-yxy-dup"></a><h3>cd_color_yxy_dup ()</h3>
 <pre class="programlisting"><a class="link" href="colord-cd-color.html#CdColorYxy"><span class="returnvalue">CdColorYxy</span></a> *        cd_color_yxy_dup                    (<em class="parameter"><code>const <a class="link" href="colord-cd-color.html#CdColorYxy"><span class="type">CdColorYxy</span></a> *src</code></em>);</pre>
+<p class="since">Since 0.1.27</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -508,9 +522,9 @@ Deep copies a color value.
 <div class="refsect2">
 <a name="cd-color-yxy-set"></a><h3>cd_color_yxy_set ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_color_yxy_set                    (<em class="parameter"><code><a class="link" href="colord-cd-color.html#CdColorYxy"><span class="type">CdColorYxy</span></a> *dest</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> Y</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> x</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> y</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">gdouble</span> Y</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> x</code></em>,
+                                                         <em class="parameter"><code><span class="type">gdouble</span> y</code></em>);</pre>
 <p>
 Initialises a color value.
 </p>
@@ -538,6 +552,7 @@ Initialises a color value.
 </tr>
 </tbody>
 </table></div>
+<p class="since">Since 0.1.27</p>
 </div>
 <hr>
 <div class="refsect2">
@@ -563,11 +578,12 @@ Convert from one color format to another.
 </tr>
 </tbody>
 </table></div>
+<p class="since">Since 0.1.27</p>
 </div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.18.1</div>
 </body>
 </html>

@@ -16,7 +16,6 @@
 
 
 
-
 VPATH = @srcdir@
 am__make_dryrun = \
   { \
@@ -57,21 +56,13 @@ check_PROGRAMS = cd-self-test$(EXEEXT)
 TESTS = cd-self-test$(EXEEXT)
 @HAVE_INTROSPECTION_TRUE@am__append_1 = $(gir_DATA) $(typelib_DATA)
 @HAVE_INTROSPECTION_TRUE@@HAVE_VAPIGEN_TRUE@am__append_2 = $(dist_vapi_DATA)
-subdir = libcolord
+subdir = lib/colord
 DIST_COMMON = $(am__dist_vapi_DATA_DIST) $(libcolord_include_HEADERS) \
 	$(libcolordbase_include_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/cd-version.h.in \
 	$(srcdir)/colord.pc.in $(top_srcdir)/depcomp
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/as-linguas.m4 \
-	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/gtk-doc.m4 \
-	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/intlmacosx.m4 \
-	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/lib-ld.m4 \
-	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
-	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
-	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
-	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/nls.m4 \
-	$(top_srcdir)/m4/po.m4 $(top_srcdir)/m4/progtest.m4 \
 	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
@@ -79,18 +70,6 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES = cd-version.h colord.pc
 CONFIG_CLEAN_VPATH_FILES =
-LIBRARIES = $(noinst_LIBRARIES)
-ARFLAGS = cru
-AM_V_AR = $(am__v_AR_@AM_V@)
-am__v_AR_ = $(am__v_AR_@AM_DEFAULT_V@)
-am__v_AR_0 = @echo "  AR      " $@;
-am__v_AR_1 = 
-libcolordprivate_a_AR = $(AR) $(ARFLAGS)
-libcolordprivate_a_LIBADD =
-am_libcolordprivate_a_OBJECTS = libcolordprivate_a-cd-color.$(OBJEXT) \
-	libcolordprivate_a-cd-enum.$(OBJEXT) \
-	libcolordprivate_a-cd-math.$(OBJEXT)
-libcolordprivate_a_OBJECTS = $(am_libcolordprivate_a_OBJECTS)
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
 am__vpath_adj = case $$p in \
     $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
@@ -124,16 +103,12 @@ am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(vapidir)" \
 	"$(DESTDIR)$(libcolordbase_includedir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libcolord_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1)
+libcolord_la_DEPENDENCIES = $(am__DEPENDENCIES_1) libcolordprivate.la
 am_libcolord_la_OBJECTS = libcolord_la-cd-client.lo \
-	libcolord_la-cd-client-sync.lo libcolord_la-cd-color.lo \
-	libcolord_la-cd-deprecated.lo libcolord_la-cd-device.lo \
-	libcolord_la-cd-device-sync.lo libcolord_la-cd-enum.lo \
-	libcolord_la-cd-it8.lo libcolord_la-cd-it8-utils.lo \
-	libcolord_la-cd-math.lo libcolord_la-cd-profile.lo \
-	libcolord_la-cd-profile-sync.lo libcolord_la-cd-sensor.lo \
-	libcolord_la-cd-sensor-sync.lo
+	libcolord_la-cd-client-sync.lo libcolord_la-cd-deprecated.lo \
+	libcolord_la-cd-device.lo libcolord_la-cd-device-sync.lo \
+	libcolord_la-cd-profile.lo libcolord_la-cd-profile-sync.lo \
+	libcolord_la-cd-sensor.lo libcolord_la-cd-sensor-sync.lo
 libcolord_la_OBJECTS = $(am_libcolord_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -142,6 +117,18 @@ am__v_lt_1 =
 libcolord_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(libcolord_la_CFLAGS) \
 	$(CFLAGS) $(libcolord_la_LDFLAGS) $(LDFLAGS) -o $@
+libcolordprivate_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
+am_libcolordprivate_la_OBJECTS = libcolordprivate_la-cd-buffer.lo \
+	libcolordprivate_la-cd-color.lo libcolordprivate_la-cd-enum.lo \
+	libcolordprivate_la-cd-it8.lo \
+	libcolordprivate_la-cd-it8-utils.lo \
+	libcolordprivate_la-cd-math.lo
+libcolordprivate_la_OBJECTS = $(am_libcolordprivate_la_OBJECTS)
+libcolordprivate_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(libcolordprivate_la_CFLAGS) $(CFLAGS) \
+	$(libcolordprivate_la_LDFLAGS) $(LDFLAGS) -o $@
 am_cd_self_test_OBJECTS = cd_self_test-cd-self-test.$(OBJEXT)
 cd_self_test_OBJECTS = $(am_cd_self_test_OBJECTS)
 cd_self_test_DEPENDENCIES = $(am__DEPENDENCIES_1) $(lib_LTLIBRARIES)
@@ -182,9 +169,9 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libcolordprivate_a_SOURCES) $(libcolord_la_SOURCES) \
+SOURCES = $(libcolord_la_SOURCES) $(libcolordprivate_la_SOURCES) \
 	$(cd_self_test_SOURCES)
-DIST_SOURCES = $(libcolordprivate_a_SOURCES) $(libcolord_la_SOURCES) \
+DIST_SOURCES = $(libcolord_la_SOURCES) $(libcolordprivate_la_SOURCES) \
 	$(cd_self_test_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
@@ -331,6 +318,8 @@ POLKIT_CFLAGS = @POLKIT_CFLAGS@
 POLKIT_LIBS = @POLKIT_LIBS@
 POSUB = @POSUB@
 RANLIB = @RANLIB@
+SANE_CFLAGS = @SANE_CFLAGS@
+SANE_LIBS = @SANE_LIBS@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -410,24 +399,14 @@ AM_CPPFLAGS = \
 	$(GLIB_CFLAGS)						\
 	$(LCMS_CFLAGS)						\
 	-I$(top_srcdir)						\
-	-I$(top_srcdir)/libcolord				\
+	-I$(top_srcdir)/lib					\
 	-DCD_COMPILATION					\
 	-DG_LOG_DOMAIN=\"libcolord\"				\
 	-DTESTDATADIR=\""$(top_srcdir)/data/tests"\"		\
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\"
 
-
-# only stuff we can use in the daemon
-noinst_LIBRARIES = libcolordprivate.a
-libcolordprivate_a_SOURCES = \
-	cd-color.c						\
-	cd-enum.c						\
-	cd-math.c
-
-libcolordprivate_a_CFLAGS = \
-	$(WARNINGFLAGS_C)
-
 lib_LTLIBRARIES = \
+	libcolordprivate.la					\
 	libcolord.la
 
 libcolord_includedir = $(includedir)/colord-1
@@ -437,6 +416,7 @@ libcolord_include_HEADERS = \
 
 libcolordbase_includedir = $(libcolord_includedir)/colord
 libcolordbase_include_HEADERS = \
+	cd-buffer.h						\
 	cd-client.h						\
 	cd-client-sync.h					\
 	cd-color.h						\
@@ -453,25 +433,41 @@ libcolordbase_include_HEADERS = \
 	cd-sensor-sync.h					\
 	cd-version.h
 
-libcolord_la_SOURCES = \
-	cd-client.c						\
-	cd-client-sync.c					\
+libcolordprivate_la_SOURCES = \
+	cd-buffer.c						\
 	cd-color.c						\
-	cd-deprecated.c						\
-	cd-device.c						\
-	cd-device-sync.c					\
 	cd-enum.c						\
 	cd-it8.c						\
 	cd-it8-utils.c						\
-	cd-math.c						\
+	cd-math.c
+
+libcolordprivate_la_LIBADD = \
+	$(LCMS_LIBS)						\
+	$(GLIB_LIBS)
+
+libcolordprivate_la_LDFLAGS = \
+	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)	\
+	-export-dynamic						\
+	-no-undefined						\
+	-export-symbols-regex '^cd_.*'
+
+libcolordprivate_la_CFLAGS = \
+	$(WARNINGFLAGS_C)
+
+libcolord_la_SOURCES = \
+	cd-client.c						\
+	cd-client-sync.c					\
+	cd-deprecated.c						\
+	cd-device.c						\
+	cd-device-sync.c					\
 	cd-profile.c						\
 	cd-profile-sync.c					\
 	cd-sensor.c						\
 	cd-sensor-sync.c
 
 libcolord_la_LIBADD = \
-	$(LCMS_LIBS)						\
-	$(GLIB_LIBS)
+	$(GLIB_LIBS)						\
+	libcolordprivate.la
 
 libcolord_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)	\
@@ -549,9 +545,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu libcolord/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu lib/colord/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu libcolord/Makefile
+	  $(AUTOMAKE) --gnu lib/colord/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -574,13 +570,6 @@ cd-version.h: $(top_builddir)/config.status $(srcdir)/cd-version.h.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 colord.pc: $(top_builddir)/config.status $(srcdir)/colord.pc.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
-
-clean-noinstLIBRARIES:
-	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
-libcolordprivate.a: $(libcolordprivate_a_OBJECTS) $(libcolordprivate_a_DEPENDENCIES) $(EXTRA_libcolordprivate_a_DEPENDENCIES) 
-	$(AM_V_at)-rm -f libcolordprivate.a
-	$(AM_V_AR)$(libcolordprivate_a_AR) libcolordprivate.a $(libcolordprivate_a_OBJECTS) $(libcolordprivate_a_LIBADD)
-	$(AM_V_at)$(RANLIB) libcolordprivate.a
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)
 	@list='$(lib_LTLIBRARIES)'; test -n "$(libdir)" || list=; \
@@ -617,6 +606,8 @@ clean-libLTLIBRARIES:
 	}
 libcolord.la: $(libcolord_la_OBJECTS) $(libcolord_la_DEPENDENCIES) $(EXTRA_libcolord_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(libcolord_la_LINK) -rpath $(libdir) $(libcolord_la_OBJECTS) $(libcolord_la_LIBADD) $(LIBS)
+libcolordprivate.la: $(libcolordprivate_la_OBJECTS) $(libcolordprivate_la_DEPENDENCIES) $(EXTRA_libcolordprivate_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(libcolordprivate_la_LINK) -rpath $(libdir) $(libcolordprivate_la_OBJECTS) $(libcolordprivate_la_LIBADD) $(LIBS)
 
 clean-checkPROGRAMS:
 	@list='$(check_PROGRAMS)'; test -n "$$list" || exit 0; \
@@ -639,21 +630,19 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd_self_test-cd-self-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolord_la-cd-client-sync.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolord_la-cd-client.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolord_la-cd-color.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolord_la-cd-deprecated.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolord_la-cd-device-sync.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolord_la-cd-device.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolord_la-cd-enum.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolord_la-cd-it8-utils.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolord_la-cd-it8.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolord_la-cd-math.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolord_la-cd-profile-sync.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolord_la-cd-profile.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolord_la-cd-sensor-sync.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolord_la-cd-sensor.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolordprivate_a-cd-color.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolordprivate_a-cd-enum.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolordprivate_a-cd-math.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolordprivate_la-cd-buffer.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolordprivate_la-cd-color.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolordprivate_la-cd-enum.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolordprivate_la-cd-it8-utils.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolordprivate_la-cd-it8.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolordprivate_la-cd-math.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -676,48 +665,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
 
-libcolordprivate_a-cd-color.o: cd-color.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_a_CFLAGS) $(CFLAGS) -MT libcolordprivate_a-cd-color.o -MD -MP -MF $(DEPDIR)/libcolordprivate_a-cd-color.Tpo -c -o libcolordprivate_a-cd-color.o `test -f 'cd-color.c' || echo '$(srcdir)/'`cd-color.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcolordprivate_a-cd-color.Tpo $(DEPDIR)/libcolordprivate_a-cd-color.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-color.c' object='libcolordprivate_a-cd-color.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_a_CFLAGS) $(CFLAGS) -c -o libcolordprivate_a-cd-color.o `test -f 'cd-color.c' || echo '$(srcdir)/'`cd-color.c
-
-libcolordprivate_a-cd-color.obj: cd-color.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_a_CFLAGS) $(CFLAGS) -MT libcolordprivate_a-cd-color.obj -MD -MP -MF $(DEPDIR)/libcolordprivate_a-cd-color.Tpo -c -o libcolordprivate_a-cd-color.obj `if test -f 'cd-color.c'; then $(CYGPATH_W) 'cd-color.c'; else $(CYGPATH_W) '$(srcdir)/cd-color.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcolordprivate_a-cd-color.Tpo $(DEPDIR)/libcolordprivate_a-cd-color.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-color.c' object='libcolordprivate_a-cd-color.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_a_CFLAGS) $(CFLAGS) -c -o libcolordprivate_a-cd-color.obj `if test -f 'cd-color.c'; then $(CYGPATH_W) 'cd-color.c'; else $(CYGPATH_W) '$(srcdir)/cd-color.c'; fi`
-
-libcolordprivate_a-cd-enum.o: cd-enum.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_a_CFLAGS) $(CFLAGS) -MT libcolordprivate_a-cd-enum.o -MD -MP -MF $(DEPDIR)/libcolordprivate_a-cd-enum.Tpo -c -o libcolordprivate_a-cd-enum.o `test -f 'cd-enum.c' || echo '$(srcdir)/'`cd-enum.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcolordprivate_a-cd-enum.Tpo $(DEPDIR)/libcolordprivate_a-cd-enum.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-enum.c' object='libcolordprivate_a-cd-enum.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_a_CFLAGS) $(CFLAGS) -c -o libcolordprivate_a-cd-enum.o `test -f 'cd-enum.c' || echo '$(srcdir)/'`cd-enum.c
-
-libcolordprivate_a-cd-enum.obj: cd-enum.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_a_CFLAGS) $(CFLAGS) -MT libcolordprivate_a-cd-enum.obj -MD -MP -MF $(DEPDIR)/libcolordprivate_a-cd-enum.Tpo -c -o libcolordprivate_a-cd-enum.obj `if test -f 'cd-enum.c'; then $(CYGPATH_W) 'cd-enum.c'; else $(CYGPATH_W) '$(srcdir)/cd-enum.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcolordprivate_a-cd-enum.Tpo $(DEPDIR)/libcolordprivate_a-cd-enum.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-enum.c' object='libcolordprivate_a-cd-enum.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_a_CFLAGS) $(CFLAGS) -c -o libcolordprivate_a-cd-enum.obj `if test -f 'cd-enum.c'; then $(CYGPATH_W) 'cd-enum.c'; else $(CYGPATH_W) '$(srcdir)/cd-enum.c'; fi`
-
-libcolordprivate_a-cd-math.o: cd-math.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_a_CFLAGS) $(CFLAGS) -MT libcolordprivate_a-cd-math.o -MD -MP -MF $(DEPDIR)/libcolordprivate_a-cd-math.Tpo -c -o libcolordprivate_a-cd-math.o `test -f 'cd-math.c' || echo '$(srcdir)/'`cd-math.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcolordprivate_a-cd-math.Tpo $(DEPDIR)/libcolordprivate_a-cd-math.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-math.c' object='libcolordprivate_a-cd-math.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_a_CFLAGS) $(CFLAGS) -c -o libcolordprivate_a-cd-math.o `test -f 'cd-math.c' || echo '$(srcdir)/'`cd-math.c
-
-libcolordprivate_a-cd-math.obj: cd-math.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_a_CFLAGS) $(CFLAGS) -MT libcolordprivate_a-cd-math.obj -MD -MP -MF $(DEPDIR)/libcolordprivate_a-cd-math.Tpo -c -o libcolordprivate_a-cd-math.obj `if test -f 'cd-math.c'; then $(CYGPATH_W) 'cd-math.c'; else $(CYGPATH_W) '$(srcdir)/cd-math.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcolordprivate_a-cd-math.Tpo $(DEPDIR)/libcolordprivate_a-cd-math.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-math.c' object='libcolordprivate_a-cd-math.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_a_CFLAGS) $(CFLAGS) -c -o libcolordprivate_a-cd-math.obj `if test -f 'cd-math.c'; then $(CYGPATH_W) 'cd-math.c'; else $(CYGPATH_W) '$(srcdir)/cd-math.c'; fi`
-
 libcolord_la-cd-client.lo: cd-client.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolord_la_CFLAGS) $(CFLAGS) -MT libcolord_la-cd-client.lo -MD -MP -MF $(DEPDIR)/libcolord_la-cd-client.Tpo -c -o libcolord_la-cd-client.lo `test -f 'cd-client.c' || echo '$(srcdir)/'`cd-client.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcolord_la-cd-client.Tpo $(DEPDIR)/libcolord_la-cd-client.Plo
@@ -731,13 +678,6 @@ libcolord_la-cd-client-sync.lo: cd-client-sync.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-client-sync.c' object='libcolord_la-cd-client-sync.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolord_la_CFLAGS) $(CFLAGS) -c -o libcolord_la-cd-client-sync.lo `test -f 'cd-client-sync.c' || echo '$(srcdir)/'`cd-client-sync.c
-
-libcolord_la-cd-color.lo: cd-color.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolord_la_CFLAGS) $(CFLAGS) -MT libcolord_la-cd-color.lo -MD -MP -MF $(DEPDIR)/libcolord_la-cd-color.Tpo -c -o libcolord_la-cd-color.lo `test -f 'cd-color.c' || echo '$(srcdir)/'`cd-color.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcolord_la-cd-color.Tpo $(DEPDIR)/libcolord_la-cd-color.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-color.c' object='libcolord_la-cd-color.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolord_la_CFLAGS) $(CFLAGS) -c -o libcolord_la-cd-color.lo `test -f 'cd-color.c' || echo '$(srcdir)/'`cd-color.c
 
 libcolord_la-cd-deprecated.lo: cd-deprecated.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolord_la_CFLAGS) $(CFLAGS) -MT libcolord_la-cd-deprecated.lo -MD -MP -MF $(DEPDIR)/libcolord_la-cd-deprecated.Tpo -c -o libcolord_la-cd-deprecated.lo `test -f 'cd-deprecated.c' || echo '$(srcdir)/'`cd-deprecated.c
@@ -759,34 +699,6 @@ libcolord_la-cd-device-sync.lo: cd-device-sync.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-device-sync.c' object='libcolord_la-cd-device-sync.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolord_la_CFLAGS) $(CFLAGS) -c -o libcolord_la-cd-device-sync.lo `test -f 'cd-device-sync.c' || echo '$(srcdir)/'`cd-device-sync.c
-
-libcolord_la-cd-enum.lo: cd-enum.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolord_la_CFLAGS) $(CFLAGS) -MT libcolord_la-cd-enum.lo -MD -MP -MF $(DEPDIR)/libcolord_la-cd-enum.Tpo -c -o libcolord_la-cd-enum.lo `test -f 'cd-enum.c' || echo '$(srcdir)/'`cd-enum.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcolord_la-cd-enum.Tpo $(DEPDIR)/libcolord_la-cd-enum.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-enum.c' object='libcolord_la-cd-enum.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolord_la_CFLAGS) $(CFLAGS) -c -o libcolord_la-cd-enum.lo `test -f 'cd-enum.c' || echo '$(srcdir)/'`cd-enum.c
-
-libcolord_la-cd-it8.lo: cd-it8.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolord_la_CFLAGS) $(CFLAGS) -MT libcolord_la-cd-it8.lo -MD -MP -MF $(DEPDIR)/libcolord_la-cd-it8.Tpo -c -o libcolord_la-cd-it8.lo `test -f 'cd-it8.c' || echo '$(srcdir)/'`cd-it8.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcolord_la-cd-it8.Tpo $(DEPDIR)/libcolord_la-cd-it8.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-it8.c' object='libcolord_la-cd-it8.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolord_la_CFLAGS) $(CFLAGS) -c -o libcolord_la-cd-it8.lo `test -f 'cd-it8.c' || echo '$(srcdir)/'`cd-it8.c
-
-libcolord_la-cd-it8-utils.lo: cd-it8-utils.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolord_la_CFLAGS) $(CFLAGS) -MT libcolord_la-cd-it8-utils.lo -MD -MP -MF $(DEPDIR)/libcolord_la-cd-it8-utils.Tpo -c -o libcolord_la-cd-it8-utils.lo `test -f 'cd-it8-utils.c' || echo '$(srcdir)/'`cd-it8-utils.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcolord_la-cd-it8-utils.Tpo $(DEPDIR)/libcolord_la-cd-it8-utils.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-it8-utils.c' object='libcolord_la-cd-it8-utils.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolord_la_CFLAGS) $(CFLAGS) -c -o libcolord_la-cd-it8-utils.lo `test -f 'cd-it8-utils.c' || echo '$(srcdir)/'`cd-it8-utils.c
-
-libcolord_la-cd-math.lo: cd-math.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolord_la_CFLAGS) $(CFLAGS) -MT libcolord_la-cd-math.lo -MD -MP -MF $(DEPDIR)/libcolord_la-cd-math.Tpo -c -o libcolord_la-cd-math.lo `test -f 'cd-math.c' || echo '$(srcdir)/'`cd-math.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcolord_la-cd-math.Tpo $(DEPDIR)/libcolord_la-cd-math.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-math.c' object='libcolord_la-cd-math.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolord_la_CFLAGS) $(CFLAGS) -c -o libcolord_la-cd-math.lo `test -f 'cd-math.c' || echo '$(srcdir)/'`cd-math.c
 
 libcolord_la-cd-profile.lo: cd-profile.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolord_la_CFLAGS) $(CFLAGS) -MT libcolord_la-cd-profile.lo -MD -MP -MF $(DEPDIR)/libcolord_la-cd-profile.Tpo -c -o libcolord_la-cd-profile.lo `test -f 'cd-profile.c' || echo '$(srcdir)/'`cd-profile.c
@@ -815,6 +727,48 @@ libcolord_la-cd-sensor-sync.lo: cd-sensor-sync.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-sensor-sync.c' object='libcolord_la-cd-sensor-sync.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolord_la_CFLAGS) $(CFLAGS) -c -o libcolord_la-cd-sensor-sync.lo `test -f 'cd-sensor-sync.c' || echo '$(srcdir)/'`cd-sensor-sync.c
+
+libcolordprivate_la-cd-buffer.lo: cd-buffer.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_la_CFLAGS) $(CFLAGS) -MT libcolordprivate_la-cd-buffer.lo -MD -MP -MF $(DEPDIR)/libcolordprivate_la-cd-buffer.Tpo -c -o libcolordprivate_la-cd-buffer.lo `test -f 'cd-buffer.c' || echo '$(srcdir)/'`cd-buffer.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcolordprivate_la-cd-buffer.Tpo $(DEPDIR)/libcolordprivate_la-cd-buffer.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-buffer.c' object='libcolordprivate_la-cd-buffer.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_la_CFLAGS) $(CFLAGS) -c -o libcolordprivate_la-cd-buffer.lo `test -f 'cd-buffer.c' || echo '$(srcdir)/'`cd-buffer.c
+
+libcolordprivate_la-cd-color.lo: cd-color.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_la_CFLAGS) $(CFLAGS) -MT libcolordprivate_la-cd-color.lo -MD -MP -MF $(DEPDIR)/libcolordprivate_la-cd-color.Tpo -c -o libcolordprivate_la-cd-color.lo `test -f 'cd-color.c' || echo '$(srcdir)/'`cd-color.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcolordprivate_la-cd-color.Tpo $(DEPDIR)/libcolordprivate_la-cd-color.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-color.c' object='libcolordprivate_la-cd-color.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_la_CFLAGS) $(CFLAGS) -c -o libcolordprivate_la-cd-color.lo `test -f 'cd-color.c' || echo '$(srcdir)/'`cd-color.c
+
+libcolordprivate_la-cd-enum.lo: cd-enum.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_la_CFLAGS) $(CFLAGS) -MT libcolordprivate_la-cd-enum.lo -MD -MP -MF $(DEPDIR)/libcolordprivate_la-cd-enum.Tpo -c -o libcolordprivate_la-cd-enum.lo `test -f 'cd-enum.c' || echo '$(srcdir)/'`cd-enum.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcolordprivate_la-cd-enum.Tpo $(DEPDIR)/libcolordprivate_la-cd-enum.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-enum.c' object='libcolordprivate_la-cd-enum.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_la_CFLAGS) $(CFLAGS) -c -o libcolordprivate_la-cd-enum.lo `test -f 'cd-enum.c' || echo '$(srcdir)/'`cd-enum.c
+
+libcolordprivate_la-cd-it8.lo: cd-it8.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_la_CFLAGS) $(CFLAGS) -MT libcolordprivate_la-cd-it8.lo -MD -MP -MF $(DEPDIR)/libcolordprivate_la-cd-it8.Tpo -c -o libcolordprivate_la-cd-it8.lo `test -f 'cd-it8.c' || echo '$(srcdir)/'`cd-it8.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcolordprivate_la-cd-it8.Tpo $(DEPDIR)/libcolordprivate_la-cd-it8.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-it8.c' object='libcolordprivate_la-cd-it8.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_la_CFLAGS) $(CFLAGS) -c -o libcolordprivate_la-cd-it8.lo `test -f 'cd-it8.c' || echo '$(srcdir)/'`cd-it8.c
+
+libcolordprivate_la-cd-it8-utils.lo: cd-it8-utils.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_la_CFLAGS) $(CFLAGS) -MT libcolordprivate_la-cd-it8-utils.lo -MD -MP -MF $(DEPDIR)/libcolordprivate_la-cd-it8-utils.Tpo -c -o libcolordprivate_la-cd-it8-utils.lo `test -f 'cd-it8-utils.c' || echo '$(srcdir)/'`cd-it8-utils.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcolordprivate_la-cd-it8-utils.Tpo $(DEPDIR)/libcolordprivate_la-cd-it8-utils.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-it8-utils.c' object='libcolordprivate_la-cd-it8-utils.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_la_CFLAGS) $(CFLAGS) -c -o libcolordprivate_la-cd-it8-utils.lo `test -f 'cd-it8-utils.c' || echo '$(srcdir)/'`cd-it8-utils.c
+
+libcolordprivate_la-cd-math.lo: cd-math.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_la_CFLAGS) $(CFLAGS) -MT libcolordprivate_la-cd-math.lo -MD -MP -MF $(DEPDIR)/libcolordprivate_la-cd-math.Tpo -c -o libcolordprivate_la-cd-math.lo `test -f 'cd-math.c' || echo '$(srcdir)/'`cd-math.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcolordprivate_la-cd-math.Tpo $(DEPDIR)/libcolordprivate_la-cd-math.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-math.c' object='libcolordprivate_la-cd-math.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_la_CFLAGS) $(CFLAGS) -c -o libcolordprivate_la-cd-math.lo `test -f 'cd-math.c' || echo '$(srcdir)/'`cd-math.c
 
 cd_self_test-cd-self-test.o: cd-self-test.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_self_test_CFLAGS) $(CFLAGS) -MT cd_self_test-cd-self-test.o -MD -MP -MF $(DEPDIR)/cd_self_test-cd-self-test.Tpo -c -o cd_self_test-cd-self-test.o `test -f 'cd-self-test.c' || echo '$(srcdir)/'`cd-self-test.c
@@ -1155,7 +1109,7 @@ check-am: all-am
 	$(MAKE) $(AM_MAKEFLAGS) $(check_PROGRAMS)
 	$(MAKE) $(AM_MAKEFLAGS) check-TESTS
 check: check-am
-all-am: Makefile $(LIBRARIES) $(LTLIBRARIES) $(DATA) $(HEADERS)
+all-am: Makefile $(LTLIBRARIES) $(DATA) $(HEADERS)
 installdirs:
 	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(vapidir)" "$(DESTDIR)$(girdir)" "$(DESTDIR)$(pkgconfigdir)" "$(DESTDIR)$(typelibdir)" "$(DESTDIR)$(libcolord_includedir)" "$(DESTDIR)$(libcolordbase_includedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
@@ -1195,7 +1149,7 @@ maintainer-clean-generic:
 clean: clean-am
 
 clean-am: clean-checkPROGRAMS clean-generic clean-libLTLIBRARIES \
-	clean-libtool clean-local clean-noinstLIBRARIES mostlyclean-am
+	clean-libtool clean-local mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -1273,14 +1227,14 @@ uninstall-am: uninstall-dist_vapiDATA uninstall-girDATA \
 
 .PHONY: CTAGS GTAGS all all-am check check-TESTS check-am clean \
 	clean-checkPROGRAMS clean-generic clean-libLTLIBRARIES \
-	clean-libtool clean-local clean-noinstLIBRARIES cscopelist \
-	ctags distclean distclean-compile distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am html \
-	html-am info info-am install install-am install-data \
-	install-data-am install-dist_vapiDATA install-dvi \
-	install-dvi-am install-exec install-exec-am install-girDATA \
-	install-html install-html-am install-info install-info-am \
-	install-libLTLIBRARIES install-libcolord_includeHEADERS \
+	clean-libtool clean-local cscopelist ctags distclean \
+	distclean-compile distclean-generic distclean-libtool \
+	distclean-tags distdir dvi dvi-am html html-am info info-am \
+	install install-am install-data install-data-am \
+	install-dist_vapiDATA install-dvi install-dvi-am install-exec \
+	install-exec-am install-girDATA install-html install-html-am \
+	install-info install-info-am install-libLTLIBRARIES \
+	install-libcolord_includeHEADERS \
 	install-libcolordbase_includeHEADERS install-man install-pdf \
 	install-pdf-am install-pkgconfigDATA install-ps install-ps-am \
 	install-strip install-typelibDATA installcheck installcheck-am \
@@ -1294,7 +1248,7 @@ uninstall-am: uninstall-dist_vapiDATA uninstall-girDATA \
 
 @HAVE_INTROSPECTION_TRUE@-include $(INTROSPECTION_MAKEFILE)
 
-@HAVE_INTROSPECTION_TRUE@Colord-1.0.gir: libcolord.la
+@HAVE_INTROSPECTION_TRUE@Colord-1.0.gir: libcolord.la libcolordprivate.la
 
 @HAVE_INTROSPECTION_TRUE@@HAVE_VAPIGEN_TRUE@colord.vapi: Colord-1.0.gir
 @HAVE_INTROSPECTION_TRUE@@HAVE_VAPIGEN_TRUE@	$(MAKE) $(AM_MAKEFLAGS) Colord-1.0.gir

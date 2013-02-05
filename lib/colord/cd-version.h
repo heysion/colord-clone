@@ -55,7 +55,7 @@
  *
  * The compile-time micro version
  */
-#define CD_MICRO_VERSION				(28)
+#define CD_MICRO_VERSION				(29)
 
 /**
  * CD_CHECK_VERSION:

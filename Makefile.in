@@ -57,14 +57,6 @@ DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
 	depcomp install-sh ltmain.sh missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/as-linguas.m4 \
-	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/gtk-doc.m4 \
-	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/intlmacosx.m4 \
-	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/lib-ld.m4 \
-	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
-	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
-	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
-	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/nls.m4 \
-	$(top_srcdir)/m4/po.m4 $(top_srcdir)/m4/progtest.m4 \
 	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
@@ -280,6 +272,8 @@ POLKIT_CFLAGS = @POLKIT_CFLAGS@
 POLKIT_LIBS = @POLKIT_LIBS@
 POSUB = @POSUB@
 RANLIB = @RANLIB@
+SANE_CFLAGS = @SANE_CFLAGS@
+SANE_LIBS = @SANE_LIBS@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -359,12 +353,13 @@ NULL =
 # this needs libcolord
 
 # this needs client/cd-create-profile
-SUBDIRS = etc policy man libcolord rules po client contrib doc \
-	examples src data
+SUBDIRS = etc policy man lib rules po client contrib doc examples src \
+	data
 DISTCHECK_CONFIGURE_FLAGS = \
 	--enable-introspection				\
 	--enable-fd-fallback				\
 	--enable-gtk					\
+	--enable-sane					\
 	--disable-print-profiles			\
 	--enable-gtk-doc				\
 	--with-udevrulesdir=$$dc_install_base/$(udevrulesdir) \
@@ -924,7 +919,7 @@ snapshot:
 coverity:
 	$(MAKE);					\
 	cd src; $(MAKE) clean; cd -;			\
-	cd libcolord; $(MAKE) clean; cd -;		\
+	cd lib; $(MAKE) clean; cd -;			\
 	cd examples; $(MAKE) clean; cd -;		\
 	cd client; $(MAKE) clean; cd -;			\
 	cd contrib/session-helper; $(MAKE) clean; cd -;	\

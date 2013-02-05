@@ -293,6 +293,8 @@
 <ANCHOR id="cd-sensor-get-id" href="colord/colord-cd-sensor.html#cd-sensor-get-id">
 <ANCHOR id="cd-sensor-get-kind" href="colord/colord-cd-sensor.html#cd-sensor-get-kind">
 <ANCHOR id="cd-sensor-get-locked" href="colord/colord-cd-sensor.html#cd-sensor-get-locked">
+<ANCHOR id="cd-sensor-get-metadata" href="colord/colord-cd-sensor.html#cd-sensor-get-metadata">
+<ANCHOR id="cd-sensor-get-metadata-item" href="colord/colord-cd-sensor.html#cd-sensor-get-metadata-item">
 <ANCHOR id="cd-sensor-get-mode" href="colord/colord-cd-sensor.html#cd-sensor-get-mode">
 <ANCHOR id="cd-sensor-get-model" href="colord/colord-cd-sensor.html#cd-sensor-get-model">
 <ANCHOR id="cd-sensor-get-native" href="colord/colord-cd-sensor.html#cd-sensor-get-native">
@@ -325,6 +327,12 @@
 <ANCHOR id="CD-IT8-ERROR-FAILED:CAPS" href="colord/colord-cd-it8.html#CD-IT8-ERROR-FAILED:CAPS">
 <ANCHOR id="CD-IT8-ERROR-LAST:CAPS" href="colord/colord-cd-it8.html#CD-IT8-ERROR-LAST:CAPS">
 <ANCHOR id="CdIt8Kind" href="colord/colord-cd-it8.html#CdIt8Kind">
+<ANCHOR id="CD-IT8-KIND-UNKNOWN:CAPS" href="colord/colord-cd-it8.html#CD-IT8-KIND-UNKNOWN:CAPS">
+<ANCHOR id="CD-IT8-KIND-TI1:CAPS" href="colord/colord-cd-it8.html#CD-IT8-KIND-TI1:CAPS">
+<ANCHOR id="CD-IT8-KIND-TI3:CAPS" href="colord/colord-cd-it8.html#CD-IT8-KIND-TI3:CAPS">
+<ANCHOR id="CD-IT8-KIND-CCMX:CAPS" href="colord/colord-cd-it8.html#CD-IT8-KIND-CCMX:CAPS">
+<ANCHOR id="CD-IT8-KIND-CAL:CAPS" href="colord/colord-cd-it8.html#CD-IT8-KIND-CAL:CAPS">
+<ANCHOR id="CD-IT8-KIND-LAST:CAPS" href="colord/colord-cd-it8.html#CD-IT8-KIND-LAST:CAPS">
 <ANCHOR id="cd-it8-reserved1" href="colord/colord-cd-it8.html#cd-it8-reserved1">
 <ANCHOR id="cd-it8-reserved2" href="colord/colord-cd-it8.html#cd-it8-reserved2">
 <ANCHOR id="cd-it8-reserved3" href="colord/colord-cd-it8.html#cd-it8-reserved3">

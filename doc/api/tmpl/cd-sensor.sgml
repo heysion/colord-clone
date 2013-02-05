@@ -201,6 +201,25 @@ cd-sensor
 @Returns: 
 
 
+<!-- ##### FUNCTION cd_sensor_get_metadata ##### -->
+<para>
+
+</para>
+
+@sensor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_sensor_get_metadata_item ##### -->
+<para>
+
+</para>
+
+@sensor: 
+@key: 
+@Returns: 
+
+
 <!-- ##### FUNCTION cd_sensor_get_mode ##### -->
 <para>
 

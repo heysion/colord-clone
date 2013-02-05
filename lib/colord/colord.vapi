@@ -387,6 +387,12 @@ namespace Cd {
 		public void subtract (Cd.Vec3 src2, Cd.Vec3 dest);
 		public string to_string ();
 	}
+	[CCode (cheader_filename = "colord.h", cprefix = "CD_BUFFER_KIND_", has_type_id = false)]
+	public enum BufferKind {
+		REQUEST,
+		RESPONSE,
+		UNKNOWN
+	}
 	[CCode (cheader_filename = "colord.h", cprefix = "CD_CLIENT_ERROR_", has_type_id = false)]
 	public enum ClientError {
 		INTERNAL,
@@ -540,6 +546,7 @@ namespace Cd {
 		AMBIENT,
 		CALIBRATION,
 		LED,
+		PLASMA,
 		LAST
 	}
 	[CCode (cheader_filename = "colord.h", cprefix = "CD_SENSOR_ERROR_", has_type_id = false)]
@@ -610,6 +617,8 @@ namespace Cd {
 	public const string DEVICE_METADATA_OUTPUT_PRIORITY_PRIMARY;
 	[CCode (cheader_filename = "colord.h", cname = "CD_DEVICE_METADATA_OUTPUT_PRIORITY_SECONDARY")]
 	public const string DEVICE_METADATA_OUTPUT_PRIORITY_SECONDARY;
+	[CCode (cheader_filename = "colord.h", cname = "CD_DEVICE_METADATA_OWNER_CMDLINE")]
+	public const string DEVICE_METADATA_OWNER_CMDLINE;
 	[CCode (cheader_filename = "colord.h", cname = "CD_DEVICE_METADATA_XRANDR_NAME")]
 	public const string DEVICE_METADATA_XRANDR_NAME;
 	[CCode (cheader_filename = "colord.h", cname = "CD_DEVICE_PROPERTY_COLORSPACE")]
@@ -788,6 +797,24 @@ namespace Cd {
 	public const string SENSOR_PROPERTY_STATE;
 	[CCode (cheader_filename = "colord.h", cname = "CD_SENSOR_PROPERTY_VENDOR")]
 	public const string SENSOR_PROPERTY_VENDOR;
+	[CCode (cheader_filename = "colord.h")]
+	public static void buffer_debug (Cd.BufferKind buffer_kind, uint8 data, size_t length);
+	[CCode (cheader_filename = "colord.h")]
+	public static uint16 buffer_read_uint16_be (uint8 buffer);
+	[CCode (cheader_filename = "colord.h")]
+	public static uint16 buffer_read_uint16_le (uint8 buffer);
+	[CCode (cheader_filename = "colord.h")]
+	public static uint32 buffer_read_uint32_be (uint8 buffer);
+	[CCode (cheader_filename = "colord.h")]
+	public static uint32 buffer_read_uint32_le (uint8 buffer);
+	[CCode (cheader_filename = "colord.h")]
+	public static void buffer_write_uint16_be (uint8 buffer, uint16 value);
+	[CCode (cheader_filename = "colord.h")]
+	public static void buffer_write_uint16_le (uint8 buffer, uint16 value);
+	[CCode (cheader_filename = "colord.h")]
+	public static void buffer_write_uint32_be (uint8 buffer, uint32 value);
+	[CCode (cheader_filename = "colord.h")]
+	public static void buffer_write_uint32_le (uint8 buffer, uint32 value);
 	[CCode (cheader_filename = "colord.h")]
 	public static void color_get_blackbody_rgb (uint temp, Cd.ColorRGB result);
 	[CCode (cheader_filename = "colord.h")]

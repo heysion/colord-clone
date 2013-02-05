@@ -8,7 +8,7 @@
 <link rel="up" href="libcolord.html" title="libcolord GObjects">
 <link rel="prev" href="colord-cd-sensor.html" title="cd-sensor">
 <link rel="next" href="libcolord-glib-helpers.html" title="libcolord-glib helpers">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -53,55 +53,55 @@ enum                <a class="link" href="colord-cd-it8.html#CdIt8Kind" title="e
                                                          <em class="parameter"><code>const <a class="link" href="colord-cd-color.html#CdColorRGB"><span class="type">CdColorRGB</span></a> *rgb</code></em>,
                                                          <em class="parameter"><code>const <a class="link" href="colord-cd-color.html#CdColorXYZ"><span class="type">CdColorXYZ</span></a> *xyz</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-it8.html#cd-it8-add-option" title="cd_it8_add_option ()">cd_it8_add_option</a>                   (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *option</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              <a class="link" href="colord-cd-it8.html#cd-it8-error-quark" title="cd_it8_error_quark ()">cd_it8_error_quark</a>                  (<em class="parameter"><code><span class="type">void</span></code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-it8.html#cd-it8-get-data-item" title="cd_it8_get_data_item ()">cd_it8_get_data_item</a>                (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> idx</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *option</code></em>);
+<span class="returnvalue">GQuark</span>              <a class="link" href="colord-cd-it8.html#cd-it8-error-quark" title="cd_it8_error_quark ()">cd_it8_error_quark</a>                  (<em class="parameter"><code><span class="type">void</span></code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-it8.html#cd-it8-get-data-item" title="cd_it8_get_data_item ()">cd_it8_get_data_item</a>                (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint</span> idx</code></em>,
                                                          <em class="parameter"><code><a class="link" href="colord-cd-color.html#CdColorRGB"><span class="type">CdColorRGB</span></a> *rgb</code></em>,
                                                          <em class="parameter"><code><a class="link" href="colord-cd-color.html#CdColorXYZ"><span class="type">CdColorXYZ</span></a> *xyz</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="colord-cd-it8.html#cd-it8-get-data-size" title="cd_it8_get_data_size ()">cd_it8_get_data_size</a>                (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-it8.html#cd-it8-get-instrument" title="cd_it8_get_instrument ()">cd_it8_get_instrument</a>               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);
+<span class="returnvalue">guint</span>               <a class="link" href="colord-cd-it8.html#cd-it8-get-data-size" title="cd_it8_get_data_size ()">cd_it8_get_data_size</a>                (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);
+const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-it8.html#cd-it8-get-instrument" title="cd_it8_get_instrument ()">cd_it8_get_instrument</a>               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);
 <a class="link" href="colord-cd-it8.html#CdIt8Kind" title="enum CdIt8Kind"><span class="returnvalue">CdIt8Kind</span></a>           <a class="link" href="colord-cd-it8.html#cd-it8-get-kind" title="cd_it8_get_kind ()">cd_it8_get_kind</a>                     (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);
 const <a class="link" href="colord-cd-math.html#CdMat3x3" title="CdMat3x3"><span class="returnvalue">CdMat3x3</span></a> *    <a class="link" href="colord-cd-it8.html#cd-it8-get-matrix" title="cd_it8_get_matrix ()">cd_it8_get_matrix</a>                   (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-it8.html#cd-it8-get-normalized" title="cd_it8_get_normalized ()">cd_it8_get_normalized</a>               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-it8.html#cd-it8-get-originator" title="cd_it8_get_originator ()">cd_it8_get_originator</a>               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-it8.html#cd-it8-get-reference" title="cd_it8_get_reference ()">cd_it8_get_reference</a>                (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-it8.html#cd-it8-get-spectral" title="cd_it8_get_spectral ()">cd_it8_get_spectral</a>                 (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);
-const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-it8.html#cd-it8-get-title" title="cd_it8_get_title ()">cd_it8_get_title</a>                    (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-it8.html#cd-it8-has-option" title="cd_it8_has_option ()">cd_it8_has_option</a>                   (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *option</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-it8.html#cd-it8-load-from-data" title="cd_it8_load_from_data ()">cd_it8_load_from_data</a>               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *data</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> size</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-it8.html#cd-it8-load-from-file" title="cd_it8_load_from_file ()">cd_it8_load_from_file</a>               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a> *file</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-it8.html#cd-it8-get-normalized" title="cd_it8_get_normalized ()">cd_it8_get_normalized</a>               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);
+const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-it8.html#cd-it8-get-originator" title="cd_it8_get_originator ()">cd_it8_get_originator</a>               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);
+const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-it8.html#cd-it8-get-reference" title="cd_it8_get_reference ()">cd_it8_get_reference</a>                (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-it8.html#cd-it8-get-spectral" title="cd_it8_get_spectral ()">cd_it8_get_spectral</a>                 (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);
+const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-it8.html#cd-it8-get-title" title="cd_it8_get_title ()">cd_it8_get_title</a>                    (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-it8.html#cd-it8-has-option" title="cd_it8_has_option ()">cd_it8_has_option</a>                   (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *option</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-it8.html#cd-it8-load-from-data" title="cd_it8_load_from_data ()">cd_it8_load_from_data</a>               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *data</code></em>,
+                                                         <em class="parameter"><code><span class="type">gsize</span> size</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-it8.html#cd-it8-load-from-file" title="cd_it8_load_from_file ()">cd_it8_load_from_file</a>               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
+                                                         <em class="parameter"><code><span class="type">GFile</span> *file</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
 <span class="returnvalue">CdIt8</span> *             <a class="link" href="colord-cd-it8.html#cd-it8-new" title="cd_it8_new ()">cd_it8_new</a>                          (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">CdIt8</span> *             <a class="link" href="colord-cd-it8.html#cd-it8-new-with-kind" title="cd_it8_new_with_kind ()">cd_it8_new_with_kind</a>                (<em class="parameter"><code><a class="link" href="colord-cd-it8.html#CdIt8Kind" title="enum CdIt8Kind"><span class="type">CdIt8Kind</span></a> kind</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-it8.html#cd-it8-save-to-data" title="cd_it8_save_to_data ()">cd_it8_save_to_data</a>                 (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **data</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> *size</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-it8.html#cd-it8-save-to-file" title="cd_it8_save_to_file ()">cd_it8_save_to_file</a>                 (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a> *file</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-it8.html#cd-it8-save-to-data" title="cd_it8_save_to_data ()">cd_it8_save_to_data</a>                 (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
+                                                         <em class="parameter"><code><span class="type">gchar</span> **data</code></em>,
+                                                         <em class="parameter"><code><span class="type">gsize</span> *size</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
+<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-it8.html#cd-it8-save-to-file" title="cd_it8_save_to_file ()">cd_it8_save_to_file</a>                 (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
+                                                         <em class="parameter"><code><span class="type">GFile</span> *file</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-it8.html#cd-it8-set-instrument" title="cd_it8_set_instrument ()">cd_it8_set_instrument</a>               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *instrument</code></em>);
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *instrument</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-it8.html#cd-it8-set-kind" title="cd_it8_set_kind ()">cd_it8_set_kind</a>                     (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
                                                          <em class="parameter"><code><a class="link" href="colord-cd-it8.html#CdIt8Kind" title="enum CdIt8Kind"><span class="type">CdIt8Kind</span></a> kind</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-it8.html#cd-it8-set-matrix" title="cd_it8_set_matrix ()">cd_it8_set_matrix</a>                   (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
                                                          <em class="parameter"><code>const <a class="link" href="colord-cd-math.html#CdMat3x3" title="CdMat3x3"><span class="type">CdMat3x3</span></a> *matrix</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-it8.html#cd-it8-set-normalized" title="cd_it8_set_normalized ()">cd_it8_set_normalized</a>               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> normalized</code></em>);
+                                                         <em class="parameter"><code><span class="type">gboolean</span> normalized</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-it8.html#cd-it8-set-originator" title="cd_it8_set_originator ()">cd_it8_set_originator</a>               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *originator</code></em>);
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *originator</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-it8.html#cd-it8-set-reference" title="cd_it8_set_reference ()">cd_it8_set_reference</a>                (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *reference</code></em>);
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *reference</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-it8.html#cd-it8-set-spectral" title="cd_it8_set_spectral ()">cd_it8_set_spectral</a>                 (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> spectral</code></em>);
+                                                         <em class="parameter"><code><span class="type">gboolean</span> spectral</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-it8.html#cd-it8-set-title" title="cd_it8_set_title ()">cd_it8_set_title</a>                    (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>);
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *title</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -173,6 +173,44 @@ Errors that can be thrown
 <p>
 The kind of IT8 file.
 </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><a name="CD-IT8-KIND-UNKNOWN:CAPS"></a><span class="term"><code class="literal">CD_IT8_KIND_UNKNOWN</code></span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><a name="CD-IT8-KIND-TI1:CAPS"></a><span class="term"><code class="literal">CD_IT8_KIND_TI1</code></span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><a name="CD-IT8-KIND-TI3:CAPS"></a><span class="term"><code class="literal">CD_IT8_KIND_TI3</code></span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><a name="CD-IT8-KIND-CCMX:CAPS"></a><span class="term"><code class="literal">CD_IT8_KIND_CCMX</code></span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><a name="CD-IT8-KIND-CAL:CAPS"></a><span class="term"><code class="literal">CD_IT8_KIND_CAL</code></span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><a name="CD-IT8-KIND-LAST:CAPS"></a><span class="term"><code class="literal">CD_IT8_KIND_LAST</code></span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
@@ -252,12 +290,12 @@ a black reading (0.0, 0.0, 0.0) is added instead.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
-<td>a <a class="link" href="colord-cd-color.html#CdColorRGB"><span class="type">CdColorRGB</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
+<td>a <a class="link" href="colord-cd-color.html#CdColorRGB"><span class="type">CdColorRGB</span></a>, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>xyz</code></em> :</span></p></td>
-<td>a <a class="link" href="colord-cd-color.html#CdColorXYZ"><span class="type">CdColorXYZ</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
+<td>a <a class="link" href="colord-cd-color.html#CdColorXYZ"><span class="type">CdColorXYZ</span></a>, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 </tbody>
@@ -268,7 +306,7 @@ a black reading (0.0, 0.0, 0.0) is added instead.
 <div class="refsect2">
 <a name="cd-it8-add-option"></a><h3>cd_it8_add_option ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_it8_add_option                   (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *option</code></em>);</pre>
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *option</code></em>);</pre>
 <p>
 Sets any extra options that have to be set in the CCMX file
 </p>
@@ -293,7 +331,7 @@ Sets any extra options that have to be set in the CCMX file
 <hr>
 <div class="refsect2">
 <a name="cd-it8-error-quark"></a><h3>cd_it8_error_quark ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              cd_it8_error_quark                  (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">GQuark</span>              cd_it8_error_quark                  (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -309,8 +347,8 @@ Sets any extra options that have to be set in the CCMX file
 <hr>
 <div class="refsect2">
 <a name="cd-it8-get-data-item"></a><h3>cd_it8_get_data_item ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_it8_get_data_item                (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> idx</code></em>,
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_it8_get_data_item                (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
+                                                         <em class="parameter"><code><span class="type">guint</span> idx</code></em>,
                                                          <em class="parameter"><code><a class="link" href="colord-cd-color.html#CdColorRGB"><span class="type">CdColorRGB</span></a> *rgb</code></em>,
                                                          <em class="parameter"><code><a class="link" href="colord-cd-color.html#CdColorXYZ"><span class="type">CdColorXYZ</span></a> *xyz</code></em>);</pre>
 <p>
@@ -342,7 +380,7 @@ The returned data are absolute readings and are not normalised.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the index existed.</td>
+<code class="literal">TRUE</code> if the index existed.</td>
 </tr>
 </tbody>
 </table></div>
@@ -351,7 +389,7 @@ The returned data are absolute readings and are not normalised.
 <hr>
 <div class="refsect2">
 <a name="cd-it8-get-data-size"></a><h3>cd_it8_get_data_size ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               cd_it8_get_data_size                (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">guint</span>               cd_it8_get_data_size                (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);</pre>
 <p>
 Gets the data size.
 </p>
@@ -376,7 +414,7 @@ Gets the data size.
 <hr>
 <div class="refsect2">
 <a name="cd-it8-get-instrument"></a><h3>cd_it8_get_instrument ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_it8_get_instrument               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);</pre>
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_it8_get_instrument               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);</pre>
 <p>
 Gets the instrument the file was created by.
 </p>
@@ -392,7 +430,7 @@ Gets the instrument the file was created by.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The instrument, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unset</td>
+<td>The instrument, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> if unset</td>
 </tr>
 </tbody>
 </table></div>
@@ -417,7 +455,7 @@ Gets the kind of IT8 file.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a class="link" href="colord-cd-it8.html#CdIt8Kind" title="enum CdIt8Kind"><span class="type">CdIt8Kind</span></a>, e.g <code class="literal">CD_IT8_KIND_TI3</code>.</td>
+<td>a <a class="link" href="colord-cd-it8.html#CdIt8Kind" title="enum CdIt8Kind"><span class="type">CdIt8Kind</span></a>, e.g <a class="link" href="colord-cd-it8.html#CD-IT8-KIND-TI3:CAPS"><code class="literal">CD_IT8_KIND_TI3</code></a>.</td>
 </tr>
 </tbody>
 </table></div>
@@ -451,7 +489,7 @@ Gets the calibration matrix in the it8 file.
 <hr>
 <div class="refsect2">
 <a name="cd-it8-get-normalized"></a><h3>cd_it8_get_normalized ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_it8_get_normalized               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_it8_get_normalized               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);</pre>
 <p>
 Gets if the data should be written normlaised to y=100.
 </p>
@@ -468,7 +506,7 @@ Gets if the data should be written normlaised to y=100.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the data should be normalised.</td>
+<code class="literal">TRUE</code> if the data should be normalised.</td>
 </tr>
 </tbody>
 </table></div>
@@ -477,7 +515,7 @@ Gets if the data should be written normlaised to y=100.
 <hr>
 <div class="refsect2">
 <a name="cd-it8-get-originator"></a><h3>cd_it8_get_originator ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_it8_get_originator               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);</pre>
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_it8_get_originator               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);</pre>
 <p>
 Gets the file orginator.
 </p>
@@ -493,7 +531,7 @@ Gets the file orginator.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The originator, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unset</td>
+<td>The originator, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> if unset</td>
 </tr>
 </tbody>
 </table></div>
@@ -502,7 +540,7 @@ Gets the file orginator.
 <hr>
 <div class="refsect2">
 <a name="cd-it8-get-reference"></a><h3>cd_it8_get_reference ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_it8_get_reference                (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);</pre>
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_it8_get_reference                (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);</pre>
 <p>
 Gets the reference the file was created against.
 </p>
@@ -518,7 +556,7 @@ Gets the reference the file was created against.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The reference, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unset</td>
+<td>The reference, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> if unset</td>
 </tr>
 </tbody>
 </table></div>
@@ -527,7 +565,7 @@ Gets the reference the file was created against.
 <hr>
 <div class="refsect2">
 <a name="cd-it8-get-spectral"></a><h3>cd_it8_get_spectral ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_it8_get_spectral                 (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_it8_get_spectral                 (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);</pre>
 <p>
 Gets if the data is spectral or XYZ.
 </p>
@@ -544,7 +582,7 @@ Gets if the data is spectral or XYZ.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the data is in spectral bands.</td>
+<code class="literal">TRUE</code> if the data is in spectral bands.</td>
 </tr>
 </tbody>
 </table></div>
@@ -553,7 +591,7 @@ Gets if the data is spectral or XYZ.
 <hr>
 <div class="refsect2">
 <a name="cd-it8-get-title"></a><h3>cd_it8_get_title ()</h3>
-<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_it8_get_title                    (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);</pre>
+<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_it8_get_title                    (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>);</pre>
 <p>
 Gets the file title.
 </p>
@@ -569,7 +607,7 @@ Gets the file title.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The title, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unset</td>
+<td>The title, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> if unset</td>
 </tr>
 </tbody>
 </table></div>
@@ -578,8 +616,8 @@ Gets the file title.
 <hr>
 <div class="refsect2">
 <a name="cd-it8-has-option"></a><h3>cd_it8_has_option ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_it8_has_option                   (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *option</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_it8_has_option                   (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *option</code></em>);</pre>
 <p>
 Finds an option in the file.
 </p>
@@ -600,7 +638,7 @@ Finds an option in the file.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the option is set</td>
+<code class="literal">TRUE</code> if the option is set</td>
 </tr>
 </tbody>
 </table></div>
@@ -609,10 +647,10 @@ Finds an option in the file.
 <hr>
 <div class="refsect2">
 <a name="cd-it8-load-from-data"></a><h3>cd_it8_load_from_data ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_it8_load_from_data               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *data</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> size</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_it8_load_from_data               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *data</code></em>,
+                                                         <em class="parameter"><code><span class="type">gsize</span> size</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>
 Loads a it8 file from data.
 </p>
@@ -636,13 +674,13 @@ Loads a it8 file from data.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
+<td>a <span class="type">GError</span>, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if a valid it8 file was read.</td>
+<code class="literal">TRUE</code> if a valid it8 file was read.</td>
 </tr>
 </tbody>
 </table></div>
@@ -651,9 +689,9 @@ Loads a it8 file from data.
 <hr>
 <div class="refsect2">
 <a name="cd-it8-load-from-file"></a><h3>cd_it8_load_from_file ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_it8_load_from_file               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a> *file</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_it8_load_from_file               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
+                                                         <em class="parameter"><code><span class="type">GFile</span> *file</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>
 Loads a it8 file from disk.
 </p>
@@ -669,18 +707,18 @@ Loads a it8 file from disk.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>file</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a>
+<td>a <span class="type">GFile</span>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
+<td>a <span class="type">GError</span>, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if a valid it8 file was read.</td>
+<code class="literal">TRUE</code> if a valid it8 file was read.</td>
 </tr>
 </tbody>
 </table></div>
@@ -720,7 +758,7 @@ Creates a new <span class="type">CdIt8</span> object.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>kind</code></em> :</span></p></td>
-<td>a <a class="link" href="colord-cd-it8.html#CdIt8Kind" title="enum CdIt8Kind"><span class="type">CdIt8Kind</span></a>, e.g <code class="literal">CD_IT8_KIND_TI3</code>.</td>
+<td>a <a class="link" href="colord-cd-it8.html#CdIt8Kind" title="enum CdIt8Kind"><span class="type">CdIt8Kind</span></a>, e.g <a class="link" href="colord-cd-it8.html#CD-IT8-KIND-TI3:CAPS"><code class="literal">CD_IT8_KIND_TI3</code></a>.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -733,10 +771,10 @@ Creates a new <span class="type">CdIt8</span> object.
 <hr>
 <div class="refsect2">
 <a name="cd-it8-save-to-data"></a><h3>cd_it8_save_to_data ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_it8_save_to_data                 (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **data</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gsize"><span class="type">gsize</span></a> *size</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_it8_save_to_data                 (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
+                                                         <em class="parameter"><code><span class="type">gchar</span> **data</code></em>,
+                                                         <em class="parameter"><code><span class="type">gsize</span> *size</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>
 Saves a it8 file to an area of memory.
 </p>
@@ -761,13 +799,13 @@ Saves a it8 file to an area of memory.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
+<td>a <span class="type">GError</span>, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if it8 file was saved.</td>
+<code class="literal">TRUE</code> if it8 file was saved.</td>
 </tr>
 </tbody>
 </table></div>
@@ -776,9 +814,9 @@ Saves a it8 file to an area of memory.
 <hr>
 <div class="refsect2">
 <a name="cd-it8-save-to-file"></a><h3>cd_it8_save_to_file ()</h3>
-<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_it8_save_to_file                 (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a> *file</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_it8_save_to_file                 (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
+                                                         <em class="parameter"><code><span class="type">GFile</span> *file</code></em>,
+                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
 <p>
 Saves a it8 file to disk
 </p>
@@ -794,18 +832,18 @@ Saves a it8 file to disk
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>file</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/gio/unstable/GFile.html"><span class="type">GFile</span></a>
+<td>a <span class="type">GFile</span>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
+<td>a <span class="type">GError</span>, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if it8 file was saved.</td>
+<code class="literal">TRUE</code> if it8 file was saved.</td>
 </tr>
 </tbody>
 </table></div>
@@ -815,7 +853,7 @@ Saves a it8 file to disk
 <div class="refsect2">
 <a name="cd-it8-set-instrument"></a><h3>cd_it8_set_instrument ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_it8_set_instrument               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *instrument</code></em>);</pre>
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *instrument</code></em>);</pre>
 <p>
 Sets the measuring instrument that created the .it8 file
 </p>
@@ -857,7 +895,7 @@ Set the kind of IT8 file.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>kind</code></em> :</span></p></td>
-<td>a <a class="link" href="colord-cd-it8.html#CdIt8Kind" title="enum CdIt8Kind"><span class="type">CdIt8Kind</span></a>, e.g <code class="literal">CD_IT8_KIND_TI3</code>.</td>
+<td>a <a class="link" href="colord-cd-it8.html#CdIt8Kind" title="enum CdIt8Kind"><span class="type">CdIt8Kind</span></a>, e.g <a class="link" href="colord-cd-it8.html#CD-IT8-KIND-TI3:CAPS"><code class="literal">CD_IT8_KIND_TI3</code></a>.</td>
 </tr>
 </tbody>
 </table></div>
@@ -893,7 +931,7 @@ Set the calibration matrix in the it8 file.
 <div class="refsect2">
 <a name="cd-it8-set-normalized"></a><h3>cd_it8_set_normalized ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_it8_set_normalized               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> normalized</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">gboolean</span> normalized</code></em>);</pre>
 <p>
 Sets if normalized data should be written to the .it8 file.
 </p>
@@ -919,7 +957,7 @@ Sets if normalized data should be written to the .it8 file.
 <div class="refsect2">
 <a name="cd-it8-set-originator"></a><h3>cd_it8_set_originator ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_it8_set_originator               (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *originator</code></em>);</pre>
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *originator</code></em>);</pre>
 <p>
 Sets the program name that created the .it8 file
 </p>
@@ -945,7 +983,7 @@ Sets the program name that created the .it8 file
 <div class="refsect2">
 <a name="cd-it8-set-reference"></a><h3>cd_it8_set_reference ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_it8_set_reference                (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *reference</code></em>);</pre>
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *reference</code></em>);</pre>
 <p>
 Sets the reference that as used to create the .it8 reference
 </p>
@@ -971,7 +1009,7 @@ Sets the reference that as used to create the .it8 reference
 <div class="refsect2">
 <a name="cd-it8-set-spectral"></a><h3>cd_it8_set_spectral ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_it8_set_spectral                 (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> spectral</code></em>);</pre>
+                                                         <em class="parameter"><code><span class="type">gboolean</span> spectral</code></em>);</pre>
 <p>
 Sets if spectral data should be written to the .it8 file.
 </p>
@@ -997,7 +1035,7 @@ Sets if spectral data should be written to the .it8 file.
 <div class="refsect2">
 <a name="cd-it8-set-title"></a><h3>cd_it8_set_title ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_it8_set_title                    (<em class="parameter"><code><span class="type">CdIt8</span> *it8</code></em>,
-                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *title</code></em>);</pre>
+                                                         <em class="parameter"><code>const <span class="type">gchar</span> *title</code></em>);</pre>
 <p>
 Sets the display name for the file.
 </p>
@@ -1023,6 +1061,6 @@ Sets the display name for the file.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.18.1</div>
 </body>
 </html>
