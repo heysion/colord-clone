@@ -8,7 +8,9 @@ AM_CPPFLAGS =						\
 	$(GNOME_DESKTOP_CFLAGS)				\
 	$(LCMS_CFLAGS)					\
 	-I$(top_srcdir)/client				\
-	-I$(top_srcdir)/libcolord			\
+	-I$(top_srcdir)/lib				\
+	-I$(top_builddir)/lib				\
+	-I$(top_srcdir)/lib/colord			\
 	-I$(top_srcdir)/src				\
 	-DCD_COMPILATION				\
 	-DCD_DISABLE_DEPRECATED				\
@@ -21,7 +23,7 @@ AM_CPPFLAGS =						\
 	-DVERSION="\"$(VERSION)\""
 
 COLORD_LIBS =						\
-	$(top_builddir)/libcolord/libcolord.la
+	$(top_builddir)/lib/colord/libcolord.la
 
 libcolord_includedir = $(includedir)/colord-1/colord-session
 libcolord_include_HEADERS =				\
@@ -86,7 +88,7 @@ gsettings_schemas_in_files = org.freedesktop.ColorHelper.gschema.xml.in
 gsettings_SCHEMAS = $(gsettings_schemas_in_files:.gschema.xml.in=.gschema.xml)
 
 EXTRA_DIST =						\
-	$(gsettings_SCHEMAS)				\
+	$(gsettings_schemas_in_files)			\
 	$(dbusservicemain_in_files)
 
 DISTCLEANFILES =					\

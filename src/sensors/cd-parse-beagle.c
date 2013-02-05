@@ -23,9 +23,9 @@
 #include <sys/types.h>
 #include <stdlib.h>
 #include <glib.h>
+#include <huey/huey.h>
+#include <munki/munki.h>
 
-#include "cd-sensor-huey-private.h"
-#include "cd-sensor-munki-private.h"
 #include "cd-sensor.h"
 
 typedef enum {
@@ -65,8 +65,8 @@ cd_parse_beagle_process_entry_huey (CdParseEntry *entry)
 {
 	gchar **tok;
 	guint j;
-	guchar cmd;
-	guchar instruction = 0;
+	guint8 cmd;
+	guint8 instruction = 0;
 	const gchar *command_as_text;
 	GString *output = NULL;
 
@@ -84,27 +84,27 @@ cd_parse_beagle_process_entry_huey (CdParseEntry *entry)
 		command_as_text = NULL;
 		cmd = g_ascii_strtoll (tok[j], NULL, 16);
 		if (j == 0 && entry->direction == CD_PARSE_ENTRY_DIRECTION_REPLY) {
-			command_as_text = cd_sensor_huey_return_code_to_string (cmd);
+			command_as_text = huey_rc_to_string (cmd);
 			if (command_as_text == NULL)
 				g_warning ("return code 0x%02x not known in %s", cmd, entry->summary);
 		}
 		if ((j == 0 && entry->direction == CD_PARSE_ENTRY_DIRECTION_REQUEST) ||
 		    (j == 1 && entry->direction == CD_PARSE_ENTRY_DIRECTION_REPLY)) {
 			instruction = cmd;
-			command_as_text = cd_sensor_huey_command_code_to_string (instruction);
+			command_as_text = huey_cmd_code_to_string (instruction);
 			if (command_as_text == NULL)
 				g_warning ("command code 0x%02x not known", cmd);
 		}
 
 		/* some requests are filled with junk data */
 		if (entry->direction == CD_PARSE_ENTRY_DIRECTION_REQUEST &&
-		    instruction == CD_SENSOR_HUEY_COMMAND_REGISTER_READ && j > 1)
+		    instruction == HUEY_CMD_REGISTER_READ && j > 1)
 			g_string_append_printf (output, "xx ");
 		else if (entry->direction == CD_PARSE_ENTRY_DIRECTION_REQUEST &&
-			 instruction == CD_SENSOR_HUEY_COMMAND_SET_LEDS && j > 4)
+			 instruction == HUEY_CMD_SET_LEDS && j > 4)
 			g_string_append_printf (output, "xx ");
 		else if (entry->direction == CD_PARSE_ENTRY_DIRECTION_REQUEST &&
-			 instruction == CD_SENSOR_HUEY_COMMAND_GET_AMBIENT && j > 3)
+			 instruction == HUEY_CMD_GET_AMBIENT && j > 3)
 			g_string_append_printf (output, "xx ");
 		else if (command_as_text != NULL)
 			g_string_append_printf (output, "%02x(%s) ", cmd, command_as_text);
@@ -129,12 +129,12 @@ cd_parse_beagle_process_entry_colormunki (CdParseEntry *entry)
 {
 	gchar **tok;
 	guint j;
-	guchar cmd;
+	guint8 cmd;
 	guint tok_len;
 	GString *output;
 
 	/* set ep description */
-	entry->ep_description = cd_sensor_munki_endpoint_to_string (entry->ep);
+	entry->ep_description = munki_endpoint_to_string (entry->ep);
 
 	output = g_string_new ("");
 
@@ -143,7 +143,7 @@ cd_parse_beagle_process_entry_colormunki (CdParseEntry *entry)
 	tok_len = g_strv_length (tok);
 
 	/* status */
-	if (entry->ep == CD_SENSOR_MUNKI_EP_CONTROL &&
+	if (entry->ep == MUNKI_EP_CONTROL &&
 	    entry->direction == CD_PARSE_ENTRY_DIRECTION_REPLY &&
 	    tok_len == 2) {
 
@@ -151,18 +151,18 @@ cd_parse_beagle_process_entry_colormunki (CdParseEntry *entry)
 		cmd = g_ascii_strtoll (tok[0], NULL, 16);
 		g_string_append_printf (output, "%s(dial-position-%s) ",
 					tok[0],
-					cd_sensor_munki_dial_position_to_string (cmd));
+					munki_dial_position_to_string (cmd));
 
 		/* button value */
 		cmd = g_ascii_strtoll (tok[1], NULL, 16);
 		g_string_append_printf (output, "%s(button-state-%s)",
 					tok[1],
-					cd_sensor_munki_button_state_to_string (cmd));
+					munki_button_state_to_string (cmd));
 		goto out;
 	}
 
 	/* event */
-	if (entry->ep == CD_SENSOR_MUNKI_EP_EVENT &&
+	if (entry->ep == MUNKI_EP_EVENT &&
 	    entry->direction == CD_PARSE_ENTRY_DIRECTION_REPLY &&
 	    tok_len == 8) {
 		g_print ("process 8: %s\n", entry->summary);
@@ -171,7 +171,7 @@ cd_parse_beagle_process_entry_colormunki (CdParseEntry *entry)
 		cmd = g_ascii_strtoll (tok[0], NULL, 16);
 		g_string_append_printf (output, "%s(%s) ",
 					tok[0],
-					cd_sensor_munki_command_value_to_string (cmd));
+					munki_command_value_to_string (cmd));
 
 		for (j=1; j<8; j++) {
 			cmd = g_ascii_strtoll (tok[j], NULL, 16);
@@ -286,6 +286,7 @@ main (gint argc, gchar *argv[])
 	}
 	kind = cd_sensor_kind_from_string (argv[1]);
 	if (kind != CD_SENSOR_KIND_HUEY &&
+	    kind != CD_SENSOR_KIND_DTP94 &&
 	    kind != CD_SENSOR_KIND_COLOR_MUNKI_PHOTO) {
 		g_print ("only huey and colormunki device kinds supported\n");
 		goto out;

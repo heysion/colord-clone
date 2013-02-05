@@ -60,14 +60,6 @@ DIST_COMMON = $(dist_introspection_DATA) $(libcolord_include_HEADERS) \
 	$(top_srcdir)/depcomp
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/as-linguas.m4 \
-	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/gtk-doc.m4 \
-	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/intlmacosx.m4 \
-	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/lib-ld.m4 \
-	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
-	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
-	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
-	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/nls.m4 \
-	$(top_srcdir)/m4/po.m4 $(top_srcdir)/m4/progtest.m4 \
 	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
@@ -312,6 +304,8 @@ POLKIT_CFLAGS = @POLKIT_CFLAGS@
 POLKIT_LIBS = @POLKIT_LIBS@
 POSUB = @POSUB@
 RANLIB = @RANLIB@
+SANE_CFLAGS = @SANE_CFLAGS@
+SANE_LIBS = @SANE_LIBS@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -394,7 +388,9 @@ AM_CPPFLAGS = \
 	$(GNOME_DESKTOP_CFLAGS)				\
 	$(LCMS_CFLAGS)					\
 	-I$(top_srcdir)/client				\
-	-I$(top_srcdir)/libcolord			\
+	-I$(top_srcdir)/lib				\
+	-I$(top_builddir)/lib				\
+	-I$(top_srcdir)/lib/colord			\
 	-I$(top_srcdir)/src				\
 	-DCD_COMPILATION				\
 	-DCD_DISABLE_DEPRECATED				\
@@ -407,7 +403,7 @@ AM_CPPFLAGS = \
 	-DVERSION="\"$(VERSION)\""
 
 COLORD_LIBS = \
-	$(top_builddir)/libcolord/libcolord.la
+	$(top_builddir)/lib/colord/libcolord.la
 
 libcolord_includedir = $(includedir)/colord-1/colord-session
 libcolord_include_HEADERS = \
@@ -451,7 +447,7 @@ dbusservicemain_DATA = $(dbusservicemain_in_files:.service.in=.service)
 gsettings_schemas_in_files = org.freedesktop.ColorHelper.gschema.xml.in
 gsettings_SCHEMAS = $(gsettings_schemas_in_files:.gschema.xml.in=.gschema.xml)
 EXTRA_DIST = \
-	$(gsettings_SCHEMAS)				\
+	$(gsettings_schemas_in_files)			\
 	$(dbusservicemain_in_files)
 
 DISTCLEANFILES = \

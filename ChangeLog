@@ -1,6 +1,1076 @@
+commit bde402bebd26a8cfea76cc5d5ff0e3f04edc06a0
+Author: Richard Hughes <richard@hughsie.com>
+Date:   2013-02-04
+
+    Release colord 0.1.29
+
+M	NEWS
+M	doc/website/download.html
+M	po/bg.po
+M	po/cs.po
+M	po/de.po
+M	po/el.po
+M	po/en_GB.po
+M	po/eo.po
+M	po/es.po
+M	po/eu.po
+M	po/fa.po
+M	po/fi.po
+M	po/fr.po
+M	po/ga.po
+M	po/gl.po
+M	po/he.po
+M	po/hr.po
+M	po/hu.po
+M	po/ia.po
+M	po/id.po
+M	po/it.po
+M	po/ja.po
+M	po/ka.po
+M	po/kk.po
+M	po/ko.po
+M	po/lt.po
+M	po/lv.po
+M	po/nl.po
+M	po/pl.po
+M	po/pt_BR.po
+M	po/ro.po
+M	po/ru.po
+M	po/sk.po
+M	po/sl.po
+M	po/sq.po
+M	po/sr.po
+M	po/sv.po
+M	po/te.po
+M	po/tr.po
+M	po/uk.po
+M	po/zh_CN.po
+M	po/zh_HK.po
+M	po/zh_TW.po
+
+commit 2aee2757279fb893efd97ad8eca316f3330921dd
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-04
+
+    trivial: Remove cd_mapping_db_update_timestamp() as it's not required
+
+M	src/cd-device.c
+M	src/cd-mapping-db.c
+M	src/cd-mapping-db.h
+M	src/cd-self-test.c
+
+commit 57a481945b96f635ad31511a040f20088d552496
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-04
+
+    Install libmunki for access to the ColorMunki Photo hardware
+
+    Note, this hardware does not work yet, and driver support is WIP.
+
+M	configure.ac
+M	lib/Makefile.am
+A	lib/munki/Makefile.am
+R053	src/sensors/cd-sensor-munki-private.c	lib/munki/munki-enum.c
+R059	src/sensors/cd-sensor-munki-private.h	lib/munki/munki-enum.h
+A	lib/munki/munki.h
+M	src/sensors/Makefile.am
+M	src/sensors/cd-huey-parse.c
+M	src/sensors/cd-parse-beagle.c
+M	src/sensors/cd-sensor-munki.c
+
+commit 14be1ba7ad2a052b07de074e842ed4a4e99e24c9
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-04
+
+    trivial: Fix up a few warnings from clang
+
+M	client/cd-util.c
+M	lib/colorhug/ch-device-queue.c
+M	lib/colorhug/ch-device.c
+M	lib/dtp94/dtp94-device.c
+M	lib/huey/huey-ctx.c
+M	lib/huey/huey-device.c
+
+commit 64686e7576df6fd54e51c04a43fdeff8b5dd0ccc
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-04
+
+    trivial: Fix g-ir-scanner harder, hopefully fixing ostree
+
+M	lib/colorhug/Makefile.am
+
+commit 221919b409e4164aaa0a586521d2f39eaa1228c1
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-04
+
+    trivial: Fix up the coverity script now we have lib/
+
+M	Makefile.am
+
+commit 6e50abe65249f67b0245a0d53b31406f1def201c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-04
+
+    trivial: fix 'make distcheck' by including the gschema in the
+    tarball correctly
+
+M	contrib/session-helper/Makefile.am
+
+commit 38d948c4ff1c2e9e421704342620bf6eedd085ca
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-04
+
+    trivial: Fix GIR build when colord is not locally installed
+
+M	lib/colorhug/Makefile.am
+
+commit 88adefa5cb9e2586e47cd6e0a4867b3a35b36777
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-04
+
+    trivial: Show some debugging if loading the native sensor failed
+
+M	src/cd-sensor.c
+
+commit 75683f883ee12b7376b510bd6ec096e7608844bc
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-04
+
+    Move libcolorhug from colorhug-client for access to the ColorHug
+    colorimeter
+
+    It's crazy duplicating all the client code across three projects.
+
+M	configure.ac
+M	contrib/colord.spec.in
+M	lib/Makefile.am
+A	lib/colorhug/Makefile.am
+A	lib/colorhug/ch-common.c
+R090	src/sensors/cd-sensor-colorhug-private.h
+lib/colorhug/ch-common.h
+A	lib/colorhug/ch-device-queue.c
+A	lib/colorhug/ch-device-queue.h
+R056	src/sensors/cd-sensor-colorhug-private.c
+lib/colorhug/ch-device.c
+A	lib/colorhug/ch-device.h
+A	lib/colorhug/ch-hash.c
+A	lib/colorhug/ch-hash.h
+A	lib/colorhug/ch-inhx32.c
+A	lib/colorhug/ch-inhx32.h
+A	lib/colorhug/ch-math.c
+A	lib/colorhug/ch-math.h
+A	lib/colorhug/ch-self-test.c
+A	lib/colorhug/ch-version.h.in
+A	lib/colorhug/colorhug.h
+A	lib/colorhug/colorhug.pc.in
+M	src/sensors/Makefile.am
+M	src/sensors/cd-sensor-colorhug.c
+
+commit 4d015f037682bc323169efd98f8a803e75fea0f4
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-04
+
+    Install libhuey for access to the Huey colorimeter
+
+M	configure.ac
+A	lib/huey/Makefile.am
+A	lib/huey/huey-ctx.c
+A	lib/huey/huey-ctx.h
+A	lib/huey/huey-device.c
+A	lib/huey/huey-device.h
+A	lib/huey/huey-enum.c
+R072	src/sensors/cd-sensor-huey-private.h	lib/huey/huey-enum.h
+A	lib/huey/huey.h
+M	src/sensors/Makefile.am
+M	src/sensors/cd-huey-parse.c
+M	src/sensors/cd-parse-beagle.c
+D	src/sensors/cd-sensor-huey-private.c
+M	src/sensors/cd-sensor-huey.c
+
+commit 3191f1c86cb06e1d61478e4cf63fc2db6bbfd874
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-04
+
+    Install libdtp94 for access to the DTP94 colorimeter
+
+M	configure.ac
+M	lib/Makefile.am
+A	lib/dtp94/Makefile.am
+A	lib/dtp94/dtp94-device.c
+A	lib/dtp94/dtp94-device.h
+R057	src/sensors/cd-sensor-dtp94-private.c	lib/dtp94/dtp94-enum.c
+A	lib/dtp94/dtp94-enum.h
+A	lib/dtp94/dtp94.h
+M	src/sensors/Makefile.am
+D	src/sensors/cd-sensor-dtp94-private.h
+M	src/sensors/cd-sensor-dtp94.c
+
+commit 8510ed6e12ad21670e6b9b8253315f9c6a2dda4c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-04
+
+    trivial: Don't include <colord/colord-private.h> as it's installed
+    in the parent directory
+
+M	client/Makefile.am
+M	client/cd-common.c
+M	client/cd-create-profile.c
+M	contrib/session-helper/Makefile.am
+M	contrib/session-helper/cd-example.c
+M	src/Makefile.am
+M	src/cd-common.h
+M	src/cd-plugin.h
+M	src/cd-sensor.c
+M	src/cd-sensor.h
+M	src/plugins/Makefile.am
+M	src/sensors/Makefile.am
+M	src/sensors/cd-huey-dump-values.c
+M	src/sensors/cd-sensor-huey.c
+
+commit 693da1d865863e6f6f68cbc229b62cbb75e8923d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-04
+
+    trivial: Fix non-srcdir building, to hopefully fix the ostree build
+
+M	client/Makefile.am
+M	contrib/colord-sane/Makefile.am
+M	contrib/session-helper/Makefile.am
+M	src/Makefile.am
+M	src/plugins/Makefile.am
+M	src/sensors/Makefile.am
+
+commit 5e3ab92c082d84d75e9299f8e9e6e288dcd5711e
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-04
+
+    Fix building with --enable-sane after the library move
+
+M	contrib/colord-sane/cd-main.c
+
+commit 2700bfe95b4a22340071f7bb2d2c27089a1b514b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-04
+
+    Move libcolord into lib/colord in the project to avoid path crazyness
+
+M	Makefile.am
+M	client/Makefile.am
+M	client/cd-common.c
+M	client/cd-create-profile.c
+M	client/cd-fix-profile.c
+M	client/cd-util.c
+M	configure.ac
+M	contrib/colord-sane/Makefile.am
+M	contrib/session-helper/Makefile.am
+M	contrib/session-helper/cd-example.c
+M	contrib/session-helper/cd-main.c
+M	doc/api/Makefile.am
+A	lib/Makefile.am
+R100	libcolord/.valgrind-suppressions
+lib/colord/.valgrind-suppressions
+R099	libcolord/Makefile.am	lib/colord/Makefile.am
+R100	libcolord/cd-buffer.c	lib/colord/cd-buffer.c
+R100	libcolord/cd-buffer.h	lib/colord/cd-buffer.h
+R100	libcolord/cd-client-sync.c	lib/colord/cd-client-sync.c
+R100	libcolord/cd-client-sync.h	lib/colord/cd-client-sync.h
+R100	libcolord/cd-client.c	lib/colord/cd-client.c
+R100	libcolord/cd-client.h	lib/colord/cd-client.h
+R100	libcolord/cd-color.c	lib/colord/cd-color.c
+R100	libcolord/cd-color.h	lib/colord/cd-color.h
+R100	libcolord/cd-deprecated.c	lib/colord/cd-deprecated.c
+R100	libcolord/cd-deprecated.h	lib/colord/cd-deprecated.h
+R100	libcolord/cd-device-sync.c	lib/colord/cd-device-sync.c
+R100	libcolord/cd-device-sync.h	lib/colord/cd-device-sync.h
+R100	libcolord/cd-device.c	lib/colord/cd-device.c
+R100	libcolord/cd-device.h	lib/colord/cd-device.h
+R100	libcolord/cd-enum.c	lib/colord/cd-enum.c
+R100	libcolord/cd-enum.h	lib/colord/cd-enum.h
+R100	libcolord/cd-it8-utils.c	lib/colord/cd-it8-utils.c
+R100	libcolord/cd-it8-utils.h	lib/colord/cd-it8-utils.h
+R100	libcolord/cd-it8.c	lib/colord/cd-it8.c
+R100	libcolord/cd-it8.h	lib/colord/cd-it8.h
+R100	libcolord/cd-math.c	lib/colord/cd-math.c
+R100	libcolord/cd-math.h	lib/colord/cd-math.h
+R100	libcolord/cd-profile-sync.c	lib/colord/cd-profile-sync.c
+R100	libcolord/cd-profile-sync.h	lib/colord/cd-profile-sync.h
+R100	libcolord/cd-profile.c	lib/colord/cd-profile.c
+R100	libcolord/cd-profile.h	lib/colord/cd-profile.h
+R100	libcolord/cd-self-test.c	lib/colord/cd-self-test.c
+R100	libcolord/cd-sensor-sync.c	lib/colord/cd-sensor-sync.c
+R100	libcolord/cd-sensor-sync.h	lib/colord/cd-sensor-sync.h
+R100	libcolord/cd-sensor.c	lib/colord/cd-sensor.c
+R100	libcolord/cd-sensor.h	lib/colord/cd-sensor.h
+R100	libcolord/cd-version.h.in	lib/colord/cd-version.h.in
+R097	libcolord/colord-private.h	lib/colord/colord-private.h
+R100	libcolord/colord.h	lib/colord/colord.h
+R100	libcolord/colord.pc.in	lib/colord/colord.pc.in
+M	src/Makefile.am
+M	src/cd-common.h
+M	src/cd-plugin.h
+M	src/cd-sensor.c
+M	src/cd-sensor.h
+M	src/plugins/Makefile.am
+M	src/sensors/Makefile.am
+M	src/sensors/cd-huey-dump-values.c
+M	src/sensors/cd-sensor-huey.c
+
+commit 695cfe06c06fe6785dc52f481871e71e77d0ec3d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-04
+
+    Ensure we can set the timestamp to zero when clearing a mapping
+    database entry
+
+    This is the same bug we had with the device database. As we had
+    no suitable
+    primary key, any 'INSERT OR REPLACE' operation would create additional
+    entries
+    in the database, which would not be matched.
+
+    To mitigate this, create a suitable mapping table, and migrate all
+    the users
+    data. Also include quite a few self tests, to ensure we do this
+    correctly.
+
+M	src/cd-mapping-db.c
+M	src/cd-self-test.c
+
+commit 53cb0b8b3a846676ff36dc81f879aa68a7774c4a
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-04
+
+    Do not auto-add profiles to devices where the mapping timestamp
+    is zero
+
+M	src/cd-main.c
+
+commit 8e2d61d4b05229e094da382f78c346cf39401443
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-04
+
+    Detect standard spaces from adobe.com and color.org and add the
+    required metadata
+
+    Also, increase the score given to the profiles to ensure that they
+    are selected
+    before colord-generated versions.
+
+M	src/cd-profile.c
+
+commit 4052d9ae3b435b658caa85214aa3c911e4e69a8d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-04
+
+    Allow profiles to have a 'score' which affects which get chosen as
+    a specific standard space
+
+    Like before, prefer system profiles over user profiles.
+
+M	src/cd-main.c
+M	src/cd-profile.c
+M	src/cd-profile.h
+M	src/cd-self-test.c
+
+commit 8476dfd9cf6fa7212bacec67d161a6f47b6bfe9b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-04
+
+    trivial: Allow profiles to easily create additional metadata
+
+M	src/cd-profile.c
+
+commit f600782c859ca2c56eb3a86a7d5ca29ed6a88b8f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-04
+
+    trivial: fix make check
+
+M	src/sensors/Makefile.am
+
+commit 02dab74945ebef306d590e476b794397c1d24c1a
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-04
+
+    trivial: Move CdIt8 to libcolordprivate.so so it can be used in
+    the daemon
+
+M	libcolord/Makefile.am
+
+commit be00003057611ccecbfdae18fd16a878ad642347
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-03
+
+    Change the Adobe RGB description to be 'Compatible with Adobe RGB
+    (1998)' for any trademark concern
+
+M	data/profiles/Makefile.am
+
+commit 882da43d7a427b049e0f9f135c77edf0ab511720
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-03
+
+    trivial: Add a command cd_buffer_debug for use in sensor drivers
+
+M	libcolord/cd-buffer.c
+M	libcolord/cd-buffer.h
+
+commit 9fb83d3f244e2e53fc36264da587fc0e6424798d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-03
+
+    Include cd-buffer.c in libcolordprivate for future use
+
+M	libcolord/Makefile.am
+R086	src/sensors/cd-buffer.c libcolord/cd-buffer.c
+R061	src/sensors/cd-buffer.h libcolord/cd-buffer.h
+M	libcolord/cd-self-test.c
+M	libcolord/colord.h
+M	src/sensors/Makefile.am
+D	src/sensors/cd-self-test.c
+
+commit 02df111f67d4eb426583d1b69c251fc9138f1adf
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-03
+
+    Include -lcolordprivate in the colord pkg-config file
+
+    This prevents linking errors in projects that use libcolord.
+
+M	configure.ac
+M	libcolord/colord.pc.in
+
+commit afc03a095bfd62f527b455f5170f90a15e94da12
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-02
+
+    Split the libcolord.so into libcolordprivate.so so it can be used
+    without a GObject dep
+
+M	contrib/colord.spec.in
+M	libcolord/Makefile.am
+M	src/Makefile.am
+
+commit 6ffe2f6aae4bdc8331cab1fd9379ed8aef759749
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-01
+
+    trivial: Do proper error checking when using sd_pid_get_session()
+    and sd_session_get_seat()
+
+M	src/cd-main.c
+
+commit c1d564a6714d8265712e60d07b5d84086537c195
+Author: Christopher James Halse Rogers <raof@ubuntu.com>
+Date:	2013-02-01
+
+    Reintroduce SANE support
+
+    SANE is unsuitable for applications which want to poll scanners,
+    as it leaks
+    resources on each poll.
+
+    Work around this by reintroducing a colord-sane helper that querys
+    SANE, updates
+    the colord device db, then quits, and a plugin to spawn the helper
+    at appropriate
+    times.
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	Makefile.am
+M	configure.ac
+M	contrib/Makefile.am
+A	contrib/colord-sane/Makefile.am
+A	contrib/colord-sane/cd-main.c
+M	contrib/colord.spec.in
+M	etc/colord.conf.in
+M	src/plugins/Makefile.am
+A	src/plugins/cd-plugin-sane.c
+M	src/plugins/cd-plugin-scanner.c
+
+commit fb5946d3a0dd9641c63afd01908f347de90695e9
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-01
+
+    Set the additional 'OwnerCmdline' metadata on each device
+
+M	doc/metadata-spec.txt
+M	libcolord/cd-enum.h
+M	src/cd-main.c
+
+commit 8266717ef2ad2e6ebd254bb3b9552d400374a64f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-01
+
+    Allow the user to specify the device type when using 'colormgr
+    create-device'
+
+M	client/cd-util.c
+M	src/cd-main.c
+
+commit 006884043965f569d5fc299a561d538c10a178f0
+Author: Christopher James Halse Rogers <raof@ubuntu.com>
+Date:	2013-02-01
+
+    Add an interface for plugins to decline to load
+
+    This allows plugins to determine whether they should be loaded based
+    on the colord config.
+
+    Re-introducing the SANE plugin wants this, as the scanner and
+    sane plugins
+    should be mutually exclusive.
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	src/cd-main.c
+M	src/cd-plugin.h
+
+commit 719fd600782696db931c4f7cadca873665e4df55
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-01
+
+    Do not make the libsystemd-login dep automatic
+
+M	configure.ac
+M	libcolord/cd-self-test.c
+
+commit 6f1e395b60cd3737754ca5d23f28eaeb533662b8
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-01
+
+    trivial: Fix up compile warning introduced with
+    9b0e28776d7b43202c7a83997a079142a56c26ae
+
+M	libcolord/cd-self-test.c
+
+commit c3e7b29c50d68b3370a482b928592cd101bc22cf
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-01
+
+    Add convenience function cd_sensor_open_usb_device() for native
+    sensors
+
+    The sensors are all doing pretty much the same thing, so provide a
+    helper for
+    them to use.
+
+M	src/Makefile.am
+M	src/cd-sensor.c
+M	src/cd-sensor.h
+M	src/sensors/cd-sensor-colorhug.c
+M	src/sensors/cd-sensor-dtp94.c
+M	src/sensors/cd-sensor-huey.c
+M	src/sensors/cd-sensor-munki.c
+
+commit b1e015ee13b8abf3046a6d5fce6dcbe28ce2a2c1
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-01
+
+    Add the ability to get the GUdevDevice of the sensor
+
+M	src/cd-sensor.c
+M	src/cd-sensor.h
+
+commit 4b349257b7a3c087a716a7e1152960838bbc6215
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-31
+
+    Add some DTP94 error constants
+
+    These are taken from ArgyllCMS 0.60 which was downloaded from:
+    http://www.sourcefiles.org/Utilities/Miscellaneous/argyllV0.60_src.zip
+
+    This was done as newer versions of ArgyllCMS were re-licenced from
+    GPLv2+ to
+    AGPLv3 which is incompatible with colord.
+
+M	src/sensors/Makefile.am
+A	src/sensors/cd-sensor-dtp94-private.c
+A	src/sensors/cd-sensor-dtp94-private.h
+M	src/sensors/cd-sensor-dtp94.c
+M	src/sensors/cd-sensor-dtp94.h
+
+commit ccc20812cf24aa9b7a584734b4762c6816d153de
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-01
+
+    Allow sensors to add capabilites after being locked
+
+M	src/cd-sensor.c
+M	src/cd-sensor.h
+
+commit 59c7d02d22693863f0079c97f6c650fbfdfe7fc6
+Author: Christopher James Halse Rogers <raof@ubuntu.com>
+Date:	2013-02-01
+
+    Make libcolord/device_async test pass everywhere
+
+    Rather than only when run by a user with uid 1000 and username
+    ‘hughsie’.
+    ‘make check’ now runs on systems which aren't Hugsie's!
+
+M	libcolord/cd-self-test.c
+
+commit 9b0e28776d7b43202c7a83997a079142a56c26ae
+Author: Christopher James Halse Rogers <raof@ubuntu.com>
+Date:	2013-02-01
+
+    Fix timezone problem in colord_client_random_func test
+
+    colord interprets the “created time” metadata in a profile in
+    the current
+    timezone, which is entirely reasonable. This means that the created
+    time
+    in seconds-since-the-epoch-in-UTC will differ depending on the
+    timezone
+    though, so we need to calculate the calendar time to compare in
+    the test
+    rather than hardcoding it.
+
+    Prevents ‘make check’ from failing when the timezone is not
+    equal to UTC
+
+M	libcolord/cd-self-test.c
+
+commit ced8d7c569411abeb847a4e8043e8d793efa88ae
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-31
+
+    Add the 'Plasma' sensor capability
+
+M	client/cd-util.c
+M	libcolord/cd-enum.c
+M	libcolord/cd-enum.h
+M	src/sensors/cd-sensor-argyll.c
+M	src/sensors/cd-sensor-colorhug.c
+M	src/sensors/cd-sensor-dtp94.c
+M	src/sensors/cd-sensor-dummy.c
+M	src/sensors/cd-sensor-huey.c
+
+commit 127a1c8e5d17ef13e5dd143547719d87aaad6849
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-31
+
+    trivial: don't make the translators heads hurt
+
+M	client/cd-util.c
+
+commit f323925cc6bdd0488895e41d94150d4bef8c14b6
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-31
+
+    Add some simple bitfield helpers
+
+M	client/cd-util.c
+M	libcolord/cd-enum.c
+M	libcolord/cd-enum.h
+M	src/cd-sensor.c
+M	src/sensors/cd-sensor-colorhug.c
+M	src/sensors/cd-sensor-dtp94.c
+M	src/sensors/cd-sensor-dummy.c
+M	src/sensors/cd-sensor-huey.c
+
+commit acf7b99f53a8814a065b4e217c22a9d318e2858b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-31
+
+    trivial: Do not use COLORD_SENSOR, it's faster to just check
+    COLORD_SENSOR_KIND
+
+M	rules/69-cd-sensors.rules.in
+M	src/cd-sensor-client.c
+
+commit 587ece804b5f7b9aa9129592773a746a2a240a78
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-31
+
+    trivial: Do not overwrite the udev caps when using an argyllcms sensor
+
+M	src/sensors/cd-sensor-argyll.c
+
+commit 0322ea45205ed66babb0409df338d9a7f2ee1392
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-31
+
+    Specify the sensor caps in the code for native sensors
+
+M	rules/69-cd-sensors.rules.in
+M	src/sensors/cd-sensor-argyll.c
+M	src/sensors/cd-sensor-colorhug.c
+M	src/sensors/cd-sensor-dtp94.c
+M	src/sensors/cd-sensor-huey.c
+M	src/sensors/cd-sensor-munki.c
+
+commit b4ae95c65584052a6c27aaf6cbfde9ec185d1c8a
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-31
+
+    Store the sensor capabilities internally as a bitfield
+
+    This will allow us to add to them at runtime in the future.
+
+M	src/cd-sensor.c
+M	src/sensors/cd-sensor-argyll.c
+M	src/sensors/cd-sensor-dummy.c
+
+commit 9a869efa6930fb5148829ec96047aadf4df05ce6
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-31
+
+    Show all the possible capabilities on one line when doing 'colormgr
+    get-sensors'
+
+    Also, make the caps translated and add quite long translator comments.
+
+M	client/cd-util.c
+
+commit 3d5158514b6736971db40b57ec303a93518a288e
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-30
+
+    Use a common function between sensors for printing raw
+    response/request data
+
+M	src/cd-sensor.c
+M	src/cd-sensor.h
+M	src/sensors/cd-sensor-dtp94.c
+M	src/sensors/cd-sensor-huey.c
+M	src/sensors/cd-sensor-munki.c
+
+commit 9cca250702bb3a16684f16cce858e522d76b468c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-30
+
+    Add DTP94 native sensor support
+
+    The DTP94 is actually a really simple sensor. We don't know all
+    the commands,
+    but it's trivial to capture the output using USB capture hardware
+    when the
+    sensor is being used by ArgyllCMS. By replaying them we get back an
+    XYZ reading.
+
+    We don't know what most of the commands actually do, but at least
+    it works.
+
+A	doc/devices/dtp94/beagle-lcd-white-black.csv
+A	doc/devices/dtp94/lsusb-vvv
+A	doc/devices/dtp94/spotread-crt.txt
+A	doc/devices/dtp94/spotread-lcd.txt
+M	src/sensors/Makefile.am
+M	src/sensors/cd-parse-beagle.c
+A	src/sensors/cd-sensor-dtp94.c
+A	src/sensors/cd-sensor-dtp94.h
+M	src/sensors/cd-sensor-dump.c
+
+commit 54db59e3a34a9c0806f3d59ec81805244a761f9f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-30
+
+    trivial: Allow the test programs to lock the correct sensor
+
+    To have cd_sensor_lock_async() in scope, we had resorted to linking
+    in a
+    specific sensor driver. This doesn't work for anything other than
+    the linked in
+    sensor, so the correct thing to do is provide some hooks to call
+    the vfuncs.
+
+M	src/cd-sensor.c
+M	src/cd-sensor.h
+M	src/sensors/Makefile.am
+M	src/sensors/cd-sensor-dump.c
+
+commit a5f96a3cf350c6701ab3c5e9f0b62377ba6cab98
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-28
+
+    Do not include the size of the NULL byte when writing data from
+    CCMX files
+
+M	libcolord/cd-it8.c
+M	libcolord/cd-self-test.c
+
+commit 8abb71fdf9acf1dc9db8ee95a0743f5a16420c9b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-28
+
+    Write the CdIt8 'CREATED' date string in all files
+
+    Note, this is some crazy date format used by ArgyllCMS.
+
+M	libcolord/cd-it8.c
+
+commit 6bd6494c88ac6405e9f72872c9e7ecbc8edc448c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-28
+
+    trivial: Ensure all the sensor metadata is stored correctly
+
+M	src/cd-sensor.c
+
+commit a6e012dda976a2998e0831f1810df07288037686
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-27
+
+    trivial: Include a better translation comment for 'Seat'
+
+M	client/cd-util.c
+
+commit 6a8690639aa70f9a9e493f69c7b0e2d459229e60
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-25
+
+    Merge COLORD_SENSOR_CAP_* into COLORD_SENSOR_CAPS to make the udev
+    rules shorter
+
+    This also allows us to split the caps in the future if we decide
+    this is a good idea.
+
+M	rules/69-cd-sensors.rules.in
+M	src/cd-sensor.c
+
+commit 71f27529212f6db6cdc794edc8167caeab99d189
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-24
+
+    trivial: Fix a *tiny* memory leak when saving ti1 and ti3 files
+
+M	libcolord/cd-it8.c
+
+commit 38af49b9c3d2aa387f14470cee83a690859e1b46
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-24
+
+    Return an error if a client tries to create a device of an unknown
+    type
+
+    Also return an error if the client does not specify a type.
+    This has a side effect of setting the device type _before_ the
+    other metadata
+    which allows us to fix the vendor and model strings based on the
+    device kind.
+
+M	libcolord/cd-self-test.c
+M	src/cd-device-array.c
+M	src/cd-device-array.h
+M	src/cd-device.c
+M	src/cd-device.h
+M	src/cd-main.c
+
+commit 4789d704e5abbfbd9793c1c3b289c6edfe059db9
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-24
+
+    Add a --version argument to colormgr
+
+M	client/cd-util.c
+
+commit 3c19a60378e8bff959c783e7a95e239be34ddcd8
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-24
+
+    Add a --verbose argument to colormgr
+
+M	client/cd-util.c
+
+commit d69d7cdd8e45fbc6ffa74f06c8787375cddacf9a
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-23
+
+    Do not auto-add profiles due to device-id metadata if they have been
+    manually removed by the user
+
+    If the user has manually removed the profile from the device, we
+    should not keep
+    adding it at every fresh boot.
+
+    So we know this, set the timestamp to zero in the mapping database
+    when the
+    profile is removed, and check for this value when soft-adding the
+    profiles to a
+    device.
+
+    Also make a few more adjustments so that we ignore any mappings with
+    a timestamp
+    of zero and add a self test for this functionality.
+
+M	libcolord/cd-self-test.c
+M	src/cd-device.c
+M	src/cd-main.c
+M	src/cd-mapping-db.c
+M	src/cd-mapping-db.h
+M	src/cd-self-test.c
+M	src/org.freedesktop.ColorManager.Device.xml
+
+commit 91a28b321370cc7c252458506f175e2275d932f2
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-23
+
+    trivial: Set an error if cd_mapping_db_get_timestamp() returned
+    no value
+
+M	src/cd-mapping-db.c
+
+commit f25f3da1de3fc9eb7e52ba7725d51f605df2f4ba
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-23
+
+    trivial: Use a random device-id when testing the mapping p->d
+    functionality
+
+M	libcolord/cd-self-test.c
+
+commit 8289f3286e99c6b8169dfc8783c550b4ebc96e4d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-23
+
+    Do not log a critical warning if the daemon is replaced at runtime
+
+M	src/cd-main.c
+
+commit 21e59f0f2f6b95b5560c705013416909e46aee68
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-23
+
+    session-helper: Return extra data from the calibration in the
+    Finished signal
+
+    This breaks D-Bus API for the client helper, although we're not API
+    stable yet
+    and the only consumer is gnome-control-center.
+
+M	contrib/session-helper/cd-example.c
+M	contrib/session-helper/cd-main.c
+M	contrib/session-helper/org.freedesktop.ColorHelper.xml
+
+commit 5f37916c67b1ae641b1b048ba5a4208e10d06702
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-23
+
+    session-helper: Return the correct sensor images when calibrating
+
+M	contrib/session-helper/cd-main.c
+
+commit 01dd14eb1bd8d5ae0532b3050fc00195ff820fd6
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-23
+
+    Don't emit a warning if the profile warnings or owner changes
+
+M	libcolord/cd-profile.c
+
+commit 33fac5dcce33e313bf5d79025971493dbc2bba90
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-23
+
+    Do not return an error if a user manually adds a profile that has
+    already been automatically added
+
+    This can happen if a calibration program creates a profile with
+    an embedded
+    device-id which is then imported. The daemon automatically soft-adds
+    the profile
+    to the device, and the calibration program or the user may then
+    choose to hard
+    add the profile so that it is able to be set default.
+
+M	src/cd-device.c
+M	src/cd-self-test.c
+
+commit 1b9b67eac8c37d4df2554bee501c3f453717f774
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-23
+
+    trivial: Fix gtk-doc function comment
+
+M	src/cd-device.c
+
+commit e04af288c349a9e5df72e90292fbcb5861252a74
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-23
+
+    trivial: Fix a documentation typo
+
+M	contrib/session-helper/org.freedesktop.ColorHelper.xml
+
+commit 81f0547b683791e267928ec79f1cd5116ad6975f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-21
+
+    trivial: Remove some dead code
+
+M	src/org.freedesktop.ColorManager.xml
+
+commit a1eea4ec506182e66ef560ef2d91a03982316e7b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-18
+
+    trivial: Add some 'Since:' tags to CdColor in libcolord
+
+M	libcolord/cd-color.c
+
+commit 7061352de37375e189d63057184b049cac39cc34
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-18
+
+    trivial: Be more efficient when adding devices to only match the
+    metadata once
+
+    Also rename a few functions to have common suffixes and add another
+    metadata
+    test case.
+
+M	libcolord/cd-self-test.c
+M	src/cd-main.c
+
+commit 842b9ebfd307d632aa1ff902940a4416c0200f0c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-17
+
+    Fix auto-profile assignment when file descriptors are used
+
+    In the case of creating a profile by fd, wait until profiles have
+    been parsed
+    and the metadata set before trying to soft add to a device.
+
+M	src/cd-main.c
+
+commit f91ebd87772b8be221f86a28dd6390a859f040ee
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-17
+
+    Ensure profiles with MAPPING_device_id get auto-added to devices
+
+    This was only working when the device was added before the profile,
+    and this
+    is supposed to work both ways.
+
+M	libcolord/cd-self-test.c
+M	src/cd-main.c
+
+commit a2a524f7033416a5fdbcf21b40fc559c0336d280
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-17
+
+    trivial: Don't show a critical warning if the config file is missing
+
+M	src/cd-main.c
+
+commit 517c79612df490d5596730aa3773cb5c0d4f902f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-01-16
+
+    trivial: post release version bump
+
+M	RELEASE
+M	configure.ac
+
 commit 325cfec903f62e20c8f111ba5b733bb4f21ad3dc
 Author: Richard Hughes <richard@hughsie.com>
-Date:   2013-01-16
+Date:	2013-01-16
 
     Release colord 0.1.28
 

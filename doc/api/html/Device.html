@@ -8,7 +8,7 @@
 <link rel="up" href="ref-dbus.html" title="D-Bus API Reference">
 <link rel="prev" href="ColorManager.html" title="org.freedesktop.ColorManager">
 <link rel="next" href="Profile.html" title="org.freedesktop.ColorManager.Profile">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -59,12 +59,12 @@ out's'relation)
 </pre>
 </div>
 <div class="refsect1">
-<a name="idp2324368"></a><h2>Signals</h2>
+<a name="idp9342192"></a><h2>Signals</h2>
 <pre class="synopsis"><a class="link" href="Device.html#Device::Changed">Changed</a>()
 </pre>
 </div>
 <div class="refsect1">
-<a name="idp9057184"></a><h2>Implemented Interfaces</h2>
+<a name="idp5858352"></a><h2>Implemented Interfaces</h2>
 <p>
     Objects implementing org.freedesktop.ColorManager.Device also implements
     org.freedesktop.DBus.Introspectable,
@@ -72,7 +72,7 @@ out's'relation)
     </p>
 </div>
 <div class="refsect1">
-<a name="idp4963952"></a><h2>Properties</h2>
+<a name="idp8303248"></a><h2>Properties</h2>
 <pre class="synopsis"><a class="link" href="Device.html#Device:Created">'Created'</a>read't'
 <a class="link" href="Device.html#Device:Modified">'Modified'</a>read't'
 <a class="link" href="Device.html#Device:Model">'Model'</a>read's'
@@ -94,7 +94,7 @@ out's'relation)
 </pre>
 </div>
 <div class="refsect1">
-<a name="idp4779136"></a><h2>Description</h2>
+<a name="idp7886384"></a><h2>Description</h2>
 <p>
       
         </p>
@@ -106,9 +106,9 @@ out's'relation)
     </p>
 </div>
 <div class="refsect1">
-<a name="idp4781552"></a><h2>Details</h2>
+<a name="idp7034608"></a><h2>Details</h2>
 <div class="refsect2">
-<a name="idp4782512"></a><h3>
+<a name="idp7035568"></a><h3>
 <a name="Device.SetProperty"></a>SetProperty ()</h3>
 <pre class="programlisting">SetProperty (in's'property_name,
 in's'property_value)</pre>
@@ -142,7 +142,7 @@ in's'property_value)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idp8648320"></a><h3>
+<a name="idp7897792"></a><h3>
 <a name="Device.AddProfile"></a>AddProfile ()</h3>
 <pre class="programlisting">AddProfile (in's'relation,
 in'o'object_path)</pre>
@@ -199,7 +199,7 @@ in'o'object_path)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idp7525168"></a><h3>
+<a name="idp7910704"></a><h3>
 <a name="Device.RemoveProfile"></a>RemoveProfile ()</h3>
 <pre class="programlisting">RemoveProfile (in'o'object_path)</pre>
 </div>
@@ -211,6 +211,14 @@ in'o'object_path)</pre>
             a persistent datadase, so that if the device and profile
             happen to both exist in the future, the profiles are
             no longer auto-added to the device.
+          </p>
+<p>
+            If the profile was automatically added due to metadata in
+            the profile (e.g. the profile was created for the device)
+            then manually removing the profile will cause this metadata
+            add to be supressed.
+            This allows the user to remove old or obsolete profiles
+            from any color control panel without having to delete them.
           </p>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
@@ -228,7 +236,7 @@ in'o'object_path)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idp7531328"></a><h3>
+<a name="idp6121008"></a><h3>
 <a name="Device.MakeProfileDefault"></a>MakeProfileDefault ()</h3>
 <pre class="programlisting">MakeProfileDefault (in'o'profile_path)</pre>
 </div>
@@ -251,7 +259,7 @@ in'o'object_path)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idp7536816"></a><h3>
+<a name="idp6126496"></a><h3>
 <a name="Device.GetProfileForQualifiers"></a>GetProfileForQualifiers ()</h3>
 <pre class="programlisting">GetProfileForQualifiers (in'as'qualifiers,
 out'o'object_path)</pre>
@@ -290,7 +298,7 @@ out'o'object_path)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idp7868640"></a><h3>
+<a name="idp6135888"></a><h3>
 <a name="Device.GetProfileRelation"></a>GetProfileRelation ()</h3>
 <pre class="programlisting">GetProfileRelation (in'o'object_path,
 out's'relation)</pre>
@@ -325,7 +333,7 @@ out's'relation)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idp7876784"></a><h3>
+<a name="idp6144032"></a><h3>
 <a name="Device.ProfilingInhibit"></a>ProfilingInhibit ()</h3>
 <pre class="programlisting">ProfilingInhibit ()</pre>
 </div>
@@ -354,7 +362,7 @@ out's'relation)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idp7883024"></a><h3>
+<a name="idp6150432"></a><h3>
 <a name="Device.ProfilingUninhibit"></a>ProfilingUninhibit ()</h3>
 <pre class="programlisting">ProfilingUninhibit ()</pre>
 </div>
@@ -372,7 +380,7 @@ out's'relation)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idp7886896"></a><h3>
+<a name="idp6154304"></a><h3>
 <a name="Device.SetEnabled"></a>SetEnabled ()</h3>
 <pre class="programlisting">SetEnabled (in'b'enabled)</pre>
 </div>
@@ -395,9 +403,9 @@ out's'relation)</pre>
 </table></div>
 </div>
 <div class="refsect1">
-<a name="idp7892464"></a><h2>Signal Details</h2>
+<a name="idp6159872"></a><h2>Signal Details</h2>
 <div class="refsect2">
-<a name="idp7893424"></a><h3>
+<a name="idp6160832"></a><h3>
 <a name="Device::Changed"></a>The Changed signal</h3>
 <pre class="programlisting">Changed ()</pre>
 </div>
@@ -413,9 +421,9 @@ out's'relation)</pre>
 </table></div>
 </div>
 <div class="refsect1">
-<a name="idp7897216"></a><h2>Property Details</h2>
+<a name="idp6164704"></a><h2>Property Details</h2>
 <div class="refsect2">
-<a name="idp7898176"></a><h3>
+<a name="idp6165664"></a><h3>
 <a name="Device:Created"></a>The "Created" property</h3>
 <pre class="programlisting">'Created'read't'
 </pre>
@@ -432,7 +440,7 @@ out's'relation)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idp7901808"></a><h3>
+<a name="idp6169376"></a><h3>
 <a name="Device:Modified"></a>The "Modified" property</h3>
 <pre class="programlisting">'Modified'read't'
 </pre>
@@ -451,7 +459,7 @@ out's'relation)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idp7905648"></a><h3>
+<a name="idp6173216"></a><h3>
 <a name="Device:Model"></a>The "Model" property</h3>
 <pre class="programlisting">'Model'read's'
 </pre>
@@ -468,7 +476,7 @@ out's'relation)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idp7909280"></a><h3>
+<a name="idp6176848"></a><h3>
 <a name="Device:Serial"></a>The "Serial" property</h3>
 <pre class="programlisting">'Serial'read's'
 </pre>
@@ -485,7 +493,7 @@ out's'relation)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idp7912912"></a><h3>
+<a name="idp6180480"></a><h3>
 <a name="Device:Vendor"></a>The "Vendor" property</h3>
 <pre class="programlisting">'Vendor'read's'
 </pre>
@@ -502,7 +510,7 @@ out's'relation)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idp7916544"></a><h3>
+<a name="idp6184112"></a><h3>
 <a name="Device:Colorspace"></a>The "Colorspace" property</h3>
 <pre class="programlisting">'Colorspace'read's'
 </pre>
@@ -519,7 +527,7 @@ out's'relation)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idp7920912"></a><h3>
+<a name="idp6188560"></a><h3>
 <a name="Device:Kind"></a>The "Kind" property</h3>
 <pre class="programlisting">'Kind'read's'
 </pre>
@@ -538,7 +546,7 @@ out's'relation)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idp7927472"></a><h3>
+<a name="idp6195120"></a><h3>
 <a name="Device:DeviceId"></a>The "DeviceId" property</h3>
 <pre class="programlisting">'DeviceId'read's'
 </pre>
@@ -555,7 +563,7 @@ out's'relation)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idp7931104"></a><h3>
+<a name="idp6198752"></a><h3>
 <a name="Device:Profiles"></a>The "Profiles" property</h3>
 <pre class="programlisting">'Profiles'read'ao'
 </pre>
@@ -575,7 +583,7 @@ out's'relation)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idp7935008"></a><h3>
+<a name="idp6202656"></a><h3>
 <a name="Device:Mode"></a>The "Mode" property</h3>
 <pre class="programlisting">'Mode'read's'
 </pre>
@@ -607,7 +615,7 @@ out's'relation)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idp7942640"></a><h3>
+<a name="idp6210288"></a><h3>
 <a name="Device:Format"></a>The "Format" property</h3>
 <pre class="programlisting">'Format'read's'
 </pre>
@@ -625,7 +633,7 @@ out's'relation)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idp7947008"></a><h3>
+<a name="idp9424144"></a><h3>
 <a name="Device:Scope"></a>The "Scope" property</h3>
 <pre class="programlisting">'Scope'read's'
 </pre>
@@ -643,7 +651,7 @@ out's'relation)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idp7952800"></a><h3>
+<a name="idp9429936"></a><h3>
 <a name="Device:Owner"></a>The "Owner" property</h3>
 <pre class="programlisting">'Owner'read'u'
 </pre>
@@ -660,7 +668,7 @@ out's'relation)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idp7956432"></a><h3>
+<a name="idp9433568"></a><h3>
 <a name="Device:Enabled"></a>The "Enabled" property</h3>
 <pre class="programlisting">'Enabled'read'b'
 </pre>
@@ -684,7 +692,7 @@ out's'relation)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idp8850528"></a><h3>
+<a name="idp9438752"></a><h3>
 <a name="Device:Seat"></a>The "Seat" property</h3>
 <pre class="programlisting">'Seat'read's'
 </pre>
@@ -702,7 +710,7 @@ out's'relation)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idp8854288"></a><h3>
+<a name="idp9442512"></a><h3>
 <a name="Device:Embedded"></a>The "Embedded" property</h3>
 <pre class="programlisting">'Embedded'read'b'
 </pre>
@@ -720,7 +728,7 @@ out's'relation)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idp8858080"></a><h3>
+<a name="idp9446304"></a><h3>
 <a name="Device:Metadata"></a>The "Metadata" property</h3>
 <pre class="programlisting">'Metadata'read'a{ss}'
 </pre>
@@ -738,7 +746,7 @@ out's'relation)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idp8862544"></a><h3>
+<a name="idp9450768"></a><h3>
 <a name="Device:ProfilingInhibitors"></a>The "ProfilingInhibitors" property</h3>
 <pre class="programlisting">'ProfilingInhibitors'read'as'
 </pre>
@@ -758,6 +766,6 @@ out's'relation)</pre>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.18.1</div>
 </body>
 </html>

@@ -301,6 +301,8 @@
     <keyword type="function" name="cd_sensor_get_id ()" link="colord-cd-sensor.html#cd-sensor-get-id" since="0.1.26"/>
     <keyword type="function" name="cd_sensor_get_kind ()" link="colord-cd-sensor.html#cd-sensor-get-kind" since="0.1.6"/>
     <keyword type="function" name="cd_sensor_get_locked ()" link="colord-cd-sensor.html#cd-sensor-get-locked" since="0.1.6"/>
+    <keyword type="function" name="cd_sensor_get_metadata ()" link="colord-cd-sensor.html#cd-sensor-get-metadata" since="0.1.28"/>
+    <keyword type="function" name="cd_sensor_get_metadata_item ()" link="colord-cd-sensor.html#cd-sensor-get-metadata-item" since="0.1.28"/>
     <keyword type="function" name="cd_sensor_get_mode ()" link="colord-cd-sensor.html#cd-sensor-get-mode" since="0.1.6"/>
     <keyword type="function" name="cd_sensor_get_model ()" link="colord-cd-sensor.html#cd-sensor-get-model" since="0.1.6"/>
     <keyword type="function" name="cd_sensor_get_native ()" link="colord-cd-sensor.html#cd-sensor-get-native" since="0.1.6"/>
@@ -438,29 +440,35 @@
     <keyword type="struct" name="CdColorRGB8" link="colord-cd-color.html#CdColorRGB8"/>
     <keyword type="struct" name="CdColorXYZ" link="colord-cd-color.html#CdColorXYZ-struct"/>
     <keyword type="struct" name="CdColorYxy" link="colord-cd-color.html#CdColorYxy-struct"/>
-    <keyword type="function" name="cd_color_get_blackbody_rgb ()" link="colord-cd-color.html#cd-color-get-blackbody-rgb"/>
-    <keyword type="function" name="cd_color_rgb8_to_rgb ()" link="colord-cd-color.html#cd-color-rgb8-to-rgb"/>
-    <keyword type="function" name="cd_color_rgb_copy ()" link="colord-cd-color.html#cd-color-rgb-copy"/>
-    <keyword type="function" name="cd_color_rgb_dup ()" link="colord-cd-color.html#cd-color-rgb-dup"/>
+    <keyword type="function" name="cd_color_get_blackbody_rgb ()" link="colord-cd-color.html#cd-color-get-blackbody-rgb" since="0.1.26"/>
+    <keyword type="function" name="cd_color_rgb8_to_rgb ()" link="colord-cd-color.html#cd-color-rgb8-to-rgb" since="0.1.27"/>
+    <keyword type="function" name="cd_color_rgb_copy ()" link="colord-cd-color.html#cd-color-rgb-copy" since="0.1.27"/>
+    <keyword type="function" name="cd_color_rgb_dup ()" link="colord-cd-color.html#cd-color-rgb-dup" since="0.1.27"/>
     <keyword type="macro" name="cd_color_rgb_free" link="colord-cd-color.html#cd-color-rgb-free"/>
-    <keyword type="function" name="cd_color_rgb_interpolate ()" link="colord-cd-color.html#cd-color-rgb-interpolate"/>
+    <keyword type="function" name="cd_color_rgb_interpolate ()" link="colord-cd-color.html#cd-color-rgb-interpolate" since="0.1.26"/>
     <keyword type="macro" name="cd_color_rgb_new" link="colord-cd-color.html#cd-color-rgb-new"/>
-    <keyword type="function" name="cd_color_rgb_set ()" link="colord-cd-color.html#cd-color-rgb-set"/>
-    <keyword type="function" name="cd_color_rgb_to_rgb8 ()" link="colord-cd-color.html#cd-color-rgb-to-rgb8"/>
-    <keyword type="function" name="cd_color_xyz_clear ()" link="colord-cd-color.html#cd-color-xyz-clear"/>
-    <keyword type="function" name="cd_color_xyz_copy ()" link="colord-cd-color.html#cd-color-xyz-copy"/>
-    <keyword type="function" name="cd_color_xyz_dup ()" link="colord-cd-color.html#cd-color-xyz-dup"/>
+    <keyword type="function" name="cd_color_rgb_set ()" link="colord-cd-color.html#cd-color-rgb-set" since="0.1.27"/>
+    <keyword type="function" name="cd_color_rgb_to_rgb8 ()" link="colord-cd-color.html#cd-color-rgb-to-rgb8" since="0.1.27"/>
+    <keyword type="function" name="cd_color_xyz_clear ()" link="colord-cd-color.html#cd-color-xyz-clear" since="0.1.27"/>
+    <keyword type="function" name="cd_color_xyz_copy ()" link="colord-cd-color.html#cd-color-xyz-copy" since="0.1.27"/>
+    <keyword type="function" name="cd_color_xyz_dup ()" link="colord-cd-color.html#cd-color-xyz-dup" since="0.1.27"/>
     <keyword type="macro" name="cd_color_xyz_free" link="colord-cd-color.html#cd-color-xyz-free"/>
     <keyword type="macro" name="cd_color_xyz_new" link="colord-cd-color.html#cd-color-xyz-new"/>
-    <keyword type="function" name="cd_color_xyz_set ()" link="colord-cd-color.html#cd-color-xyz-set"/>
-    <keyword type="function" name="cd_color_xyz_to_yxy ()" link="colord-cd-color.html#cd-color-xyz-to-yxy"/>
-    <keyword type="function" name="cd_color_yxy_copy ()" link="colord-cd-color.html#cd-color-yxy-copy"/>
-    <keyword type="function" name="cd_color_yxy_dup ()" link="colord-cd-color.html#cd-color-yxy-dup"/>
+    <keyword type="function" name="cd_color_xyz_set ()" link="colord-cd-color.html#cd-color-xyz-set" since="0.1.27"/>
+    <keyword type="function" name="cd_color_xyz_to_yxy ()" link="colord-cd-color.html#cd-color-xyz-to-yxy" since="0.1.27"/>
+    <keyword type="function" name="cd_color_yxy_copy ()" link="colord-cd-color.html#cd-color-yxy-copy" since="0.1.27"/>
+    <keyword type="function" name="cd_color_yxy_dup ()" link="colord-cd-color.html#cd-color-yxy-dup" since="0.1.27"/>
     <keyword type="macro" name="cd_color_yxy_free" link="colord-cd-color.html#cd-color-yxy-free"/>
     <keyword type="macro" name="cd_color_yxy_new" link="colord-cd-color.html#cd-color-yxy-new"/>
-    <keyword type="function" name="cd_color_yxy_set ()" link="colord-cd-color.html#cd-color-yxy-set"/>
-    <keyword type="function" name="cd_color_yxy_to_xyz ()" link="colord-cd-color.html#cd-color-yxy-to-xyz"/>
+    <keyword type="function" name="cd_color_yxy_set ()" link="colord-cd-color.html#cd-color-yxy-set" since="0.1.27"/>
+    <keyword type="function" name="cd_color_yxy_to_xyz ()" link="colord-cd-color.html#cd-color-yxy-to-xyz" since="0.1.27"/>
     <keyword type="constant" name="CD_IT8_ERROR_FAILED" link="colord-cd-it8.html#CD-IT8-ERROR-FAILED:CAPS"/>
     <keyword type="constant" name="CD_IT8_ERROR_LAST" link="colord-cd-it8.html#CD-IT8-ERROR-LAST:CAPS"/>
+    <keyword type="constant" name="CD_IT8_KIND_UNKNOWN" link="colord-cd-it8.html#CD-IT8-KIND-UNKNOWN:CAPS"/>
+    <keyword type="constant" name="CD_IT8_KIND_TI1" link="colord-cd-it8.html#CD-IT8-KIND-TI1:CAPS"/>
+    <keyword type="constant" name="CD_IT8_KIND_TI3" link="colord-cd-it8.html#CD-IT8-KIND-TI3:CAPS"/>
+    <keyword type="constant" name="CD_IT8_KIND_CCMX" link="colord-cd-it8.html#CD-IT8-KIND-CCMX:CAPS"/>
+    <keyword type="constant" name="CD_IT8_KIND_CAL" link="colord-cd-it8.html#CD-IT8-KIND-CAL:CAPS"/>
+    <keyword type="constant" name="CD_IT8_KIND_LAST" link="colord-cd-it8.html#CD-IT8-KIND-LAST:CAPS"/>
   </functions>
 </book>

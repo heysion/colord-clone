@@ -119,10 +119,7 @@ cd_sensor_get_sample_async (CdSensor *sensor,
 	cd_sensor_set_state (sensor, CD_SENSOR_STATE_MEASURING);
 
 	/* just complete in idle */
-	if (cap == CD_SENSOR_CAP_LCD ||
-	    cap == CD_SENSOR_CAP_CRT ||
-	    cap == CD_SENSOR_CAP_LED ||
-	    cap == CD_SENSOR_CAP_PROJECTOR)
+	if (cap != CD_SENSOR_CAP_AMBIENT)
 		g_timeout_add_seconds (2, (GSourceFunc) cd_sensor_get_sample_wait_cb, state);
 	else
 		g_timeout_add_seconds (2, (GSourceFunc) cd_sensor_get_ambient_wait_cb, state);
@@ -158,13 +155,13 @@ gboolean
 cd_sensor_coldplug (CdSensor *sensor, GError **error)
 {
 	CdSensorDummyPrivate *priv;
-	const gchar *caps[] = { "lcd",
-				"crt",
-				"projector",
-				"spot",
-				"printer",
-				"ambient",
-				NULL };
+	guint64 caps = cd_bitfield_from_enums (CD_SENSOR_CAP_LCD,
+					       CD_SENSOR_CAP_CRT,
+					       CD_SENSOR_CAP_PROJECTOR,
+					       CD_SENSOR_CAP_SPOT,
+					       CD_SENSOR_CAP_PRINTER,
+					       CD_SENSOR_CAP_AMBIENT,
+					       -1);
 	g_object_set (sensor,
 		      "id", "dummy",
 		      "kind", CD_SENSOR_KIND_DUMMY,

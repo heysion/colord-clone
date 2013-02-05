@@ -2,7 +2,9 @@ AM_CPPFLAGS =						\
 	$(GLIB_CFLAGS)					\
 	$(GTK_CFLAGS)					\
 	-I$(top_srcdir)					\
-	-I$(top_srcdir)/libcolord			\
+	-I$(top_srcdir)/lib				\
+	-I$(top_builddir)/lib				\
+	-I$(top_srcdir)/lib/colord			\
 	-DG_LOG_DOMAIN=\"Cd\"				\
 	-DCD_COMPILATION				\
 	-DCD_DISABLE_DEPRECATED				\
@@ -13,7 +15,7 @@ AM_CPPFLAGS =						\
 	-DLOCALEDIR=\""$(localedir)"\"
 
 COLORD_LIBS =						\
-	$(top_builddir)/libcolord/libcolord.la
+	$(top_builddir)/lib/colord/libcolord.la
 
 noinst_LIBRARIES = libclientprivate.a
 libclientprivate_a_SOURCES =				\

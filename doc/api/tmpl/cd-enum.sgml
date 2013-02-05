@@ -48,6 +48,13 @@ cd-enum
 
 
 
+<!-- ##### MACRO CD_DEVICE_METADATA_OWNER_CMDLINE ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### MACRO CD_DEVICE_METADATA_XRANDR_NAME ##### -->
 <para>
 
@@ -531,6 +538,27 @@ cd-enum
 
 
 
+<!-- ##### MACRO CD_SENSOR_METADATA_IMAGE_ATTACH ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CD_SENSOR_METADATA_IMAGE_CALIBRATE ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CD_SENSOR_METADATA_IMAGE_SCREEN ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### MACRO CD_SENSOR_PROPERTY_CAPABILITIES ##### -->
 <para>
 
@@ -560,6 +588,13 @@ cd-enum
 
 
 <!-- ##### MACRO CD_SENSOR_PROPERTY_LOCKED ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CD_SENSOR_PROPERTY_METADATA ##### -->
 <para>
 
 </para>
@@ -787,6 +822,7 @@ cd-enum
 @CD_SENSOR_CAP_AMBIENT: 
 @CD_SENSOR_CAP_CALIBRATION: 
 @CD_SENSOR_CAP_LED: 
+@CD_SENSOR_CAP_PLASMA: 
 @CD_SENSOR_CAP_LAST: 
 
 <!-- ##### ENUM CdSensorError ##### -->
@@ -858,6 +894,51 @@ cd-enum
 @CD_STANDARD_SPACE_ADOBE_RGB: 
 @CD_STANDARD_SPACE_PROPHOTO_RGB: 
 @CD_STANDARD_SPACE_LAST: 
+
+<!-- ##### MACRO cd_bitfield_add ##### -->
+<para>
+
+</para>
+
+@bitfield: 
+@tmp: 
+
+
+<!-- ##### MACRO cd_bitfield_contain ##### -->
+<para>
+
+</para>
+
+@bitfield: 
+@tmp: 
+
+
+<!-- ##### FUNCTION cd_bitfield_from_enums ##### -->
+<para>
+
+</para>
+
+@value: 
+@...: 
+@Returns: 
+
+
+<!-- ##### MACRO cd_bitfield_remove ##### -->
+<para>
+
+</para>
+
+@bitfield: 
+@tmp: 
+
+
+<!-- ##### MACRO cd_bitfield_value ##### -->
+<para>
+
+</para>
+
+@tmp: 
+
 
 <!-- ##### FUNCTION cd_client_error_from_string ##### -->
 <para>

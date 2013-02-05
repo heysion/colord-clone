@@ -3,7 +3,7 @@ AC_PREREQ(2.63)
 
 m4_define([cd_major_version], [0])
 m4_define([cd_minor_version], [1])
-m4_define([cd_micro_version], [28])
+m4_define([cd_micro_version], [29])
 m4_define([cd_version],
           [cd_major_version.cd_minor_version.cd_micro_version])
 
@@ -38,7 +38,7 @@ AC_SUBST(CD_MICRO_VERSION)
 # REVISION	If the API and ABI remains the same, but bugs are fixed.
 # AGE		Don't use.
 LT_CURRENT=1
-LT_REVISION=16
+LT_REVISION=17
 LT_AGE=0
 AC_SUBST(LT_CURRENT)
 AC_SUBST(LT_REVISION)
@@ -178,12 +178,17 @@ if test "x$with_systemdsystemunitdir" != "xno"; then
 fi
 AM_CONDITIONAL(HAVE_SYSTEMD, [test -n "$systemdsystemunitdir"])
 
-PKG_CHECK_MODULES(LIBSYSTEMD_LOGIN,
-                  [libsystemd-login >= 44],
-                  have_libsystemd_login=yes,
-                  have_libsystemd_login=no)
-AM_CONDITIONAL(HAVE_LIBSYSTEMD_LOGIN, test x$have_libsystemd_login = xyes)
-if test "x$have_libsystemd_login" = "xyes"; then
+
+
+dnl ---------------------------------------------------------------------------
+dnl - Use libsystemd-login to track the process seat
+dnl ---------------------------------------------------------------------------
+AC_ARG_ENABLE(systemd-login, AS_HELP_STRING([--enable-systemd-login],[Build systemd-login support]),
+	      enable_systemd_login=$enableval, enable_systemd_login=yes)
+AM_CONDITIONAL(HAVE_LIBSYSTEMD_LOGIN, test x$enable_systemd_login = xyes)
+if test x$enable_systemd_login != xno; then
+	PKG_CHECK_MODULES(LIBSYSTEMD_LOGIN,
+			  [libsystemd-login >= 44])
 	AC_DEFINE([HAVE_LIBSYSTEMD_LOGIN], 1, [Define to 1 if libsystemd-login is available])
 fi
 AC_SUBST(HAVE_LIBSYSTEMD_LOGIN)
@@ -205,8 +210,9 @@ dnl ---------------------------------------------------------------------------
 AC_ARG_ENABLE(examples, AS_HELP_STRING([--enable-examples],[enable DBus example code]),
 	      enable_examples=$enableval,enable_examples=yes)
 AM_CONDITIONAL(CD_BUILD_EXAMPLES, test x$enable_examples = xyes)
-if test x$enable_examples = xyes; then
-	PKG_CHECK_MODULES(DBUS, dbus-1)
+PKG_CHECK_MODULES(DBUS, dbus-1, have_dbus=yes, have_dbus=no)
+if test x$enable_examples = xyes -a x$have_dbus = xno ; then
+	AC_MSG_ERROR([DBus examples require dbus-1 package, not found])
 fi
 
 dnl ---------------------------------------------------------------------------
@@ -215,6 +221,46 @@ dnl ---------------------------------------------------------------------------
 AC_ARG_ENABLE(reverse, AS_HELP_STRING([--enable-reverse],[enable reverse engineering tools]),
 	      enable_reverse=$enableval,enable_reverse=no)
 AM_CONDITIONAL(CD_BUILD_REVERSE, test x$enable_reverse = xyes)
+
+dnl **** Check for SANE ****
+AC_ARG_ENABLE(sane, AS_HELP_STRING([--enable-sane],[Enable SANE support]),
+	      enable_sane=$enableval,enable_sane=no)
+has_sane=no
+if test x$enable_sane != xno; then
+	PKG_CHECK_MODULES(SANE, sane-backends, has_sane=yes, has_sane=no)
+	if test $has_sane = "no"; then
+		# fall back to detecting the header for some distros
+		AC_CHECK_HEADER(sane/sane.h, has_sane=yes, has_sane=no)
+		if test $has_sane = "yes"; then
+			SANE_CFLAGS=""
+			SANE_LIBS="-lsane"
+			AC_SUBST(SANE_CFLAGS)
+			AC_SUBST(SANE_LIBS)
+		fi
+		if test x$enable_sane = xyes -a $has_sane = "no"; then
+			AC_MSG_ERROR([--enable-sane was specified and SANE was not found])
+		fi
+
+	fi
+	if test x$enable_gudev != xyes; then
+		has_sane=no
+		if test x$enable_sane = xyes; then
+			AC_MSG_ERROR([--enable-sane was specified and SANE requires gudev support, not found])
+		fi
+		AC_MSG_WARN([gudev not found, SANE support will not be enabled])
+	fi
+	if test x$have_dbus != xyes; then
+		has_sane=no
+		if test x$enable_sane = xyes; then
+			AC_MSG_ERROR([--enable-sane was specified and SANE requires dbus support, not found])
+		fi
+		AC_MSG_WARN([dbus not found, SANE support will not be enabled])
+	fi
+fi
+AM_CONDITIONAL(HAVE_SANE, test x$has_sane = xyes)
+if test x$has_sane = xyes; then
+	AC_DEFINE(HAVE_SANE,1,[Use SANE support for detecting scanners])
+fi
 
 dnl **** Daemon is allowed to do FD fallback  ****
 AC_ARG_ENABLE(fd_fallback, AS_HELP_STRING([--enable-fd-fallback],[Enable file descriptor fallback]),
@@ -300,6 +346,7 @@ Makefile
 etc/Makefile
 contrib/Makefile
 contrib/session-helper/Makefile
+contrib/colord-sane/Makefile
 examples/Makefile
 man/Makefile
 doc/Makefile
@@ -320,9 +367,16 @@ src/Makefile
 src/plugins/Makefile
 src/sensors/Makefile
 client/Makefile
-libcolord/cd-version.h
-libcolord/colord.pc
-libcolord/Makefile
+lib/Makefile
+lib/colord/cd-version.h
+lib/colord/colord.pc
+lib/colord/Makefile
+lib/colorhug/Makefile
+lib/colorhug/colorhug.pc
+lib/colorhug/ch-version.h
+lib/dtp94/Makefile
+lib/huey/Makefile
+lib/munki/Makefile
 ])
 AC_OUTPUT
 
@@ -341,12 +395,13 @@ echo "
         Reverse engineering tools: ${enable_reverse}
         File descriptor fallback:  ${enable_fd_fallback}
         External volume searching: ${enable_volume_search}
+        SANE support:              ${has_sane}
         GUDEV support:             ${enable_gudev}
         Extra print profiles:      ${enable_print_profiles}
         Vala API generator:        ${has_vapigen}
         Daemon user:               ${daemon_user}
         udev rules.d dir:          ${with_udevrulesdir}
-        using libsystemd-login:    ${have_libsystemd_login}
+        using libsystemd-login:    ${enable_systemd_login}
         systemd service dir:       ${with_systemdsystemunitdir}
 "
 
