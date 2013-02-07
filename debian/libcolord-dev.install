@@ -1,5 +1,6 @@
 # Libraries
 usr/lib/*/libcolord.so
+usr/lib/*/libcolordprivate.so
 usr/lib/*/pkgconfig/colord.pc
 # Headers
 usr/include/colord-1
