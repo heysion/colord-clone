@@ -44,6 +44,10 @@ override_dh_auto_test:
 	@echo "TODO: Test suite disabled - requires running dbus daemon, currently fails"
 
 override_dh_makeshlibs:
+	# The semi-private sensor libraries have no ABI guarantee;
+	# Mark anything using them with a strict version dependency
+	sed s/@pkgver@/$(shell dpkg-parsechangelog | grep Version | cut -f 2 -d' ')/g \
+		debian/libcolord1.symbols.in > debian/libcolord1.symbols
 	dh_makeshlibs -- -c4
 
 override_dh_gencontrol:
