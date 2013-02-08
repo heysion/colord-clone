@@ -1,0 +1,8 @@
+usr/lib/*/libcolorhug.so
+usr/lib/*/pkgconfig/colorhug.pc
+# Headers
+usr/include/colord-1/colorhug
+# GI
+usr/share/gir-1.0/ColorHug-1.0.gir
+# libcolorhug apparently doesn't ship vala support
+#usr/share/vala

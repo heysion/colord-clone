@@ -3,7 +3,10 @@ usr/lib/*/libcolord.so
 usr/lib/*/libcolordprivate.so
 usr/lib/*/pkgconfig/colord.pc
 # Headers
-usr/include/colord-1
+usr/include/colord-1/colord.h
+usr/include/colord-1/colord-private.h
+usr/include/colord-1/colord
+usr/include/colord-1/colord-session
 # GI
 usr/share/gir-1.0/Colord-1.0.gir
-usr/share/vala
+usr/share/vala/vapi/colord.vapi

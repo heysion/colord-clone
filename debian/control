@@ -97,3 +97,50 @@ Description: GObject introspection data for the colord library
  .
  It can be used by packages using the GIRepository format to generate 
  dynamic bindings.
+
+Package: libcolorhug-dev
+Section: libdevel
+Architecture: any
+Depends: 
+ libcolorhug1 (= ${binary:Version}),
+ libglib2.0-dev,
+ libgusb-dev,
+ libcolord-dev,
+ gir1.2-colorhug-1.0,
+ ${misc:Depends},
+Description: library to access the ColorHug colourimeter -- development files
+ libcolorhug is a gobject-based library for using the ColorHug display
+ colourimeter. It supports both reading values from the colourimeter and
+ device administration, such as firmware updates.
+ .
+ This package contains the development files required to build programs against
+ the libcolorhug library.
+
+Package: libcolorhug1
+Section: libs
+Architecture: any
+Depends: 
+ ${shlibs:Depends},
+ ${misc:Depends},
+Pre-Depends: ${misc:Pre-Depends}
+Multi-Arch: same
+Description: library to access the ColorHug colourimeter -- development files
+ libcolorhug is a gobject-based library for using the ColorHug display
+ colourimeter. It supports both reading values from the colourimeter and
+ device administration, such as firmware updates.
+ .
+ This package contains the development files required to build programs against
+ the libcolorhug library.
+
+Package: gir1.2-colorhug-1.0
+Section: introspection
+Architecture: any
+Depends: ${gir:Depends},
+         ${shlibs:Depends},
+         ${misc:Depends}
+Description: GObject introspection data for the colorhug library
+ This package contains introspection data for libcolorhug, a gobject-based
+ library for accessing the ColorHug display colourimeter device.
+ .
+ It can be used by packages using the GIRepository format to generate 
+ dynamic bindings.
