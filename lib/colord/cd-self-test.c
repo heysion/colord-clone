@@ -97,10 +97,14 @@ _g_test_loop_quit (void)
 static gchar *
 _g_test_realpath (const gchar *relpath)
 {
-	gchar *full;
+	gchar *full = NULL;
+	gchar *tmp;
 	char full_tmp[PATH_MAX];
-	realpath (relpath, full_tmp);
+	tmp = realpath (relpath, full_tmp);
+	if (tmp == NULL)
+		goto out;
 	full = g_strdup (full_tmp);
+out:
 	return full;
 }
 
@@ -1492,7 +1496,13 @@ colord_client_func (void)
 	gboolean ret;
 	GError *error = NULL;
 
+	/* no running colord to use */
 	client = cd_client_new ();
+	has_colord_process = cd_client_get_has_server (client);
+	if (!has_colord_process) {
+		g_print ("[DISABLED] ");
+		goto out;
+	}
 
 	/* check not connected */
 	g_assert (!cd_client_get_connected (client));
@@ -1510,9 +1520,6 @@ colord_client_func (void)
 	g_assert_no_error (error);
 	g_assert (ret);
 
-	/* is there a running colord instance? */
-	has_colord_process = cd_client_get_has_server (client);
-
 	version = cd_client_get_daemon_version (client);
 	version_str = g_strdup_printf ("%i.%i.%i",
 				       CD_MAJOR_VERSION,
@@ -1520,7 +1527,7 @@ colord_client_func (void)
 				       CD_MICRO_VERSION);
 	g_assert_cmpstr (version, ==, version_str);
 	g_free (version_str);
-
+out:
 	g_object_unref (client);
 }
 
@@ -1733,6 +1740,7 @@ colord_client_fd_pass_func (void)
 	gboolean ret;
 	GError *error = NULL;
 	gchar full_path[PATH_MAX];
+	gchar *tmp;
 
 	/* no running colord to use */
 	if (!has_colord_process) {
@@ -1750,7 +1758,8 @@ colord_client_fd_pass_func (void)
 	g_assert (ret);
 
 	/* create extra profile */
-	realpath (TESTDATADIR "/ibm-t61.icc", full_path);
+	tmp = realpath (TESTDATADIR "/ibm-t61.icc", full_path);
+	g_assert (tmp != NULL);
 	profile_props = g_hash_table_new_full (g_str_hash, g_str_equal,
 					       g_free, g_free);
 	g_hash_table_insert (profile_props,
@@ -1805,6 +1814,7 @@ colord_client_import_func (void)
 	GError *error = NULL;
 	gchar full_path[PATH_MAX];
 	gchar *dest_path;
+	gchar *tmp;
 
 	/* no running colord to use */
 	if (!has_colord_process) {
@@ -1822,7 +1832,8 @@ colord_client_import_func (void)
 	g_assert (ret);
 
 	/* check we can't import random files */
-	realpath (TESTDATADIR "/Makefile.am", full_path);
+	tmp = realpath (TESTDATADIR "/Makefile.am", full_path);
+	g_assert (tmp != NULL);
 	invalid_file = g_file_new_for_path (full_path);
 	profile2 = cd_client_import_profile_sync (client,
 						  invalid_file,
@@ -1835,7 +1846,8 @@ colord_client_import_func (void)
 	g_clear_error (&error);
 
 	/* create extra profile */
-	realpath (TESTDATADIR "/ibm-t61.icc", full_path);
+	tmp = realpath (TESTDATADIR "/ibm-t61.icc", full_path);
+	g_assert (tmp != NULL);
 	file = g_file_new_for_path (full_path);
 
 	/* ensure it's deleted */
@@ -2065,6 +2077,7 @@ colord_client_systemwide_func (void)
 	gboolean ret;
 	GError *error = NULL;
 	gchar full_path[PATH_MAX];
+	gchar *tmp;
 
 	/* no running colord to use */
 	if (!has_colord_process) {
@@ -2082,7 +2095,8 @@ colord_client_systemwide_func (void)
 	g_assert (ret);
 
 	/* create extra profile */
-	realpath (TESTDATADIR "/ibm-t61.icc", full_path);
+	tmp = realpath (TESTDATADIR "/ibm-t61.icc", full_path);
+	g_assert (tmp != NULL);
 	profile_props = g_hash_table_new_full (g_str_hash, g_str_equal,
 					       g_free, g_free);
 	g_hash_table_insert (profile_props,
@@ -2122,6 +2136,12 @@ colord_device_func (void)
 	gboolean ret;
 	GError *error = NULL;
 
+	/* no running colord to use */
+	if (!has_colord_process) {
+		g_print ("[DISABLED] ");
+		return;
+	}
+
 	/* create a device with an invlid object path */
 	device = cd_device_new_with_object_path ("/garbage");
 	g_assert (device != NULL);
@@ -2143,6 +2163,12 @@ colord_device_embedded_func (void)
 	gboolean ret;
 	GError *error = NULL;
 	GHashTable *device_props;
+
+	/* no running colord to use */
+	if (!has_colord_process) {
+		g_print ("[DISABLED] ");
+		return;
+	}
 
 	client = cd_client_new ();
 	ret = cd_client_connect_sync (client, NULL, &error);
@@ -2189,6 +2215,12 @@ colord_device_invalid_kind_func (void)
 	GError *error = NULL;
 	GHashTable *device_props;
 
+	/* no running colord to use */
+	if (!has_colord_process) {
+		g_print ("[DISABLED] ");
+		return;
+	}
+
 	client = cd_client_new ();
 	ret = cd_client_connect_sync (client, NULL, &error);
 	g_assert_no_error (error);
@@ -2221,6 +2253,12 @@ colord_client_standard_space_func (void)
 	CdProfile *profile;
 	gboolean ret;
 	GError *error = NULL;
+
+	/* no running colord to use */
+	if (!has_colord_process) {
+		g_print ("[DISABLED] ");
+		return;
+	}
 
 	client = cd_client_new ();
 	ret = cd_client_connect_sync (client, NULL, &error);
@@ -2255,6 +2293,7 @@ colord_device_modified_func (void)
 	CdProfile *profile;
 	gboolean ret;
 	gchar full_path[PATH_MAX];
+	gchar *tmp;
 	GError *error = NULL;
 	GHashTable *device_props;
 	GHashTable *profile_props;
@@ -2310,7 +2349,8 @@ colord_device_modified_func (void)
 	g_ptr_array_unref (array);
 
 	/* create extra profile */
-	realpath (TESTDATADIR "/ibm-t61.icc", full_path);
+	tmp = realpath (TESTDATADIR "/ibm-t61.icc", full_path);
+	g_assert (tmp != NULL);
 	profile_props = g_hash_table_new_full (g_str_hash, g_str_equal,
 					       g_free, g_free);
 	profile = cd_client_create_profile_sync (client,
@@ -2375,6 +2415,12 @@ colord_device_seat_func (void)
 	GError *error = NULL;
 	GHashTable *device_props;
 
+	/* no running colord to use */
+	if (!has_colord_process) {
+		g_print ("[DISABLED] ");
+		return;
+	}
+
 	/* ensure the seat is set */
 	client = cd_client_new ();
 	ret = cd_client_connect_sync (client, NULL, &error);
@@ -2426,6 +2472,12 @@ colord_device_enabled_func (void)
 	gboolean ret;
 	GError *error = NULL;
 	GHashTable *device_props;
+
+	/* no running colord to use */
+	if (!has_colord_process) {
+		g_print ("[DISABLED] ");
+		return;
+	}
 
 	/* ensure the device is enabled by default */
 	client = cd_client_new ();
@@ -2712,6 +2764,7 @@ colord_profile_duplicate_func (void)
 	CdProfile *profile2;
 	gboolean ret;
 	gchar full_path[PATH_MAX];
+	gchar *tmp;
 	GError *error = NULL;
 	GHashTable *profile_props;
 
@@ -2726,7 +2779,8 @@ colord_profile_duplicate_func (void)
 	g_assert (client != NULL);
 
 	/* create extra profile */
-	realpath (TESTDATADIR "/ibm-t61.icc", full_path);
+	tmp = realpath (TESTDATADIR "/ibm-t61.icc", full_path);
+	g_assert (tmp != NULL);
 	profile_props = g_hash_table_new_full (g_str_hash, g_str_equal,
 					       g_free, g_free);
 	g_hash_table_insert (profile_props,
@@ -2883,8 +2937,8 @@ main (int argc, char **argv)
 	g_test_add_func ("/colord/it8{raw}", colord_it8_raw_func);
 	g_test_add_func ("/colord/it8{normalized}", colord_it8_normalized_func);
 	g_test_add_func ("/colord/it8{ccmx}", colord_it8_ccmx_func);
-	g_test_add_func ("/colord/device", colord_device_func);
 	g_test_add_func ("/colord/client", colord_client_func);
+	g_test_add_func ("/colord/device", colord_device_func);
 	g_test_add_func ("/colord/device{embedded}", colord_device_embedded_func);
 	g_test_add_func ("/colord/device{invalid-kind}", colord_device_invalid_kind_func);
 	g_test_add_func ("/colord/device{duplicate}", colord_device_duplicate_func);
