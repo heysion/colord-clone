@@ -29,7 +29,7 @@ else
 endif
 
 override_dh_clean:
-	-rm -rf build-libraries
+	-rm -r build-libraries
 	-rm -r build-daemon
 	dh_clean
 
