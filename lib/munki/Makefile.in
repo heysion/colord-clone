@@ -55,7 +55,14 @@ DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/depcomp
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/as-linguas.m4 \
-	$(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/gtk-doc.m4 \
+	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/intlmacosx.m4 \
+	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/lib-ld.m4 \
+	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
+	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
+	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
+	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -92,17 +99,18 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libmunki_la_DEPENDENCIES = $(am__DEPENDENCIES_1) $(COLORD_LIBS) \
-	$(am__DEPENDENCIES_1)
-am_libmunki_la_OBJECTS = libmunki_la-munki-enum.lo
-libmunki_la_OBJECTS = $(am_libmunki_la_OBJECTS)
+libmunki_private_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+	$(COLORD_LIBS) $(am__DEPENDENCIES_1)
+am_libmunki_private_la_OBJECTS = libmunki_private_la-munki-enum.lo
+libmunki_private_la_OBJECTS = $(am_libmunki_private_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
-libmunki_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(libmunki_la_CFLAGS) \
-	$(CFLAGS) $(libmunki_la_LDFLAGS) $(LDFLAGS) -o $@
+libmunki_private_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(libmunki_private_la_CFLAGS) $(CFLAGS) \
+	$(libmunki_private_la_LDFLAGS) $(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -137,8 +145,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libmunki_la_SOURCES)
-DIST_SOURCES = $(libmunki_la_SOURCES)
+SOURCES = $(libmunki_private_la_SOURCES)
+DIST_SOURCES = $(libmunki_private_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -365,24 +373,24 @@ COLORD_LIBS = \
 	$(top_builddir)/lib/colord/libcolordprivate.la
 
 lib_LTLIBRARIES = \
-	libmunki.la
+	libmunki-private.la
 
-libmunki_la_SOURCES = \
+libmunki_private_la_SOURCES = \
 	munki.h							\
 	munki-enum.c						\
 	munki-enum.h
 
-libmunki_la_LIBADD = \
+libmunki_private_la_LIBADD = \
 	$(GUSB_LIBS)						\
 	$(COLORD_LIBS)						\
 	$(GLIB_LIBS)
 
-libmunki_la_LDFLAGS = \
+libmunki_private_la_LDFLAGS = \
 	-export-dynamic						\
 	-no-undefined						\
 	-export-symbols-regex '^munki_.*'
 
-libmunki_la_CFLAGS = \
+libmunki_private_la_CFLAGS = \
 	$(WARNINGFLAGS_C)
 
 CLEANFILES = $(BUILT_SOURCES)
@@ -454,8 +462,8 @@ clean-libLTLIBRARIES:
 	  echo rm -f $${locs}; \
 	  rm -f $${locs}; \
 	}
-libmunki.la: $(libmunki_la_OBJECTS) $(libmunki_la_DEPENDENCIES) $(EXTRA_libmunki_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(libmunki_la_LINK) -rpath $(libdir) $(libmunki_la_OBJECTS) $(libmunki_la_LIBADD) $(LIBS)
+libmunki-private.la: $(libmunki_private_la_OBJECTS) $(libmunki_private_la_DEPENDENCIES) $(EXTRA_libmunki_private_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(libmunki_private_la_LINK) -rpath $(libdir) $(libmunki_private_la_OBJECTS) $(libmunki_private_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -463,7 +471,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmunki_la-munki-enum.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmunki_private_la-munki-enum.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -486,12 +494,12 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
 
-libmunki_la-munki-enum.lo: munki-enum.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmunki_la_CFLAGS) $(CFLAGS) -MT libmunki_la-munki-enum.lo -MD -MP -MF $(DEPDIR)/libmunki_la-munki-enum.Tpo -c -o libmunki_la-munki-enum.lo `test -f 'munki-enum.c' || echo '$(srcdir)/'`munki-enum.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libmunki_la-munki-enum.Tpo $(DEPDIR)/libmunki_la-munki-enum.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='munki-enum.c' object='libmunki_la-munki-enum.lo' libtool=yes @AMDEPBACKSLASH@
+libmunki_private_la-munki-enum.lo: munki-enum.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmunki_private_la_CFLAGS) $(CFLAGS) -MT libmunki_private_la-munki-enum.lo -MD -MP -MF $(DEPDIR)/libmunki_private_la-munki-enum.Tpo -c -o libmunki_private_la-munki-enum.lo `test -f 'munki-enum.c' || echo '$(srcdir)/'`munki-enum.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libmunki_private_la-munki-enum.Tpo $(DEPDIR)/libmunki_private_la-munki-enum.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='munki-enum.c' object='libmunki_private_la-munki-enum.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmunki_la_CFLAGS) $(CFLAGS) -c -o libmunki_la-munki-enum.lo `test -f 'munki-enum.c' || echo '$(srcdir)/'`munki-enum.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libmunki_private_la_CFLAGS) $(CFLAGS) -c -o libmunki_private_la-munki-enum.lo `test -f 'munki-enum.c' || echo '$(srcdir)/'`munki-enum.c
 
 mostlyclean-libtool:
 	-rm -f *.lo

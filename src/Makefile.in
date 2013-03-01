@@ -63,7 +63,14 @@ DIST_COMMON = $(dist_introspection_DATA) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(top_srcdir)/depcomp
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/as-linguas.m4 \
-	$(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/gtk-doc.m4 \
+	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/intlmacosx.m4 \
+	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/lib-ld.m4 \
+	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
+	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
+	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
+	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -81,6 +88,7 @@ am_cd_self_test_OBJECTS = cd_self_test-cd-common.$(OBJEXT) \
 	cd_self_test-cd-mapping-db.$(OBJEXT) \
 	cd_self_test-cd-profile-array.$(OBJEXT) \
 	cd_self_test-cd-profile.$(OBJEXT) \
+	cd_self_test-cd-resources.$(OBJEXT) \
 	cd_self_test-cd-self-test.$(OBJEXT)
 cd_self_test_OBJECTS = $(am_cd_self_test_OBJECTS)
 am__DEPENDENCIES_1 =
@@ -96,22 +104,23 @@ cd_self_test_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(cd_self_test_CFLAGS) \
 	$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 am__colord_SOURCES_DIST = cd-common.c cd-common.h cd-config.c \
-	cd-config.h cd-debug.c cd-debug.h cd-device-array.c \
-	cd-device-array.h cd-device.c cd-device-db.c cd-device-db.h \
-	cd-device.h cd-inhibit.c cd-inhibit.h cd-mapping-db.c \
-	cd-mapping-db.h cd-plugin.c cd-plugin.h cd-profile-array.c \
-	cd-profile-array.h cd-profile.c cd-profile.h \
-	cd-profile-store.c cd-profile-store.h cd-sensor.c cd-sensor.h \
-	cd-main.c cd-sensor-client.c cd-sensor-client.h
+	cd-config.h cd-debug.c cd-debug.h cd-resources.c \
+	cd-resources.h cd-device-array.c cd-device-array.h cd-device.c \
+	cd-device-db.c cd-device-db.h cd-device.h cd-inhibit.c \
+	cd-inhibit.h cd-mapping-db.c cd-mapping-db.h cd-plugin.c \
+	cd-plugin.h cd-profile-array.c cd-profile-array.h cd-profile.c \
+	cd-profile.h cd-profile-store.c cd-profile-store.h cd-sensor.c \
+	cd-sensor.h cd-main.c cd-sensor-client.c cd-sensor-client.h
 @HAVE_GUDEV_TRUE@am__objects_1 = colord-cd-sensor-client.$(OBJEXT)
 am_colord_OBJECTS = colord-cd-common.$(OBJEXT) \
 	colord-cd-config.$(OBJEXT) colord-cd-debug.$(OBJEXT) \
-	colord-cd-device-array.$(OBJEXT) colord-cd-device.$(OBJEXT) \
-	colord-cd-device-db.$(OBJEXT) colord-cd-inhibit.$(OBJEXT) \
-	colord-cd-mapping-db.$(OBJEXT) colord-cd-plugin.$(OBJEXT) \
-	colord-cd-profile-array.$(OBJEXT) colord-cd-profile.$(OBJEXT) \
-	colord-cd-profile-store.$(OBJEXT) colord-cd-sensor.$(OBJEXT) \
-	colord-cd-main.$(OBJEXT) $(am__objects_1)
+	colord-cd-resources.$(OBJEXT) colord-cd-device-array.$(OBJEXT) \
+	colord-cd-device.$(OBJEXT) colord-cd-device-db.$(OBJEXT) \
+	colord-cd-inhibit.$(OBJEXT) colord-cd-mapping-db.$(OBJEXT) \
+	colord-cd-plugin.$(OBJEXT) colord-cd-profile-array.$(OBJEXT) \
+	colord-cd-profile.$(OBJEXT) colord-cd-profile-store.$(OBJEXT) \
+	colord-cd-sensor.$(OBJEXT) colord-cd-main.$(OBJEXT) \
+	$(am__objects_1)
 colord_OBJECTS = $(am_colord_OBJECTS)
 colord_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
@@ -478,13 +487,13 @@ COLORD_PRIVATE_LIBS = \
 	$(top_builddir)/lib/colord/libcolordprivate.la
 
 colord_SOURCES = cd-common.c cd-common.h cd-config.c cd-config.h \
-	cd-debug.c cd-debug.h cd-device-array.c cd-device-array.h \
-	cd-device.c cd-device-db.c cd-device-db.h cd-device.h \
-	cd-inhibit.c cd-inhibit.h cd-mapping-db.c cd-mapping-db.h \
-	cd-plugin.c cd-plugin.h cd-profile-array.c cd-profile-array.h \
-	cd-profile.c cd-profile.h cd-profile-store.c \
-	cd-profile-store.h cd-sensor.c cd-sensor.h cd-main.c \
-	$(am__append_1)
+	cd-debug.c cd-debug.h cd-resources.c cd-resources.h \
+	cd-device-array.c cd-device-array.h cd-device.c cd-device-db.c \
+	cd-device-db.h cd-device.h cd-inhibit.c cd-inhibit.h \
+	cd-mapping-db.c cd-mapping-db.h cd-plugin.c cd-plugin.h \
+	cd-profile-array.c cd-profile-array.h cd-profile.c \
+	cd-profile.h cd-profile-store.c cd-profile-store.h cd-sensor.c \
+	cd-sensor.h cd-main.c $(am__append_1)
 colord_LDADD = \
 	$(SQLITE_LIBS)					\
 	$(POLKIT_LIBS)					\
@@ -515,6 +524,8 @@ cd_self_test_SOURCES = \
 	cd-profile-array.h				\
 	cd-profile.c					\
 	cd-profile.h					\
+	cd-resources.c					\
+	cd-resources.h					\
 	cd-self-test.c
 
 cd_self_test_LDADD = \
@@ -526,7 +537,16 @@ cd_self_test_LDADD = \
 	$(GLIB_LIBS)
 
 cd_self_test_CFLAGS = $(WARNINGFLAGS_C)
-all: all-recursive
+BUILT_SOURCES = \
+	cd-resources.c					\
+	cd-resources.h
+
+CLEANFILES = $(BUILT_SOURCES)
+EXTRA_DIST = \
+	colord.gresource.xml
+
+all: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
 .SUFFIXES:
 .SUFFIXES: .c .lo .o .obj
@@ -636,6 +656,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd_self_test-cd-mapping-db.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd_self_test-cd-profile-array.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd_self_test-cd-profile.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd_self_test-cd-resources.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd_self_test-cd-self-test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colord-cd-common.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colord-cd-config.Po@am__quote@
@@ -650,6 +671,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colord-cd-profile-array.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colord-cd-profile-store.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colord-cd-profile.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colord-cd-resources.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colord-cd-sensor-client.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colord-cd-sensor.Po@am__quote@
 
@@ -786,6 +808,20 @@ cd_self_test-cd-profile.obj: cd-profile.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_self_test_CFLAGS) $(CFLAGS) -c -o cd_self_test-cd-profile.obj `if test -f 'cd-profile.c'; then $(CYGPATH_W) 'cd-profile.c'; else $(CYGPATH_W) '$(srcdir)/cd-profile.c'; fi`
 
+cd_self_test-cd-resources.o: cd-resources.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_self_test_CFLAGS) $(CFLAGS) -MT cd_self_test-cd-resources.o -MD -MP -MF $(DEPDIR)/cd_self_test-cd-resources.Tpo -c -o cd_self_test-cd-resources.o `test -f 'cd-resources.c' || echo '$(srcdir)/'`cd-resources.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cd_self_test-cd-resources.Tpo $(DEPDIR)/cd_self_test-cd-resources.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-resources.c' object='cd_self_test-cd-resources.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_self_test_CFLAGS) $(CFLAGS) -c -o cd_self_test-cd-resources.o `test -f 'cd-resources.c' || echo '$(srcdir)/'`cd-resources.c
+
+cd_self_test-cd-resources.obj: cd-resources.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_self_test_CFLAGS) $(CFLAGS) -MT cd_self_test-cd-resources.obj -MD -MP -MF $(DEPDIR)/cd_self_test-cd-resources.Tpo -c -o cd_self_test-cd-resources.obj `if test -f 'cd-resources.c'; then $(CYGPATH_W) 'cd-resources.c'; else $(CYGPATH_W) '$(srcdir)/cd-resources.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cd_self_test-cd-resources.Tpo $(DEPDIR)/cd_self_test-cd-resources.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-resources.c' object='cd_self_test-cd-resources.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_self_test_CFLAGS) $(CFLAGS) -c -o cd_self_test-cd-resources.obj `if test -f 'cd-resources.c'; then $(CYGPATH_W) 'cd-resources.c'; else $(CYGPATH_W) '$(srcdir)/cd-resources.c'; fi`
+
 cd_self_test-cd-self-test.o: cd-self-test.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_self_test_CFLAGS) $(CFLAGS) -MT cd_self_test-cd-self-test.o -MD -MP -MF $(DEPDIR)/cd_self_test-cd-self-test.Tpo -c -o cd_self_test-cd-self-test.o `test -f 'cd-self-test.c' || echo '$(srcdir)/'`cd-self-test.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cd_self_test-cd-self-test.Tpo $(DEPDIR)/cd_self_test-cd-self-test.Po
@@ -841,6 +877,20 @@ colord-cd-debug.obj: cd-debug.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-debug.c' object='colord-cd-debug.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(colord_CFLAGS) $(CFLAGS) -c -o colord-cd-debug.obj `if test -f 'cd-debug.c'; then $(CYGPATH_W) 'cd-debug.c'; else $(CYGPATH_W) '$(srcdir)/cd-debug.c'; fi`
+
+colord-cd-resources.o: cd-resources.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(colord_CFLAGS) $(CFLAGS) -MT colord-cd-resources.o -MD -MP -MF $(DEPDIR)/colord-cd-resources.Tpo -c -o colord-cd-resources.o `test -f 'cd-resources.c' || echo '$(srcdir)/'`cd-resources.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/colord-cd-resources.Tpo $(DEPDIR)/colord-cd-resources.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-resources.c' object='colord-cd-resources.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(colord_CFLAGS) $(CFLAGS) -c -o colord-cd-resources.o `test -f 'cd-resources.c' || echo '$(srcdir)/'`cd-resources.c
+
+colord-cd-resources.obj: cd-resources.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(colord_CFLAGS) $(CFLAGS) -MT colord-cd-resources.obj -MD -MP -MF $(DEPDIR)/colord-cd-resources.Tpo -c -o colord-cd-resources.obj `if test -f 'cd-resources.c'; then $(CYGPATH_W) 'cd-resources.c'; else $(CYGPATH_W) '$(srcdir)/cd-resources.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/colord-cd-resources.Tpo $(DEPDIR)/colord-cd-resources.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-resources.c' object='colord-cd-resources.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(colord_CFLAGS) $(CFLAGS) -c -o colord-cd-resources.obj `if test -f 'cd-resources.c'; then $(CYGPATH_W) 'cd-resources.c'; else $(CYGPATH_W) '$(srcdir)/cd-resources.c'; fi`
 
 colord-cd-device-array.o: cd-device-array.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(colord_CFLAGS) $(CFLAGS) -MT colord-cd-device-array.o -MD -MP -MF $(DEPDIR)/colord-cd-device-array.Tpo -c -o colord-cd-device-array.o `test -f 'cd-device-array.c' || echo '$(srcdir)/'`cd-device-array.c
@@ -1314,14 +1364,16 @@ distdir: $(DISTFILES)
 check-am: all-am
 	$(MAKE) $(AM_MAKEFLAGS) $(check_PROGRAMS)
 	$(MAKE) $(AM_MAKEFLAGS) check-TESTS
-check: check-recursive
+check: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) check-recursive
 all-am: Makefile $(PROGRAMS) $(DATA)
 installdirs: installdirs-recursive
 installdirs-am:
 	for dir in "$(DESTDIR)$(libexecdir)" "$(DESTDIR)$(introspectiondir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
-install: install-recursive
+install: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) install-recursive
 install-exec: install-exec-recursive
 install-data: install-data-recursive
 uninstall: uninstall-recursive
@@ -1343,6 +1395,7 @@ install-strip:
 mostlyclean-generic:
 
 clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
 
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
@@ -1351,6 +1404,7 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-recursive
 
 clean-am: clean-checkPROGRAMS clean-generic clean-libexecPROGRAMS \
@@ -1424,9 +1478,9 @@ ps-am:
 uninstall-am: uninstall-dist_introspectionDATA \
 	uninstall-libexecPROGRAMS
 
-.MAKE: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) check-am \
-	cscopelist-recursive ctags-recursive install-am \
-	install-data-am install-strip tags-recursive
+.MAKE: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) all check \
+	check-am cscopelist-recursive ctags-recursive install \
+	install-am install-data-am install-strip tags-recursive
 
 .PHONY: $(RECURSIVE_CLEAN_TARGETS) $(RECURSIVE_TARGETS) CTAGS GTAGS \
 	all all-am check check-TESTS check-am clean \
@@ -1447,6 +1501,23 @@ uninstall-am: uninstall-dist_introspectionDATA \
 	tags tags-recursive uninstall uninstall-am \
 	uninstall-dist_introspectionDATA uninstall-libexecPROGRAMS
 
+
+cd-resources.c: colord.gresource.xml $(dist_introspection_DATA)
+	glib-compile-resources				\
+		--sourcedir=$(srcdir)			\
+		--sourcedir=$(top_builddir)/data	\
+		--target=$@				\
+		--generate-source			\
+		--c-name cd				\
+		$(srcdir)/colord.gresource.xml
+cd-resources.h: colord.gresource.xml
+	glib-compile-resources				\
+		--sourcedir=$(srcdir)			\
+		--sourcedir=$(top_builddir)/data	\
+		--target=$@				\
+		--generate-header			\
+		--c-name cd				\
+		$(srcdir)/colord.gresource.xml
 
 install-data-hook:
 	if test -w $(DESTDIR)$(prefix)/; then \

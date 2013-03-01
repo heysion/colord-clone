@@ -51,9 +51,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-@CD_BUILD_REVERSE_TRUE@noinst_PROGRAMS = cd-huey-parse$(EXEEXT) \
-@CD_BUILD_REVERSE_TRUE@	cd-huey-dump-values$(EXEEXT) \
-@CD_BUILD_REVERSE_TRUE@	cd-sensor-dump$(EXEEXT) \
+@CD_BUILD_REVERSE_TRUE@noinst_PROGRAMS = cd-sensor-dump$(EXEEXT) \
 @CD_BUILD_REVERSE_TRUE@	cd-parse-beagle$(EXEEXT)
 @HAVE_GUSB_TRUE@am__append_1 = \
 @HAVE_GUSB_TRUE@	libcolord_sensor_colorhug.la			\
@@ -65,7 +63,14 @@ DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/depcomp
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/as-linguas.m4 \
-	$(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/gtk-doc.m4 \
+	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/intlmacosx.m4 \
+	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/lib-ld.m4 \
+	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
+	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
+	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
+	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -133,7 +138,7 @@ libcolord_sensor_colorhug_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 @HAVE_GUSB_TRUE@	$(plugindir)
 @HAVE_GUSB_TRUE@libcolord_sensor_dtp94_la_DEPENDENCIES =  \
 @HAVE_GUSB_TRUE@	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-@HAVE_GUSB_TRUE@	$(top_builddir)/lib/dtp94/libdtp94.la
+@HAVE_GUSB_TRUE@	$(top_builddir)/lib/dtp94/libdtp94-private.la
 am__libcolord_sensor_dtp94_la_SOURCES_DIST = cd-sensor-dtp94.c \
 	cd-sensor-dtp94.h
 @HAVE_GUSB_TRUE@am_libcolord_sensor_dtp94_la_OBJECTS =  \
@@ -157,7 +162,7 @@ libcolord_sensor_dummy_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(libcolord_sensor_dummy_la_LDFLAGS) $(LDFLAGS) -o $@
 @HAVE_GUSB_TRUE@libcolord_sensor_huey_la_DEPENDENCIES =  \
 @HAVE_GUSB_TRUE@	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-@HAVE_GUSB_TRUE@	$(top_builddir)/lib/huey/libhuey.la
+@HAVE_GUSB_TRUE@	$(top_builddir)/lib/huey/libhuey-private.la
 am__libcolord_sensor_huey_la_SOURCES_DIST = cd-sensor-huey.c \
 	cd-sensor-huey.h
 @HAVE_GUSB_TRUE@am_libcolord_sensor_huey_la_OBJECTS =  \
@@ -171,36 +176,14 @@ libcolord_sensor_huey_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 @HAVE_GUSB_TRUE@am_libcolord_sensor_huey_la_rpath = -rpath \
 @HAVE_GUSB_TRUE@	$(plugindir)
 PROGRAMS = $(noinst_PROGRAMS)
-am__cd_huey_dump_values_SOURCES_DIST = cd-huey-dump-values.c
-@CD_BUILD_REVERSE_TRUE@am_cd_huey_dump_values_OBJECTS = cd_huey_dump_values-cd-huey-dump-values.$(OBJEXT)
-cd_huey_dump_values_OBJECTS = $(am_cd_huey_dump_values_OBJECTS)
-@CD_BUILD_REVERSE_TRUE@cd_huey_dump_values_DEPENDENCIES =  \
-@CD_BUILD_REVERSE_TRUE@	$(COLORD_PRIVATE_LIBS) \
-@CD_BUILD_REVERSE_TRUE@	$(am__DEPENDENCIES_1) \
-@CD_BUILD_REVERSE_TRUE@	$(am__DEPENDENCIES_1)
-cd_huey_dump_values_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
-	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
-	$(cd_huey_dump_values_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
-	$(LDFLAGS) -o $@
-am__cd_huey_parse_SOURCES_DIST = cd-huey-parse.c
-@CD_BUILD_REVERSE_TRUE@am_cd_huey_parse_OBJECTS =  \
-@CD_BUILD_REVERSE_TRUE@	cd_huey_parse-cd-huey-parse.$(OBJEXT)
-cd_huey_parse_OBJECTS = $(am_cd_huey_parse_OBJECTS)
-@CD_BUILD_REVERSE_TRUE@cd_huey_parse_DEPENDENCIES =  \
-@CD_BUILD_REVERSE_TRUE@	$(COLORD_PRIVATE_LIBS) \
-@CD_BUILD_REVERSE_TRUE@	$(am__DEPENDENCIES_1) \
-@CD_BUILD_REVERSE_TRUE@	$(top_builddir)/lib/huey/libhuey.la
-cd_huey_parse_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(cd_huey_parse_CFLAGS) \
-	$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 am__cd_parse_beagle_SOURCES_DIST = cd-parse-beagle.c
 @CD_BUILD_REVERSE_TRUE@am_cd_parse_beagle_OBJECTS = cd_parse_beagle-cd-parse-beagle.$(OBJEXT)
 cd_parse_beagle_OBJECTS = $(am_cd_parse_beagle_OBJECTS)
 @CD_BUILD_REVERSE_TRUE@cd_parse_beagle_DEPENDENCIES =  \
 @CD_BUILD_REVERSE_TRUE@	$(COLORD_PRIVATE_LIBS) \
 @CD_BUILD_REVERSE_TRUE@	$(am__DEPENDENCIES_1) \
-@CD_BUILD_REVERSE_TRUE@	$(top_builddir)/lib/huey/libhuey.la \
-@CD_BUILD_REVERSE_TRUE@	$(top_builddir)/lib/munki/libmunki.la
+@CD_BUILD_REVERSE_TRUE@	$(top_builddir)/lib/huey/libhuey-private.la \
+@CD_BUILD_REVERSE_TRUE@	$(top_builddir)/lib/munki/libmunki-private.la
 cd_parse_beagle_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(cd_parse_beagle_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
@@ -263,16 +246,13 @@ SOURCES = $(libcolord_sensor_argyll_la_SOURCES) \
 	$(libcolord_sensor_colorhug_la_SOURCES) \
 	$(libcolord_sensor_dtp94_la_SOURCES) \
 	$(libcolord_sensor_dummy_la_SOURCES) \
-	$(libcolord_sensor_huey_la_SOURCES) \
-	$(cd_huey_dump_values_SOURCES) $(cd_huey_parse_SOURCES) \
-	$(cd_parse_beagle_SOURCES) $(cd_sensor_dump_SOURCES)
+	$(libcolord_sensor_huey_la_SOURCES) $(cd_parse_beagle_SOURCES) \
+	$(cd_sensor_dump_SOURCES)
 DIST_SOURCES = $(libcolord_sensor_argyll_la_SOURCES) \
 	$(am__libcolord_sensor_colorhug_la_SOURCES_DIST) \
 	$(am__libcolord_sensor_dtp94_la_SOURCES_DIST) \
 	$(libcolord_sensor_dummy_la_SOURCES) \
 	$(am__libcolord_sensor_huey_la_SOURCES_DIST) \
-	$(am__cd_huey_dump_values_SOURCES_DIST) \
-	$(am__cd_huey_parse_SOURCES_DIST) \
 	$(am__cd_parse_beagle_SOURCES_DIST) \
 	$(am__cd_sensor_dump_SOURCES_DIST)
 am__can_run_installinfo = \
@@ -520,32 +500,10 @@ COLORD_PRIVATE_LIBS = \
 @CD_BUILD_REVERSE_TRUE@cd_parse_beagle_LDADD = \
 @CD_BUILD_REVERSE_TRUE@	$(COLORD_PRIVATE_LIBS)				\
 @CD_BUILD_REVERSE_TRUE@	$(GLIB_LIBS)					\
-@CD_BUILD_REVERSE_TRUE@	$(top_builddir)/lib/huey/libhuey.la		\
-@CD_BUILD_REVERSE_TRUE@	$(top_builddir)/lib/munki/libmunki.la
+@CD_BUILD_REVERSE_TRUE@	$(top_builddir)/lib/huey/libhuey-private.la	\
+@CD_BUILD_REVERSE_TRUE@	$(top_builddir)/lib/munki/libmunki-private.la
 
 @CD_BUILD_REVERSE_TRUE@cd_parse_beagle_CFLAGS = \
-@CD_BUILD_REVERSE_TRUE@	$(WARNINGFLAGS_C)
-
-@CD_BUILD_REVERSE_TRUE@cd_huey_parse_SOURCES = \
-@CD_BUILD_REVERSE_TRUE@	cd-huey-parse.c
-
-@CD_BUILD_REVERSE_TRUE@cd_huey_parse_LDADD = \
-@CD_BUILD_REVERSE_TRUE@	$(COLORD_PRIVATE_LIBS)				\
-@CD_BUILD_REVERSE_TRUE@	$(GLIB_LIBS)					\
-@CD_BUILD_REVERSE_TRUE@	$(top_builddir)/lib/huey/libhuey.la
-
-@CD_BUILD_REVERSE_TRUE@cd_huey_parse_CFLAGS = \
-@CD_BUILD_REVERSE_TRUE@	$(WARNINGFLAGS_C)
-
-@CD_BUILD_REVERSE_TRUE@cd_huey_dump_values_SOURCES = \
-@CD_BUILD_REVERSE_TRUE@	cd-huey-dump-values.c
-
-@CD_BUILD_REVERSE_TRUE@cd_huey_dump_values_LDADD = \
-@CD_BUILD_REVERSE_TRUE@	$(COLORD_PRIVATE_LIBS)				\
-@CD_BUILD_REVERSE_TRUE@	$(GUSB_LIBS)					\
-@CD_BUILD_REVERSE_TRUE@	$(GLIB_LIBS)
-
-@CD_BUILD_REVERSE_TRUE@cd_huey_dump_values_CFLAGS = \
 @CD_BUILD_REVERSE_TRUE@	$(WARNINGFLAGS_C)
 
 @CD_BUILD_REVERSE_TRUE@cd_sensor_dump_SOURCES = \
@@ -586,7 +544,7 @@ libcolord_sensor_dummy_la_CFLAGS = $(WARNINGFLAGS_C)
 @HAVE_GUSB_TRUE@libcolord_sensor_huey_la_LIBADD = \
 @HAVE_GUSB_TRUE@	$(GLIB_LIBS)					\
 @HAVE_GUSB_TRUE@	$(GUSB_LIBS)					\
-@HAVE_GUSB_TRUE@	$(top_builddir)/lib/huey/libhuey.la
+@HAVE_GUSB_TRUE@	$(top_builddir)/lib/huey/libhuey-private.la
 
 @HAVE_GUSB_TRUE@libcolord_sensor_huey_la_LDFLAGS = -module -avoid-version
 @HAVE_GUSB_TRUE@libcolord_sensor_huey_la_CFLAGS = $(WARNINGFLAGS_C)
@@ -597,7 +555,7 @@ libcolord_sensor_dummy_la_CFLAGS = $(WARNINGFLAGS_C)
 @HAVE_GUSB_TRUE@libcolord_sensor_dtp94_la_LIBADD = \
 @HAVE_GUSB_TRUE@	$(GLIB_LIBS)					\
 @HAVE_GUSB_TRUE@	$(GUSB_LIBS)					\
-@HAVE_GUSB_TRUE@	$(top_builddir)/lib/dtp94/libdtp94.la
+@HAVE_GUSB_TRUE@	$(top_builddir)/lib/dtp94/libdtp94-private.la
 
 @HAVE_GUSB_TRUE@libcolord_sensor_dtp94_la_LDFLAGS = -module -avoid-version
 @HAVE_GUSB_TRUE@libcolord_sensor_dtp94_la_CFLAGS = $(WARNINGFLAGS_C)
@@ -707,12 +665,6 @@ clean-noinstPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
-cd-huey-dump-values$(EXEEXT): $(cd_huey_dump_values_OBJECTS) $(cd_huey_dump_values_DEPENDENCIES) $(EXTRA_cd_huey_dump_values_DEPENDENCIES) 
-	@rm -f cd-huey-dump-values$(EXEEXT)
-	$(AM_V_CCLD)$(cd_huey_dump_values_LINK) $(cd_huey_dump_values_OBJECTS) $(cd_huey_dump_values_LDADD) $(LIBS)
-cd-huey-parse$(EXEEXT): $(cd_huey_parse_OBJECTS) $(cd_huey_parse_DEPENDENCIES) $(EXTRA_cd_huey_parse_DEPENDENCIES) 
-	@rm -f cd-huey-parse$(EXEEXT)
-	$(AM_V_CCLD)$(cd_huey_parse_LINK) $(cd_huey_parse_OBJECTS) $(cd_huey_parse_LDADD) $(LIBS)
 cd-parse-beagle$(EXEEXT): $(cd_parse_beagle_OBJECTS) $(cd_parse_beagle_DEPENDENCIES) $(EXTRA_cd_parse_beagle_DEPENDENCIES) 
 	@rm -f cd-parse-beagle$(EXEEXT)
 	$(AM_V_CCLD)$(cd_parse_beagle_LINK) $(cd_parse_beagle_OBJECTS) $(cd_parse_beagle_LDADD) $(LIBS)
@@ -726,8 +678,6 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd_huey_dump_values-cd-huey-dump-values.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd_huey_parse-cd-huey-parse.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd_parse_beagle-cd-parse-beagle.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd_sensor_dump-cd-common.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd_sensor_dump-cd-debug.Po@am__quote@
@@ -802,34 +752,6 @@ libcolord_sensor_huey_la-cd-sensor-huey.lo: cd-sensor-huey.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-sensor-huey.c' object='libcolord_sensor_huey_la-cd-sensor-huey.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolord_sensor_huey_la_CFLAGS) $(CFLAGS) -c -o libcolord_sensor_huey_la-cd-sensor-huey.lo `test -f 'cd-sensor-huey.c' || echo '$(srcdir)/'`cd-sensor-huey.c
-
-cd_huey_dump_values-cd-huey-dump-values.o: cd-huey-dump-values.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_huey_dump_values_CFLAGS) $(CFLAGS) -MT cd_huey_dump_values-cd-huey-dump-values.o -MD -MP -MF $(DEPDIR)/cd_huey_dump_values-cd-huey-dump-values.Tpo -c -o cd_huey_dump_values-cd-huey-dump-values.o `test -f 'cd-huey-dump-values.c' || echo '$(srcdir)/'`cd-huey-dump-values.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cd_huey_dump_values-cd-huey-dump-values.Tpo $(DEPDIR)/cd_huey_dump_values-cd-huey-dump-values.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-huey-dump-values.c' object='cd_huey_dump_values-cd-huey-dump-values.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_huey_dump_values_CFLAGS) $(CFLAGS) -c -o cd_huey_dump_values-cd-huey-dump-values.o `test -f 'cd-huey-dump-values.c' || echo '$(srcdir)/'`cd-huey-dump-values.c
-
-cd_huey_dump_values-cd-huey-dump-values.obj: cd-huey-dump-values.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_huey_dump_values_CFLAGS) $(CFLAGS) -MT cd_huey_dump_values-cd-huey-dump-values.obj -MD -MP -MF $(DEPDIR)/cd_huey_dump_values-cd-huey-dump-values.Tpo -c -o cd_huey_dump_values-cd-huey-dump-values.obj `if test -f 'cd-huey-dump-values.c'; then $(CYGPATH_W) 'cd-huey-dump-values.c'; else $(CYGPATH_W) '$(srcdir)/cd-huey-dump-values.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cd_huey_dump_values-cd-huey-dump-values.Tpo $(DEPDIR)/cd_huey_dump_values-cd-huey-dump-values.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-huey-dump-values.c' object='cd_huey_dump_values-cd-huey-dump-values.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_huey_dump_values_CFLAGS) $(CFLAGS) -c -o cd_huey_dump_values-cd-huey-dump-values.obj `if test -f 'cd-huey-dump-values.c'; then $(CYGPATH_W) 'cd-huey-dump-values.c'; else $(CYGPATH_W) '$(srcdir)/cd-huey-dump-values.c'; fi`
-
-cd_huey_parse-cd-huey-parse.o: cd-huey-parse.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_huey_parse_CFLAGS) $(CFLAGS) -MT cd_huey_parse-cd-huey-parse.o -MD -MP -MF $(DEPDIR)/cd_huey_parse-cd-huey-parse.Tpo -c -o cd_huey_parse-cd-huey-parse.o `test -f 'cd-huey-parse.c' || echo '$(srcdir)/'`cd-huey-parse.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cd_huey_parse-cd-huey-parse.Tpo $(DEPDIR)/cd_huey_parse-cd-huey-parse.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-huey-parse.c' object='cd_huey_parse-cd-huey-parse.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_huey_parse_CFLAGS) $(CFLAGS) -c -o cd_huey_parse-cd-huey-parse.o `test -f 'cd-huey-parse.c' || echo '$(srcdir)/'`cd-huey-parse.c
-
-cd_huey_parse-cd-huey-parse.obj: cd-huey-parse.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_huey_parse_CFLAGS) $(CFLAGS) -MT cd_huey_parse-cd-huey-parse.obj -MD -MP -MF $(DEPDIR)/cd_huey_parse-cd-huey-parse.Tpo -c -o cd_huey_parse-cd-huey-parse.obj `if test -f 'cd-huey-parse.c'; then $(CYGPATH_W) 'cd-huey-parse.c'; else $(CYGPATH_W) '$(srcdir)/cd-huey-parse.c'; fi`
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cd_huey_parse-cd-huey-parse.Tpo $(DEPDIR)/cd_huey_parse-cd-huey-parse.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-huey-parse.c' object='cd_huey_parse-cd-huey-parse.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_huey_parse_CFLAGS) $(CFLAGS) -c -o cd_huey_parse-cd-huey-parse.obj `if test -f 'cd-huey-parse.c'; then $(CYGPATH_W) 'cd-huey-parse.c'; else $(CYGPATH_W) '$(srcdir)/cd-huey-parse.c'; fi`
 
 cd_parse_beagle-cd-parse-beagle.o: cd-parse-beagle.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_parse_beagle_CFLAGS) $(CFLAGS) -MT cd_parse_beagle-cd-parse-beagle.o -MD -MP -MF $(DEPDIR)/cd_parse_beagle-cd-parse-beagle.Tpo -c -o cd_parse_beagle-cd-parse-beagle.o `test -f 'cd-parse-beagle.c' || echo '$(srcdir)/'`cd-parse-beagle.c

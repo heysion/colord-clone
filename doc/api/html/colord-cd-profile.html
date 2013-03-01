@@ -8,7 +8,7 @@
 <link rel="up" href="libcolord.html" title="libcolord GObjects">
 <link rel="prev" href="colord-cd-device.html" title="cd-device">
 <link rel="next" href="colord-cd-sensor.html" title="cd-sensor">
-<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -48,57 +48,57 @@
 <span class="returnvalue">void</span>                (<a class="link" href="colord-cd-profile.html#cd-profile-reserved7" title="_cd_profile_reserved7 ()">*_cd_profile_reserved7</a>)            (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">void</span>                (<a class="link" href="colord-cd-profile.html#cd-profile-reserved8" title="_cd_profile_reserved8 ()">*_cd_profile_reserved8</a>)            (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-profile.html#cd-profile-connect" title="cd_profile_connect ()">cd_profile_connect</a>                  (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-profile.html#cd-profile-connect-finish" title="cd_profile_connect_finish ()">cd_profile_connect_finish</a>           (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-profile.html#cd-profile-equal" title="cd_profile_equal ()">cd_profile_equal</a>                    (<em class="parameter"><code><span class="type">CdProfile</span> *profile1</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-profile.html#cd-profile-connect-finish" title="cd_profile_connect_finish ()">cd_profile_connect_finish</a>           (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-profile.html#cd-profile-equal" title="cd_profile_equal ()">cd_profile_equal</a>                    (<em class="parameter"><code><span class="type">CdProfile</span> *profile1</code></em>,
                                                          <em class="parameter"><code><span class="type">CdProfile</span> *profile2</code></em>);
-<span class="returnvalue">GQuark</span>              <a class="link" href="colord-cd-profile.html#cd-profile-error-quark" title="cd_profile_error_quark ()">cd_profile_error_quark</a>              (<em class="parameter"><code><span class="type">void</span></code></em>);
-<span class="returnvalue">gint64</span>              <a class="link" href="colord-cd-profile.html#cd-profile-get-age" title="cd_profile_get_age ()">cd_profile_get_age</a>                  (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              <a class="link" href="colord-cd-profile.html#cd-profile-error-quark" title="cd_profile_error_quark ()">cd_profile_error_quark</a>              (<em class="parameter"><code><span class="type">void</span></code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint64"><span class="returnvalue">gint64</span></a>              <a class="link" href="colord-cd-profile.html#cd-profile-get-age" title="cd_profile_get_age ()">cd_profile_get_age</a>                  (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
 <span class="returnvalue">CdColorspace</span>        <a class="link" href="colord-cd-profile.html#cd-profile-get-colorspace" title="cd_profile_get_colorspace ()">cd_profile_get_colorspace</a>           (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-profile.html#cd-profile-get-connected" title="cd_profile_get_connected ()">cd_profile_get_connected</a>            (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
-<span class="returnvalue">gint64</span>              <a class="link" href="colord-cd-profile.html#cd-profile-get-created" title="cd_profile_get_created ()">cd_profile_get_created</a>              (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
-const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-profile.html#cd-profile-get-filename" title="cd_profile_get_filename ()">cd_profile_get_filename</a>             (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
-const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-profile.html#cd-profile-get-format" title="cd_profile_get_format ()">cd_profile_get_format</a>               (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-profile.html#cd-profile-get-has-vcgt" title="cd_profile_get_has_vcgt ()">cd_profile_get_has_vcgt</a>             (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
-const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-profile.html#cd-profile-get-id" title="cd_profile_get_id ()">cd_profile_get_id</a>                   (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-profile.html#cd-profile-get-is-system-wide" title="cd_profile_get_is_system_wide ()">cd_profile_get_is_system_wide</a>       (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-profile.html#cd-profile-get-connected" title="cd_profile_get_connected ()">cd_profile_get_connected</a>            (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint64"><span class="returnvalue">gint64</span></a>              <a class="link" href="colord-cd-profile.html#cd-profile-get-created" title="cd_profile_get_created ()">cd_profile_get_created</a>              (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-profile.html#cd-profile-get-filename" title="cd_profile_get_filename ()">cd_profile_get_filename</a>             (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-profile.html#cd-profile-get-format" title="cd_profile_get_format ()">cd_profile_get_format</a>               (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-profile.html#cd-profile-get-has-vcgt" title="cd_profile_get_has_vcgt ()">cd_profile_get_has_vcgt</a>             (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-profile.html#cd-profile-get-id" title="cd_profile_get_id ()">cd_profile_get_id</a>                   (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-profile.html#cd-profile-get-is-system-wide" title="cd_profile_get_is_system_wide ()">cd_profile_get_is_system_wide</a>       (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
 <span class="returnvalue">CdProfileKind</span>       <a class="link" href="colord-cd-profile.html#cd-profile-get-kind" title="cd_profile_get_kind ()">cd_profile_get_kind</a>                 (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
-<span class="returnvalue">GHashTable</span> *        <a class="link" href="colord-cd-profile.html#cd-profile-get-metadata" title="cd_profile_get_metadata ()">cd_profile_get_metadata</a>             (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
-const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-profile.html#cd-profile-get-metadata-item" title="cd_profile_get_metadata_item ()">cd_profile_get_metadata_item</a>        (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *key</code></em>);
-const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-profile.html#cd-profile-get-object-path" title="cd_profile_get_object_path ()">cd_profile_get_object_path</a>          (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
-<span class="returnvalue">guint</span>               <a class="link" href="colord-cd-profile.html#cd-profile-get-owner" title="cd_profile_get_owner ()">cd_profile_get_owner</a>                (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
-const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-profile.html#cd-profile-get-qualifier" title="cd_profile_get_qualifier ()">cd_profile_get_qualifier</a>            (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="returnvalue">GHashTable</span></a> *        <a class="link" href="colord-cd-profile.html#cd-profile-get-metadata" title="cd_profile_get_metadata ()">cd_profile_get_metadata</a>             (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-profile.html#cd-profile-get-metadata-item" title="cd_profile_get_metadata_item ()">cd_profile_get_metadata_item</a>        (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *key</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-profile.html#cd-profile-get-object-path" title="cd_profile_get_object_path ()">cd_profile_get_object_path</a>          (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="colord-cd-profile.html#cd-profile-get-owner" title="cd_profile_get_owner ()">cd_profile_get_owner</a>                (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-profile.html#cd-profile-get-qualifier" title="cd_profile_get_qualifier ()">cd_profile_get_qualifier</a>            (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
 <span class="returnvalue">CdObjectScope</span>       <a class="link" href="colord-cd-profile.html#cd-profile-get-scope" title="cd_profile_get_scope ()">cd_profile_get_scope</a>                (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
-const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-profile.html#cd-profile-get-title" title="cd_profile_get_title ()">cd_profile_get_title</a>                (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
-<span class="returnvalue">gchar</span> **            <a class="link" href="colord-cd-profile.html#cd-profile-get-warnings" title="cd_profile_get_warnings ()">cd_profile_get_warnings</a>             (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-profile.html#cd-profile-has-access" title="cd_profile_has_access ()">cd_profile_has_access</a>               (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-profile.html#cd-profile-get-title" title="cd_profile_get_title ()">cd_profile_get_title</a>                (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            <a class="link" href="colord-cd-profile.html#cd-profile-get-warnings" title="cd_profile_get_warnings ()">cd_profile_get_warnings</a>             (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-profile.html#cd-profile-has-access" title="cd_profile_has_access ()">cd_profile_has_access</a>               (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-profile.html#cd-profile-install-system-wide" title="cd_profile_install_system_wide ()">cd_profile_install_system_wide</a>      (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-profile.html#cd-profile-install-system-wide-finish" title="cd_profile_install_system_wide_finish ()">cd_profile_install_system_wide_finish</a>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-profile.html#cd-profile-install-system-wide-finish" title="cd_profile_install_system_wide_finish ()">cd_profile_install_system_wide_finish</a>
                                                         (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <span class="returnvalue">CdProfile</span> *         <a class="link" href="colord-cd-profile.html#cd-profile-new" title="cd_profile_new ()">cd_profile_new</a>                      (<em class="parameter"><code><span class="type">void</span></code></em>);
-<span class="returnvalue">CdProfile</span> *         <a class="link" href="colord-cd-profile.html#cd-profile-new-with-object-path" title="cd_profile_new_with_object_path ()">cd_profile_new_with_object_path</a>     (<em class="parameter"><code>const <span class="type">gchar</span> *object_path</code></em>);
+<span class="returnvalue">CdProfile</span> *         <a class="link" href="colord-cd-profile.html#cd-profile-new-with-object-path" title="cd_profile_new_with_object_path ()">cd_profile_new_with_object_path</a>     (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *object_path</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-profile.html#cd-profile-set-object-path" title="cd_profile_set_object_path ()">cd_profile_set_object_path</a>          (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *object_path</code></em>);
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *object_path</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-profile.html#cd-profile-set-property" title="cd_profile_set_property ()">cd_profile_set_property</a>             (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *key</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *value</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-profile.html#cd-profile-set-property-finish" title="cd_profile_set_property_finish ()">cd_profile_set_property_finish</a>      (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
-<span class="returnvalue">gchar</span> *             <a class="link" href="colord-cd-profile.html#cd-profile-to-string" title="cd_profile_to_string ()">cd_profile_to_string</a>                (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *key</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *value</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-profile.html#cd-profile-set-property-finish" title="cd_profile_set_property_finish ()">cd_profile_set_property_finish</a>      (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="colord-cd-profile.html#cd-profile-to-string" title="cd_profile_to_string ()">cd_profile_to_string</a>                (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
 <span class="returnvalue">void</span>                (<a class="link" href="colord-cd-client.html#changed" title="changed ()">*changed</a>)                          (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
 </pre>
 </div>
@@ -189,9 +189,9 @@ See also: <span class="type">CdClient</span>
 <div class="refsect2">
 <a name="cd-profile-connect"></a><h3>cd_profile_connect ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_profile_connect                  (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
 Connects to the object and fills up initial properties.
 </p>
@@ -207,7 +207,7 @@ Connects to the object and fills up initial properties.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <span class="type">GCancellable</span>, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -226,9 +226,9 @@ Connects to the object and fills up initial properties.
 <hr>
 <div class="refsect2">
 <a name="cd-profile-connect-finish"></a><h3>cd_profile_connect_finish ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_profile_connect_finish           (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_profile_connect_finish           (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 Gets the result from the asynchronous function.
 </p>
@@ -244,12 +244,12 @@ Gets the result from the asynchronous function.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
-<td>the <span class="type">GAsyncResult</span>
+<td>the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>A <span class="type">GError</span> or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -263,7 +263,7 @@ Gets the result from the asynchronous function.
 <hr>
 <div class="refsect2">
 <a name="cd-profile-equal"></a><h3>cd_profile_equal ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_profile_equal                    (<em class="parameter"><code><span class="type">CdProfile</span> *profile1</code></em>,
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_profile_equal                    (<em class="parameter"><code><span class="type">CdProfile</span> *profile1</code></em>,
                                                          <em class="parameter"><code><span class="type">CdProfile</span> *profile2</code></em>);</pre>
 <p>
 Tests two profiles for equality.
@@ -285,7 +285,7 @@ Tests two profiles for equality.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<code class="literal">TRUE</code> if the profiles are the same device</td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the profiles are the same device</td>
 </tr>
 </tbody>
 </table></div>
@@ -294,7 +294,7 @@ Tests two profiles for equality.
 <hr>
 <div class="refsect2">
 <a name="cd-profile-error-quark"></a><h3>cd_profile_error_quark ()</h3>
-<pre class="programlisting"><span class="returnvalue">GQuark</span>              cd_profile_error_quark              (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              cd_profile_error_quark              (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -310,7 +310,7 @@ Tests two profiles for equality.
 <hr>
 <div class="refsect2">
 <a name="cd-profile-get-age"></a><h3>cd_profile_get_age ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint64</span>              cd_profile_get_age                  (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint64"><span class="returnvalue">gint64</span></a>              cd_profile_get_age                  (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
 <p>
 Gets the profile age in seconds relative to the current time.
 </p>
@@ -361,7 +361,7 @@ Gets the profile colorspace.
 <hr>
 <div class="refsect2">
 <a name="cd-profile-get-connected"></a><h3>cd_profile_get_connected ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_profile_get_connected            (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_profile_get_connected            (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
 <p>
 Gets if the profile has been connected.
 </p>
@@ -378,7 +378,7 @@ Gets if the profile has been connected.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<code class="literal">TRUE</code> if properties are valid</td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if properties are valid</td>
 </tr>
 </tbody>
 </table></div>
@@ -387,7 +387,7 @@ Gets if the profile has been connected.
 <hr>
 <div class="refsect2">
 <a name="cd-profile-get-created"></a><h3>cd_profile_get_created ()</h3>
-<pre class="programlisting"><span class="returnvalue">gint64</span>              cd_profile_get_created              (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gint64"><span class="returnvalue">gint64</span></a>              cd_profile_get_created              (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
 <p>
 Gets the profile created date and time.
 </p>
@@ -412,7 +412,7 @@ Gets the profile created date and time.
 <hr>
 <div class="refsect2">
 <a name="cd-profile-get-filename"></a><h3>cd_profile_get_filename ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_profile_get_filename             (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_profile_get_filename             (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
 <p>
 Gets the profile filename.
 </p>
@@ -428,7 +428,7 @@ Gets the profile filename.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A string, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> for invalid</td>
+<td>A string, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> for invalid</td>
 </tr>
 </tbody>
 </table></div>
@@ -437,7 +437,7 @@ Gets the profile filename.
 <hr>
 <div class="refsect2">
 <a name="cd-profile-get-format"></a><h3>cd_profile_get_format ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_profile_get_format               (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_profile_get_format               (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
 <p>
 Gets the profile format.
 </p>
@@ -453,7 +453,7 @@ Gets the profile format.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A string, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> for invalid</td>
+<td>A string, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> for invalid</td>
 </tr>
 </tbody>
 </table></div>
@@ -462,7 +462,7 @@ Gets the profile format.
 <hr>
 <div class="refsect2">
 <a name="cd-profile-get-has-vcgt"></a><h3>cd_profile_get_has_vcgt ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_profile_get_has_vcgt             (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_profile_get_has_vcgt             (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
 <p>
 Returns if the profile has a VCGT table.
 </p>
@@ -479,7 +479,7 @@ Returns if the profile has a VCGT table.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<code class="literal">TRUE</code> if VCGT is valid.</td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if VCGT is valid.</td>
 </tr>
 </tbody>
 </table></div>
@@ -488,7 +488,7 @@ Returns if the profile has a VCGT table.
 <hr>
 <div class="refsect2">
 <a name="cd-profile-get-id"></a><h3>cd_profile_get_id ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_profile_get_id                   (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_profile_get_id                   (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
 <p>
 Gets the profile ID.
 </p>
@@ -504,7 +504,7 @@ Gets the profile ID.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A string, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> for invalid</td>
+<td>A string, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> for invalid</td>
 </tr>
 </tbody>
 </table></div>
@@ -513,7 +513,7 @@ Gets the profile ID.
 <hr>
 <div class="refsect2">
 <a name="cd-profile-get-is-system-wide"></a><h3>cd_profile_get_is_system_wide ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_profile_get_is_system_wide       (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_profile_get_is_system_wide       (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
 <p>
 Returns if the profile is installed system wide and available for all
 users.
@@ -531,7 +531,7 @@ users.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<code class="literal">TRUE</code> if system wide.</td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if system wide.</td>
 </tr>
 </tbody>
 </table></div>
@@ -566,7 +566,7 @@ Gets the profile kind.
 <hr>
 <div class="refsect2">
 <a name="cd-profile-get-metadata"></a><h3>cd_profile_get_metadata ()</h3>
-<pre class="programlisting"><span class="returnvalue">GHashTable</span> *        cd_profile_get_metadata             (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="returnvalue">GHashTable</span></a> *        cd_profile_get_metadata             (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
 <p>
 Returns the profile metadata.
 </p>
@@ -583,7 +583,7 @@ Returns the profile metadata.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>a
-<span class="type">GHashTable</span>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> utf8 utf8]</span>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="type">GHashTable</span></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> utf8 utf8]</span>
 </td>
 </tr>
 </tbody>
@@ -593,8 +593,8 @@ Returns the profile metadata.
 <hr>
 <div class="refsect2">
 <a name="cd-profile-get-metadata-item"></a><h3>cd_profile_get_metadata_item ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_profile_get_metadata_item        (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *key</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_profile_get_metadata_item        (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *key</code></em>);</pre>
 <p>
 Returns the profile metadata for a specific key.
 </p>
@@ -614,7 +614,7 @@ Returns the profile metadata for a specific key.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the metadata value, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> if not set.</td>
+<td>the metadata value, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not set.</td>
 </tr>
 </tbody>
 </table></div>
@@ -623,7 +623,7 @@ Returns the profile metadata for a specific key.
 <hr>
 <div class="refsect2">
 <a name="cd-profile-get-object-path"></a><h3>cd_profile_get_object_path ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_profile_get_object_path          (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_profile_get_object_path          (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
 <p>
 Gets the object path for the profile.
 </p>
@@ -639,7 +639,7 @@ Gets the object path for the profile.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the object path, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>the object path, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 </tbody>
@@ -649,7 +649,7 @@ Gets the object path for the profile.
 <hr>
 <div class="refsect2">
 <a name="cd-profile-get-owner"></a><h3>cd_profile_get_owner ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint</span>               cd_profile_get_owner                (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               cd_profile_get_owner                (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
 <p>
 Gets the profile owner.
 </p>
@@ -674,7 +674,7 @@ Gets the profile owner.
 <hr>
 <div class="refsect2">
 <a name="cd-profile-get-qualifier"></a><h3>cd_profile_get_qualifier ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_profile_get_qualifier            (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_profile_get_qualifier            (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
 <p>
 Gets the profile qualifier.
 </p>
@@ -690,7 +690,7 @@ Gets the profile qualifier.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A string, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> for invalid</td>
+<td>A string, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> for invalid</td>
 </tr>
 </tbody>
 </table></div>
@@ -725,7 +725,7 @@ Gets the profile scope.
 <hr>
 <div class="refsect2">
 <a name="cd-profile-get-title"></a><h3>cd_profile_get_title ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_profile_get_title                (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_profile_get_title                (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
 <p>
 Gets the profile title.
 </p>
@@ -741,7 +741,7 @@ Gets the profile title.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A string, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> for invalid</td>
+<td>A string, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> for invalid</td>
 </tr>
 </tbody>
 </table></div>
@@ -750,7 +750,7 @@ Gets the profile title.
 <hr>
 <div class="refsect2">
 <a name="cd-profile-get-warnings"></a><h3>cd_profile_get_warnings ()</h3>
-<pre class="programlisting"><span class="returnvalue">gchar</span> **            cd_profile_get_warnings             (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **            cd_profile_get_warnings             (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
 <p>
 Gets the profile warnings as a string array.
 </p>
@@ -776,7 +776,7 @@ Gets the profile warnings as a string array.
 <hr>
 <div class="refsect2">
 <a name="cd-profile-has-access"></a><h3>cd_profile_has_access ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_profile_has_access               (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_profile_has_access               (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
 <p>
 Gets if the current user has access permissions to the profile.
 </p>
@@ -792,7 +792,7 @@ Gets if the current user has access permissions to the profile.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A string, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> for invalid</td>
+<td>A string, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> for invalid</td>
 </tr>
 </tbody>
 </table></div>
@@ -802,9 +802,9 @@ Gets if the current user has access permissions to the profile.
 <div class="refsect2">
 <a name="cd-profile-install-system-wide"></a><h3>cd_profile_install_system_wide ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_profile_install_system_wide      (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
 Sets the profile system wide.
 </p>
@@ -820,7 +820,7 @@ Sets the profile system wide.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <span class="type">GCancellable</span>, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -839,10 +839,10 @@ Sets the profile system wide.
 <hr>
 <div class="refsect2">
 <a name="cd-profile-install-system-wide-finish"></a><h3>cd_profile_install_system_wide_finish ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_profile_install_system_wide_finish
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_profile_install_system_wide_finish
                                                         (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 Gets the result from the asynchronous function.
 </p>
@@ -858,12 +858,12 @@ Gets the result from the asynchronous function.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
-<td>the <span class="type">GAsyncResult</span>
+<td>the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>A <span class="type">GError</span> or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -896,7 +896,7 @@ Creates a new <span class="type">CdProfile</span> object.
 <hr>
 <div class="refsect2">
 <a name="cd-profile-new-with-object-path"></a><h3>cd_profile_new_with_object_path ()</h3>
-<pre class="programlisting"><span class="returnvalue">CdProfile</span> *         cd_profile_new_with_object_path     (<em class="parameter"><code>const <span class="type">gchar</span> *object_path</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">CdProfile</span> *         cd_profile_new_with_object_path     (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *object_path</code></em>);</pre>
 <p>
 Creates a new <span class="type">CdProfile</span> object with a known object path.
 </p>
@@ -922,7 +922,7 @@ Creates a new <span class="type">CdProfile</span> object with a known object pat
 <div class="refsect2">
 <a name="cd-profile-set-object-path"></a><h3>cd_profile_set_object_path ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_profile_set_object_path          (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *object_path</code></em>);</pre>
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *object_path</code></em>);</pre>
 <p>
 Sets the object path of the profile.
 </p>
@@ -948,11 +948,11 @@ Sets the object path of the profile.
 <div class="refsect2">
 <a name="cd-profile-set-property"></a><h3>cd_profile_set_property ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_profile_set_property             (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *key</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *value</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *key</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *value</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
 Deletes a color device.
 </p>
@@ -976,7 +976,7 @@ Deletes a color device.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <span class="type">GCancellable</span>, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -995,9 +995,9 @@ Deletes a color device.
 <hr>
 <div class="refsect2">
 <a name="cd-profile-set-property-finish"></a><h3>cd_profile_set_property_finish ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_profile_set_property_finish      (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_profile_set_property_finish      (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 Gets the result from the asynchronous function.
 </p>
@@ -1013,12 +1013,12 @@ Gets the result from the asynchronous function.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
-<td>the <span class="type">GAsyncResult</span>
+<td>the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>A <span class="type">GError</span> or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -1032,7 +1032,7 @@ Gets the result from the asynchronous function.
 <hr>
 <div class="refsect2">
 <a name="cd-profile-to-string"></a><h3>cd_profile_to_string ()</h3>
-<pre class="programlisting"><span class="returnvalue">gchar</span> *             cd_profile_to_string                (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             cd_profile_to_string                (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);</pre>
 <p>
 Converts the profile to a string description.
 </p>
@@ -1066,6 +1066,6 @@ Converts the profile to a string description.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18.1</div>
+          Generated by GTK-Doc V1.18</div>
 </body>
 </html>
