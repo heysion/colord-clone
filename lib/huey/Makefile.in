@@ -55,7 +55,14 @@ DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/depcomp
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/as-linguas.m4 \
-	$(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/gtk-doc.m4 \
+	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/intlmacosx.m4 \
+	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/lib-ld.m4 \
+	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
+	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
+	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
+	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -92,18 +99,20 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libhuey_la_DEPENDENCIES = $(am__DEPENDENCIES_1) $(COLORD_LIBS) \
+libhuey_private_la_DEPENDENCIES = $(am__DEPENDENCIES_1) $(COLORD_LIBS) \
 	$(am__DEPENDENCIES_1)
-am_libhuey_la_OBJECTS = libhuey_la-huey-ctx.lo \
-	libhuey_la-huey-device.lo libhuey_la-huey-enum.lo
-libhuey_la_OBJECTS = $(am_libhuey_la_OBJECTS)
+am_libhuey_private_la_OBJECTS = libhuey_private_la-huey-ctx.lo \
+	libhuey_private_la-huey-device.lo \
+	libhuey_private_la-huey-enum.lo
+libhuey_private_la_OBJECTS = $(am_libhuey_private_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
-libhuey_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(libhuey_la_CFLAGS) \
-	$(CFLAGS) $(libhuey_la_LDFLAGS) $(LDFLAGS) -o $@
+libhuey_private_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(libhuey_private_la_CFLAGS) $(CFLAGS) \
+	$(libhuey_private_la_LDFLAGS) $(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -138,8 +147,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libhuey_la_SOURCES)
-DIST_SOURCES = $(libhuey_la_SOURCES)
+SOURCES = $(libhuey_private_la_SOURCES)
+DIST_SOURCES = $(libhuey_private_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -366,9 +375,9 @@ COLORD_LIBS = \
 	$(top_builddir)/lib/colord/libcolordprivate.la
 
 lib_LTLIBRARIES = \
-	libhuey.la
+	libhuey-private.la
 
-libhuey_la_SOURCES = \
+libhuey_private_la_SOURCES = \
 	huey.h							\
 	huey-ctx.c						\
 	huey-ctx.h						\
@@ -377,17 +386,17 @@ libhuey_la_SOURCES = \
 	huey-enum.c						\
 	huey-enum.h
 
-libhuey_la_LIBADD = \
+libhuey_private_la_LIBADD = \
 	$(GUSB_LIBS)						\
 	$(COLORD_LIBS)						\
 	$(GLIB_LIBS)
 
-libhuey_la_LDFLAGS = \
+libhuey_private_la_LDFLAGS = \
 	-export-dynamic						\
 	-no-undefined						\
 	-export-symbols-regex '^huey_.*'
 
-libhuey_la_CFLAGS = \
+libhuey_private_la_CFLAGS = \
 	$(WARNINGFLAGS_C)
 
 CLEANFILES = $(BUILT_SOURCES)
@@ -459,8 +468,8 @@ clean-libLTLIBRARIES:
 	  echo rm -f $${locs}; \
 	  rm -f $${locs}; \
 	}
-libhuey.la: $(libhuey_la_OBJECTS) $(libhuey_la_DEPENDENCIES) $(EXTRA_libhuey_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(libhuey_la_LINK) -rpath $(libdir) $(libhuey_la_OBJECTS) $(libhuey_la_LIBADD) $(LIBS)
+libhuey-private.la: $(libhuey_private_la_OBJECTS) $(libhuey_private_la_DEPENDENCIES) $(EXTRA_libhuey_private_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(libhuey_private_la_LINK) -rpath $(libdir) $(libhuey_private_la_OBJECTS) $(libhuey_private_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -468,9 +477,9 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhuey_la-huey-ctx.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhuey_la-huey-device.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhuey_la-huey-enum.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhuey_private_la-huey-ctx.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhuey_private_la-huey-device.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libhuey_private_la-huey-enum.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -493,26 +502,26 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
 
-libhuey_la-huey-ctx.lo: huey-ctx.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhuey_la_CFLAGS) $(CFLAGS) -MT libhuey_la-huey-ctx.lo -MD -MP -MF $(DEPDIR)/libhuey_la-huey-ctx.Tpo -c -o libhuey_la-huey-ctx.lo `test -f 'huey-ctx.c' || echo '$(srcdir)/'`huey-ctx.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhuey_la-huey-ctx.Tpo $(DEPDIR)/libhuey_la-huey-ctx.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='huey-ctx.c' object='libhuey_la-huey-ctx.lo' libtool=yes @AMDEPBACKSLASH@
+libhuey_private_la-huey-ctx.lo: huey-ctx.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhuey_private_la_CFLAGS) $(CFLAGS) -MT libhuey_private_la-huey-ctx.lo -MD -MP -MF $(DEPDIR)/libhuey_private_la-huey-ctx.Tpo -c -o libhuey_private_la-huey-ctx.lo `test -f 'huey-ctx.c' || echo '$(srcdir)/'`huey-ctx.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhuey_private_la-huey-ctx.Tpo $(DEPDIR)/libhuey_private_la-huey-ctx.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='huey-ctx.c' object='libhuey_private_la-huey-ctx.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhuey_la_CFLAGS) $(CFLAGS) -c -o libhuey_la-huey-ctx.lo `test -f 'huey-ctx.c' || echo '$(srcdir)/'`huey-ctx.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhuey_private_la_CFLAGS) $(CFLAGS) -c -o libhuey_private_la-huey-ctx.lo `test -f 'huey-ctx.c' || echo '$(srcdir)/'`huey-ctx.c
 
-libhuey_la-huey-device.lo: huey-device.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhuey_la_CFLAGS) $(CFLAGS) -MT libhuey_la-huey-device.lo -MD -MP -MF $(DEPDIR)/libhuey_la-huey-device.Tpo -c -o libhuey_la-huey-device.lo `test -f 'huey-device.c' || echo '$(srcdir)/'`huey-device.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhuey_la-huey-device.Tpo $(DEPDIR)/libhuey_la-huey-device.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='huey-device.c' object='libhuey_la-huey-device.lo' libtool=yes @AMDEPBACKSLASH@
+libhuey_private_la-huey-device.lo: huey-device.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhuey_private_la_CFLAGS) $(CFLAGS) -MT libhuey_private_la-huey-device.lo -MD -MP -MF $(DEPDIR)/libhuey_private_la-huey-device.Tpo -c -o libhuey_private_la-huey-device.lo `test -f 'huey-device.c' || echo '$(srcdir)/'`huey-device.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhuey_private_la-huey-device.Tpo $(DEPDIR)/libhuey_private_la-huey-device.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='huey-device.c' object='libhuey_private_la-huey-device.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhuey_la_CFLAGS) $(CFLAGS) -c -o libhuey_la-huey-device.lo `test -f 'huey-device.c' || echo '$(srcdir)/'`huey-device.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhuey_private_la_CFLAGS) $(CFLAGS) -c -o libhuey_private_la-huey-device.lo `test -f 'huey-device.c' || echo '$(srcdir)/'`huey-device.c
 
-libhuey_la-huey-enum.lo: huey-enum.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhuey_la_CFLAGS) $(CFLAGS) -MT libhuey_la-huey-enum.lo -MD -MP -MF $(DEPDIR)/libhuey_la-huey-enum.Tpo -c -o libhuey_la-huey-enum.lo `test -f 'huey-enum.c' || echo '$(srcdir)/'`huey-enum.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhuey_la-huey-enum.Tpo $(DEPDIR)/libhuey_la-huey-enum.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='huey-enum.c' object='libhuey_la-huey-enum.lo' libtool=yes @AMDEPBACKSLASH@
+libhuey_private_la-huey-enum.lo: huey-enum.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhuey_private_la_CFLAGS) $(CFLAGS) -MT libhuey_private_la-huey-enum.lo -MD -MP -MF $(DEPDIR)/libhuey_private_la-huey-enum.Tpo -c -o libhuey_private_la-huey-enum.lo `test -f 'huey-enum.c' || echo '$(srcdir)/'`huey-enum.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libhuey_private_la-huey-enum.Tpo $(DEPDIR)/libhuey_private_la-huey-enum.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='huey-enum.c' object='libhuey_private_la-huey-enum.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhuey_la_CFLAGS) $(CFLAGS) -c -o libhuey_la-huey-enum.lo `test -f 'huey-enum.c' || echo '$(srcdir)/'`huey-enum.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libhuey_private_la_CFLAGS) $(CFLAGS) -c -o libhuey_private_la-huey-enum.lo `test -f 'huey-enum.c' || echo '$(srcdir)/'`huey-enum.c
 
 mostlyclean-libtool:
 	-rm -f *.lo

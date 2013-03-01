@@ -8,7 +8,7 @@
 <link rel="up" href="libcolord.html" title="libcolord GObjects">
 <link rel="prev" href="colord-cd-client.html" title="cd-client">
 <link rel="next" href="colord-cd-profile.html" title="cd-profile">
-<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -50,118 +50,118 @@
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-device.html#cd-device-add-profile" title="cd_device_add_profile ()">cd_device_add_profile</a>               (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
                                                          <em class="parameter"><code><span class="type">CdDeviceRelation</span> relation</code></em>,
                                                          <em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-device.html#cd-device-add-profile-finish" title="cd_device_add_profile_finish ()">cd_device_add_profile_finish</a>        (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-device.html#cd-device-add-profile-finish" title="cd_device_add_profile_finish ()">cd_device_add_profile_finish</a>        (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-device.html#cd-device-connect" title="cd_device_connect ()">cd_device_connect</a>                   (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-device.html#cd-device-connect-finish" title="cd_device_connect_finish ()">cd_device_connect_finish</a>            (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-device.html#cd-device-equal" title="cd_device_equal ()">cd_device_equal</a>                     (<em class="parameter"><code><span class="type">CdDevice</span> *device1</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-device.html#cd-device-connect-finish" title="cd_device_connect_finish ()">cd_device_connect_finish</a>            (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-device.html#cd-device-equal" title="cd_device_equal ()">cd_device_equal</a>                     (<em class="parameter"><code><span class="type">CdDevice</span> *device1</code></em>,
                                                          <em class="parameter"><code><span class="type">CdDevice</span> *device2</code></em>);
-<span class="returnvalue">GQuark</span>              <a class="link" href="colord-cd-device.html#cd-device-error-quark" title="cd_device_error_quark ()">cd_device_error_quark</a>               (<em class="parameter"><code><span class="type">void</span></code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              <a class="link" href="colord-cd-device.html#cd-device-error-quark" title="cd_device_error_quark ()">cd_device_error_quark</a>               (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">CdColorspace</span>        <a class="link" href="colord-cd-device.html#cd-device-get-colorspace" title="cd_device_get_colorspace ()">cd_device_get_colorspace</a>            (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-device.html#cd-device-get-connected" title="cd_device_get_connected ()">cd_device_get_connected</a>             (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
-<span class="returnvalue">guint64</span>             <a class="link" href="colord-cd-device.html#cd-device-get-created" title="cd_device_get_created ()">cd_device_get_created</a>               (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-device.html#cd-device-get-connected" title="cd_device_get_connected ()">cd_device_get_connected</a>             (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"><span class="returnvalue">guint64</span></a>             <a class="link" href="colord-cd-device.html#cd-device-get-created" title="cd_device_get_created ()">cd_device_get_created</a>               (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
 <span class="returnvalue">CdProfile</span> *         <a class="link" href="colord-cd-device.html#cd-device-get-default-profile" title="cd_device_get_default_profile ()">cd_device_get_default_profile</a>       (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-device.html#cd-device-get-embedded" title="cd_device_get_embedded ()">cd_device_get_embedded</a>              (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-device.html#cd-device-get-enabled" title="cd_device_get_enabled ()">cd_device_get_enabled</a>               (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
-const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-device.html#cd-device-get-format" title="cd_device_get_format ()">cd_device_get_format</a>                (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
-const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-device.html#cd-device-get-id" title="cd_device_get_id ()">cd_device_get_id</a>                    (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-device.html#cd-device-get-embedded" title="cd_device_get_embedded ()">cd_device_get_embedded</a>              (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-device.html#cd-device-get-enabled" title="cd_device_get_enabled ()">cd_device_get_enabled</a>               (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-device.html#cd-device-get-format" title="cd_device_get_format ()">cd_device_get_format</a>                (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-device.html#cd-device-get-id" title="cd_device_get_id ()">cd_device_get_id</a>                    (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
 <span class="returnvalue">CdDeviceKind</span>        <a class="link" href="colord-cd-device.html#cd-device-get-kind" title="cd_device_get_kind ()">cd_device_get_kind</a>                  (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
-<span class="returnvalue">GHashTable</span> *        <a class="link" href="colord-cd-device.html#cd-device-get-metadata" title="cd_device_get_metadata ()">cd_device_get_metadata</a>              (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
-const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-device.html#cd-device-get-metadata-item" title="cd_device_get_metadata_item ()">cd_device_get_metadata_item</a>         (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *key</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="returnvalue">GHashTable</span></a> *        <a class="link" href="colord-cd-device.html#cd-device-get-metadata" title="cd_device_get_metadata ()">cd_device_get_metadata</a>              (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-device.html#cd-device-get-metadata-item" title="cd_device_get_metadata_item ()">cd_device_get_metadata_item</a>         (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *key</code></em>);
 <span class="returnvalue">CdDeviceMode</span>        <a class="link" href="colord-cd-device.html#cd-device-get-mode" title="cd_device_get_mode ()">cd_device_get_mode</a>                  (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
-const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-device.html#cd-device-get-model" title="cd_device_get_model ()">cd_device_get_model</a>                 (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
-<span class="returnvalue">guint64</span>             <a class="link" href="colord-cd-device.html#cd-device-get-modified" title="cd_device_get_modified ()">cd_device_get_modified</a>              (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
-const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-device.html#cd-device-get-object-path" title="cd_device_get_object_path ()">cd_device_get_object_path</a>           (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
-<span class="returnvalue">guint</span>               <a class="link" href="colord-cd-device.html#cd-device-get-owner" title="cd_device_get_owner ()">cd_device_get_owner</a>                 (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-device.html#cd-device-get-model" title="cd_device_get_model ()">cd_device_get_model</a>                 (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"><span class="returnvalue">guint64</span></a>             <a class="link" href="colord-cd-device.html#cd-device-get-modified" title="cd_device_get_modified ()">cd_device_get_modified</a>              (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-device.html#cd-device-get-object-path" title="cd_device_get_object_path ()">cd_device_get_object_path</a>           (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               <a class="link" href="colord-cd-device.html#cd-device-get-owner" title="cd_device_get_owner ()">cd_device_get_owner</a>                 (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-device.html#cd-device-get-profile-for-qualifiers" title="cd_device_get_profile_for_qualifiers ()">cd_device_get_profile_for_qualifiers</a>
                                                         (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> **qualifiers</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **qualifiers</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
 <span class="returnvalue">CdProfile</span> *         <a class="link" href="colord-cd-device.html#cd-device-get-profile-for-qualifiers-finish" title="cd_device_get_profile_for_qualifiers_finish ()">cd_device_get_profile_for_qualifiers_finish</a>
                                                         (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-device.html#cd-device-get-profile-relation" title="cd_device_get_profile_relation ()">cd_device_get_profile_relation</a>      (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
                                                          <em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
 <span class="returnvalue">CdDeviceRelation</span>    <a class="link" href="colord-cd-device.html#cd-device-get-profile-relation-finish" title="cd_device_get_profile_relation_finish ()">cd_device_get_profile_relation_finish</a>
                                                         (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
-<span class="returnvalue">GPtrArray</span> *         <a class="link" href="colord-cd-device.html#cd-device-get-profiles" title="cd_device_get_profiles ()">cd_device_get_profiles</a>              (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
-const <span class="returnvalue">gchar</span> **      <a class="link" href="colord-cd-device.html#cd-device-get-profiling-inhibitors" title="cd_device_get_profiling_inhibitors ()">cd_device_get_profiling_inhibitors</a>  (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Pointer-Arrays.html#GPtrArray"><span class="returnvalue">GPtrArray</span></a> *         <a class="link" href="colord-cd-device.html#cd-device-get-profiles" title="cd_device_get_profiles ()">cd_device_get_profiles</a>              (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **      <a class="link" href="colord-cd-device.html#cd-device-get-profiling-inhibitors" title="cd_device_get_profiling_inhibitors ()">cd_device_get_profiling_inhibitors</a>  (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
 <span class="returnvalue">CdObjectScope</span>       <a class="link" href="colord-cd-device.html#cd-device-get-scope" title="cd_device_get_scope ()">cd_device_get_scope</a>                 (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
-const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-device.html#cd-device-get-seat" title="cd_device_get_seat ()">cd_device_get_seat</a>                  (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
-const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-device.html#cd-device-get-serial" title="cd_device_get_serial ()">cd_device_get_serial</a>                (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
-const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-device.html#cd-device-get-vendor" title="cd_device_get_vendor ()">cd_device_get_vendor</a>                (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-device.html#cd-device-get-seat" title="cd_device_get_seat ()">cd_device_get_seat</a>                  (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-device.html#cd-device-get-serial" title="cd_device_get_serial ()">cd_device_get_serial</a>                (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-device.html#cd-device-get-vendor" title="cd_device_get_vendor ()">cd_device_get_vendor</a>                (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-device.html#cd-device-make-profile-default" title="cd_device_make_profile_default ()">cd_device_make_profile_default</a>      (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
                                                          <em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-device.html#cd-device-make-profile-default-finish" title="cd_device_make_profile_default_finish ()">cd_device_make_profile_default_finish</a>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-device.html#cd-device-make-profile-default-finish" title="cd_device_make_profile_default_finish ()">cd_device_make_profile_default_finish</a>
                                                         (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <span class="returnvalue">CdDevice</span> *          <a class="link" href="colord-cd-device.html#cd-device-new" title="cd_device_new ()">cd_device_new</a>                       (<em class="parameter"><code><span class="type">void</span></code></em>);
-<span class="returnvalue">CdDevice</span> *          <a class="link" href="colord-cd-device.html#cd-device-new-with-object-path" title="cd_device_new_with_object_path ()">cd_device_new_with_object_path</a>      (<em class="parameter"><code>const <span class="type">gchar</span> *object_path</code></em>);
+<span class="returnvalue">CdDevice</span> *          <a class="link" href="colord-cd-device.html#cd-device-new-with-object-path" title="cd_device_new_with_object_path ()">cd_device_new_with_object_path</a>      (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *object_path</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-device.html#cd-device-profiling-inhibit" title="cd_device_profiling_inhibit ()">cd_device_profiling_inhibit</a>         (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-device.html#cd-device-profiling-inhibit-finish" title="cd_device_profiling_inhibit_finish ()">cd_device_profiling_inhibit_finish</a>  (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-device.html#cd-device-profiling-inhibit-finish" title="cd_device_profiling_inhibit_finish ()">cd_device_profiling_inhibit_finish</a>  (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-device.html#cd-device-profiling-uninhibit" title="cd_device_profiling_uninhibit ()">cd_device_profiling_uninhibit</a>       (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-device.html#cd-device-profiling-uninhibit-finish" title="cd_device_profiling_uninhibit_finish ()">cd_device_profiling_uninhibit_finish</a>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-device.html#cd-device-profiling-uninhibit-finish" title="cd_device_profiling_uninhibit_finish ()">cd_device_profiling_uninhibit_finish</a>
                                                         (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-device.html#cd-device-remove-profile" title="cd_device_remove_profile ()">cd_device_remove_profile</a>            (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
                                                          <em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-device.html#cd-device-remove-profile-finish" title="cd_device_remove_profile_finish ()">cd_device_remove_profile_finish</a>     (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-device.html#cd-device-remove-profile-finish" title="cd_device_remove_profile_finish ()">cd_device_remove_profile_finish</a>     (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-device.html#cd-device-set-enabled" title="cd_device_set_enabled ()">cd_device_set_enabled</a>               (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">gboolean</span> enabled</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-device.html#cd-device-set-enabled-finish" title="cd_device_set_enabled_finish ()">cd_device_set_enabled_finish</a>        (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> enabled</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-device.html#cd-device-set-enabled-finish" title="cd_device_set_enabled_finish ()">cd_device_set_enabled_finish</a>        (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-device.html#cd-device-set-object-path" title="cd_device_set_object_path ()">cd_device_set_object_path</a>           (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *object_path</code></em>);
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *object_path</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-device.html#cd-device-set-property" title="cd_device_set_property ()">cd_device_set_property</a>              (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *key</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *value</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-device.html#cd-device-set-property-finish" title="cd_device_set_property_finish ()">cd_device_set_property_finish</a>       (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
-<span class="returnvalue">gchar</span> *             <a class="link" href="colord-cd-device.html#cd-device-to-string" title="cd_device_to_string ()">cd_device_to_string</a>                 (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *key</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *value</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-device.html#cd-device-set-property-finish" title="cd_device_set_property_finish ()">cd_device_set_property_finish</a>       (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="colord-cd-device.html#cd-device-to-string" title="cd_device_to_string ()">cd_device_to_string</a>                 (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);
 <span class="returnvalue">void</span>                (<a class="link" href="colord-cd-client.html#changed" title="changed ()">*changed</a>)                          (<em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>);
 </pre>
 </div>
@@ -254,9 +254,9 @@ See also: <span class="type">CdClient</span>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_device_add_profile               (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
                                                          <em class="parameter"><code><span class="type">CdDeviceRelation</span> relation</code></em>,
                                                          <em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
 Adds a profile to a device.
 </p>
@@ -281,7 +281,7 @@ Adds a profile to a device.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <span class="type">GCancellable</span>, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -300,9 +300,9 @@ Adds a profile to a device.
 <hr>
 <div class="refsect2">
 <a name="cd-device-add-profile-finish"></a><h3>cd_device_add_profile_finish ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_device_add_profile_finish        (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_device_add_profile_finish        (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 Gets the result from the asynchronous function.
 </p>
@@ -318,12 +318,12 @@ Gets the result from the asynchronous function.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
-<td>the <span class="type">GAsyncResult</span>
+<td>the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>A <span class="type">GError</span> or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -338,9 +338,9 @@ Gets the result from the asynchronous function.
 <div class="refsect2">
 <a name="cd-device-connect"></a><h3>cd_device_connect ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_device_connect                   (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
 Connects to the object and fills up initial properties.
 </p>
@@ -356,7 +356,7 @@ Connects to the object and fills up initial properties.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <span class="type">GCancellable</span>, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -375,9 +375,9 @@ Connects to the object and fills up initial properties.
 <hr>
 <div class="refsect2">
 <a name="cd-device-connect-finish"></a><h3>cd_device_connect_finish ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_device_connect_finish            (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_device_connect_finish            (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 Gets the result from the asynchronous function.
 </p>
@@ -393,12 +393,12 @@ Gets the result from the asynchronous function.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
-<td>the <span class="type">GAsyncResult</span>
+<td>the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>A <span class="type">GError</span> or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -412,7 +412,7 @@ Gets the result from the asynchronous function.
 <hr>
 <div class="refsect2">
 <a name="cd-device-equal"></a><h3>cd_device_equal ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_device_equal                     (<em class="parameter"><code><span class="type">CdDevice</span> *device1</code></em>,
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_device_equal                     (<em class="parameter"><code><span class="type">CdDevice</span> *device1</code></em>,
                                                          <em class="parameter"><code><span class="type">CdDevice</span> *device2</code></em>);</pre>
 <p>
 Tests two devices for equality.
@@ -434,7 +434,7 @@ Tests two devices for equality.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<code class="literal">TRUE</code> if the devices are the same device</td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the devices are the same device</td>
 </tr>
 </tbody>
 </table></div>
@@ -443,7 +443,7 @@ Tests two devices for equality.
 <hr>
 <div class="refsect2">
 <a name="cd-device-error-quark"></a><h3>cd_device_error_quark ()</h3>
-<pre class="programlisting"><span class="returnvalue">GQuark</span>              cd_device_error_quark               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              cd_device_error_quark               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -485,7 +485,7 @@ Gets the device colorspace.
 <hr>
 <div class="refsect2">
 <a name="cd-device-get-connected"></a><h3>cd_device_get_connected ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_device_get_connected             (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_device_get_connected             (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
 <p>
 Gets if the device has been connected.
 </p>
@@ -502,7 +502,7 @@ Gets if the device has been connected.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<code class="literal">TRUE</code> if properties are valid</td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if properties are valid</td>
 </tr>
 </tbody>
 </table></div>
@@ -511,7 +511,7 @@ Gets if the device has been connected.
 <hr>
 <div class="refsect2">
 <a name="cd-device-get-created"></a><h3>cd_device_get_created ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint64</span>             cd_device_get_created               (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"><span class="returnvalue">guint64</span></a>             cd_device_get_created               (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
 <p>
 Gets the device creation date.
 </p>
@@ -563,7 +563,7 @@ if the device is being profiled or is disabled.
 <hr>
 <div class="refsect2">
 <a name="cd-device-get-embedded"></a><h3>cd_device_get_embedded ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_device_get_embedded              (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_device_get_embedded              (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
 <p>
 Returns if the device is embedded in the computer and cannot be
 removed.
@@ -581,7 +581,7 @@ removed.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<code class="literal">TRUE</code> if embedded.</td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if embedded.</td>
 </tr>
 </tbody>
 </table></div>
@@ -590,7 +590,7 @@ removed.
 <hr>
 <div class="refsect2">
 <a name="cd-device-get-enabled"></a><h3>cd_device_get_enabled ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_device_get_enabled               (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_device_get_enabled               (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
 <p>
 Gets the device enabled state.
 </p>
@@ -607,7 +607,7 @@ Gets the device enabled state.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<code class="literal">TRUE</code> if the device is enabled</td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the device is enabled</td>
 </tr>
 </tbody>
 </table></div>
@@ -616,7 +616,7 @@ Gets the device enabled state.
 <hr>
 <div class="refsect2">
 <a name="cd-device-get-format"></a><h3>cd_device_get_format ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_device_get_format                (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_device_get_format                (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
 <p>
 Gets the device format.
 </p>
@@ -632,7 +632,7 @@ Gets the device format.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A string, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> for invalid</td>
+<td>A string, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> for invalid</td>
 </tr>
 </tbody>
 </table></div>
@@ -641,7 +641,7 @@ Gets the device format.
 <hr>
 <div class="refsect2">
 <a name="cd-device-get-id"></a><h3>cd_device_get_id ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_device_get_id                    (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_device_get_id                    (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
 <p>
 Gets the device ID.
 </p>
@@ -657,7 +657,7 @@ Gets the device ID.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A string, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> for invalid</td>
+<td>A string, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> for invalid</td>
 </tr>
 </tbody>
 </table></div>
@@ -692,7 +692,7 @@ Gets the device kind.
 <hr>
 <div class="refsect2">
 <a name="cd-device-get-metadata"></a><h3>cd_device_get_metadata ()</h3>
-<pre class="programlisting"><span class="returnvalue">GHashTable</span> *        cd_device_get_metadata              (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="returnvalue">GHashTable</span></a> *        cd_device_get_metadata              (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
 <p>
 Returns the device metadata.
 </p>
@@ -709,7 +709,7 @@ Returns the device metadata.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>a
-<span class="type">GHashTable</span>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> utf8 utf8]</span>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="type">GHashTable</span></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> utf8 utf8]</span>
 </td>
 </tr>
 </tbody>
@@ -719,8 +719,8 @@ Returns the device metadata.
 <hr>
 <div class="refsect2">
 <a name="cd-device-get-metadata-item"></a><h3>cd_device_get_metadata_item ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_device_get_metadata_item         (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *key</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_device_get_metadata_item         (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *key</code></em>);</pre>
 <p>
 Returns the device metadata for a specific key.
 </p>
@@ -740,7 +740,7 @@ Returns the device metadata for a specific key.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the metadata value, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> if not set.</td>
+<td>the metadata value, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not set.</td>
 </tr>
 </tbody>
 </table></div>
@@ -775,7 +775,7 @@ Gets the device mode.
 <hr>
 <div class="refsect2">
 <a name="cd-device-get-model"></a><h3>cd_device_get_model ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_device_get_model                 (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_device_get_model                 (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
 <p>
 Gets the device model.
 </p>
@@ -791,7 +791,7 @@ Gets the device model.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A string, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> for invalid</td>
+<td>A string, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> for invalid</td>
 </tr>
 </tbody>
 </table></div>
@@ -800,7 +800,7 @@ Gets the device model.
 <hr>
 <div class="refsect2">
 <a name="cd-device-get-modified"></a><h3>cd_device_get_modified ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint64</span>             cd_device_get_modified              (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"><span class="returnvalue">guint64</span></a>             cd_device_get_modified              (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
 <p>
 Gets the device modified date.
 </p>
@@ -825,7 +825,7 @@ Gets the device modified date.
 <hr>
 <div class="refsect2">
 <a name="cd-device-get-object-path"></a><h3>cd_device_get_object_path ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_device_get_object_path           (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_device_get_object_path           (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
 <p>
 Gets the object path for the device.
 </p>
@@ -841,7 +841,7 @@ Gets the object path for the device.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the object path, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>the object path, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 </tbody>
@@ -851,7 +851,7 @@ Gets the object path for the device.
 <hr>
 <div class="refsect2">
 <a name="cd-device-get-owner"></a><h3>cd_device_get_owner ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint</span>               cd_device_get_owner                 (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="returnvalue">guint</span></a>               cd_device_get_owner                 (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
 <p>
 Gets the device owner.
 </p>
@@ -878,10 +878,10 @@ Gets the device owner.
 <a name="cd-device-get-profile-for-qualifiers"></a><h3>cd_device_get_profile_for_qualifiers ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_device_get_profile_for_qualifiers
                                                         (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> **qualifiers</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> **qualifiers</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
 Gets the prefered profile for some qualifiers.
 </p>
@@ -901,7 +901,7 @@ Gets the prefered profile for some qualifiers.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <span class="type">GCancellable</span>, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -922,8 +922,8 @@ Gets the prefered profile for some qualifiers.
 <a name="cd-device-get-profile-for-qualifiers-finish"></a><h3>cd_device_get_profile_for_qualifiers_finish ()</h3>
 <pre class="programlisting"><span class="returnvalue">CdProfile</span> *         cd_device_get_profile_for_qualifiers_finish
                                                         (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 Gets the result from the asynchronous function.
 </p>
@@ -939,17 +939,17 @@ Gets the result from the asynchronous function.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
-<td>the <span class="type">GAsyncResult</span>
+<td>the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>A <span class="type">GError</span> or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <span class="type">CdProfile</span> or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
+<td>a <span class="type">CdProfile</span> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span>
 </td>
 </tr>
 </tbody>
@@ -961,9 +961,9 @@ Gets the result from the asynchronous function.
 <a name="cd-device-get-profile-relation"></a><h3>cd_device_get_profile_relation ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_device_get_profile_relation      (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
                                                          <em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
 Gets the property relationship to the device.
 </p>
@@ -983,7 +983,7 @@ Gets the property relationship to the device.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <span class="type">GCancellable</span>, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -1004,8 +1004,8 @@ Gets the property relationship to the device.
 <a name="cd-device-get-profile-relation-finish"></a><h3>cd_device_get_profile_relation_finish ()</h3>
 <pre class="programlisting"><span class="returnvalue">CdDeviceRelation</span>    cd_device_get_profile_relation_finish
                                                         (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 Gets the result from the asynchronous function.
 </p>
@@ -1021,12 +1021,12 @@ Gets the result from the asynchronous function.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
-<td>the <span class="type">GAsyncResult</span>
+<td>the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>A <span class="type">GError</span> or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -1040,7 +1040,7 @@ Gets the result from the asynchronous function.
 <hr>
 <div class="refsect2">
 <a name="cd-device-get-profiles"></a><h3>cd_device_get_profiles ()</h3>
-<pre class="programlisting"><span class="returnvalue">GPtrArray</span> *         cd_device_get_profiles              (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Pointer-Arrays.html#GPtrArray"><span class="returnvalue">GPtrArray</span></a> *         cd_device_get_profiles              (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
 <p>
 Gets the device profiles.
 </p>
@@ -1066,7 +1066,7 @@ Gets the device profiles.
 <hr>
 <div class="refsect2">
 <a name="cd-device-get-profiling-inhibitors"></a><h3>cd_device_get_profiling_inhibitors ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> **      cd_device_get_profiling_inhibitors  (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> **      cd_device_get_profiling_inhibitors  (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
 <p>
 Gets any profiling inhibitors for the device.
 </p>
@@ -1082,7 +1082,7 @@ Gets any profiling inhibitors for the device.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A strv, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> for invalid. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
+<td>A strv, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> for invalid. <span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>]</span>
 </td>
 </tr>
 </tbody>
@@ -1118,7 +1118,7 @@ Gets the device scope.
 <hr>
 <div class="refsect2">
 <a name="cd-device-get-seat"></a><h3>cd_device_get_seat ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_device_get_seat                  (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_device_get_seat                  (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
 <p>
 Gets the device seat identifier.
 </p>
@@ -1134,7 +1134,7 @@ Gets the device seat identifier.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A string, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> for invalid</td>
+<td>A string, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> for invalid</td>
 </tr>
 </tbody>
 </table></div>
@@ -1143,7 +1143,7 @@ Gets the device seat identifier.
 <hr>
 <div class="refsect2">
 <a name="cd-device-get-serial"></a><h3>cd_device_get_serial ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_device_get_serial                (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_device_get_serial                (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
 <p>
 Gets the device serial number.
 </p>
@@ -1159,7 +1159,7 @@ Gets the device serial number.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A string, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> for invalid</td>
+<td>A string, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> for invalid</td>
 </tr>
 </tbody>
 </table></div>
@@ -1168,7 +1168,7 @@ Gets the device serial number.
 <hr>
 <div class="refsect2">
 <a name="cd-device-get-vendor"></a><h3>cd_device_get_vendor ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_device_get_vendor                (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_device_get_vendor                (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
 <p>
 Gets the device vendor.
 </p>
@@ -1184,7 +1184,7 @@ Gets the device vendor.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A string, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> for invalid</td>
+<td>A string, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> for invalid</td>
 </tr>
 </tbody>
 </table></div>
@@ -1195,9 +1195,9 @@ Gets the device vendor.
 <a name="cd-device-make-profile-default"></a><h3>cd_device_make_profile_default ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_device_make_profile_default      (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
                                                          <em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
 Makes an already added profile default for a device.
 </p>
@@ -1217,7 +1217,7 @@ Makes an already added profile default for a device.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <span class="type">GCancellable</span>, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -1236,10 +1236,10 @@ Makes an already added profile default for a device.
 <hr>
 <div class="refsect2">
 <a name="cd-device-make-profile-default-finish"></a><h3>cd_device_make_profile_default_finish ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_device_make_profile_default_finish
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_device_make_profile_default_finish
                                                         (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 Gets the result from the asynchronous function.
 </p>
@@ -1255,12 +1255,12 @@ Gets the result from the asynchronous function.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
-<td>the <span class="type">GAsyncResult</span>
+<td>the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>A <span class="type">GError</span> or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -1293,7 +1293,7 @@ Creates a new <span class="type">CdDevice</span> object.
 <hr>
 <div class="refsect2">
 <a name="cd-device-new-with-object-path"></a><h3>cd_device_new_with_object_path ()</h3>
-<pre class="programlisting"><span class="returnvalue">CdDevice</span> *          cd_device_new_with_object_path      (<em class="parameter"><code>const <span class="type">gchar</span> *object_path</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">CdDevice</span> *          cd_device_new_with_object_path      (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *object_path</code></em>);</pre>
 <p>
 Creates a new <span class="type">CdDevice</span> object with a known object path.
 </p>
@@ -1319,9 +1319,9 @@ Creates a new <span class="type">CdDevice</span> object with a known object path
 <div class="refsect2">
 <a name="cd-device-profiling-inhibit"></a><h3>cd_device_profiling_inhibit ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_device_profiling_inhibit         (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
 Sets up the device for profiling and causes no profiles to be
 returned if <a class="link" href="colord-cd-device-sync.html#cd-device-get-profile-for-qualifiers-sync" title="cd_device_get_profile_for_qualifiers_sync ()"><code class="function">cd_device_get_profile_for_qualifiers_sync()</code></a> is used.
@@ -1338,7 +1338,7 @@ returned if <a class="link" href="colord-cd-device-sync.html#cd-device-get-profi
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <span class="type">GCancellable</span>, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -1357,9 +1357,9 @@ returned if <a class="link" href="colord-cd-device-sync.html#cd-device-get-profi
 <hr>
 <div class="refsect2">
 <a name="cd-device-profiling-inhibit-finish"></a><h3>cd_device_profiling_inhibit_finish ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_device_profiling_inhibit_finish  (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_device_profiling_inhibit_finish  (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 Gets the result from the asynchronous function.
 </p>
@@ -1375,12 +1375,12 @@ Gets the result from the asynchronous function.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
-<td>the <span class="type">GAsyncResult</span>
+<td>the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>A <span class="type">GError</span> or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -1395,9 +1395,9 @@ Gets the result from the asynchronous function.
 <div class="refsect2">
 <a name="cd-device-profiling-uninhibit"></a><h3>cd_device_profiling_uninhibit ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_device_profiling_uninhibit       (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
 Restores the device after profiling and causes normal profiles to be
 returned if <a class="link" href="colord-cd-device-sync.html#cd-device-get-profile-for-qualifiers-sync" title="cd_device_get_profile_for_qualifiers_sync ()"><code class="function">cd_device_get_profile_for_qualifiers_sync()</code></a> is used.
@@ -1414,7 +1414,7 @@ returned if <a class="link" href="colord-cd-device-sync.html#cd-device-get-profi
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <span class="type">GCancellable</span>, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -1433,10 +1433,10 @@ returned if <a class="link" href="colord-cd-device-sync.html#cd-device-get-profi
 <hr>
 <div class="refsect2">
 <a name="cd-device-profiling-uninhibit-finish"></a><h3>cd_device_profiling_uninhibit_finish ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_device_profiling_uninhibit_finish
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_device_profiling_uninhibit_finish
                                                         (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 Gets the result from the asynchronous function.
 </p>
@@ -1452,12 +1452,12 @@ Gets the result from the asynchronous function.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
-<td>the <span class="type">GAsyncResult</span>
+<td>the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>A <span class="type">GError</span> or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -1473,9 +1473,9 @@ Gets the result from the asynchronous function.
 <a name="cd-device-remove-profile"></a><h3>cd_device_remove_profile ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_device_remove_profile            (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
                                                          <em class="parameter"><code><span class="type">CdProfile</span> *profile</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
 Removes a profile from a device.
 </p>
@@ -1495,7 +1495,7 @@ Removes a profile from a device.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <span class="type">GCancellable</span>, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -1514,9 +1514,9 @@ Removes a profile from a device.
 <hr>
 <div class="refsect2">
 <a name="cd-device-remove-profile-finish"></a><h3>cd_device_remove_profile_finish ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_device_remove_profile_finish     (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_device_remove_profile_finish     (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 Gets the result from the asynchronous function.
 </p>
@@ -1532,12 +1532,12 @@ Gets the result from the asynchronous function.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
-<td>the <span class="type">GAsyncResult</span>
+<td>the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>A <span class="type">GError</span> or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -1552,10 +1552,10 @@ Gets the result from the asynchronous function.
 <div class="refsect2">
 <a name="cd-device-set-enabled"></a><h3>cd_device_set_enabled ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_device_set_enabled               (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">gboolean</span> enabled</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="type">gboolean</span></a> enabled</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
 Enables or disables a device.
 </p>
@@ -1575,7 +1575,7 @@ Enables or disables a device.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <span class="type">GCancellable</span>, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -1594,9 +1594,9 @@ Enables or disables a device.
 <hr>
 <div class="refsect2">
 <a name="cd-device-set-enabled-finish"></a><h3>cd_device_set_enabled_finish ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_device_set_enabled_finish        (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_device_set_enabled_finish        (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 Gets the result from the asynchronous function.
 </p>
@@ -1612,12 +1612,12 @@ Gets the result from the asynchronous function.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
-<td>the <span class="type">GAsyncResult</span>
+<td>the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>A <span class="type">GError</span> or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -1632,7 +1632,7 @@ Gets the result from the asynchronous function.
 <div class="refsect2">
 <a name="cd-device-set-object-path"></a><h3>cd_device_set_object_path ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_device_set_object_path           (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *object_path</code></em>);</pre>
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *object_path</code></em>);</pre>
 <p>
 Sets the object path of the device.
 </p>
@@ -1658,11 +1658,11 @@ Sets the object path of the device.
 <div class="refsect2">
 <a name="cd-device-set-property"></a><h3>cd_device_set_property ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_device_set_property              (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *key</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *value</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *key</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *value</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
 Sets a property on the device.
 </p>
@@ -1686,7 +1686,7 @@ Sets a property on the device.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <span class="type">GCancellable</span>, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -1705,9 +1705,9 @@ Sets a property on the device.
 <hr>
 <div class="refsect2">
 <a name="cd-device-set-property-finish"></a><h3>cd_device_set_property_finish ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_device_set_property_finish       (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_device_set_property_finish       (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 Gets the result from the asynchronous function.
 </p>
@@ -1723,12 +1723,12 @@ Gets the result from the asynchronous function.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
-<td>the <span class="type">GAsyncResult</span>
+<td>the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>A <span class="type">GError</span> or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -1742,7 +1742,7 @@ Gets the result from the asynchronous function.
 <hr>
 <div class="refsect2">
 <a name="cd-device-to-string"></a><h3>cd_device_to_string ()</h3>
-<pre class="programlisting"><span class="returnvalue">gchar</span> *             cd_device_to_string                 (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             cd_device_to_string                 (<em class="parameter"><code><span class="type">CdDevice</span> *device</code></em>);</pre>
 <p>
 Converts the device to a string description.
 </p>
@@ -1776,6 +1776,6 @@ Converts the device to a string description.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18.1</div>
+          Generated by GTK-Doc V1.18</div>
 </body>
 </html>

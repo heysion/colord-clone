@@ -314,7 +314,7 @@
     <keyword type="function" name="cd_sensor_get_serial ()" link="colord-cd-sensor.html#cd-sensor-get-serial" since="0.1.6"/>
     <keyword type="function" name="cd_sensor_get_state ()" link="colord-cd-sensor.html#cd-sensor-get-state" since="0.1.6"/>
     <keyword type="function" name="cd_sensor_get_vendor ()" link="colord-cd-sensor.html#cd-sensor-get-vendor" since="0.1.6"/>
-    <keyword type="function" name="cd_sensor_has_cap ()" link="colord-cd-sensor.html#cd-sensor-has-cap"/>
+    <keyword type="function" name="cd_sensor_has_cap ()" link="colord-cd-sensor.html#cd-sensor-has-cap" since="0.1.6"/>
     <keyword type="function" name="cd_sensor_lock ()" link="colord-cd-sensor.html#cd-sensor-lock" since="0.1.8"/>
     <keyword type="function" name="cd_sensor_lock_finish ()" link="colord-cd-sensor.html#cd-sensor-lock-finish" since="0.1.8"/>
     <keyword type="function" name="cd_sensor_new ()" link="colord-cd-sensor.html#cd-sensor-new" since="0.1.6"/>
@@ -464,11 +464,5 @@
     <keyword type="function" name="cd_color_yxy_to_xyz ()" link="colord-cd-color.html#cd-color-yxy-to-xyz" since="0.1.27"/>
     <keyword type="constant" name="CD_IT8_ERROR_FAILED" link="colord-cd-it8.html#CD-IT8-ERROR-FAILED:CAPS"/>
     <keyword type="constant" name="CD_IT8_ERROR_LAST" link="colord-cd-it8.html#CD-IT8-ERROR-LAST:CAPS"/>
-    <keyword type="constant" name="CD_IT8_KIND_UNKNOWN" link="colord-cd-it8.html#CD-IT8-KIND-UNKNOWN:CAPS"/>
-    <keyword type="constant" name="CD_IT8_KIND_TI1" link="colord-cd-it8.html#CD-IT8-KIND-TI1:CAPS"/>
-    <keyword type="constant" name="CD_IT8_KIND_TI3" link="colord-cd-it8.html#CD-IT8-KIND-TI3:CAPS"/>
-    <keyword type="constant" name="CD_IT8_KIND_CCMX" link="colord-cd-it8.html#CD-IT8-KIND-CCMX:CAPS"/>
-    <keyword type="constant" name="CD_IT8_KIND_CAL" link="colord-cd-it8.html#CD-IT8-KIND-CAL:CAPS"/>
-    <keyword type="constant" name="CD_IT8_KIND_LAST" link="colord-cd-it8.html#CD-IT8-KIND-LAST:CAPS"/>
   </functions>
 </book>

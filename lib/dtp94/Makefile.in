@@ -55,7 +55,14 @@ DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(top_srcdir)/depcomp
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/as-linguas.m4 \
-	$(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/gtk-doc.m4 \
+	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/intlmacosx.m4 \
+	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/lib-ld.m4 \
+	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
+	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
+	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
+	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -92,18 +99,19 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-libdtp94_la_DEPENDENCIES = $(am__DEPENDENCIES_1) $(COLORD_LIBS) \
-	$(am__DEPENDENCIES_1)
-am_libdtp94_la_OBJECTS = libdtp94_la-dtp94-device.lo \
-	libdtp94_la-dtp94-enum.lo
-libdtp94_la_OBJECTS = $(am_libdtp94_la_OBJECTS)
+libdtp94_private_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+	$(COLORD_LIBS) $(am__DEPENDENCIES_1)
+am_libdtp94_private_la_OBJECTS = libdtp94_private_la-dtp94-device.lo \
+	libdtp94_private_la-dtp94-enum.lo
+libdtp94_private_la_OBJECTS = $(am_libdtp94_private_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
-libdtp94_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(libdtp94_la_CFLAGS) \
-	$(CFLAGS) $(libdtp94_la_LDFLAGS) $(LDFLAGS) -o $@
+libdtp94_private_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(libdtp94_private_la_CFLAGS) $(CFLAGS) \
+	$(libdtp94_private_la_LDFLAGS) $(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -138,8 +146,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(libdtp94_la_SOURCES)
-DIST_SOURCES = $(libdtp94_la_SOURCES)
+SOURCES = $(libdtp94_private_la_SOURCES)
+DIST_SOURCES = $(libdtp94_private_la_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -366,26 +374,26 @@ COLORD_LIBS = \
 	$(top_builddir)/lib/colord/libcolordprivate.la
 
 lib_LTLIBRARIES = \
-	libdtp94.la
+	libdtp94-private.la
 
-libdtp94_la_SOURCES = \
+libdtp94_private_la_SOURCES = \
 	dtp94.h							\
 	dtp94-device.c						\
 	dtp94-device.h						\
 	dtp94-enum.c						\
 	dtp94-enum.h
 
-libdtp94_la_LIBADD = \
+libdtp94_private_la_LIBADD = \
 	$(GUSB_LIBS)						\
 	$(COLORD_LIBS)						\
 	$(GLIB_LIBS)
 
-libdtp94_la_LDFLAGS = \
+libdtp94_private_la_LDFLAGS = \
 	-export-dynamic						\
 	-no-undefined						\
 	-export-symbols-regex '^dtp94_.*'
 
-libdtp94_la_CFLAGS = \
+libdtp94_private_la_CFLAGS = \
 	$(WARNINGFLAGS_C)
 
 CLEANFILES = $(BUILT_SOURCES)
@@ -457,8 +465,8 @@ clean-libLTLIBRARIES:
 	  echo rm -f $${locs}; \
 	  rm -f $${locs}; \
 	}
-libdtp94.la: $(libdtp94_la_OBJECTS) $(libdtp94_la_DEPENDENCIES) $(EXTRA_libdtp94_la_DEPENDENCIES) 
-	$(AM_V_CCLD)$(libdtp94_la_LINK) -rpath $(libdir) $(libdtp94_la_OBJECTS) $(libdtp94_la_LIBADD) $(LIBS)
+libdtp94-private.la: $(libdtp94_private_la_OBJECTS) $(libdtp94_private_la_DEPENDENCIES) $(EXTRA_libdtp94_private_la_DEPENDENCIES) 
+	$(AM_V_CCLD)$(libdtp94_private_la_LINK) -rpath $(libdir) $(libdtp94_private_la_OBJECTS) $(libdtp94_private_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -466,8 +474,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdtp94_la-dtp94-device.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdtp94_la-dtp94-enum.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdtp94_private_la-dtp94-device.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libdtp94_private_la-dtp94-enum.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -490,19 +498,19 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
 
-libdtp94_la-dtp94-device.lo: dtp94-device.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdtp94_la_CFLAGS) $(CFLAGS) -MT libdtp94_la-dtp94-device.lo -MD -MP -MF $(DEPDIR)/libdtp94_la-dtp94-device.Tpo -c -o libdtp94_la-dtp94-device.lo `test -f 'dtp94-device.c' || echo '$(srcdir)/'`dtp94-device.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libdtp94_la-dtp94-device.Tpo $(DEPDIR)/libdtp94_la-dtp94-device.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='dtp94-device.c' object='libdtp94_la-dtp94-device.lo' libtool=yes @AMDEPBACKSLASH@
+libdtp94_private_la-dtp94-device.lo: dtp94-device.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdtp94_private_la_CFLAGS) $(CFLAGS) -MT libdtp94_private_la-dtp94-device.lo -MD -MP -MF $(DEPDIR)/libdtp94_private_la-dtp94-device.Tpo -c -o libdtp94_private_la-dtp94-device.lo `test -f 'dtp94-device.c' || echo '$(srcdir)/'`dtp94-device.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libdtp94_private_la-dtp94-device.Tpo $(DEPDIR)/libdtp94_private_la-dtp94-device.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='dtp94-device.c' object='libdtp94_private_la-dtp94-device.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdtp94_la_CFLAGS) $(CFLAGS) -c -o libdtp94_la-dtp94-device.lo `test -f 'dtp94-device.c' || echo '$(srcdir)/'`dtp94-device.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdtp94_private_la_CFLAGS) $(CFLAGS) -c -o libdtp94_private_la-dtp94-device.lo `test -f 'dtp94-device.c' || echo '$(srcdir)/'`dtp94-device.c
 
-libdtp94_la-dtp94-enum.lo: dtp94-enum.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdtp94_la_CFLAGS) $(CFLAGS) -MT libdtp94_la-dtp94-enum.lo -MD -MP -MF $(DEPDIR)/libdtp94_la-dtp94-enum.Tpo -c -o libdtp94_la-dtp94-enum.lo `test -f 'dtp94-enum.c' || echo '$(srcdir)/'`dtp94-enum.c
-@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libdtp94_la-dtp94-enum.Tpo $(DEPDIR)/libdtp94_la-dtp94-enum.Plo
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='dtp94-enum.c' object='libdtp94_la-dtp94-enum.lo' libtool=yes @AMDEPBACKSLASH@
+libdtp94_private_la-dtp94-enum.lo: dtp94-enum.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdtp94_private_la_CFLAGS) $(CFLAGS) -MT libdtp94_private_la-dtp94-enum.lo -MD -MP -MF $(DEPDIR)/libdtp94_private_la-dtp94-enum.Tpo -c -o libdtp94_private_la-dtp94-enum.lo `test -f 'dtp94-enum.c' || echo '$(srcdir)/'`dtp94-enum.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libdtp94_private_la-dtp94-enum.Tpo $(DEPDIR)/libdtp94_private_la-dtp94-enum.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='dtp94-enum.c' object='libdtp94_private_la-dtp94-enum.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdtp94_la_CFLAGS) $(CFLAGS) -c -o libdtp94_la-dtp94-enum.lo `test -f 'dtp94-enum.c' || echo '$(srcdir)/'`dtp94-enum.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libdtp94_private_la_CFLAGS) $(CFLAGS) -c -o libdtp94_private_la-dtp94-enum.lo `test -f 'dtp94-enum.c' || echo '$(srcdir)/'`dtp94-enum.c
 
 mostlyclean-libtool:
 	-rm -f *.lo

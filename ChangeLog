@@ -1,6 +1,290 @@
+commit 4cd2e481d16c0cd1ea6c9f62dd06abc52fc1ab63
+Author: Richard Hughes <richard@hughsie.com>
+Date:   2013-02-17
+
+    Release colord 0.1.30
+
+M	NEWS
+M	configure.ac
+M	doc/website/download.html
+M	po/it.po
+M	po/ja.po
+M	po/kk.po
+M	po/lv.po
+M	po/pl.po
+M	po/pt_BR.po
+M	po/sl.po
+M	po/sr.po
+M	po/uk.po
+M	src/Makefile.am
+
+commit 470618c0ce413de79389c410a34e9382a9cc8878
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-17
+
+    Do not remove the database files when upgrading the package
+
+M	contrib/colord.spec.in
+
+commit 02d67605abeb7586ab7587ea51ee8ff33354dd82
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-16
+
+    libcolorhug: Support setting the blue LED in the ColorHug Spectro
+
+M	lib/colorhug/ch-common.h
+M	lib/colorhug/ch-device-queue.c
+M	lib/colorhug/ch-self-test.c
+
+commit fc85ee55ce23ca1129931e81ac48220534e8b027
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-15
+
+    trivial: Use a path prefix for the ICC profiles
+
+M	src/Makefile.am
+M	src/cd-profile.c
+M	src/colord.gresource.xml
+
+commit 63dcc9cfe545de6f5d4f574bfb485ff1ffd9cb92
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-15
+
+    Save the common ICC profiles as GResources in the colord binary to
+    reduce I/O
+
+    This reduces seek time a lot when colord is run with a cold
+    cache. Each ICC
+    profile is typically only one block in size (< 4kb) and so we can
+    reduce the
+    amount of seeking we do at startup for profiles we know will be
+    installed.
+
+    This reduces the startup time by 35ms on my fast machine with an
+    SSD, although
+    it'll make a *lot* more difference if you have a spinning disk
+    hard drive.
+
+    If you're profiling this, remember to use 'echo 3 >
+    /proc/sys/vm/drop_caches'
+    to ensure the hot file cache is flushed.
+
+M	Makefile.am
+M	src/Makefile.am
+M	src/cd-profile.c
+M	src/colord.gresource.xml
+
+commit 3475791dd293d325eeaaf5aa89b790c1d5b92388
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-15
+
+    trivial: Add --sourcedir to glib-compile-resources to fix ostree
+
+M	src/Makefile.am
+
+commit d44ac5382042df18a639a10be807fd37ee540a10
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-15
+
+    Load the instrospection to the colord binary as a GResource
+
+M	src/Makefile.am
+M	src/cd-main.c
+A	src/colord.gresource.xml
+
+commit 35ceb2fdb804995ef3f90c51b9dfdd2f3df2bb37
+Author: Evan Nemerson <evan@coeus-group.com>
+Date:	2013-02-14
+
+    colorhug: fix symbol-prefix passed to g-ir-scanner
+
+    The symbol-prefix should not have a trailing underscore.  Leaving it
+    as it currently is causes problems for Vala, which is currently the
+    only software to actually use the symbol-prefix from the GIR.
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	lib/colorhug/Makefile.am
+
+commit b4ab882ecf6ad2ae78c2922fb056ccc12eb6e014
+Author: Martin Pitt <martinpitt@gnome.org>
+Date:	2013-02-13
+
+    ch-self-test: Fix linking
+
+    ch-self-test uses cd_mat33_set_identity(), so link it to
+    libcolordprivate.la.
+
+M	lib/colorhug/Makefile.am
+
+commit 945f1c9be7ac6e2d8f4bc74af87c3d98726a7951
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-12
+
+    libcolord: Skip more self tests if the daemon could not be started
+
+    This should fix 'make check' when run in jenkins.
+
+M	lib/colord/cd-self-test.c
+
+commit 08ba5189f52db0e301c4359f4e7e54cdeef0b054
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-12
+
+    libcolord: Do not expect a system proxy when checking if the daemon
+    exists
+
+    This can never work, if the colord binary is not present or can not
+    run for some reason.
+
+M	lib/colord/cd-client.c
+
+commit dfc89a6562194dadaa149d3931b05128efea2b3b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-12
+
+    trivial: Fix the CI warnings for realpath in the self check program
+
+M	lib/colord/cd-self-test.c
+
+commit 954eab2c74f621bc6e5d655ff12fe5ae701ff6a7
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-08
+
+    Append -private to the driver libraries as they have no headers
+    installed
+
+    In any other project wants to use these libraries, let me know.
+
+M	lib/dtp94/Makefile.am
+M	lib/huey/Makefile.am
+M	lib/munki/Makefile.am
+M	src/sensors/Makefile.am
+
+commit a03530961c61eb810101c6ef347d02da20f47de3
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-06
+
+    Fix up the model name for the ColorMunki and address a tiny memory
+    leak
+
+M	src/cd-sensor.c
+
+commit 016d850d9990b0c2e41b44ec66264bfeb8247dbb
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-06
+
+    libcolord: cd_sensor_get_caps() returns a bitfield, so make it
+    explicitly 64 bits wide
+
+M	lib/colord/cd-sensor.c
+M	lib/colord/cd-sensor.h
+
+commit c240a425bbd7a5cfd081ee80831482a82e77c67c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-06
+
+    trivial: Fix up some trailing whitespace
+
+M	src/cd-profile-store.c
+
+commit 83bfccee2712489b816d1e44fd1d0e4457db2354
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-06
+
+    Do not show duplicate profiles when icc-profiles-openicc is installed
+
+    The basic issue is that icc-profiles-openicc is broken. For instance,
+    the
+    /usr/share/color/icc/lcms/XYZ.icc file has the same md5 sum as
+    the file
+    /usr/share/color/icc/lcms/LCMSXYZI.ICM -- which leads colord to
+    get confused.
+
+M	src/cd-profile-store.c
+
+commit 32c1a08c03c6c488bdc9ada983fc1791f0900382
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-05
+
+    trivial: Remove the huey reverse engineering tools
+
+    We can use the GPLv2+ 'standalone instrument library' from Argyllcms
+    for the
+    magic values.
+
+M	src/sensors/Makefile.am
+D	src/sensors/cd-huey-calculate-fudge.c
+D	src/sensors/cd-huey-dump-values.c
+D	src/sensors/cd-huey-parse.c
+
+commit 26667e664b12661917464737ad39b0dea324ac59
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-05
+
+    huey: Document several unknown commands
+
+    This was found reading spectro/huey.c, from the GPLv2+ 'standalone
+    instrument
+    library' available in the development ArgyllCMS snapshot found at
+    http://www.argyllcms.com/Argyll_dev_src.zip
+
+M	lib/huey/huey-ctx.c
+M	lib/huey/huey-enum.c
+M	lib/huey/huey-enum.h
+
+commit 79014abc9feded3480945542c31ee60ec4450fd5
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-05
+
+    dtp94: Document the unknown 0117CF command
+
+    This was found reading spectro/dtp92.c, from the GPLv2+ 'standalone
+    instrument
+    library' available in the development ArgyllCMS snapshot found at
+    http://www.argyllcms.com/Argyll_dev_src.zip
+
+M	lib/dtp94/dtp94-device.c
+
+commit 20b41c4454556c431e51da220c2b08c09859bdd8
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-05
+
+    dtp94: Fix some trivial indentation issues
+
+M	lib/dtp94/dtp94-device.c
+
+commit 4e43d1f8be92640601047905b8d8f9b834184636
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-05
+
+    trivial: Fix more --no-add-needed fallout
+
+M	client/Makefile.am
+M	contrib/colord-sane/Makefile.am
+M	contrib/session-helper/Makefile.am
+M	doc/api/Makefile.am
+
+commit d2a818342507e18d1482288c0d8685dec8d3aafc
+Author: Christopher James Halse Rogers <raof@ubuntu.com>
+Date:	2013-02-05
+
+    build: Fix Colord-1.0.gir build with --no-add-needed
+
+M	lib/colord/Makefile.am
+
+commit 3130f48dbde4a18a4643f68038f62ae2eff91246
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-04
+
+    trivial: post release version bump
+
+M	RELEASE
+M	configure.ac
+
 commit bde402bebd26a8cfea76cc5d5ff0e3f04edc06a0
 Author: Richard Hughes <richard@hughsie.com>
-Date:   2013-02-04
+Date:	2013-02-04
 
     Release colord 0.1.29
 

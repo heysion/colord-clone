@@ -8,7 +8,7 @@
 <link rel="up" href="libcolord.html" title="libcolord GObjects">
 <link rel="prev" href="colord-cd-profile.html" title="cd-profile">
 <link rel="next" href="colord-cd-it8.html" title="cd-it8">
-<meta name="generator" content="GTK-Doc V1.18.1 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -49,71 +49,71 @@
 <span class="returnvalue">void</span>                (<a class="link" href="colord-cd-sensor.html#cd-sensor-reserved8" title="_cd_sensor_reserved8 ()">*_cd_sensor_reserved8</a>)             (<em class="parameter"><code><span class="type">void</span></code></em>);
 <span class="returnvalue">void</span>                (<a class="link" href="colord-cd-sensor.html#button-pressed" title="button_pressed ()">*button_pressed</a>)                   (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-sensor.html#cd-sensor-connect" title="cd_sensor_connect ()">cd_sensor_connect</a>                   (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-sensor.html#cd-sensor-connect-finish" title="cd_sensor_connect_finish ()">cd_sensor_connect_finish</a>            (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-sensor.html#cd-sensor-equal" title="cd_sensor_equal ()">cd_sensor_equal</a>                     (<em class="parameter"><code><span class="type">CdSensor</span> *sensor1</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-sensor.html#cd-sensor-connect-finish" title="cd_sensor_connect_finish ()">cd_sensor_connect_finish</a>            (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-sensor.html#cd-sensor-equal" title="cd_sensor_equal ()">cd_sensor_equal</a>                     (<em class="parameter"><code><span class="type">CdSensor</span> *sensor1</code></em>,
                                                          <em class="parameter"><code><span class="type">CdSensor</span> *sensor2</code></em>);
-<span class="returnvalue">GQuark</span>              <a class="link" href="colord-cd-sensor.html#cd-sensor-error-quark" title="cd_sensor_error_quark ()">cd_sensor_error_quark</a>               (<em class="parameter"><code><span class="type">void</span></code></em>);
-<span class="returnvalue">guint</span>               <a class="link" href="colord-cd-sensor.html#cd-sensor-get-caps" title="cd_sensor_get_caps ()">cd_sensor_get_caps</a>                  (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-sensor.html#cd-sensor-get-connected" title="cd_sensor_get_connected ()">cd_sensor_get_connected</a>             (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-sensor.html#cd-sensor-get-embedded" title="cd_sensor_get_embedded ()">cd_sensor_get_embedded</a>              (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
-const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-sensor.html#cd-sensor-get-id" title="cd_sensor_get_id ()">cd_sensor_get_id</a>                    (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              <a class="link" href="colord-cd-sensor.html#cd-sensor-error-quark" title="cd_sensor_error_quark ()">cd_sensor_error_quark</a>               (<em class="parameter"><code><span class="type">void</span></code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"><span class="returnvalue">guint64</span></a>             <a class="link" href="colord-cd-sensor.html#cd-sensor-get-caps" title="cd_sensor_get_caps ()">cd_sensor_get_caps</a>                  (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-sensor.html#cd-sensor-get-connected" title="cd_sensor_get_connected ()">cd_sensor_get_connected</a>             (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-sensor.html#cd-sensor-get-embedded" title="cd_sensor_get_embedded ()">cd_sensor_get_embedded</a>              (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-sensor.html#cd-sensor-get-id" title="cd_sensor_get_id ()">cd_sensor_get_id</a>                    (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
 <span class="returnvalue">CdSensorKind</span>        <a class="link" href="colord-cd-sensor.html#cd-sensor-get-kind" title="cd_sensor_get_kind ()">cd_sensor_get_kind</a>                  (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-sensor.html#cd-sensor-get-locked" title="cd_sensor_get_locked ()">cd_sensor_get_locked</a>                (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
-<span class="returnvalue">GHashTable</span> *        <a class="link" href="colord-cd-sensor.html#cd-sensor-get-metadata" title="cd_sensor_get_metadata ()">cd_sensor_get_metadata</a>              (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
-const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-sensor.html#cd-sensor-get-metadata-item" title="cd_sensor_get_metadata_item ()">cd_sensor_get_metadata_item</a>         (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *key</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-sensor.html#cd-sensor-get-locked" title="cd_sensor_get_locked ()">cd_sensor_get_locked</a>                (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="returnvalue">GHashTable</span></a> *        <a class="link" href="colord-cd-sensor.html#cd-sensor-get-metadata" title="cd_sensor_get_metadata ()">cd_sensor_get_metadata</a>              (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-sensor.html#cd-sensor-get-metadata-item" title="cd_sensor_get_metadata_item ()">cd_sensor_get_metadata_item</a>         (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *key</code></em>);
 <span class="returnvalue">CdSensorCap</span>         <a class="link" href="colord-cd-sensor.html#cd-sensor-get-mode" title="cd_sensor_get_mode ()">cd_sensor_get_mode</a>                  (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
-const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-sensor.html#cd-sensor-get-model" title="cd_sensor_get_model ()">cd_sensor_get_model</a>                 (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-sensor.html#cd-sensor-get-native" title="cd_sensor_get_native ()">cd_sensor_get_native</a>                (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
-const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-sensor.html#cd-sensor-get-object-path" title="cd_sensor_get_object_path ()">cd_sensor_get_object_path</a>           (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
-const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-sensor.html#cd-sensor-get-option" title="cd_sensor_get_option ()">cd_sensor_get_option</a>                (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *key</code></em>);
-<span class="returnvalue">GHashTable</span> *        <a class="link" href="colord-cd-sensor.html#cd-sensor-get-options" title="cd_sensor_get_options ()">cd_sensor_get_options</a>               (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-sensor.html#cd-sensor-get-model" title="cd_sensor_get_model ()">cd_sensor_get_model</a>                 (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-sensor.html#cd-sensor-get-native" title="cd_sensor_get_native ()">cd_sensor_get_native</a>                (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-sensor.html#cd-sensor-get-object-path" title="cd_sensor_get_object_path ()">cd_sensor_get_object_path</a>           (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-sensor.html#cd-sensor-get-option" title="cd_sensor_get_option ()">cd_sensor_get_option</a>                (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *key</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="returnvalue">GHashTable</span></a> *        <a class="link" href="colord-cd-sensor.html#cd-sensor-get-options" title="cd_sensor_get_options ()">cd_sensor_get_options</a>               (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-sensor.html#cd-sensor-get-sample" title="cd_sensor_get_sample ()">cd_sensor_get_sample</a>                (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
                                                          <em class="parameter"><code><span class="type">CdSensorCap</span> cap</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
 <a class="link" href="colord-cd-color.html#CdColorXYZ"><span class="returnvalue">CdColorXYZ</span></a> *        <a class="link" href="colord-cd-sensor.html#cd-sensor-get-sample-finish" title="cd_sensor_get_sample_finish ()">cd_sensor_get_sample_finish</a>         (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
-const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-sensor.html#cd-sensor-get-serial" title="cd_sensor_get_serial ()">cd_sensor_get_serial</a>                (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-sensor.html#cd-sensor-get-serial" title="cd_sensor_get_serial ()">cd_sensor_get_serial</a>                (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
 <span class="returnvalue">CdSensorState</span>       <a class="link" href="colord-cd-sensor.html#cd-sensor-get-state" title="cd_sensor_get_state ()">cd_sensor_get_state</a>                 (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
-const <span class="returnvalue">gchar</span> *       <a class="link" href="colord-cd-sensor.html#cd-sensor-get-vendor" title="cd_sensor_get_vendor ()">cd_sensor_get_vendor</a>                (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-sensor.html#cd-sensor-has-cap" title="cd_sensor_has_cap ()">cd_sensor_has_cap</a>                   (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
+const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       <a class="link" href="colord-cd-sensor.html#cd-sensor-get-vendor" title="cd_sensor_get_vendor ()">cd_sensor_get_vendor</a>                (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-sensor.html#cd-sensor-has-cap" title="cd_sensor_has_cap ()">cd_sensor_has_cap</a>                   (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
                                                          <em class="parameter"><code><span class="type">CdSensorCap</span> cap</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-sensor.html#cd-sensor-lock" title="cd_sensor_lock ()">cd_sensor_lock</a>                      (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-sensor.html#cd-sensor-lock-finish" title="cd_sensor_lock_finish ()">cd_sensor_lock_finish</a>               (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-sensor.html#cd-sensor-lock-finish" title="cd_sensor_lock_finish ()">cd_sensor_lock_finish</a>               (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 <span class="returnvalue">CdSensor</span> *          <a class="link" href="colord-cd-sensor.html#cd-sensor-new" title="cd_sensor_new ()">cd_sensor_new</a>                       (<em class="parameter"><code><span class="type">void</span></code></em>);
-<span class="returnvalue">CdSensor</span> *          <a class="link" href="colord-cd-sensor.html#cd-sensor-new-with-object-path" title="cd_sensor_new_with_object_path ()">cd_sensor_new_with_object_path</a>      (<em class="parameter"><code>const <span class="type">gchar</span> *object_path</code></em>);
+<span class="returnvalue">CdSensor</span> *          <a class="link" href="colord-cd-sensor.html#cd-sensor-new-with-object-path" title="cd_sensor_new_with_object_path ()">cd_sensor_new_with_object_path</a>      (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *object_path</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-sensor.html#cd-sensor-set-object-path" title="cd_sensor_set_object_path ()">cd_sensor_set_object_path</a>           (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *object_path</code></em>);
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *object_path</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-sensor.html#cd-sensor-set-options" title="cd_sensor_set_options ()">cd_sensor_set_options</a>               (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
-                                                         <em class="parameter"><code><span class="type">GHashTable</span> *values</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-sensor.html#cd-sensor-set-options-finish" title="cd_sensor_set_options_finish ()">cd_sensor_set_options_finish</a>        (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
-<span class="returnvalue">gchar</span> *             <a class="link" href="colord-cd-sensor.html#cd-sensor-to-string" title="cd_sensor_to_string ()">cd_sensor_to_string</a>                 (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="type">GHashTable</span></a> *values</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-sensor.html#cd-sensor-set-options-finish" title="cd_sensor_set_options_finish ()">cd_sensor_set_options_finish</a>        (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             <a class="link" href="colord-cd-sensor.html#cd-sensor-to-string" title="cd_sensor_to_string ()">cd_sensor_to_string</a>                 (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);
 <span class="returnvalue">void</span>                <a class="link" href="colord-cd-sensor.html#cd-sensor-unlock" title="cd_sensor_unlock ()">cd_sensor_unlock</a>                    (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);
-<span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-sensor.html#cd-sensor-unlock-finish" title="cd_sensor_unlock_finish ()">cd_sensor_unlock_finish</a>             (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-sensor.html#cd-sensor-unlock-finish" title="cd_sensor_unlock_finish ()">cd_sensor_unlock_finish</a>             (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -210,9 +210,9 @@ See also: <span class="type">CdClient</span>
 <div class="refsect2">
 <a name="cd-sensor-connect"></a><h3>cd_sensor_connect ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_sensor_connect                   (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
 Connects to the sensor.
 </p>
@@ -228,7 +228,7 @@ Connects to the sensor.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <span class="type">GCancellable</span> or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -247,9 +247,9 @@ Connects to the sensor.
 <hr>
 <div class="refsect2">
 <a name="cd-sensor-connect-finish"></a><h3>cd_sensor_connect_finish ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_sensor_connect_finish            (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_sensor_connect_finish            (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 Gets the result from the asynchronous function.
 </p>
@@ -265,18 +265,18 @@ Gets the result from the asynchronous function.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
-<td>the <span class="type">GAsyncResult</span>
+<td>the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>A <span class="type">GError</span> or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<code class="literal">TRUE</code> if we could connect to to the sensor</td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if we could connect to to the sensor</td>
 </tr>
 </tbody>
 </table></div>
@@ -285,7 +285,7 @@ Gets the result from the asynchronous function.
 <hr>
 <div class="refsect2">
 <a name="cd-sensor-equal"></a><h3>cd_sensor_equal ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_sensor_equal                     (<em class="parameter"><code><span class="type">CdSensor</span> *sensor1</code></em>,
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_sensor_equal                     (<em class="parameter"><code><span class="type">CdSensor</span> *sensor1</code></em>,
                                                          <em class="parameter"><code><span class="type">CdSensor</span> *sensor2</code></em>);</pre>
 <p>
 Tests two sensors for equality.
@@ -307,7 +307,7 @@ Tests two sensors for equality.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<code class="literal">TRUE</code> if the sensors are the same device</td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the sensors are the same device</td>
 </tr>
 </tbody>
 </table></div>
@@ -316,7 +316,7 @@ Tests two sensors for equality.
 <hr>
 <div class="refsect2">
 <a name="cd-sensor-error-quark"></a><h3>cd_sensor_error_quark ()</h3>
-<pre class="programlisting"><span class="returnvalue">GQuark</span>              cd_sensor_error_quark               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Quarks.html#GQuark"><span class="returnvalue">GQuark</span></a>              cd_sensor_error_quark               (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <div class="variablelist"><table border="0" class="variablelist">
 <colgroup>
 <col align="left" valign="top">
@@ -332,7 +332,7 @@ Tests two sensors for equality.
 <hr>
 <div class="refsect2">
 <a name="cd-sensor-get-caps"></a><h3>cd_sensor_get_caps ()</h3>
-<pre class="programlisting"><span class="returnvalue">guint</span>               cd_sensor_get_caps                  (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint64"><span class="returnvalue">guint64</span></a>             cd_sensor_get_caps                  (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
 <p>
 Returns the sensor metadata.
 </p>
@@ -357,7 +357,7 @@ Returns the sensor metadata.
 <hr>
 <div class="refsect2">
 <a name="cd-sensor-get-connected"></a><h3>cd_sensor_get_connected ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_sensor_get_connected             (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_sensor_get_connected             (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
 <p>
 Gets if the sensor has been connected.
 </p>
@@ -374,7 +374,7 @@ Gets if the sensor has been connected.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<code class="literal">TRUE</code> if properties are valid</td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if properties are valid</td>
 </tr>
 </tbody>
 </table></div>
@@ -383,7 +383,7 @@ Gets if the sensor has been connected.
 <hr>
 <div class="refsect2">
 <a name="cd-sensor-get-embedded"></a><h3>cd_sensor_get_embedded ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_sensor_get_embedded              (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_sensor_get_embedded              (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
 <p>
 Returns if the sensor is embedded into the computer.
 </p>
@@ -400,7 +400,7 @@ Returns if the sensor is embedded into the computer.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<code class="literal">TRUE</code> if embedded.</td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if embedded.</td>
 </tr>
 </tbody>
 </table></div>
@@ -409,7 +409,7 @@ Returns if the sensor is embedded into the computer.
 <hr>
 <div class="refsect2">
 <a name="cd-sensor-get-id"></a><h3>cd_sensor_get_id ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_sensor_get_id                    (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_sensor_get_id                    (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
 <p>
 Gets the object ID for the sensor.
 </p>
@@ -425,7 +425,7 @@ Gets the object ID for the sensor.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the object ID, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>the object ID, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 </tbody>
@@ -461,7 +461,7 @@ Gets the sensor kind.
 <hr>
 <div class="refsect2">
 <a name="cd-sensor-get-locked"></a><h3>cd_sensor_get_locked ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_sensor_get_locked                (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_sensor_get_locked                (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
 <p>
 Returns if the sensor is locked.
 </p>
@@ -478,7 +478,7 @@ Returns if the sensor is locked.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<code class="literal">TRUE</code> if VCGT is valid.</td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if VCGT is valid.</td>
 </tr>
 </tbody>
 </table></div>
@@ -487,7 +487,7 @@ Returns if the sensor is locked.
 <hr>
 <div class="refsect2">
 <a name="cd-sensor-get-metadata"></a><h3>cd_sensor_get_metadata ()</h3>
-<pre class="programlisting"><span class="returnvalue">GHashTable</span> *        cd_sensor_get_metadata              (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="returnvalue">GHashTable</span></a> *        cd_sensor_get_metadata              (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
 <p>
 Returns the sensor metadata.
 </p>
@@ -504,7 +504,7 @@ Returns the sensor metadata.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>a
-<span class="type">GHashTable</span>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> utf8 utf8]</span>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="type">GHashTable</span></a>. <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> utf8 utf8]</span>
 </td>
 </tr>
 </tbody>
@@ -514,8 +514,8 @@ Returns the sensor metadata.
 <hr>
 <div class="refsect2">
 <a name="cd-sensor-get-metadata-item"></a><h3>cd_sensor_get_metadata_item ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_sensor_get_metadata_item         (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *key</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_sensor_get_metadata_item         (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *key</code></em>);</pre>
 <p>
 Returns the sensor metadata for a specific key.
 </p>
@@ -535,7 +535,7 @@ Returns the sensor metadata for a specific key.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the metadata value, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> if not set.</td>
+<td>the metadata value, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if not set.</td>
 </tr>
 </tbody>
 </table></div>
@@ -570,7 +570,7 @@ Gets the sensor operating mode.
 <hr>
 <div class="refsect2">
 <a name="cd-sensor-get-model"></a><h3>cd_sensor_get_model ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_sensor_get_model                 (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_sensor_get_model                 (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
 <p>
 Gets the sensor model.
 </p>
@@ -586,7 +586,7 @@ Gets the sensor model.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A string, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> for invalid</td>
+<td>A string, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> for invalid</td>
 </tr>
 </tbody>
 </table></div>
@@ -595,7 +595,7 @@ Gets the sensor model.
 <hr>
 <div class="refsect2">
 <a name="cd-sensor-get-native"></a><h3>cd_sensor_get_native ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_sensor_get_native                (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_sensor_get_native                (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
 <p>
 Returns if the sensor has a native driver.
 </p>
@@ -612,7 +612,7 @@ Returns if the sensor has a native driver.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<code class="literal">TRUE</code> if VCGT is valid.</td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if VCGT is valid.</td>
 </tr>
 </tbody>
 </table></div>
@@ -621,7 +621,7 @@ Returns if the sensor has a native driver.
 <hr>
 <div class="refsect2">
 <a name="cd-sensor-get-object-path"></a><h3>cd_sensor_get_object_path ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_sensor_get_object_path           (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_sensor_get_object_path           (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
 <p>
 Gets the object path for the sensor.
 </p>
@@ -637,7 +637,7 @@ Gets the object path for the sensor.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the object path, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>the object path, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 </tbody>
@@ -647,8 +647,8 @@ Gets the object path for the sensor.
 <hr>
 <div class="refsect2">
 <a name="cd-sensor-get-option"></a><h3>cd_sensor_get_option ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_sensor_get_option                (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *key</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_sensor_get_option                (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *key</code></em>);</pre>
 <p>
 Gets a specific sensor option.
 </p>
@@ -668,7 +668,7 @@ Gets a specific sensor option.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A const string, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> of not found.</td>
+<td>A const string, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> of not found.</td>
 </tr>
 </tbody>
 </table></div>
@@ -677,7 +677,7 @@ Gets a specific sensor option.
 <hr>
 <div class="refsect2">
 <a name="cd-sensor-get-options"></a><h3>cd_sensor_get_options ()</h3>
-<pre class="programlisting"><span class="returnvalue">GHashTable</span> *        cd_sensor_get_options               (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="returnvalue">GHashTable</span></a> *        cd_sensor_get_options               (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
 <p>
 Gets any sensor options.
 </p>
@@ -694,7 +694,7 @@ Gets any sensor options.
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>A
-refcounted <span class="type">GHashTable</span> of (string, GVariant). <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> utf8 GVariant]</span>
+refcounted <a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="type">GHashTable</span></a> of (string, GVariant). <span class="annotation">[<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> utf8 GVariant]</span>
 </td>
 </tr>
 </tbody>
@@ -706,9 +706,9 @@ refcounted <span class="type">GHashTable</span> of (string, GVariant). <span cla
 <a name="cd-sensor-get-sample"></a><h3>cd_sensor_get_sample ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_sensor_get_sample                (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
                                                          <em class="parameter"><code><span class="type">CdSensorCap</span> cap</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
 Gets a color sample from a sensor
 </p>
@@ -729,7 +729,7 @@ Gets a color sample from a sensor
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <span class="type">GCancellable</span>, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -749,8 +749,8 @@ Gets a color sample from a sensor
 <div class="refsect2">
 <a name="cd-sensor-get-sample-finish"></a><h3>cd_sensor_get_sample_finish ()</h3>
 <pre class="programlisting"><a class="link" href="colord-cd-color.html#CdColorXYZ"><span class="returnvalue">CdColorXYZ</span></a> *        cd_sensor_get_sample_finish         (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 Gets the result from the asynchronous function.
 </p>
@@ -766,17 +766,17 @@ Gets the result from the asynchronous function.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
-<td>the <span class="type">GAsyncResult</span>
+<td>the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>A <span class="type">GError</span> or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>the XYZ reading, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>the XYZ reading, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 </tbody>
@@ -786,7 +786,7 @@ Gets the result from the asynchronous function.
 <hr>
 <div class="refsect2">
 <a name="cd-sensor-get-serial"></a><h3>cd_sensor_get_serial ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_sensor_get_serial                (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_sensor_get_serial                (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
 <p>
 Gets the sensor serial number.
 </p>
@@ -802,7 +802,7 @@ Gets the sensor serial number.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A string, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> for invalid</td>
+<td>A string, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> for invalid</td>
 </tr>
 </tbody>
 </table></div>
@@ -837,7 +837,7 @@ Gets the sensor state.
 <hr>
 <div class="refsect2">
 <a name="cd-sensor-get-vendor"></a><h3>cd_sensor_get_vendor ()</h3>
-<pre class="programlisting">const <span class="returnvalue">gchar</span> *       cd_sensor_get_vendor                (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
+<pre class="programlisting">const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *       cd_sensor_get_vendor                (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
 <p>
 Gets the sensor vendor.
 </p>
@@ -853,7 +853,7 @@ Gets the sensor vendor.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>A string, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a> for invalid</td>
+<td>A string, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> for invalid</td>
 </tr>
 </tbody>
 </table></div>
@@ -862,18 +862,42 @@ Gets the sensor vendor.
 <hr>
 <div class="refsect2">
 <a name="cd-sensor-has-cap"></a><h3>cd_sensor_has_cap ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_sensor_has_cap                   (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_sensor_has_cap                   (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
                                                          <em class="parameter"><code><span class="type">CdSensorCap</span> cap</code></em>);</pre>
 <p>
+Returns the sensor metadata for a specific key.
 </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>sensor</code></em> :</span></p></td>
+<td>a <span class="type">CdSensor</span> instance.</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cap</code></em> :</span></p></td>
+<td>a specified capability, e.g. <code class="literal">CD_SENSOR_CAP_LCD</code>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if the sensor has the specified capability</td>
+</tr>
+</tbody>
+</table></div>
+<p class="since">Since 0.1.6</p>
 </div>
 <hr>
 <div class="refsect2">
 <a name="cd-sensor-lock"></a><h3>cd_sensor_lock ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_sensor_lock                      (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
 Locks the device so we can use it.
 </p>
@@ -889,7 +913,7 @@ Locks the device so we can use it.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <span class="type">GCancellable</span>, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -908,9 +932,9 @@ Locks the device so we can use it.
 <hr>
 <div class="refsect2">
 <a name="cd-sensor-lock-finish"></a><h3>cd_sensor_lock_finish ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_sensor_lock_finish               (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_sensor_lock_finish               (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 Gets the result from the asynchronous function.
 </p>
@@ -926,12 +950,12 @@ Gets the result from the asynchronous function.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
-<td>the <span class="type">GAsyncResult</span>
+<td>the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>A <span class="type">GError</span> or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -964,7 +988,7 @@ Creates a new <span class="type">CdSensor</span> object.
 <hr>
 <div class="refsect2">
 <a name="cd-sensor-new-with-object-path"></a><h3>cd_sensor_new_with_object_path ()</h3>
-<pre class="programlisting"><span class="returnvalue">CdSensor</span> *          cd_sensor_new_with_object_path      (<em class="parameter"><code>const <span class="type">gchar</span> *object_path</code></em>);</pre>
+<pre class="programlisting"><span class="returnvalue">CdSensor</span> *          cd_sensor_new_with_object_path      (<em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *object_path</code></em>);</pre>
 <p>
 Creates a new <span class="type">CdSensor</span> object with a known object path.
 </p>
@@ -990,7 +1014,7 @@ Creates a new <span class="type">CdSensor</span> object with a known object path
 <div class="refsect2">
 <a name="cd-sensor-set-object-path"></a><h3>cd_sensor_set_object_path ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_sensor_set_object_path           (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
-                                                         <em class="parameter"><code>const <span class="type">gchar</span> *object_path</code></em>);</pre>
+                                                         <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *object_path</code></em>);</pre>
 <p>
 Sets the object path of the sensor.
 </p>
@@ -1016,10 +1040,10 @@ Sets the object path of the sensor.
 <div class="refsect2">
 <a name="cd-sensor-set-options"></a><h3>cd_sensor_set_options ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_sensor_set_options               (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
-                                                         <em class="parameter"><code><span class="type">GHashTable</span> *values</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Hash-Tables.html#GHashTable"><span class="type">GHashTable</span></a> *values</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
 Sets options on the sensor device.
 </p>
@@ -1040,7 +1064,7 @@ Sets options on the sensor device.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <span class="type">GCancellable</span>, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -1059,9 +1083,9 @@ Sets options on the sensor device.
 <hr>
 <div class="refsect2">
 <a name="cd-sensor-set-options-finish"></a><h3>cd_sensor_set_options_finish ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_sensor_set_options_finish        (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_sensor_set_options_finish        (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 Gets the result from the asynchronous function.
 </p>
@@ -1077,12 +1101,12 @@ Gets the result from the asynchronous function.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
-<td>the <span class="type">GAsyncResult</span>
+<td>the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>A <span class="type">GError</span> or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -1096,7 +1120,7 @@ Gets the result from the asynchronous function.
 <hr>
 <div class="refsect2">
 <a name="cd-sensor-to-string"></a><h3>cd_sensor_to_string ()</h3>
-<pre class="programlisting"><span class="returnvalue">gchar</span> *             cd_sensor_to_string                 (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="returnvalue">gchar</span></a> *             cd_sensor_to_string                 (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>);</pre>
 <p>
 </p>
 </div>
@@ -1104,9 +1128,9 @@ Gets the result from the asynchronous function.
 <div class="refsect2">
 <a name="cd-sensor-unlock"></a><h3>cd_sensor_unlock ()</h3>
 <pre class="programlisting"><span class="returnvalue">void</span>                cd_sensor_unlock                    (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
-                                                         <em class="parameter"><code><span class="type">GCancellable</span> *cancellable</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncReadyCallback</span> callback</code></em>,
-                                                         <em class="parameter"><code><span class="type">gpointer</span> user_data</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a> *cancellable</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html#GAsyncReadyCallback"><span class="type">GAsyncReadyCallback</span></a> callback</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gpointer"><span class="type">gpointer</span></a> user_data</code></em>);</pre>
 <p>
 Unlocks the sensor for use by other programs.
 </p>
@@ -1122,7 +1146,7 @@ Unlocks the sensor for use by other programs.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>cancellable</code></em> :</span></p></td>
-<td>a <span class="type">GCancellable</span>, or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>a <a href="http://library.gnome.org/devel/gio/unstable/GCancellable.html"><span class="type">GCancellable</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -1141,9 +1165,9 @@ Unlocks the sensor for use by other programs.
 <hr>
 <div class="refsect2">
 <a name="cd-sensor-unlock-finish"></a><h3>cd_sensor_unlock_finish ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_sensor_unlock_finish             (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
-                                                         <em class="parameter"><code><span class="type">GAsyncResult</span> *res</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_sensor_unlock_finish             (<em class="parameter"><code><span class="type">CdSensor</span> *sensor</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a> *res</code></em>,
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 Gets the result from the asynchronous function.
 </p>
@@ -1159,12 +1183,12 @@ Gets the result from the asynchronous function.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>res</code></em> :</span></p></td>
-<td>the <span class="type">GAsyncResult</span>
+<td>the <a href="http://library.gnome.org/devel/gio/unstable/GAsyncResult.html"><span class="type">GAsyncResult</span></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>A <span class="type">GError</span> or <a href="/home/hughsie/Code/gnome3/.root/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL--CAPS"><code class="literal">NULL</code></a>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -1179,6 +1203,6 @@ Gets the result from the asynchronous function.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18.1</div>
+          Generated by GTK-Doc V1.18</div>
 </body>
 </html>

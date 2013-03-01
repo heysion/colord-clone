@@ -300,7 +300,7 @@ namespace Cd {
 		public static Cd.SensorError error_from_string (string error_desc);
 		public static GLib.Quark error_quark ();
 		public static unowned string error_to_string (Cd.SensorError error_enum);
-		public uint get_caps ();
+		public uint64 get_caps ();
 		public bool get_connected ();
 		public bool get_embedded ();
 		public unowned string get_id ();

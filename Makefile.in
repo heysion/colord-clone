@@ -57,7 +57,14 @@ DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
 	depcomp install-sh ltmain.sh missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/as-linguas.m4 \
-	$(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/gtk-doc.m4 \
+	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/intlmacosx.m4 \
+	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/lib-ld.m4 \
+	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
+	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
+	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
+	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
@@ -353,8 +360,10 @@ NULL =
 # this needs libcolord
 
 # this needs client/cd-create-profile
-SUBDIRS = etc policy man lib rules po client contrib doc examples src \
-	data
+
+# this needs data/profiles/*.icc
+SUBDIRS = etc policy man lib rules po client contrib doc examples data \
+	src
 DISTCHECK_CONFIGURE_FLAGS = \
 	--enable-introspection				\
 	--enable-fd-fallback				\
