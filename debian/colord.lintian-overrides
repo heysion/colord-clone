@@ -1,0 +1,4 @@
+# These are false-positives
+colord: hardening-no-fortify-functions usr/bin/cd-create-profile
+colord: hardening-no-fortify-functions usr/bin/cd-fix-profile
+colord: hardening-no-fortify-functions usr/lib/colord-sensors/libcolord_sensor_argyll.so
