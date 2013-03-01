@@ -36,10 +36,10 @@ override_dh_clean:
 override_dh_install:
 	# The .la file(s) are entirely useless; kill them with fire.
 	find debian/tmp -name '*.la' -delete
-	# The sensor libraries are semi-private; remove development symlink
-	-rm debian/tmp/usr/lib/*/libdtp94.so
-	-rm debian/tmp/usr/lib/*/libhuey.so
-	-rm debian/tmp/usr/lib/*/libmunki.so
+	# The sensor libraries are private; remove development symlink
+	-rm debian/tmp/usr/lib/*/libdtp94-private.so
+	-rm debian/tmp/usr/lib/*/libhuey-private.so
+	-rm debian/tmp/usr/lib/*/libmunki-private.so
 
 	dh_install --list-missing
 
