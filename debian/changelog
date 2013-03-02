@@ -1,10 +1,10 @@
 colord (0.1.30-1) UNRELEASED; urgency=low
 
-  * New upstream release 0.1.30
+  * New upstream release 0.1.30 (LP: #1099967)
     + Drop patches included in new upstream release
     + Replace one_shot_colord-sane patch with upstream version    
-    + New upstream includes support for Spyder 3 (Closes: 696394)
-    + New upstream includes support for ColorMunki (Closes: 701653)
+    + New upstream includes support for Spyder 3 (Closes: 696394, LP: #1072261)
+    + New upstream includes support for ColorMunki (Closes: 701653, LP: #889655)
     + New upstream includes its own set of base colour spaces (Closes: 666513)
     + New upstream has re-written colord-sane binary, which doesn't crash in
       libdbus (Closes: 668225)
@@ -26,6 +26,7 @@ colord (0.1.30-1) UNRELEASED; urgency=low
   * Remove gtk-doc symlinks on clean
   * Add build-depend on libsystemd-login-dev for seat identification
   * Add header for single-debian-patch identifying them as upstream cherry-picks
+  * Create /var/lib/colord/icc for system-wide profiles (LP: #1083698)
 
  -- Christopher James Halse Rogers <raof@ubuntu.com>  Sat, 02 Mar 2013 16:08:53 +1100
 
