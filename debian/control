@@ -21,6 +21,7 @@ Build-Depends:
  dh-autoreconf,
  gtk-doc-tools,
  autopoint,
+ libsystemd-login-dev,
 Standards-Version: 3.9.2
 XS-Testsuite: autopkgtest
 Section: graphics
