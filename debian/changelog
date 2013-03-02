@@ -1,3 +1,34 @@
+colord (0.1.30-1) UNRELEASED; urgency=low
+
+  * New upstream release 0.1.30
+    + Drop patches included in new upstream release
+    + Replace one_shot_colord-sane patch with upstream version    
+    + New upstream includes support for Spyder 3 (Closes: 696394)
+    + New upstream includes support for ColorMunki (Closes: 701653)
+    + New upstream includes its own set of base colour spaces (Closes: 666513)
+    + New upstream has re-written colord-sane binary, which doesn't crash in
+      libdbus (Closes: 668225)
+  * Handle the existence of a non-system scanner group.
+    (Closes: #648287, LP: #989921)
+  * Make watch file more specific, to not pick up colord-gtk releases
+  * Drop colord-gtk; this has been split out into a separate tarball
+  * Explicitly enable vala binding support
+  * Add PIE to hardening flags
+  * Install new colord icons
+  * Add new API to libcolord1.symbols
+  * Install schemas for session-helper
+  * Add DEP-8 autopkgtest infrastructure
+  * Don't install daemon in multiarch path (Closes: 695232)
+  * Properly set SELinux context of /var/lib/colord (Closes: 695085)
+  * Add new ColorHug library
+  * Fix unusual crash in cd_main_get_cmdline_for_pid (cherry pick from 1824da9)
+  * Add override for hardening-check false-positives
+  * Remove gtk-doc symlinks on clean
+  * Add build-depend on libsystemd-login-dev for seat identification
+  * Add header for single-debian-patch identifying them as upstream cherry-picks
+
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Sat, 02 Mar 2013 16:08:53 +1100
+
 colord (0.1.21-4) unstable; urgency=low
 
   * debian/patches/one_shot_colord-sane:
