@@ -14,6 +14,8 @@ case "$1" in
 
 # ensure /var/lib/colord exists...
 	mkdir -p /var/lib/colord
+# ...add system-wide icc profiles directory...
+        mkdir -p /var/lib/colord/icc
 
 # ...create colord user if it isn't already there...
         adduser --system --group --home /var/lib/colord colord \
@@ -22,7 +24,8 @@ case "$1" in
 # ...finally, ensure /var/lib/colord has the right permissions
 	chown -R colord:colord /var/lib/colord
 # Restore selinux context (Bug #695085)
-        [ which restorecon 2>&1 > /dev/null ] && restorecon /var/lib/colord
+        [ which restorecon 2>&1 > /dev/null ] && restorecon /var/lib/colord \
+            /var/lib/colord/icc
 
 
 	;;
