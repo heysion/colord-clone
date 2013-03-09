@@ -24,9 +24,9 @@ case "$1" in
 # ...finally, ensure /var/lib/colord has the right permissions
 	chown -R colord:colord /var/lib/colord
 # Restore selinux context (Bug #695085)
-        [ which restorecon 2>&1 > /dev/null ] && restorecon /var/lib/colord \
-            /var/lib/colord/icc
-
+        if which restorecon >/dev/null 2>&1; then
+            restorecon /var/lib/colord /var/lib/colord/icc
+        fi
 
 	;;
 esac	
