@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*-
  *
- * Copyright (C) 2011 Richard Hughes <richard@hughsie.com>
+ * Copyright (C) 2013 Richard Hughes <richard@hughsie.com>
  *
  * Licensed under the GNU Lesser General Public License Version 2.1
  *
@@ -23,26 +23,38 @@
 #error "Only <colord.h> can be included directly."
 #endif
 
-#ifndef __CD_PROFILE_SYNC_H
-#define __CD_PROFILE_SYNC_H
+#ifndef __CD_INTERP_LINEAR_H
+#define __CD_INTERP_LINEAR_H
 
 #include <glib-object.h>
+#include <colord/cd-interp.h>
 
 G_BEGIN_DECLS
 
-gboolean	 cd_profile_connect_sync		(CdProfile	*profile,
-							 GCancellable	*cancellable,
-							 GError		**error);
-gboolean	 cd_profile_set_property_sync		(CdProfile	*profile,
-							 const gchar	*key,
-							 const gchar	*value,
-							 GCancellable	*cancellable,
-							 GError		**error);
-gboolean	 cd_profile_install_system_wide_sync	(CdProfile	*profile,
-							 GCancellable	*cancellable,
-							 GError		**error);
+#define CD_TYPE_INTERP_LINEAR		(cd_interp_linear_get_type ())
+#define CD_INTERP_LINEAR(o)		(G_TYPE_CHECK_INSTANCE_CAST ((o), CD_TYPE_INTERP_LINEAR, CdInterpLinear))
+#define CD_INTERP_LINEAR_CLASS(k)	(G_TYPE_CHECK_CLASS_CAST((k), CD_TYPE_INTERP_LINEAR, CdInterpLinearClass))
+#define CD_IS_INTERP_LINEAR(o)		(G_TYPE_CHECK_INSTANCE_TYPE ((o), CD_TYPE_INTERP_LINEAR))
+#define CD_IS_INTERP_LINEAR_CLASS(k)	(G_TYPE_CHECK_CLASS_TYPE ((k), CD_TYPE_INTERP_LINEAR))
+#define CD_INTERP_LINEAR_GET_CLASS(o)	(G_TYPE_INSTANCE_GET_CLASS ((o), CD_TYPE_INTERP_LINEAR, CdInterpLinearClass))
+
+typedef struct _CdInterpLinearPrivate CdInterpLinearPrivate;
+
+typedef struct
+{
+	 CdInterp		 parent;
+	 CdInterpLinearPrivate	*priv;
+} CdInterpLinear;
+
+typedef struct
+{
+	CdInterpClass		 parent_class;
+} CdInterpLinearClass;
+
+GType		 cd_interp_linear_get_type		(void);
+CdInterp	*cd_interp_linear_new			(void);
 
 G_END_DECLS
 
-#endif /* __CD_PROFILE_SYNC_H */
+#endif /* __CD_INTERP_LINEAR_H */
 

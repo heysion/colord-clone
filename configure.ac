@@ -3,7 +3,7 @@ AC_PREREQ(2.63)
 
 m4_define([cd_major_version], [0])
 m4_define([cd_minor_version], [1])
-m4_define([cd_micro_version], [30])
+m4_define([cd_micro_version], [31])
 m4_define([cd_version],
           [cd_major_version.cd_minor_version.cd_micro_version])
 
@@ -119,12 +119,15 @@ GETTEXT_PACKAGE=AC_PACKAGE_NAME
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE(GETTEXT_PACKAGE, "AC_PACKAGE_NAME", [foo])
 
+LT_LIB_M
+AC_SUBST(LIBM)
+
 GLIB_GSETTINGS
 
 dnl ---------------------------------------------------------------------------
 dnl - Check library dependencies
 dnl ---------------------------------------------------------------------------
-PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.28.0 gobject-2.0 gthread-2.0 gio-2.0 >= 2.25.9 gio-unix-2.0 gmodule-2.0)
+PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.32.0 gobject-2.0 gthread-2.0 gio-2.0 >= 2.25.9 gio-unix-2.0 gmodule-2.0)
 AC_ARG_ENABLE(gusb, AS_HELP_STRING([--enable-gusb],[Enable GUSB support]),
 	      enable_gusb=$enableval, enable_gusb=yes)
 if test x$enable_gusb != xno; then
@@ -396,7 +399,8 @@ echo "
         File descriptor fallback:  ${enable_fd_fallback}
         External volume searching: ${enable_volume_search}
         SANE support:              ${has_sane}
-        GUDEV support:             ${enable_gudev}
+        GUdev support:             ${enable_gudev}
+        GUsb support:              ${enable_gusb}
         Extra print profiles:      ${enable_print_profiles}
         Vala API generator:        ${has_vapigen}
         Daemon user:               ${daemon_user}
@@ -410,5 +414,12 @@ echo "
 if test x$enable_polkit = xno; then
 	echo "*******************************************************************"
 	echo "** YOU ARE NOT USING A SECURE DAEMON. ALL USERS CAN DO ANYTHING! **"
+	echo "*******************************************************************"
+fi
+
+# warn that using the default root user isn't always a good idea
+if test x$daemon_user = xroot; then
+	echo "*******************************************************************"
+	echo "** RUNNING THIS AS root ISN'T A GOOD IDEA SEE --with-daemon-user **"
 	echo "*******************************************************************"
 fi

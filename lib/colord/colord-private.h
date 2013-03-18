@@ -34,9 +34,16 @@
 
 #define __COLORD_H_INSIDE__
 
+#ifdef CD_DISABLE_DEPRECATED
+ #define CD_USE_ALLOC_GSLICE
+#endif
+
 #include <colord/cd-buffer.h>
 #include <colord/cd-color.h>
 #include <colord/cd-enum.h>
+#include <colord/cd-interp-akima.h>
+#include <colord/cd-interp-linear.h>
+#include <colord/cd-interp.h>
 #include <colord/cd-it8.h>
 #include <colord/cd-math.h>
 

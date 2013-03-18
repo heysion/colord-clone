@@ -32,6 +32,9 @@
 #include <glib-object.h>
 
 #include "cd-color.h"
+#include "cd-interp.h"
+#include "cd-interp-akima.h"
+#include "cd-interp-linear.h"
 
 /**
  * cd_color_xyz_dup:
@@ -141,6 +144,117 @@ cd_color_yxy_get_type (void)
 							(GBoxedCopyFunc) cd_color_yxy_dup,
 							(GBoxedFreeFunc) cd_color_yxy_free);
 	return type_id;
+}
+
+/**
+ * cd_color_xyz_new:
+ *
+ * Allocates a color value.
+ *
+ * Return value: A newly allocated #CdColorXYZ object
+ *
+ * Since: 0.1.0
+ **/
+CdColorXYZ *
+cd_color_xyz_new (void)
+{
+#ifdef CD_USE_ALLOC_GSLICE
+	return g_slice_new0 (CdColorXYZ);
+#else
+	return g_new0 (CdColorXYZ, 1);
+#endif
+}
+
+/**
+ * cd_color_rgb_new:
+ *
+ * Allocates a color value.
+ *
+ * Return value: A newly allocated #CdColorRGB object
+ *
+ * Since: 0.1.0
+ **/
+CdColorRGB *
+cd_color_rgb_new (void)
+{
+#ifdef CD_USE_ALLOC_GSLICE
+	return g_slice_new0 (CdColorRGB);
+#else
+	return g_new0 (CdColorRGB, 1);
+#endif
+}
+
+/**
+ * cd_color_yxy_new:
+ *
+ * Allocates a color value.
+ *
+ * Return value: A newly allocated #CdColorYxy object
+ *
+ * Since: 0.1.0
+ **/
+CdColorYxy *
+cd_color_yxy_new (void)
+{
+#ifdef CD_USE_ALLOC_GSLICE
+	return g_slice_new0 (CdColorYxy);
+#else
+	return g_new0 (CdColorYxy, 1);
+#endif
+}
+
+/**
+ * cd_color_xyz_free:
+ * @src: the color object
+ *
+ * Deallocates a color value.
+ *
+ * Since: 0.1.0
+ **/
+void
+cd_color_xyz_free (CdColorXYZ *src)
+{
+#ifdef CD_USE_ALLOC_GSLICE
+	g_slice_free (CdColorXYZ, src);
+#else
+	g_free (src);
+#endif
+}
+
+/**
+ * cd_color_rgb_free:
+ * @src: the color object
+ *
+ * Deallocates a color value.
+ *
+ * Since: 0.1.0
+ **/
+void
+cd_color_rgb_free (CdColorRGB *src)
+{
+#ifdef CD_USE_ALLOC_GSLICE
+	g_slice_free (CdColorRGB, src);
+#else
+	g_free (src);
+#endif
+}
+
+/**
+ * cd_color_yxy_free:
+ * @src: the color object
+ *
+ * Deallocates a color value.
+ *
+ * Since: 0.1.0
+ **/
+void
+cd_color_yxy_free (CdColorYxy *src)
+{
+#ifdef CD_USE_ALLOC_GSLICE
+	g_slice_free (CdColorYxy, src);
+#else
+	g_free (src);
+#endif
 }
 
 /**
@@ -520,6 +634,136 @@ cd_color_rgb_interpolate (const CdColorRGB *p1,
 	result->R = (1.0 - index) * p1->R + index * p2->R;
 	result->G = (1.0 - index) * p1->G + index * p2->G;
 	result->B = (1.0 - index) * p1->B + index * p2->B;
+}
+
+/**
+ * cd_color_rgb_array_is_monotonic:
+ * @array: (element-type CdColorRGB): Input array
+ *
+ * Checks the array for monotonicity.
+ *
+ * Return value: %TRUE if the array is monotonic
+ *
+ * Since: 0.1.31
+ **/
+gboolean
+cd_color_rgb_array_is_monotonic (const GPtrArray *array)
+{
+	CdColorRGB last_rgb;
+	CdColorRGB *rgb;
+	guint i;
+
+	/* check if monotonic */
+	cd_color_rgb_set (&last_rgb, 0.0, 0.0, 0.0);
+	for (i = 0; i < array->len; i++) {
+		rgb = g_ptr_array_index (array, i);
+		if (rgb->R < last_rgb.R)
+			return FALSE;
+		if (rgb->G < last_rgb.G)
+			return FALSE;
+		if (rgb->B < last_rgb.B)
+			return FALSE;
+		cd_color_rgb_copy (rgb, &last_rgb);
+	}
+	return TRUE;
+}
+
+/**
+ * cd_color_rgb_array_new:
+ *
+ * Creates a new RGB array.
+ *
+ * Return value: (element-type CdColorRGB) (transfer full): New array
+ *
+ * Since: 0.1.31
+ **/
+GPtrArray *
+cd_color_rgb_array_new (void)
+{
+	return g_ptr_array_new_with_free_func ((GDestroyNotify) cd_color_rgb_free);
+}
+
+/**
+ * cd_color_rgb_array_interpolate:
+ * @array: (element-type CdColorRGB): Input array
+ * @new_length: the target length of the return array
+ *
+ * Interpolate the RGB array to a different size.
+ * This uses the Akima interpolation algorithm unless the array would become
+ * non-monotonic, in which case it falls back to linear interpolation.
+ *
+ * Return value: (element-type CdColorRGB) (transfer full): An array of size @new_length or %NULL
+ *
+ * Since: 0.1.31
+ **/
+GPtrArray *
+cd_color_rgb_array_interpolate (const GPtrArray *array, guint new_length)
+{
+	CdColorRGB *rgb;
+	CdInterp *interp[3];
+	gboolean ret;
+	gdouble tmp;
+	GPtrArray *result = NULL;
+	guint i;
+	guint j;
+	guint m;
+
+	/* check if monotonic */
+	ret = cd_color_rgb_array_is_monotonic (array);
+	if (!ret)
+		goto out;
+
+	/* create new array */
+	result = cd_color_rgb_array_new ();
+	for (i = 0; i < new_length; i++) {
+		rgb = cd_color_rgb_new ();
+		g_ptr_array_add (result, rgb);
+	}
+
+	/* try each interpolation method in turn */
+	for (m = 0; m < 2; m++) {
+
+		/* setup interpolation */
+		for (j = 0; j < 3; j++) {
+			if (m == 0)
+				interp[j] = cd_interp_akima_new ();
+			else if (m == 1)
+				interp[j] = cd_interp_linear_new ();
+		}
+
+		/* add data */
+		for (i = 0; i < array->len; i++) {
+			rgb = g_ptr_array_index (array, i);
+			tmp = (gdouble) i / (gdouble) (array->len - 1);
+			cd_interp_insert (interp[0], tmp, rgb->R);
+			cd_interp_insert (interp[1], tmp, rgb->G);
+			cd_interp_insert (interp[2], tmp, rgb->B);
+		}
+
+		/* do interpolation of array */
+		for (j = 0; j < 3; j++)
+			cd_interp_prepare (interp[j], NULL);
+		for (i = 0; i < new_length; i++) {
+			tmp = (gdouble) i / (gdouble) (new_length - 1);
+			rgb = g_ptr_array_index (result, i);
+			rgb->R = cd_interp_eval (interp[0], tmp, NULL);
+			rgb->G = cd_interp_eval (interp[1], tmp, NULL);
+			rgb->B = cd_interp_eval (interp[2], tmp, NULL);
+		}
+
+		/* tear down the interpolation */
+		for (j = 0; j < 3; j++)
+			g_object_unref (interp[j]);
+
+		/* check if monotonic */
+		ret = cd_color_rgb_array_is_monotonic (result);
+		if (ret)
+			break;
+
+		/* try harder */
+	}
+out:
+	return result;
 }
 
 /**

@@ -884,10 +884,14 @@ cd_main_get_cmdline_for_pid (guint pid)
 	/* just read the link */
 	proc_path = g_strdup_printf ("/proc/%i/cmdline", pid);
 	ret = g_file_get_contents (proc_path, &cmdline, &len, &error);
-	if (!ret || len == 0) {
+	if (!ret) {
 		g_warning ("CdMain: failed to read %s: %s",
 			   proc_path, error->message);
 		g_error_free (error);
+		goto out;
+	}
+	if (len == 0) {
+		g_warning ("CdMain: failed to read %s", proc_path);
 		goto out;
 	}
 
@@ -2131,7 +2135,7 @@ cd_main_timed_exit_cb (gpointer user_data)
 {
 	GMainLoop *loop = (GMainLoop *) user_data;
 	g_main_loop_quit (loop);
-	return FALSE;
+	return G_SOURCE_REMOVE;
 }
 
 /**
