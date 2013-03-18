@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*-
  *
- * Copyright (C) 2010-2012 Richard Hughes <richard@hughsie.com>
+ * Copyright (C) 2010-2013 Richard Hughes <richard@hughsie.com>
  *
  * Licensed under the GNU Lesser General Public License Version 2.1
  *
@@ -180,8 +180,13 @@ typedef enum {
 	CD_SENSOR_CAP_PROJECTOR,
 	CD_SENSOR_CAP_AMBIENT,
 	CD_SENSOR_CAP_CALIBRATION,
-	CD_SENSOR_CAP_LED,		/* Since: 0.1.17 */
-	CD_SENSOR_CAP_PLASMA,		/* Since: 0.1.29 */
+	CD_SENSOR_CAP_LED,			/* Since: 0.1.17 */
+	CD_SENSOR_CAP_PLASMA,			/* Since: 0.1.29 */
+	CD_SENSOR_CAP_LCD_CCFL,			/* Since: 0.1.31 */
+	CD_SENSOR_CAP_LCD_RGB_LED,		/* Since: 0.1.31 */
+	CD_SENSOR_CAP_LCD_WHITE_LED,		/* Since: 0.1.31 */
+	CD_SENSOR_CAP_WIDE_GAMUT_LCD_CCFL,	/* Since: 0.1.31 */
+	CD_SENSOR_CAP_WIDE_GAMUT_LCD_RGB_LED,	/* Since: 0.1.31 */
 	CD_SENSOR_CAP_LAST
 } CdSensorCap;
 
@@ -229,6 +234,7 @@ typedef enum {
  * used, but may be of limited use.
  **/
 typedef enum {
+	/* FIXME: next API break, add CD_PROFILE_WARNING_UNKNOWN */
 	CD_PROFILE_WARNING_NONE,			/* Since: 0.1.25 */
 	CD_PROFILE_WARNING_DESCRIPTION_MISSING,		/* Since: 0.1.25 */
 	CD_PROFILE_WARNING_COPYRIGHT_MISSING,		/* Since: 0.1.25 */
@@ -253,6 +259,7 @@ typedef enum {
  * The quality of the profile produced through calibration.
  **/
 typedef enum {
+	/* FIXME: next API break, add CD_PROFILE_QUALITY_UNKNOWN */
 	CD_PROFILE_QUALITY_LOW,
 	CD_PROFILE_QUALITY_MEDIUM,
 	CD_PROFILE_QUALITY_HIGH,
@@ -297,6 +304,7 @@ typedef enum {
  * @CD_PROFILE_ERROR_FAILED_TO_PARSE: 	The profile could not be parsed
  * @CD_PROFILE_ERROR_FAILED_TO_READ: 	The profile could not be read
  * @CD_PROFILE_ERROR_FAILED_TO_AUTHENTICATE:	Authentication failed
+ * @CD_PROFILE_ERROR_PROPERTY_INVALID:	One or more of the properties was invalid
  *
  * Errors that can be thrown
  */
@@ -308,6 +316,7 @@ typedef enum
 	CD_PROFILE_ERROR_FAILED_TO_PARSE,
 	CD_PROFILE_ERROR_FAILED_TO_READ,
 	CD_PROFILE_ERROR_FAILED_TO_AUTHENTICATE,
+	CD_PROFILE_ERROR_PROPERTY_INVALID,
 	CD_PROFILE_ERROR_LAST
 } CdProfileError;
 

@@ -72,7 +72,7 @@ cd_sensor_get_sample_state_finish (CdSensorAsyncState *state,
 	if (state->ret) {
 		g_simple_async_result_set_op_res_gpointer (state->res,
 							   state->sample,
-							   cd_color_xyz_free);
+							   (GDestroyNotify) cd_color_xyz_free);
 	} else {
 		g_simple_async_result_set_from_error (state->res, error);
 	}
@@ -102,7 +102,7 @@ cd_sensor_get_sample_timeout_cb (CdSensorAsyncState *state)
 			     "spotread timed out");
 	cd_sensor_get_sample_state_finish (state, error);
 	g_error_free (error);
-	return FALSE;
+	return G_SOURCE_REMOVE;
 }
 
 static void
@@ -210,6 +210,21 @@ cd_sensor_get_y_arg_for_cap (CdSensorCap cap)
 		break;
 	case CD_SENSOR_CAP_PROJECTOR:
 		arg = "-yp";
+		break;
+	case CD_SENSOR_CAP_LCD_CCFL:
+		arg = "-yf";
+		break;
+	case CD_SENSOR_CAP_LCD_RGB_LED:
+		arg = "-yb";
+		break;
+	case CD_SENSOR_CAP_WIDE_GAMUT_LCD_CCFL:
+		arg = "-yL";
+		break;
+	case CD_SENSOR_CAP_WIDE_GAMUT_LCD_RGB_LED:
+		arg = "-yB";
+		break;
+	case CD_SENSOR_CAP_LCD_WHITE_LED:
+		arg = "-ye";
 		break;
 	default:
 		break;
@@ -342,6 +357,8 @@ cd_sensor_to_argyll_name (CdSensor *sensor)
 		return "GretagMacbeth i1 Pro";
 	case CD_SENSOR_KIND_COLOR_MUNKI_PHOTO:
 		return "X-Rite ColorMunki";
+	case CD_SENSOR_KIND_COLOR_MUNKI_SMILE:
+		return "ColorMunki Smile";
 	case CD_SENSOR_KIND_COLORIMTRE_HCFR:
 		return "Colorimtre HCFR";
 	case CD_SENSOR_KIND_SPYDER2:
@@ -392,6 +409,14 @@ cd_sensor_find_device_details (CdSensor *sensor, GError **error)
 	/* split into lines and search */
 	lines = g_strsplit (stdout, "\n", -1);
 	argyll_name = cd_sensor_to_argyll_name (sensor);
+	if (argyll_name == NULL) {
+		ret = FALSE;
+		g_set_error_literal (error,
+				     CD_SENSOR_ERROR,
+				     CD_SENSOR_ERROR_INTERNAL,
+				     "Failed to find sensor");
+		goto out;
+	}
 	for (i = 0; lines[i] != NULL; i++) {
 
 		/* look for the communication port listing of the

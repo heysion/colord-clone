@@ -34,6 +34,9 @@ libcolordbase_include_HEADERS =					\
 	cd-device.h						\
 	cd-device-sync.h					\
 	cd-enum.h						\
+	cd-interp-akima.h					\
+	cd-interp-linear.h					\
+	cd-interp.h						\
 	cd-it8.h						\
 	cd-it8-utils.h						\
 	cd-math.h						\
@@ -47,10 +50,14 @@ libcolordprivate_la_SOURCES =					\
 	cd-buffer.c						\
 	cd-color.c						\
 	cd-enum.c						\
+	cd-interp-akima.c					\
+	cd-interp-linear.c					\
+	cd-interp.c						\
 	cd-it8.c						\
 	cd-it8-utils.c						\
 	cd-math.c
 libcolordprivate_la_LIBADD =					\
+	$(LIBM)							\
 	$(LCMS_LIBS)						\
 	$(GLIB_LIBS)
 libcolordprivate_la_LDFLAGS =					\
@@ -85,6 +92,12 @@ libcolord_la_CFLAGS =						\
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = colord.pc
 
+TESTS_ENVIRONMENT =						\
+	libtool --mode=execute valgrind				\
+	--quiet							\
+	--leak-check=full					\
+	--show-possibly-lost=no
+
 check_PROGRAMS =						\
 	cd-self-test
 
@@ -110,6 +123,7 @@ CLEANFILES = $(BUILT_SOURCES)
 
 if HAVE_INTROSPECTION
 introspection_sources =						\
+	$(libcolordprivate_la_SOURCES)				\
 	$(libcolord_la_SOURCES)					\
 	$(libcolordbase_include_HEADERS)
 

@@ -1,7 +1,7 @@
 #
 #  bash completion support for colormgr console commands.
 #
-#  Copyright (C) 2012 Richard Hughes <richard@hughsie.com>
+#  Copyright (C) 2012-2013 Richard Hughes <richard@hughsie.com>
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -29,11 +29,11 @@ __colormgr_commandlist="
     device-get-profile-for-qualifier
     device-inhibit
     device-make-profile-default
+    device-set-enabled
     device-set-kind
     device-set-model
     device-set-serial
     device-set-vendor
-    device-set-enabled
     find-device
     find-device-by-property
     find-profile
@@ -44,8 +44,7 @@ __colormgr_commandlist="
     get-sensor-reading
     get-sensors
     get-standard-space
-    profile-set-filename
-    profile-set-qualifier
+    profile-set-property
     sensor-lock
     sensor-set-options
     "

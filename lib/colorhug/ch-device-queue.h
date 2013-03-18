@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*-
  *
- * Copyright (C) 2012 Richard Hughes <richard@hughsie.com>
+ * Copyright (C) 2012-2013 Richard Hughes <richard@hughsie.com>
  *
  * Licensed under the GNU General Public License Version 2
  *
@@ -147,7 +147,7 @@ void		 ch_device_queue_get_calibration_map	(ChDeviceQueue	*device_queue,
 							 guint16	*calibration_map);
 void		 ch_device_queue_set_calibration_map	(ChDeviceQueue	*device_queue,
 							 GUsbDevice	*device,
-							 guint16	*calibration_map);
+							 const guint16	*calibration_map);
 void		 ch_device_queue_get_firmware_ver	(ChDeviceQueue	*device_queue,
 							 GUsbDevice	*device,
 							 guint16	*major,
@@ -203,10 +203,10 @@ void		 ch_device_queue_set_pcb_errata		(ChDeviceQueue	*device_queue,
 							 guint16	 pcb_errata);
 void		 ch_device_queue_get_remote_hash	(ChDeviceQueue	*device_queue,
 							 GUsbDevice	*device,
-							 ChSha1	*remote_hash);
+							 ChSha1		*remote_hash);
 void		 ch_device_queue_set_remote_hash	(ChDeviceQueue	*device_queue,
 							 GUsbDevice	*device,
-							 ChSha1	*remote_hash);
+							 ChSha1		*remote_hash);
 void		 ch_device_queue_get_dark_offsets	(ChDeviceQueue	*device_queue,
 							 GUsbDevice	*device,
 							 CdColorRGB	*value);
@@ -219,12 +219,25 @@ void		 ch_device_queue_write_eeprom		(ChDeviceQueue	*device_queue,
 void		 ch_device_queue_take_reading_raw	(ChDeviceQueue	*device_queue,
 							 GUsbDevice	*device,
 							 guint32	*take_reading);
+void		 ch_device_queue_take_reading_full	(ChDeviceQueue	*device_queue,
+							 GUsbDevice	*device,
+							 ChSensorKind	 sensor_kind,
+							 guint32	*take_reading);
 void		 ch_device_queue_take_readings		(ChDeviceQueue	*device_queue,
 							 GUsbDevice	*device,
+							 CdColorRGB	*value);
+void		 ch_device_queue_take_readings_full	(ChDeviceQueue	*device_queue,
+							 GUsbDevice	*device,
+							 ChSensorKind	 sensor_kind,
 							 CdColorRGB	*value);
 void		 ch_device_queue_take_readings_xyz	(ChDeviceQueue	*device_queue,
 							 GUsbDevice	*device,
 							 guint16	 calibration_index,
+							 CdColorXYZ	*value);
+void		 ch_device_queue_take_readings_xyz_full	(ChDeviceQueue	*device_queue,
+							 GUsbDevice	*device,
+							 guint16	 calibration_index,
+							 ChSensorKind	 sensor_kind,
 							 CdColorXYZ	*value);
 void		 ch_device_queue_reset			(ChDeviceQueue	*device_queue,
 							 GUsbDevice	*device);
@@ -238,7 +251,7 @@ void		 ch_device_queue_set_flash_success	(ChDeviceQueue	*device_queue,
 void		 ch_device_queue_write_flash		(ChDeviceQueue	*device_queue,
 							 GUsbDevice	*device,
 							 guint16	 address,
-							 guint8		*data,
+							 const guint8	*data,
 							 gsize		 len);
 void		 ch_device_queue_read_flash		(ChDeviceQueue	*device_queue,
 							 GUsbDevice	*device,
@@ -278,7 +291,7 @@ void		 ch_device_queue_set_measure_mode	(ChDeviceQueue	*device_queue,
 void		 ch_device_queue_write_sram		(ChDeviceQueue	*device_queue,
 							 GUsbDevice	*device,
 							 guint16	 address,
-							 guint8		*data,
+							 const guint8	*data,
 							 gsize		 len);
 void		 ch_device_queue_read_sram		(ChDeviceQueue	*device_queue,
 							 GUsbDevice	*device,
@@ -288,6 +301,21 @@ void		 ch_device_queue_read_sram		(ChDeviceQueue	*device_queue,
 void		 ch_device_queue_get_temperature	(ChDeviceQueue	*device_queue,
 							 GUsbDevice	*device,
 							 gdouble	*temperature);
+void		 ch_device_queue_get_adc_vref_pos	(ChDeviceQueue	*device_queue,
+							 GUsbDevice	*device,
+							 gdouble	*vref);
+void		 ch_device_queue_get_adc_vref_neg	(ChDeviceQueue	*device_queue,
+							 GUsbDevice	*device,
+							 gdouble	*vref);
+void		 ch_device_queue_take_reading_spectral	(ChDeviceQueue	*device_queue,
+							 GUsbDevice	*device,
+							 guint16	*sram_addr);
+void		 ch_device_queue_get_ccd_calibration	(ChDeviceQueue	*device_queue,
+							 GUsbDevice	*device,
+							 guint16	*indexes);
+void		 ch_device_queue_set_ccd_calibration	(ChDeviceQueue	*device_queue,
+							 GUsbDevice	*device,
+							 const guint16	*indexes);
 
 /* command utility functions */
 gboolean	 ch_device_queue_set_calibration_ccmx	(ChDeviceQueue	*device_queue,

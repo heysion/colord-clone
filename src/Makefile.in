@@ -69,8 +69,9 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/as-linguas.m4 \
 	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
 	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
 	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
-	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
-	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/nls.m4 \
+	$(top_srcdir)/m4/po.m4 $(top_srcdir)/m4/progtest.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -125,7 +126,8 @@ colord_OBJECTS = $(am_colord_OBJECTS)
 colord_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
-	$(COLORD_PRIVATE_LIBS) $(am__DEPENDENCIES_1)
+	$(am__DEPENDENCIES_1) $(COLORD_PRIVATE_LIBS) \
+	$(am__DEPENDENCIES_1)
 colord_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(colord_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
@@ -332,6 +334,7 @@ LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBICONV = @LIBICONV@
 LIBINTL = @LIBINTL@
+LIBM = @LIBM@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBSYSTEMD_LOGIN_CFLAGS = @LIBSYSTEMD_LOGIN_CFLAGS@
@@ -495,6 +498,7 @@ colord_SOURCES = cd-common.c cd-common.h cd-config.c cd-config.h \
 	cd-profile.h cd-profile-store.c cd-profile-store.h cd-sensor.c \
 	cd-sensor.h cd-main.c $(am__append_1)
 colord_LDADD = \
+	$(LIBM)						\
 	$(SQLITE_LIBS)					\
 	$(POLKIT_LIBS)					\
 	$(LCMS_LIBS)					\
@@ -506,6 +510,12 @@ colord_LDADD = \
 
 colord_CFLAGS = \
 	$(WARNINGFLAGS_C)
+
+TESTS_ENVIRONMENT = \
+	libtool --mode=execute valgrind			\
+	--quiet						\
+	--leak-check=full				\
+	--show-possibly-lost=no
 
 cd_self_test_SOURCES = \
 	cd-common.c					\

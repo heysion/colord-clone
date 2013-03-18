@@ -53,7 +53,10 @@ typedef struct {
 	CdSensorCap		 device_kind;
 	GPtrArray		*array;
 	cmsCIEXYZ		 whitepoint;
+	CdColorXYZ		 absolute_white;
 	gdouble			 native_whitepoint;
+	gdouble			 target_gamma;
+	gdouble			 gamma_scale_factor;
 	guint			 target_whitepoint;
 	guint			 screen_brightness;
 	CdIt8			*it8_cal;
@@ -70,6 +73,7 @@ typedef struct {
 	CdColorRGB		 color;
 	CdColorRGB		 best_so_far;
 	gdouble			 error;
+	gdouble			 index_factor; /* 0.0 for first point, 1.0 for last and linear in between */
 } CdMainCalibrateItem;
 
 #define CD_SESSION_ERROR			cd_main_error_quark()
@@ -128,7 +132,7 @@ cd_main_calib_idle_delay_cb (gpointer user_data)
 {
 	GMainLoop *loop = (GMainLoop *) user_data;
 	g_main_loop_quit (loop);
-	return FALSE;
+	return G_SOURCE_REMOVE;
 }
 
 /**
@@ -147,9 +151,14 @@ cd_main_calib_idle_delay (guint ms)
 /**
  * cd_main_emit_update_sample:
  **/
-static void
-cd_main_emit_update_sample (CdMainPrivate *priv, CdColorRGB *color)
+static gboolean
+cd_main_emit_update_sample (CdMainPrivate *priv,
+			    CdColorRGB *color,
+			    GError **error)
 {
+	gboolean ret = TRUE;
+	GHashTable *hash = NULL;
+
 	/* emit signal */
 	g_debug ("CdMain: Emitting UpdateSample(%f,%f,%f)",
 		 color->R, color->G, color->B);
@@ -163,7 +172,34 @@ cd_main_emit_update_sample (CdMainPrivate *priv, CdColorRGB *color)
 						      color->G,
 						      color->B),
 				       NULL);
+
+	/* if this is the dummy sensor then set the sample RGB value */
+	if (cd_sensor_get_kind (priv->sensor) == CD_SENSOR_KIND_DUMMY) {
+		hash = g_hash_table_new_full (g_str_hash,
+					      g_str_equal,
+					      g_free,
+					      (GDestroyNotify) g_variant_unref);
+		g_hash_table_insert (hash,
+				     g_strdup ("sample[red]"),
+				     g_variant_take_ref (g_variant_new_double (color->R)));
+		g_hash_table_insert (hash,
+				     g_strdup ("sample[green]"),
+				     g_variant_take_ref (g_variant_new_double (color->G)));
+		g_hash_table_insert (hash,
+				     g_strdup ("sample[blue]"),
+				     g_variant_take_ref (g_variant_new_double (color->B)));
+		ret = cd_sensor_set_options_sync (priv->sensor,
+						  hash,
+						  priv->cancellable,
+						  error);
+		if (!ret)
+			goto out;
+	}
 	cd_main_calib_idle_delay (200);
+out:
+	if (hash != NULL)
+		g_hash_table_unref (hash);
+	return ret;
 }
 
 /**
@@ -357,11 +393,18 @@ cd_main_calib_get_native_whitepoint (CdMainPrivate *priv,
 	rgb.R = 1.0;
 	rgb.G = 1.0;
 	rgb.B = 1.0;
-	cd_main_emit_update_sample (priv, &rgb);
+	ret = cd_main_emit_update_sample (priv, &rgb, error);
+	if (!ret)
+		goto out;
 
 	ret = cd_main_calib_get_sample (priv, &xyz, error);
 	if (!ret)
 		goto out;
+
+	/* save the absolute XYZ measurement so we can scale each sample->Y
+	 * to 1.0 for the gamma error check */
+	cd_color_xyz_copy (&xyz, &priv->absolute_white);
+	g_debug ("Absolute white: %f", priv->absolute_white.Y);
 
 	cmsXYZ2xyY (&chroma, (cmsCIEXYZ *) &xyz);
 	g_debug ("x:%f,y:%f,Y:%f", chroma.x, chroma.y, chroma.Y);
@@ -379,10 +422,12 @@ cd_main_calib_try_item (CdMainPrivate *priv,
 		        gboolean *new_best,
 		        GError **error)
 {
-	gboolean ret = TRUE;
-	gdouble error_tmp;
 	CdColorXYZ xyz;
 	cmsCIELab lab;
+	gboolean ret = TRUE;
+	gdouble error_tmp;
+	gdouble lumi_measured;
+	gdouble lumi_target;
 
 	g_debug ("try %f,%f,%f", item->color.R, item->color.G, item->color.B);
 	cd_main_emit_update_gamma (priv, priv->array);
@@ -394,8 +439,22 @@ cd_main_calib_try_item (CdMainPrivate *priv,
 
 	/* get error */
 	cmsXYZ2Lab (&priv->whitepoint, &lab, (const cmsCIEXYZ *) &xyz);
+
+	/* scale by absolute white luminance */
+	lumi_measured = xyz.Y / priv->absolute_white.Y;
+	lumi_target = pow (item->index_factor, priv->target_gamma);
+	g_debug ("Absolute luminance at this point should be %f but is %f",
+		 lumi_target, lumi_measured);
+
+	/* get sum or squares difference of a,b */
 	error_tmp = sqrt (lab.a * lab.a + lab.b * lab.b);
-	g_debug ("%f\t%f\t%f = %f", lab.L, lab.a, lab.b, error_tmp);
+	g_debug ("Lab: %f\t%f\t%f error %f", lab.L, lab.a, lab.b, error_tmp);
+
+	/* add in gamma error */
+	error_tmp += priv->gamma_scale_factor * ABS (lumi_target - lumi_measured);
+	g_debug ("Total error %f", error_tmp);
+
+	/* is it better than we ever got before */
 	if (error_tmp < item->error) {
 		cd_color_rgb_copy (&item->color, &item->best_so_far);
 		item->error = error_tmp;
@@ -611,6 +670,7 @@ cd_main_calib_interpolate_up (CdMainPrivate *priv,
 		p2 = g_ptr_array_index (old_array, (guint) ceil (mix));
 		result = g_new (CdMainCalibrateItem, 1);
 		result->error = G_MAXDOUBLE;
+		result->index_factor = (gdouble) i / (gdouble) (new_size - 1);
 		cd_color_rgb_set (&result->color, 1.0, 1.0, 1.0);
 		cd_color_rgb_interpolate (&p1->color,
 					  &p2->color,
@@ -632,12 +692,15 @@ cd_main_calib_process (CdMainPrivate *priv,
 		       GError **error)
 {
 	CdColorRGB rgb;
+	CdColorRGB *rgb_tmp;
 	CdMainCalibrateItem *item;
 	CdState *state_local;
 	CdState *state_loop;
 	cmsCIExyY whitepoint_tmp;
 	gboolean ret;
 	gdouble temp;
+	GPtrArray *gamma_data = NULL;
+	GPtrArray *vcgt_smoothed = NULL;
 	guint i;
 	guint precision_steps = 0;
 
@@ -657,10 +720,12 @@ cd_main_calib_process (CdMainPrivate *priv,
 	priv->array = g_ptr_array_new_with_free_func (g_free);
 	item = g_new0 (CdMainCalibrateItem, 1);
 	item->error = G_MAXDOUBLE;
+	item->index_factor = 0.0f;
 	cd_color_rgb_set (&item->color, 0.0, 0.0, 0.0);
 	g_ptr_array_add (priv->array, item);
 	item = g_new0 (CdMainCalibrateItem, 1);
 	item->error = G_MAXDOUBLE;
+	item->index_factor = 1.0f;
 	cd_color_rgb_set (&item->color, 1.0, 1.0, 1.0);
 	g_ptr_array_add (priv->array, item);
 	cd_main_emit_update_gamma (priv, priv->array);
@@ -746,7 +811,9 @@ cd_main_calib_process (CdMainPrivate *priv,
 		rgb.R = 1.0 / (gdouble) (priv->array->len - 1) * (gdouble) i;
 		rgb.G = 1.0 / (gdouble) (priv->array->len - 1) * (gdouble) i;
 		rgb.B = 1.0 / (gdouble) (priv->array->len - 1) * (gdouble) i;
-		cd_main_emit_update_sample (priv, &rgb);
+		ret = cd_main_emit_update_sample (priv, &rgb, error);
+		if (!ret)
+			goto out;
 
 		/* process this section */
 		item = g_ptr_array_index (priv->array, i);
@@ -784,12 +851,29 @@ cd_main_calib_process (CdMainPrivate *priv,
 	priv->it8_cal = cd_it8_new_with_kind (CD_IT8_KIND_CAL);
 	cd_it8_set_originator (priv->it8_cal, "colord-session");
 	cd_it8_set_instrument (priv->it8_cal, cd_sensor_kind_to_string (cd_sensor_get_kind (priv->sensor)));
-	ret = cd_main_calib_interpolate_up (priv, 256, error);
-	if (!ret)
-		goto out;
+
+	/* flatten source data (but don't copy) */
+	gamma_data = g_ptr_array_new ();
 	for (i = 0; i < priv->array->len; i++) {
 		item = g_ptr_array_index (priv->array, i);
-		cd_it8_add_data (priv->it8_cal, &item->color, NULL);
+		g_ptr_array_add (gamma_data, &item->color);
+	}
+
+	/* smooth the gamma data to avoid jagged peaks */
+	vcgt_smoothed = cd_color_rgb_array_interpolate (gamma_data, 256);
+	if (vcgt_smoothed == NULL) {
+		ret = FALSE;
+		g_set_error_literal (error,
+				     CD_SESSION_ERROR,
+				     CD_SESSION_ERROR_FAILED_TO_GENERATE_PROFILE,
+				     "Gamma correction table was non-monotonic");
+		goto out;
+	}
+
+	/* write the new smoothed monotonic data */
+	for (i = 0; i < vcgt_smoothed->len; i++) {
+		rgb_tmp = g_ptr_array_index (vcgt_smoothed, i);
+		cd_it8_add_data (priv->it8_cal, rgb_tmp, NULL);
 	}
 
 	/* done */
@@ -797,6 +881,10 @@ cd_main_calib_process (CdMainPrivate *priv,
 	if (!ret)
 		goto out;
 out:
+	if (gamma_data != NULL)
+		g_ptr_array_unref (gamma_data);
+	if (vcgt_smoothed != NULL)
+		g_ptr_array_unref (vcgt_smoothed);
 	return ret;
 }
 
@@ -808,7 +896,7 @@ cd_main_finished_quit_cb (gpointer user_data)
 {
 	CdMainPrivate *priv = (CdMainPrivate *) user_data;
 	g_main_loop_quit (priv->loop);
-	return FALSE;
+	return G_SOURCE_REMOVE;
 }
 
 /**
@@ -1123,7 +1211,7 @@ cd_main_generate_profile (CdMainPrivate *priv, GError **error)
 {
 	gboolean ret;
 	gchar *command;
-	gchar *stderr = NULL;
+	gchar *stderr_data = NULL;
 	gint exit_status = 0;
 	gchar *cmd_debug = NULL;
 	GPtrArray *array = NULL;
@@ -1159,7 +1247,7 @@ cd_main_generate_profile (CdMainPrivate *priv, GError **error)
 			    0,
 			    NULL, NULL,
 			    NULL,
-			    &stderr,
+			    &stderr_data,
 			    &exit_status,
 			    error);
 	if (!ret)
@@ -1169,14 +1257,14 @@ cd_main_generate_profile (CdMainPrivate *priv, GError **error)
 		g_set_error (error,
 			     CD_SESSION_ERROR,
 			     CD_SESSION_ERROR_FAILED_TO_GENERATE_PROFILE,
-			     "colprof failed: %s", stderr);
+			     "colprof failed: %s", stderr_data);
 		goto out;
 	}
 out:
 	if (array != NULL)
 		g_ptr_array_unref (array);
 	g_free (command);
-	g_free (stderr);
+	g_free (stderr_data);
 	g_free (cmd_debug);
 	return ret;
 }
@@ -1202,7 +1290,9 @@ cd_main_display_get_samples (CdMainPrivate *priv,
 				      i,
 				      &rgb,
 				      NULL);
-		cd_main_emit_update_sample (priv, &rgb);
+		ret = cd_main_emit_update_sample (priv, &rgb, error);
+		if (!ret)
+			goto out;
 		ret = cd_main_calib_get_sample (priv, &xyz, error);
 		if (!ret)
 			goto out;
@@ -1693,7 +1783,7 @@ cd_main_quit_loop_cb (gpointer user_data)
 {
 	CdMainPrivate *priv = (CdMainPrivate *) user_data;
 	g_main_loop_quit (priv->loop);
-	return FALSE;
+	return G_SOURCE_REMOVE;
 }
 
 /**
@@ -1740,6 +1830,7 @@ cd_main_daemon_method_call (GDBusConnection *connection,
 		/* set the default parameters */
 		priv->quality = CD_PROFILE_QUALITY_MEDIUM;
 		priv->device_kind = CD_SENSOR_CAP_LCD;
+		priv->target_gamma = 2.2;
 		while (g_variant_iter_next (iter, "{&sv}",
 					    &prop_key, &prop_value)) {
 			if (g_strcmp0 (prop_key, "Quality") == 0) {
@@ -1760,6 +1851,9 @@ cd_main_daemon_method_call (GDBusConnection *connection,
 			} else if (g_strcmp0 (prop_key, "Brightness") == 0) {
 				priv->screen_brightness = g_variant_get_uint32 (prop_value);
 				g_debug ("Device brightness: %i", priv->screen_brightness);
+			} else if (g_strcmp0 (prop_key, "Gamma") == 0) {
+				priv->target_gamma = g_variant_get_double (prop_value);
+				g_debug ("Gamma: %.2f", priv->target_gamma);
 			} else {
 				/* not a fatal warning */
 				g_warning ("option %s unsupported", prop_key);
@@ -1789,6 +1883,17 @@ cd_main_daemon_method_call (GDBusConnection *connection,
 			goto out;
 		}
 
+		/* check the gamma */
+		if (priv->target_gamma < 1.0 || priv->target_gamma > 4.0) {
+			g_dbus_method_invocation_return_error (invocation,
+							       CD_SESSION_ERROR,
+							       CD_SESSION_ERROR_INVALID_VALUE,
+							       "invalid target gamma value %f",
+							       priv->target_gamma);
+			goto out;
+		}
+
+		/* check the whitepoint */
 		if (priv->target_whitepoint != 0 &&
 		    (priv->target_whitepoint < 1000 ||
 		     priv->target_whitepoint > 100000)) {
@@ -1989,7 +2094,7 @@ cd_main_timed_exit_cb (gpointer user_data)
 {
 	CdMainPrivate *priv = (CdMainPrivate *) user_data;
 	g_main_loop_quit (priv->loop);
-	return FALSE;
+	return G_SOURCE_REMOVE;
 }
 
 /**
@@ -2087,6 +2192,7 @@ main (int argc, char *argv[])
 
 	g_type_init ();
 	priv = g_new0 (CdMainPrivate, 1);
+	priv->gamma_scale_factor = 10.0f;
 	priv->status = CD_SESSION_STATUS_IDLE;
 	priv->interaction_code_last = CD_SESSION_INTERACTION_NONE;
 	priv->cancellable = g_cancellable_new ();

@@ -131,3 +131,27 @@ cd-deprecated
 @y: 
 
 
+<!-- ##### FUNCTION cd_profile_set_filename_sync ##### -->
+<para>
+
+</para>
+
+@profile: 
+@value: 
+@cancellable: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_profile_set_qualifier_sync ##### -->
+<para>
+
+</para>
+
+@profile: 
+@value: 
+@cancellable: 
+@error: 
+@Returns: 
+
+

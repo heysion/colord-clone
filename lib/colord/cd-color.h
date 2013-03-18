@@ -67,13 +67,13 @@ GType		 cd_color_xyz_get_type			(void);
 GType		 cd_color_rgb_get_type			(void);
 GType		 cd_color_yxy_get_type			(void);
 
-/* allocate and deallocate helpers */
-#define		 cd_color_xyz_new()			g_new0 (CdColorXYZ, 1)
-#define		 cd_color_rgb_new()			g_new0 (CdColorRGB, 1)
-#define		 cd_color_yxy_new()			g_new0 (CdColorYxy, 1)
-#define		 cd_color_xyz_free			g_free
-#define		 cd_color_rgb_free			g_free
-#define		 cd_color_yxy_free			g_free
+CdColorXYZ	*cd_color_xyz_new			(void);
+CdColorRGB	*cd_color_rgb_new			(void);
+CdColorYxy	*cd_color_yxy_new			(void);
+void		 cd_color_xyz_free			(CdColorXYZ		*src);
+void		 cd_color_rgb_free			(CdColorRGB		*src);
+void		 cd_color_yxy_free			(CdColorYxy		*src);
+
 CdColorXYZ	*cd_color_xyz_dup			(const CdColorXYZ	*src);
 CdColorRGB	*cd_color_rgb_dup			(const CdColorRGB	*src);
 CdColorYxy	*cd_color_yxy_dup			(const CdColorYxy	*src);
@@ -111,6 +111,11 @@ void		 cd_color_rgb_interpolate		(const CdColorRGB	*p1,
 							 const CdColorRGB	*p2,
 							 gdouble		 index,
 							 CdColorRGB		*result);
+
+GPtrArray	*cd_color_rgb_array_new			(void);
+gboolean	 cd_color_rgb_array_is_monotonic	(const GPtrArray	*array);
+GPtrArray	*cd_color_rgb_array_interpolate		(const GPtrArray	*array,
+							 guint			 new_length);
 
 #endif /* __CD_COLOR_H__ */
 

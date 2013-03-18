@@ -67,8 +67,9 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/as-linguas.m4 \
 	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
 	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
 	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
-	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
-	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/nls.m4 \
+	$(top_srcdir)/m4/po.m4 $(top_srcdir)/m4/progtest.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -271,6 +272,7 @@ LD = @LD@
 LDFLAGS = @LDFLAGS@
 LIBICONV = @LIBICONV@
 LIBINTL = @LIBINTL@
+LIBM = @LIBM@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBSYSTEMD_LOGIN_CFLAGS = @LIBSYSTEMD_LOGIN_CFLAGS@
@@ -463,6 +465,12 @@ libcolorhug_la_LDFLAGS = \
 libcolorhug_la_CFLAGS = \
 	$(WARNINGFLAGS_C)
 
+TESTS_ENVIRONMENT = \
+	libtool --mode=execute valgrind				\
+	--quiet							\
+	--leak-check=full					\
+	--show-possibly-lost=no
+
 ch_self_test_SOURCES = \
 	ch-self-test.c
 
@@ -475,19 +483,7 @@ ch_self_test_LDADD = \
 	$(GUSB_LIBS)
 
 ch_self_test_CFLAGS = -DEGG_TEST $(AM_CFLAGS) $(WARNINGFLAGS_C)
-
-# Check tests under valgrind.  Saves log to log-valgrind.txt
-VALGRIND_FLAGS = \
-	--tool=memcheck --suppressions=$(srcdir)/.valgrind-suppressions \
-	--track-origins=yes \
-	--leak-check=yes
-
-CLEANFILES = log-valgrind.txt $(am__append_1)
-valgrind_verbose = $(valgrind_verbose_$(V))
-valgrind_verbose_ = $(valgrind_verbose_$(AM_DEFAULT_VERBOSITY))
-valgrind_verbose_0 = | \
-	grep '\(^[^=]\|ERROR SUMMARY\|definitely lost\|indirectly lost\)' | grep -v ': 0'
-
+CLEANFILES = $(am__append_1)
 @HAVE_INTROSPECTION_TRUE@introspection_sources = \
 @HAVE_INTROSPECTION_TRUE@	ch-common.c						\
 @HAVE_INTROSPECTION_TRUE@	ch-common.h						\
@@ -1109,19 +1105,6 @@ uninstall-am: uninstall-girDATA uninstall-libLTLIBRARIES \
 	uninstall-pkgconfigDATA uninstall-typelibDATA
 
 @HAVE_INTROSPECTION_TRUE@-include $(INTROSPECTION_MAKEFILE)
-
-# check-tool: Run tests under $(TOOL)
-check-tool:
-	$(AM_V_at)$(MAKE) $(AM_MAKEFLAGS) check \
-	TESTS_ENVIRONMENT='$(TESTS_ENVIRONMENT) $(top_builddir)/libtool --mode=execute \
-	env $(TOOL)'
-	$(EXTRA_VALGRIND_FLAGS)
-# TODO: The following check does not fail if valgrind finds error.  It should.
-check-valgrind:
-	$(AM_V_at)$(MAKE) $(AM_MAKEFLGS) check-tool TOOL="valgrind $(VALGRIND_FLAGS)" \
-	2>&1 | tee log-valgrind.txt $(valgrind_verbose)
-
-.PHONY: check-tool check-valgrind
 
 @HAVE_INTROSPECTION_TRUE@ColorHug-1.0.gir: libcolorhug.la
 

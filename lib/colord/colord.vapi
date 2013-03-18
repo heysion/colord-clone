@@ -65,8 +65,14 @@ namespace Cd {
 		public double B;
 		public double G;
 		public double R;
+		[CCode (has_construct_function = false)]
+		public ColorRGB ();
+		public static GLib.GenericArray<Cd.ColorRGB> array_interpolate (GLib.GenericArray<Cd.ColorRGB> array, uint new_length);
+		public static bool array_is_monotonic (GLib.GenericArray<Cd.ColorRGB> array);
+		public static GLib.GenericArray<Cd.ColorRGB> array_new ();
 		public void copy (Cd.ColorRGB dest);
 		public Cd.ColorRGB dup ();
+		public void free ();
 		public void interpolate (Cd.ColorRGB p2, double index, Cd.ColorRGB result);
 		public void @set (double R, double G, double B);
 		public void to_rgb8 (Cd.ColorRGB8 dest);
@@ -77,9 +83,12 @@ namespace Cd {
 		public double X;
 		public double Y;
 		public double Z;
+		[CCode (has_construct_function = false)]
+		public ColorXYZ ();
 		public void clear ();
 		public void copy (Cd.ColorXYZ dest);
 		public Cd.ColorXYZ dup ();
+		public void free ();
 		public void @set (double X, double Y, double Z);
 		public void to_yxy (Cd.ColorYxy dest);
 	}
@@ -89,8 +98,11 @@ namespace Cd {
 		public double Y;
 		public double x;
 		public double y;
+		[CCode (has_construct_function = false)]
+		public ColorYxy ();
 		public void copy (Cd.ColorYxy dest);
 		public Cd.ColorYxy dup ();
+		public void free ();
 		public void @set (double Y, double x, double y);
 		public void to_xyz (Cd.ColorXYZ dest);
 	}
@@ -183,6 +195,32 @@ namespace Cd {
 		public string vendor { get; }
 		public virtual signal void changed ();
 	}
+	[CCode (cheader_filename = "colord.h", type_id = "cd_interp_get_type ()")]
+	public class Interp : GLib.Object {
+		[CCode (has_construct_function = false)]
+		protected Interp ();
+		public static GLib.Quark error_quark ();
+		public virtual double eval (double value) throws GLib.Error;
+		public Cd.InterpKind get_kind ();
+		public uint get_size ();
+		public unowned GLib.Array<double> get_x ();
+		public unowned GLib.Array<double> get_y ();
+		public void insert (double x, double y);
+		public static unowned string kind_to_string (Cd.InterpKind kind);
+		public virtual bool prepare () throws GLib.Error;
+		[NoAccessorMethod]
+		public uint kind { get; set; }
+	}
+	[CCode (cheader_filename = "colord.h", type_id = "cd_interp_akima_get_type ()")]
+	public class InterpAkima : Cd.Interp {
+		[CCode (has_construct_function = false, type = "CdInterp*")]
+		public InterpAkima ();
+	}
+	[CCode (cheader_filename = "colord.h", type_id = "cd_interp_linear_get_type ()")]
+	public class InterpLinear : Cd.Interp {
+		[CCode (has_construct_function = false, type = "CdInterp*")]
+		public InterpLinear ();
+	}
 	[CCode (cheader_filename = "colord.h", type_id = "cd_it8_get_type ()")]
 	public class It8 : GLib.Object {
 		[CCode (has_construct_function = false)]
@@ -260,11 +298,9 @@ namespace Cd {
 		public static unowned string kind_to_string (Cd.ProfileKind profile_kind);
 		public static Cd.ProfileQuality quality_from_string (string quality);
 		public static unowned string quality_to_string (Cd.ProfileQuality quality_enum);
-		public bool set_filename_sync (string value, GLib.Cancellable? cancellable = null) throws GLib.Error;
 		public void set_object_path (string object_path);
 		public async bool set_property (string key, string value, GLib.Cancellable? cancellable) throws GLib.Error;
 		public bool set_property_sync (string key, string value, GLib.Cancellable? cancellable = null) throws GLib.Error;
-		public bool set_qualifier_sync (string value, GLib.Cancellable? cancellable = null) throws GLib.Error;
 		public string to_string ();
 		public static Cd.ProfileWarning warning_from_string (string type);
 		public static unowned string warning_to_string (Cd.ProfileWarning kind_enum);
@@ -458,6 +494,17 @@ namespace Cd {
 		HARD,
 		LAST
 	}
+	[CCode (cheader_filename = "colord.h", cprefix = "CD_INTERP_ERROR_", has_type_id = false)]
+	public enum InterpError {
+		FAILED,
+		LAST
+	}
+	[CCode (cheader_filename = "colord.h", cprefix = "CD_INTERP_KIND_", has_type_id = false)]
+	public enum InterpKind {
+		LINEAR,
+		AKIMA,
+		LAST
+	}
 	[CCode (cheader_filename = "colord.h", cprefix = "CD_IT8_ERROR_", has_type_id = false)]
 	public enum It8Error {
 		FAILED,
@@ -490,6 +537,7 @@ namespace Cd {
 		FAILED_TO_PARSE,
 		FAILED_TO_READ,
 		FAILED_TO_AUTHENTICATE,
+		PROPERTY_INVALID,
 		LAST
 	}
 	[CCode (cheader_filename = "colord.h", cprefix = "CD_PROFILE_KIND_", has_type_id = false)]
@@ -547,6 +595,11 @@ namespace Cd {
 		CALIBRATION,
 		LED,
 		PLASMA,
+		LCD_CCFL,
+		LCD_RGB_LED,
+		LCD_WHITE_LED,
+		WIDE_GAMUT_LCD_CCFL,
+		WIDE_GAMUT_LCD_RGB_LED,
 		LAST
 	}
 	[CCode (cheader_filename = "colord.h", cprefix = "CD_SENSOR_ERROR_", has_type_id = false)]
