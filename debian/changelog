@@ -1,6 +1,6 @@
-colord (0.1.30-1) UNRELEASED; urgency=low
+colord (0.1.31-1) UNRELEASED; urgency=low
 
-  * New upstream release 0.1.30 (LP: #1099967)
+  * New upstream release 0.1.31 (LP: #1099967)
     + Drop patches included in new upstream release
     + Replace one_shot_colord-sane patch with upstream version    
     + New upstream includes support for Spyder 3 (Closes: 696394, LP: #1072261)
