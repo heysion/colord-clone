@@ -23,7 +23,6 @@ colord (0.1.31-1) UNRELEASED; urgency=low
   * Add new ColorHug library
   * Fix unusual crash in cd_main_get_cmdline_for_pid (cherry pick from 1824da9)
   * Add override for hardening-check false-positives
-  * Remove gtk-doc symlinks on clean
   * Add build-depend on libsystemd-login-dev for seat identification
   * Add header for single-debian-patch identifying them as upstream cherry-picks
   * Create /var/lib/colord/icc for system-wide profiles (LP: #1083698)
