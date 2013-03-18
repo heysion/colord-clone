@@ -9,22 +9,25 @@
       <sub name="org.freedesktop.ColorManager.Profile" link="Profile.html"/>
       <sub name="org.freedesktop.ColorManager.Sensor" link="Sensor.html"/>
     </sub>
-    <sub name="libcolord GObjects" link="libcolord.html">
-      <sub name="cd-client" link="colord-cd-client.html"/>
-      <sub name="cd-device" link="colord-cd-device.html"/>
-      <sub name="cd-profile" link="colord-cd-profile.html"/>
-      <sub name="cd-sensor" link="colord-cd-sensor.html"/>
-      <sub name="cd-it8" link="colord-cd-it8.html"/>
-    </sub>
-    <sub name="libcolord-glib helpers" link="libcolord-glib-helpers.html">
-      <sub name="cd-client-sync" link="colord-cd-client-sync.html"/>
-      <sub name="cd-device-sync" link="colord-cd-device-sync.html"/>
-      <sub name="cd-profile-sync" link="colord-cd-profile-sync.html"/>
-      <sub name="cd-sensor-sync" link="colord-cd-sensor-sync.html"/>
-      <sub name="cd-it8-utils" link="colord-cd-it8-utils.html"/>
-      <sub name="cd-version" link="colord-cd-version.html"/>
-      <sub name="cd-math" link="colord-cd-math.html"/>
+    <sub name="libcolord GObjects" link="libcolordprivate.html">
       <sub name="cd-color" link="colord-cd-color.html"/>
+      <sub name="cd-interp-akima" link="colord-cd-interp-akima.html"/>
+      <sub name="cd-interp-linear" link="colord-cd-interp-linear.html"/>
+      <sub name="cd-interp" link="colord-cd-interp.html"/>
+      <sub name="cd-it8-utils" link="colord-cd-it8-utils.html"/>
+      <sub name="cd-it8" link="colord-cd-it8.html"/>
+      <sub name="cd-math" link="colord-cd-math.html"/>
+      <sub name="cd-version" link="colord-cd-version.html"/>
+    </sub>
+    <sub name="libcolord" link="libcolord.html">
+      <sub name="cd-client-sync" link="colord-cd-client-sync.html"/>
+      <sub name="cd-client" link="colord-cd-client.html"/>
+      <sub name="cd-device-sync" link="colord-cd-device-sync.html"/>
+      <sub name="cd-device" link="colord-cd-device.html"/>
+      <sub name="cd-profile-sync" link="colord-cd-profile-sync.html"/>
+      <sub name="cd-profile" link="colord-cd-profile.html"/>
+      <sub name="cd-sensor-sync" link="colord-cd-sensor-sync.html"/>
+      <sub name="cd-sensor" link="colord-cd-sensor.html"/>
     </sub>
     <sub name="Index" link="ix01.html"/>
     <sub name="License" link="license.html"/>
@@ -120,6 +123,145 @@
     <keyword type="" name="The &quot;Capabilities&quot; property" link="Sensor.html#Sensor:Capabilities"/>
     <keyword type="" name="The &quot;Options&quot; property" link="Sensor.html#Sensor:Options"/>
     <keyword type="" name="The &quot;Metadata&quot; property" link="Sensor.html#Sensor:Metadata"/>
+    <keyword type="struct" name="CdColorLab" link="colord-cd-color.html#CdColorLab"/>
+    <keyword type="struct" name="CdColorRGB" link="colord-cd-color.html#CdColorRGB-struct"/>
+    <keyword type="struct" name="CdColorRGB8" link="colord-cd-color.html#CdColorRGB8"/>
+    <keyword type="struct" name="CdColorXYZ" link="colord-cd-color.html#CdColorXYZ-struct"/>
+    <keyword type="struct" name="CdColorYxy" link="colord-cd-color.html#CdColorYxy-struct"/>
+    <keyword type="function" name="cd_color_get_blackbody_rgb ()" link="colord-cd-color.html#cd-color-get-blackbody-rgb" since="0.1.26"/>
+    <keyword type="function" name="cd_color_rgb8_to_rgb ()" link="colord-cd-color.html#cd-color-rgb8-to-rgb" since="0.1.27"/>
+    <keyword type="function" name="cd_color_rgb_array_interpolate ()" link="colord-cd-color.html#cd-color-rgb-array-interpolate" since="0.1.31"/>
+    <keyword type="function" name="cd_color_rgb_array_is_monotonic ()" link="colord-cd-color.html#cd-color-rgb-array-is-monotonic" since="0.1.31"/>
+    <keyword type="function" name="cd_color_rgb_array_new ()" link="colord-cd-color.html#cd-color-rgb-array-new" since="0.1.31"/>
+    <keyword type="function" name="cd_color_rgb_copy ()" link="colord-cd-color.html#cd-color-rgb-copy" since="0.1.27"/>
+    <keyword type="function" name="cd_color_rgb_dup ()" link="colord-cd-color.html#cd-color-rgb-dup" since="0.1.27"/>
+    <keyword type="function" name="cd_color_rgb_free ()" link="colord-cd-color.html#cd-color-rgb-free" since="0.1.0"/>
+    <keyword type="function" name="cd_color_rgb_interpolate ()" link="colord-cd-color.html#cd-color-rgb-interpolate" since="0.1.26"/>
+    <keyword type="function" name="cd_color_rgb_new ()" link="colord-cd-color.html#cd-color-rgb-new" since="0.1.0"/>
+    <keyword type="function" name="cd_color_rgb_set ()" link="colord-cd-color.html#cd-color-rgb-set" since="0.1.27"/>
+    <keyword type="function" name="cd_color_rgb_to_rgb8 ()" link="colord-cd-color.html#cd-color-rgb-to-rgb8" since="0.1.27"/>
+    <keyword type="function" name="cd_color_xyz_clear ()" link="colord-cd-color.html#cd-color-xyz-clear" since="0.1.27"/>
+    <keyword type="function" name="cd_color_xyz_copy ()" link="colord-cd-color.html#cd-color-xyz-copy" since="0.1.27"/>
+    <keyword type="function" name="cd_color_xyz_dup ()" link="colord-cd-color.html#cd-color-xyz-dup" since="0.1.27"/>
+    <keyword type="function" name="cd_color_xyz_free ()" link="colord-cd-color.html#cd-color-xyz-free" since="0.1.0"/>
+    <keyword type="function" name="cd_color_xyz_new ()" link="colord-cd-color.html#cd-color-xyz-new" since="0.1.0"/>
+    <keyword type="function" name="cd_color_xyz_set ()" link="colord-cd-color.html#cd-color-xyz-set" since="0.1.27"/>
+    <keyword type="function" name="cd_color_xyz_to_yxy ()" link="colord-cd-color.html#cd-color-xyz-to-yxy" since="0.1.27"/>
+    <keyword type="function" name="cd_color_yxy_copy ()" link="colord-cd-color.html#cd-color-yxy-copy" since="0.1.27"/>
+    <keyword type="function" name="cd_color_yxy_dup ()" link="colord-cd-color.html#cd-color-yxy-dup" since="0.1.27"/>
+    <keyword type="function" name="cd_color_yxy_free ()" link="colord-cd-color.html#cd-color-yxy-free" since="0.1.0"/>
+    <keyword type="function" name="cd_color_yxy_new ()" link="colord-cd-color.html#cd-color-yxy-new" since="0.1.0"/>
+    <keyword type="function" name="cd_color_yxy_set ()" link="colord-cd-color.html#cd-color-yxy-set" since="0.1.27"/>
+    <keyword type="function" name="cd_color_yxy_to_xyz ()" link="colord-cd-color.html#cd-color-yxy-to-xyz" since="0.1.27"/>
+    <keyword type="function" name="cd_interp_akima_new ()" link="colord-cd-interp-akima.html#cd-interp-akima-new" since="0.1.31"/>
+    <keyword type="function" name="cd_interp_linear_new ()" link="colord-cd-interp-linear.html#cd-interp-linear-new" since="0.1.31"/>
+    <keyword type="macro" name="CD_INTERP_ERROR" link="colord-cd-interp.html#CD-INTERP-ERROR:CAPS"/>
+    <keyword type="macro" name="CD_INTERP_TYPE_ERROR" link="colord-cd-interp.html#CD-INTERP-TYPE-ERROR:CAPS"/>
+    <keyword type="enum" name="enum CdInterpError" link="colord-cd-interp.html#CdInterpError"/>
+    <keyword type="enum" name="enum CdInterpKind" link="colord-cd-interp.html#CdInterpKind"/>
+    <keyword type="function" name="_cd_interp_reserved1 ()" link="colord-cd-interp.html#cd-interp-reserved1"/>
+    <keyword type="function" name="_cd_interp_reserved2 ()" link="colord-cd-interp.html#cd-interp-reserved2"/>
+    <keyword type="function" name="_cd_interp_reserved3 ()" link="colord-cd-interp.html#cd-interp-reserved3"/>
+    <keyword type="function" name="_cd_interp_reserved4 ()" link="colord-cd-interp.html#cd-interp-reserved4"/>
+    <keyword type="function" name="_cd_interp_reserved5 ()" link="colord-cd-interp.html#cd-interp-reserved5"/>
+    <keyword type="function" name="_cd_interp_reserved6 ()" link="colord-cd-interp.html#cd-interp-reserved6"/>
+    <keyword type="function" name="_cd_interp_reserved7 ()" link="colord-cd-interp.html#cd-interp-reserved7"/>
+    <keyword type="function" name="_cd_interp_reserved8 ()" link="colord-cd-interp.html#cd-interp-reserved8"/>
+    <keyword type="function" name="cd_interp_error_quark ()" link="colord-cd-interp.html#cd-interp-error-quark" since="0.1.31"/>
+    <keyword type="function" name="cd_interp_eval ()" link="colord-cd-interp.html#cd-interp-eval" since="0.1.31"/>
+    <keyword type="function" name="cd_interp_get_kind ()" link="colord-cd-interp.html#cd-interp-get-kind" since="0.1.31"/>
+    <keyword type="function" name="cd_interp_get_size ()" link="colord-cd-interp.html#cd-interp-get-size" since="0.1.31"/>
+    <keyword type="function" name="cd_interp_get_x ()" link="colord-cd-interp.html#cd-interp-get-x" since="0.1.31"/>
+    <keyword type="function" name="cd_interp_get_y ()" link="colord-cd-interp.html#cd-interp-get-y" since="0.1.31"/>
+    <keyword type="function" name="cd_interp_insert ()" link="colord-cd-interp.html#cd-interp-insert" since="0.1.31"/>
+    <keyword type="function" name="cd_interp_kind_to_string ()" link="colord-cd-interp.html#cd-interp-kind-to-string"/>
+    <keyword type="function" name="cd_interp_prepare ()" link="colord-cd-interp.html#cd-interp-prepare" since="0.1.31"/>
+    <keyword type="function" name="eval ()" link="colord-cd-interp.html#eval"/>
+    <keyword type="function" name="prepare ()" link="colord-cd-interp.html#prepare"/>
+    <keyword type="function" name="cd_it8_utils_calculate_ccmx ()" link="colord-cd-it8-utils.html#cd-it8-utils-calculate-ccmx"/>
+    <keyword type="macro" name="CD_IT8_ERROR" link="colord-cd-it8.html#CD-IT8-ERROR:CAPS"/>
+    <keyword type="macro" name="CD_IT8_TYPE_ERROR" link="colord-cd-it8.html#CD-IT8-TYPE-ERROR:CAPS"/>
+    <keyword type="enum" name="enum CdIt8Error" link="colord-cd-it8.html#CdIt8Error"/>
+    <keyword type="enum" name="enum CdIt8Kind" link="colord-cd-it8.html#CdIt8Kind"/>
+    <keyword type="function" name="_cd_it8_reserved1 ()" link="colord-cd-it8.html#cd-it8-reserved1"/>
+    <keyword type="function" name="_cd_it8_reserved2 ()" link="colord-cd-it8.html#cd-it8-reserved2"/>
+    <keyword type="function" name="_cd_it8_reserved3 ()" link="colord-cd-it8.html#cd-it8-reserved3"/>
+    <keyword type="function" name="_cd_it8_reserved4 ()" link="colord-cd-it8.html#cd-it8-reserved4"/>
+    <keyword type="function" name="_cd_it8_reserved5 ()" link="colord-cd-it8.html#cd-it8-reserved5"/>
+    <keyword type="function" name="_cd_it8_reserved6 ()" link="colord-cd-it8.html#cd-it8-reserved6"/>
+    <keyword type="function" name="_cd_it8_reserved7 ()" link="colord-cd-it8.html#cd-it8-reserved7"/>
+    <keyword type="function" name="_cd_it8_reserved8 ()" link="colord-cd-it8.html#cd-it8-reserved8"/>
+    <keyword type="function" name="cd_it8_add_data ()" link="colord-cd-it8.html#cd-it8-add-data" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_add_option ()" link="colord-cd-it8.html#cd-it8-add-option" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_error_quark ()" link="colord-cd-it8.html#cd-it8-error-quark" since="0.1.0"/>
+    <keyword type="function" name="cd_it8_get_data_item ()" link="colord-cd-it8.html#cd-it8-get-data-item" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_get_data_size ()" link="colord-cd-it8.html#cd-it8-get-data-size" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_get_instrument ()" link="colord-cd-it8.html#cd-it8-get-instrument" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_get_kind ()" link="colord-cd-it8.html#cd-it8-get-kind" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_get_matrix ()" link="colord-cd-it8.html#cd-it8-get-matrix" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_get_normalized ()" link="colord-cd-it8.html#cd-it8-get-normalized" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_get_originator ()" link="colord-cd-it8.html#cd-it8-get-originator" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_get_reference ()" link="colord-cd-it8.html#cd-it8-get-reference" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_get_spectral ()" link="colord-cd-it8.html#cd-it8-get-spectral" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_get_title ()" link="colord-cd-it8.html#cd-it8-get-title" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_has_option ()" link="colord-cd-it8.html#cd-it8-has-option" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_load_from_data ()" link="colord-cd-it8.html#cd-it8-load-from-data" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_load_from_file ()" link="colord-cd-it8.html#cd-it8-load-from-file" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_new ()" link="colord-cd-it8.html#cd-it8-new" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_new_with_kind ()" link="colord-cd-it8.html#cd-it8-new-with-kind" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_save_to_data ()" link="colord-cd-it8.html#cd-it8-save-to-data" since="0.1.26"/>
+    <keyword type="function" name="cd_it8_save_to_file ()" link="colord-cd-it8.html#cd-it8-save-to-file" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_set_instrument ()" link="colord-cd-it8.html#cd-it8-set-instrument" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_set_kind ()" link="colord-cd-it8.html#cd-it8-set-kind" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_set_matrix ()" link="colord-cd-it8.html#cd-it8-set-matrix" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_set_normalized ()" link="colord-cd-it8.html#cd-it8-set-normalized" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_set_originator ()" link="colord-cd-it8.html#cd-it8-set-originator" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_set_reference ()" link="colord-cd-it8.html#cd-it8-set-reference" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_set_spectral ()" link="colord-cd-it8.html#cd-it8-set-spectral" since="0.1.20"/>
+    <keyword type="function" name="cd_it8_set_title ()" link="colord-cd-it8.html#cd-it8-set-title" since="0.1.20"/>
+    <keyword type="struct" name="CdMat3x3" link="colord-cd-math.html#CdMat3x3"/>
+    <keyword type="struct" name="CdVec3" link="colord-cd-math.html#CdVec3"/>
+    <keyword type="function" name="cd_mat33_clear ()" link="colord-cd-math.html#cd-mat33-clear"/>
+    <keyword type="function" name="cd_mat33_copy ()" link="colord-cd-math.html#cd-mat33-copy"/>
+    <keyword type="function" name="cd_mat33_determinant ()" link="colord-cd-math.html#cd-mat33-determinant"/>
+    <keyword type="function" name="cd_mat33_get_data ()" link="colord-cd-math.html#cd-mat33-get-data"/>
+    <keyword type="function" name="cd_mat33_matrix_multiply ()" link="colord-cd-math.html#cd-mat33-matrix-multiply"/>
+    <keyword type="function" name="cd_mat33_normalize ()" link="colord-cd-math.html#cd-mat33-normalize"/>
+    <keyword type="function" name="cd_mat33_reciprocal ()" link="colord-cd-math.html#cd-mat33-reciprocal"/>
+    <keyword type="function" name="cd_mat33_scalar_multiply ()" link="colord-cd-math.html#cd-mat33-scalar-multiply"/>
+    <keyword type="function" name="cd_mat33_set_identity ()" link="colord-cd-math.html#cd-mat33-set-identity"/>
+    <keyword type="function" name="cd_mat33_to_string ()" link="colord-cd-math.html#cd-mat33-to-string"/>
+    <keyword type="function" name="cd_mat33_vector_multiply ()" link="colord-cd-math.html#cd-mat33-vector-multiply"/>
+    <keyword type="function" name="cd_vec3_add ()" link="colord-cd-math.html#cd-vec3-add"/>
+    <keyword type="function" name="cd_vec3_clear ()" link="colord-cd-math.html#cd-vec3-clear"/>
+    <keyword type="function" name="cd_vec3_copy ()" link="colord-cd-math.html#cd-vec3-copy"/>
+    <keyword type="function" name="cd_vec3_get_data ()" link="colord-cd-math.html#cd-vec3-get-data"/>
+    <keyword type="function" name="cd_vec3_init ()" link="colord-cd-math.html#cd-vec3-init"/>
+    <keyword type="function" name="cd_vec3_scalar_multiply ()" link="colord-cd-math.html#cd-vec3-scalar-multiply"/>
+    <keyword type="function" name="cd_vec3_squared_error ()" link="colord-cd-math.html#cd-vec3-squared-error"/>
+    <keyword type="function" name="cd_vec3_subtract ()" link="colord-cd-math.html#cd-vec3-subtract"/>
+    <keyword type="function" name="cd_vec3_to_string ()" link="colord-cd-math.html#cd-vec3-to-string"/>
+    <keyword type="macro" name="CD_CHECK_VERSION()" link="colord-cd-version.html#CD-CHECK-VERSION:CAPS"/>
+    <keyword type="macro" name="CD_MAJOR_VERSION" link="colord-cd-version.html#CD-MAJOR-VERSION:CAPS"/>
+    <keyword type="macro" name="CD_MICRO_VERSION" link="colord-cd-version.html#CD-MICRO-VERSION:CAPS"/>
+    <keyword type="macro" name="CD_MINOR_VERSION" link="colord-cd-version.html#CD-MINOR-VERSION:CAPS"/>
+    <keyword type="function" name="cd_client_connect_sync ()" link="colord-cd-client-sync.html#cd-client-connect-sync" since="0.1.0"/>
+    <keyword type="function" name="cd_client_create_device_sync ()" link="colord-cd-client-sync.html#cd-client-create-device-sync" since="0.1.2"/>
+    <keyword type="function" name="cd_client_create_profile_sync ()" link="colord-cd-client-sync.html#cd-client-create-profile-sync" since="0.1.2"/>
+    <keyword type="function" name="cd_client_delete_device_sync ()" link="colord-cd-client-sync.html#cd-client-delete-device-sync" since="0.1.8"/>
+    <keyword type="function" name="cd_client_delete_profile_sync ()" link="colord-cd-client-sync.html#cd-client-delete-profile-sync" since="0.1.8"/>
+    <keyword type="function" name="cd_client_find_device_by_property_sync ()" link="colord-cd-client-sync.html#cd-client-find-device-by-property-sync" since="0.1.8"/>
+    <keyword type="function" name="cd_client_find_device_sync ()" link="colord-cd-client-sync.html#cd-client-find-device-sync" since="0.1.0"/>
+    <keyword type="function" name="cd_client_find_profile_by_filename_sync ()" link="colord-cd-client-sync.html#cd-client-find-profile-by-filename-sync" since="0.1.3"/>
+    <keyword type="function" name="cd_client_find_profile_by_property_sync ()" link="colord-cd-client-sync.html#cd-client-find-profile-by-property-sync" since="0.1.24"/>
+    <keyword type="function" name="cd_client_find_profile_sync ()" link="colord-cd-client-sync.html#cd-client-find-profile-sync" since="0.1.0"/>
+    <keyword type="function" name="cd_client_find_sensor_sync ()" link="colord-cd-client-sync.html#cd-client-find-sensor-sync" since="0.1.26"/>
+    <keyword type="function" name="cd_client_get_devices_by_kind_sync ()" link="colord-cd-client-sync.html#cd-client-get-devices-by-kind-sync" since="0.1.0"/>
+    <keyword type="function" name="cd_client_get_devices_sync ()" link="colord-cd-client-sync.html#cd-client-get-devices-sync" since="0.1.0"/>
+    <keyword type="function" name="cd_client_get_profiles_sync ()" link="colord-cd-client-sync.html#cd-client-get-profiles-sync" since="0.1.0"/>
+    <keyword type="function" name="cd_client_get_sensors_sync ()" link="colord-cd-client-sync.html#cd-client-get-sensors-sync" since="0.1.0"/>
+    <keyword type="function" name="cd_client_get_standard_space_sync ()" link="colord-cd-client-sync.html#cd-client-get-standard-space-sync" since="0.1.2"/>
+    <keyword type="function" name="cd_client_import_profile_sync ()" link="colord-cd-client-sync.html#cd-client-import-profile-sync" since="0.1.12"/>
     <keyword type="macro" name="CD_CLIENT_ERROR" link="colord-cd-client.html#CD-CLIENT-ERROR:CAPS"/>
     <keyword type="macro" name="CD_CLIENT_TYPE_ERROR" link="colord-cd-client.html#CD-CLIENT-TYPE-ERROR:CAPS"/>
     <keyword type="function" name="_cd_client_reserved1 ()" link="colord-cd-client.html#cd-client-reserved1"/>
@@ -179,6 +321,22 @@
     <keyword type="function" name="sensor_added ()" link="colord-cd-client.html#sensor-added"/>
     <keyword type="function" name="sensor_changed ()" link="colord-cd-client.html#sensor-changed"/>
     <keyword type="function" name="sensor_removed ()" link="colord-cd-client.html#sensor-removed"/>
+    <keyword type="function" name="cd_device_add_profile_sync ()" link="colord-cd-device-sync.html#cd-device-add-profile-sync" since="0.1.3"/>
+    <keyword type="function" name="cd_device_connect_sync ()" link="colord-cd-device-sync.html#cd-device-connect-sync" since="0.1.8"/>
+    <keyword type="function" name="cd_device_get_profile_for_qualifiers_sync ()" link="colord-cd-device-sync.html#cd-device-get-profile-for-qualifiers-sync" since="0.1.8"/>
+    <keyword type="function" name="cd_device_get_profile_relation_sync ()" link="colord-cd-device-sync.html#cd-device-get-profile-relation-sync" since="0.1.8"/>
+    <keyword type="function" name="cd_device_make_profile_default_sync ()" link="colord-cd-device-sync.html#cd-device-make-profile-default-sync" since="0.1.8"/>
+    <keyword type="function" name="cd_device_profiling_inhibit_sync ()" link="colord-cd-device-sync.html#cd-device-profiling-inhibit-sync" since="0.1.1"/>
+    <keyword type="function" name="cd_device_profiling_uninhibit_sync ()" link="colord-cd-device-sync.html#cd-device-profiling-uninhibit-sync" since="0.1.1"/>
+    <keyword type="function" name="cd_device_remove_profile_sync ()" link="colord-cd-device-sync.html#cd-device-remove-profile-sync" since="0.1.2"/>
+    <keyword type="function" name="cd_device_set_colorspace_sync ()" link="colord-cd-device-sync.html#cd-device-set-colorspace-sync" since="0.1.1"/>
+    <keyword type="function" name="cd_device_set_enabled_sync ()" link="colord-cd-device-sync.html#cd-device-set-enabled-sync" since="0.1.26"/>
+    <keyword type="function" name="cd_device_set_kind_sync ()" link="colord-cd-device-sync.html#cd-device-set-kind-sync" since="0.1.0"/>
+    <keyword type="function" name="cd_device_set_mode_sync ()" link="colord-cd-device-sync.html#cd-device-set-mode-sync" since="0.1.2"/>
+    <keyword type="function" name="cd_device_set_model_sync ()" link="colord-cd-device-sync.html#cd-device-set-model-sync" since="0.1.0"/>
+    <keyword type="function" name="cd_device_set_property_sync ()" link="colord-cd-device-sync.html#cd-device-set-property-sync" since="0.1.8"/>
+    <keyword type="function" name="cd_device_set_serial_sync ()" link="colord-cd-device-sync.html#cd-device-set-serial-sync" since="0.1.1"/>
+    <keyword type="function" name="cd_device_set_vendor_sync ()" link="colord-cd-device-sync.html#cd-device-set-vendor-sync" since="0.1.1"/>
     <keyword type="macro" name="CD_DEVICE_ERROR" link="colord-cd-device.html#CD-DEVICE-ERROR:CAPS"/>
     <keyword type="macro" name="CD_DEVICE_TYPE_ERROR" link="colord-cd-device.html#CD-DEVICE-TYPE-ERROR:CAPS"/>
     <keyword type="function" name="_cd_device_reserved1 ()" link="colord-cd-device.html#cd-device-reserved1"/>
@@ -238,6 +396,9 @@
     <keyword type="function" name="cd_device_set_property_finish ()" link="colord-cd-device.html#cd-device-set-property-finish" since="0.1.8"/>
     <keyword type="function" name="cd_device_to_string ()" link="colord-cd-device.html#cd-device-to-string" since="0.1.0"/>
     <keyword type="function" name="changed ()" link="colord-cd-device.html#changed"/>
+    <keyword type="function" name="cd_profile_connect_sync ()" link="colord-cd-profile-sync.html#cd-profile-connect-sync" since="0.1.8"/>
+    <keyword type="function" name="cd_profile_install_system_wide_sync ()" link="colord-cd-profile-sync.html#cd-profile-install-system-wide-sync" since="0.1.8"/>
+    <keyword type="function" name="cd_profile_set_property_sync ()" link="colord-cd-profile-sync.html#cd-profile-set-property-sync" since="0.1.8"/>
     <keyword type="macro" name="CD_PROFILE_ERROR" link="colord-cd-profile.html#CD-PROFILE-ERROR:CAPS"/>
     <keyword type="macro" name="CD_PROFILE_TYPE_ERROR" link="colord-cd-profile.html#CD-PROFILE-TYPE-ERROR:CAPS"/>
     <keyword type="function" name="_cd_profile_reserved1 ()" link="colord-cd-profile.html#cd-profile-reserved1"/>
@@ -280,6 +441,11 @@
     <keyword type="function" name="cd_profile_set_property_finish ()" link="colord-cd-profile.html#cd-profile-set-property-finish" since="0.1.8"/>
     <keyword type="function" name="cd_profile_to_string ()" link="colord-cd-profile.html#cd-profile-to-string" since="0.1.0"/>
     <keyword type="function" name="changed ()" link="colord-cd-profile.html#changed"/>
+    <keyword type="function" name="cd_sensor_connect_sync ()" link="colord-cd-sensor-sync.html#cd-sensor-connect-sync" since="0.1.8"/>
+    <keyword type="function" name="cd_sensor_get_sample_sync ()" link="colord-cd-sensor-sync.html#cd-sensor-get-sample-sync" since="0.1.8"/>
+    <keyword type="function" name="cd_sensor_lock_sync ()" link="colord-cd-sensor-sync.html#cd-sensor-lock-sync" since="0.1.6"/>
+    <keyword type="function" name="cd_sensor_set_options_sync ()" link="colord-cd-sensor-sync.html#cd-sensor-set-options-sync" since="0.1.20"/>
+    <keyword type="function" name="cd_sensor_unlock_sync ()" link="colord-cd-sensor-sync.html#cd-sensor-unlock-sync" since="0.1.6"/>
     <keyword type="macro" name="CD_SENSOR_ERROR" link="colord-cd-sensor.html#CD-SENSOR-ERROR:CAPS"/>
     <keyword type="macro" name="CD_SENSOR_TYPE_ERROR" link="colord-cd-sensor.html#CD-SENSOR-TYPE-ERROR:CAPS"/>
     <keyword type="function" name="_cd_sensor_reserved1 ()" link="colord-cd-sensor.html#cd-sensor-reserved1"/>
@@ -325,143 +491,8 @@
     <keyword type="function" name="cd_sensor_to_string ()" link="colord-cd-sensor.html#cd-sensor-to-string"/>
     <keyword type="function" name="cd_sensor_unlock ()" link="colord-cd-sensor.html#cd-sensor-unlock" since="0.1.8"/>
     <keyword type="function" name="cd_sensor_unlock_finish ()" link="colord-cd-sensor.html#cd-sensor-unlock-finish" since="0.1.8"/>
-    <keyword type="macro" name="CD_IT8_ERROR" link="colord-cd-it8.html#CD-IT8-ERROR:CAPS"/>
-    <keyword type="macro" name="CD_IT8_TYPE_ERROR" link="colord-cd-it8.html#CD-IT8-TYPE-ERROR:CAPS"/>
-    <keyword type="enum" name="enum CdIt8Error" link="colord-cd-it8.html#CdIt8Error"/>
-    <keyword type="enum" name="enum CdIt8Kind" link="colord-cd-it8.html#CdIt8Kind"/>
-    <keyword type="function" name="_cd_it8_reserved1 ()" link="colord-cd-it8.html#cd-it8-reserved1"/>
-    <keyword type="function" name="_cd_it8_reserved2 ()" link="colord-cd-it8.html#cd-it8-reserved2"/>
-    <keyword type="function" name="_cd_it8_reserved3 ()" link="colord-cd-it8.html#cd-it8-reserved3"/>
-    <keyword type="function" name="_cd_it8_reserved4 ()" link="colord-cd-it8.html#cd-it8-reserved4"/>
-    <keyword type="function" name="_cd_it8_reserved5 ()" link="colord-cd-it8.html#cd-it8-reserved5"/>
-    <keyword type="function" name="_cd_it8_reserved6 ()" link="colord-cd-it8.html#cd-it8-reserved6"/>
-    <keyword type="function" name="_cd_it8_reserved7 ()" link="colord-cd-it8.html#cd-it8-reserved7"/>
-    <keyword type="function" name="_cd_it8_reserved8 ()" link="colord-cd-it8.html#cd-it8-reserved8"/>
-    <keyword type="function" name="cd_it8_add_data ()" link="colord-cd-it8.html#cd-it8-add-data" since="0.1.20"/>
-    <keyword type="function" name="cd_it8_add_option ()" link="colord-cd-it8.html#cd-it8-add-option" since="0.1.20"/>
-    <keyword type="function" name="cd_it8_error_quark ()" link="colord-cd-it8.html#cd-it8-error-quark" since="0.1.0"/>
-    <keyword type="function" name="cd_it8_get_data_item ()" link="colord-cd-it8.html#cd-it8-get-data-item" since="0.1.20"/>
-    <keyword type="function" name="cd_it8_get_data_size ()" link="colord-cd-it8.html#cd-it8-get-data-size" since="0.1.20"/>
-    <keyword type="function" name="cd_it8_get_instrument ()" link="colord-cd-it8.html#cd-it8-get-instrument" since="0.1.20"/>
-    <keyword type="function" name="cd_it8_get_kind ()" link="colord-cd-it8.html#cd-it8-get-kind" since="0.1.20"/>
-    <keyword type="function" name="cd_it8_get_matrix ()" link="colord-cd-it8.html#cd-it8-get-matrix" since="0.1.20"/>
-    <keyword type="function" name="cd_it8_get_normalized ()" link="colord-cd-it8.html#cd-it8-get-normalized" since="0.1.20"/>
-    <keyword type="function" name="cd_it8_get_originator ()" link="colord-cd-it8.html#cd-it8-get-originator" since="0.1.20"/>
-    <keyword type="function" name="cd_it8_get_reference ()" link="colord-cd-it8.html#cd-it8-get-reference" since="0.1.20"/>
-    <keyword type="function" name="cd_it8_get_spectral ()" link="colord-cd-it8.html#cd-it8-get-spectral" since="0.1.20"/>
-    <keyword type="function" name="cd_it8_get_title ()" link="colord-cd-it8.html#cd-it8-get-title" since="0.1.20"/>
-    <keyword type="function" name="cd_it8_has_option ()" link="colord-cd-it8.html#cd-it8-has-option" since="0.1.20"/>
-    <keyword type="function" name="cd_it8_load_from_data ()" link="colord-cd-it8.html#cd-it8-load-from-data" since="0.1.20"/>
-    <keyword type="function" name="cd_it8_load_from_file ()" link="colord-cd-it8.html#cd-it8-load-from-file" since="0.1.20"/>
-    <keyword type="function" name="cd_it8_new ()" link="colord-cd-it8.html#cd-it8-new" since="0.1.20"/>
-    <keyword type="function" name="cd_it8_new_with_kind ()" link="colord-cd-it8.html#cd-it8-new-with-kind" since="0.1.20"/>
-    <keyword type="function" name="cd_it8_save_to_data ()" link="colord-cd-it8.html#cd-it8-save-to-data" since="0.1.26"/>
-    <keyword type="function" name="cd_it8_save_to_file ()" link="colord-cd-it8.html#cd-it8-save-to-file" since="0.1.20"/>
-    <keyword type="function" name="cd_it8_set_instrument ()" link="colord-cd-it8.html#cd-it8-set-instrument" since="0.1.20"/>
-    <keyword type="function" name="cd_it8_set_kind ()" link="colord-cd-it8.html#cd-it8-set-kind" since="0.1.20"/>
-    <keyword type="function" name="cd_it8_set_matrix ()" link="colord-cd-it8.html#cd-it8-set-matrix" since="0.1.20"/>
-    <keyword type="function" name="cd_it8_set_normalized ()" link="colord-cd-it8.html#cd-it8-set-normalized" since="0.1.20"/>
-    <keyword type="function" name="cd_it8_set_originator ()" link="colord-cd-it8.html#cd-it8-set-originator" since="0.1.20"/>
-    <keyword type="function" name="cd_it8_set_reference ()" link="colord-cd-it8.html#cd-it8-set-reference" since="0.1.20"/>
-    <keyword type="function" name="cd_it8_set_spectral ()" link="colord-cd-it8.html#cd-it8-set-spectral" since="0.1.20"/>
-    <keyword type="function" name="cd_it8_set_title ()" link="colord-cd-it8.html#cd-it8-set-title" since="0.1.20"/>
-    <keyword type="function" name="cd_client_connect_sync ()" link="colord-cd-client-sync.html#cd-client-connect-sync" since="0.1.0"/>
-    <keyword type="function" name="cd_client_create_device_sync ()" link="colord-cd-client-sync.html#cd-client-create-device-sync" since="0.1.2"/>
-    <keyword type="function" name="cd_client_create_profile_sync ()" link="colord-cd-client-sync.html#cd-client-create-profile-sync" since="0.1.2"/>
-    <keyword type="function" name="cd_client_delete_device_sync ()" link="colord-cd-client-sync.html#cd-client-delete-device-sync" since="0.1.8"/>
-    <keyword type="function" name="cd_client_delete_profile_sync ()" link="colord-cd-client-sync.html#cd-client-delete-profile-sync" since="0.1.8"/>
-    <keyword type="function" name="cd_client_find_device_by_property_sync ()" link="colord-cd-client-sync.html#cd-client-find-device-by-property-sync" since="0.1.8"/>
-    <keyword type="function" name="cd_client_find_device_sync ()" link="colord-cd-client-sync.html#cd-client-find-device-sync" since="0.1.0"/>
-    <keyword type="function" name="cd_client_find_profile_by_filename_sync ()" link="colord-cd-client-sync.html#cd-client-find-profile-by-filename-sync" since="0.1.3"/>
-    <keyword type="function" name="cd_client_find_profile_by_property_sync ()" link="colord-cd-client-sync.html#cd-client-find-profile-by-property-sync" since="0.1.24"/>
-    <keyword type="function" name="cd_client_find_profile_sync ()" link="colord-cd-client-sync.html#cd-client-find-profile-sync" since="0.1.0"/>
-    <keyword type="function" name="cd_client_find_sensor_sync ()" link="colord-cd-client-sync.html#cd-client-find-sensor-sync" since="0.1.26"/>
-    <keyword type="function" name="cd_client_get_devices_by_kind_sync ()" link="colord-cd-client-sync.html#cd-client-get-devices-by-kind-sync" since="0.1.0"/>
-    <keyword type="function" name="cd_client_get_devices_sync ()" link="colord-cd-client-sync.html#cd-client-get-devices-sync" since="0.1.0"/>
-    <keyword type="function" name="cd_client_get_profiles_sync ()" link="colord-cd-client-sync.html#cd-client-get-profiles-sync" since="0.1.0"/>
-    <keyword type="function" name="cd_client_get_sensors_sync ()" link="colord-cd-client-sync.html#cd-client-get-sensors-sync" since="0.1.0"/>
-    <keyword type="function" name="cd_client_get_standard_space_sync ()" link="colord-cd-client-sync.html#cd-client-get-standard-space-sync" since="0.1.2"/>
-    <keyword type="function" name="cd_client_import_profile_sync ()" link="colord-cd-client-sync.html#cd-client-import-profile-sync" since="0.1.12"/>
-    <keyword type="function" name="cd_device_add_profile_sync ()" link="colord-cd-device-sync.html#cd-device-add-profile-sync" since="0.1.3"/>
-    <keyword type="function" name="cd_device_connect_sync ()" link="colord-cd-device-sync.html#cd-device-connect-sync" since="0.1.8"/>
-    <keyword type="function" name="cd_device_get_profile_for_qualifiers_sync ()" link="colord-cd-device-sync.html#cd-device-get-profile-for-qualifiers-sync" since="0.1.8"/>
-    <keyword type="function" name="cd_device_get_profile_relation_sync ()" link="colord-cd-device-sync.html#cd-device-get-profile-relation-sync" since="0.1.8"/>
-    <keyword type="function" name="cd_device_make_profile_default_sync ()" link="colord-cd-device-sync.html#cd-device-make-profile-default-sync" since="0.1.8"/>
-    <keyword type="function" name="cd_device_profiling_inhibit_sync ()" link="colord-cd-device-sync.html#cd-device-profiling-inhibit-sync" since="0.1.1"/>
-    <keyword type="function" name="cd_device_profiling_uninhibit_sync ()" link="colord-cd-device-sync.html#cd-device-profiling-uninhibit-sync" since="0.1.1"/>
-    <keyword type="function" name="cd_device_remove_profile_sync ()" link="colord-cd-device-sync.html#cd-device-remove-profile-sync" since="0.1.2"/>
-    <keyword type="function" name="cd_device_set_colorspace_sync ()" link="colord-cd-device-sync.html#cd-device-set-colorspace-sync" since="0.1.1"/>
-    <keyword type="function" name="cd_device_set_enabled_sync ()" link="colord-cd-device-sync.html#cd-device-set-enabled-sync" since="0.1.26"/>
-    <keyword type="function" name="cd_device_set_kind_sync ()" link="colord-cd-device-sync.html#cd-device-set-kind-sync" since="0.1.0"/>
-    <keyword type="function" name="cd_device_set_mode_sync ()" link="colord-cd-device-sync.html#cd-device-set-mode-sync" since="0.1.2"/>
-    <keyword type="function" name="cd_device_set_model_sync ()" link="colord-cd-device-sync.html#cd-device-set-model-sync" since="0.1.0"/>
-    <keyword type="function" name="cd_device_set_property_sync ()" link="colord-cd-device-sync.html#cd-device-set-property-sync" since="0.1.8"/>
-    <keyword type="function" name="cd_device_set_serial_sync ()" link="colord-cd-device-sync.html#cd-device-set-serial-sync" since="0.1.1"/>
-    <keyword type="function" name="cd_device_set_vendor_sync ()" link="colord-cd-device-sync.html#cd-device-set-vendor-sync" since="0.1.1"/>
-    <keyword type="function" name="cd_profile_connect_sync ()" link="colord-cd-profile-sync.html#cd-profile-connect-sync" since="0.1.8"/>
-    <keyword type="function" name="cd_profile_install_system_wide_sync ()" link="colord-cd-profile-sync.html#cd-profile-install-system-wide-sync" since="0.1.8"/>
-    <keyword type="function" name="cd_profile_set_filename_sync ()" link="colord-cd-profile-sync.html#cd-profile-set-filename-sync" since="0.1.0"/>
-    <keyword type="function" name="cd_profile_set_property_sync ()" link="colord-cd-profile-sync.html#cd-profile-set-property-sync" since="0.1.8"/>
-    <keyword type="function" name="cd_profile_set_qualifier_sync ()" link="colord-cd-profile-sync.html#cd-profile-set-qualifier-sync" since="0.1.0"/>
-    <keyword type="function" name="cd_sensor_connect_sync ()" link="colord-cd-sensor-sync.html#cd-sensor-connect-sync" since="0.1.8"/>
-    <keyword type="function" name="cd_sensor_get_sample_sync ()" link="colord-cd-sensor-sync.html#cd-sensor-get-sample-sync" since="0.1.8"/>
-    <keyword type="function" name="cd_sensor_lock_sync ()" link="colord-cd-sensor-sync.html#cd-sensor-lock-sync" since="0.1.6"/>
-    <keyword type="function" name="cd_sensor_set_options_sync ()" link="colord-cd-sensor-sync.html#cd-sensor-set-options-sync" since="0.1.20"/>
-    <keyword type="function" name="cd_sensor_unlock_sync ()" link="colord-cd-sensor-sync.html#cd-sensor-unlock-sync" since="0.1.6"/>
-    <keyword type="function" name="cd_it8_utils_calculate_ccmx ()" link="colord-cd-it8-utils.html#cd-it8-utils-calculate-ccmx"/>
-    <keyword type="macro" name="CD_CHECK_VERSION()" link="colord-cd-version.html#CD-CHECK-VERSION:CAPS"/>
-    <keyword type="macro" name="CD_MAJOR_VERSION" link="colord-cd-version.html#CD-MAJOR-VERSION:CAPS"/>
-    <keyword type="macro" name="CD_MICRO_VERSION" link="colord-cd-version.html#CD-MICRO-VERSION:CAPS"/>
-    <keyword type="macro" name="CD_MINOR_VERSION" link="colord-cd-version.html#CD-MINOR-VERSION:CAPS"/>
-    <keyword type="struct" name="CdMat3x3" link="colord-cd-math.html#CdMat3x3"/>
-    <keyword type="struct" name="CdVec3" link="colord-cd-math.html#CdVec3"/>
-    <keyword type="function" name="cd_mat33_clear ()" link="colord-cd-math.html#cd-mat33-clear"/>
-    <keyword type="function" name="cd_mat33_copy ()" link="colord-cd-math.html#cd-mat33-copy"/>
-    <keyword type="function" name="cd_mat33_determinant ()" link="colord-cd-math.html#cd-mat33-determinant"/>
-    <keyword type="function" name="cd_mat33_get_data ()" link="colord-cd-math.html#cd-mat33-get-data"/>
-    <keyword type="function" name="cd_mat33_matrix_multiply ()" link="colord-cd-math.html#cd-mat33-matrix-multiply"/>
-    <keyword type="function" name="cd_mat33_normalize ()" link="colord-cd-math.html#cd-mat33-normalize"/>
-    <keyword type="function" name="cd_mat33_reciprocal ()" link="colord-cd-math.html#cd-mat33-reciprocal"/>
-    <keyword type="function" name="cd_mat33_scalar_multiply ()" link="colord-cd-math.html#cd-mat33-scalar-multiply"/>
-    <keyword type="function" name="cd_mat33_set_identity ()" link="colord-cd-math.html#cd-mat33-set-identity"/>
-    <keyword type="function" name="cd_mat33_to_string ()" link="colord-cd-math.html#cd-mat33-to-string"/>
-    <keyword type="function" name="cd_mat33_vector_multiply ()" link="colord-cd-math.html#cd-mat33-vector-multiply"/>
-    <keyword type="function" name="cd_vec3_add ()" link="colord-cd-math.html#cd-vec3-add"/>
-    <keyword type="function" name="cd_vec3_clear ()" link="colord-cd-math.html#cd-vec3-clear"/>
-    <keyword type="function" name="cd_vec3_copy ()" link="colord-cd-math.html#cd-vec3-copy"/>
-    <keyword type="function" name="cd_vec3_get_data ()" link="colord-cd-math.html#cd-vec3-get-data"/>
-    <keyword type="function" name="cd_vec3_init ()" link="colord-cd-math.html#cd-vec3-init"/>
-    <keyword type="function" name="cd_vec3_scalar_multiply ()" link="colord-cd-math.html#cd-vec3-scalar-multiply"/>
-    <keyword type="function" name="cd_vec3_squared_error ()" link="colord-cd-math.html#cd-vec3-squared-error"/>
-    <keyword type="function" name="cd_vec3_subtract ()" link="colord-cd-math.html#cd-vec3-subtract"/>
-    <keyword type="function" name="cd_vec3_to_string ()" link="colord-cd-math.html#cd-vec3-to-string"/>
-    <keyword type="struct" name="CdColorLab" link="colord-cd-color.html#CdColorLab"/>
-    <keyword type="struct" name="CdColorRGB" link="colord-cd-color.html#CdColorRGB-struct"/>
-    <keyword type="struct" name="CdColorRGB8" link="colord-cd-color.html#CdColorRGB8"/>
-    <keyword type="struct" name="CdColorXYZ" link="colord-cd-color.html#CdColorXYZ-struct"/>
-    <keyword type="struct" name="CdColorYxy" link="colord-cd-color.html#CdColorYxy-struct"/>
-    <keyword type="function" name="cd_color_get_blackbody_rgb ()" link="colord-cd-color.html#cd-color-get-blackbody-rgb" since="0.1.26"/>
-    <keyword type="function" name="cd_color_rgb8_to_rgb ()" link="colord-cd-color.html#cd-color-rgb8-to-rgb" since="0.1.27"/>
-    <keyword type="function" name="cd_color_rgb_copy ()" link="colord-cd-color.html#cd-color-rgb-copy" since="0.1.27"/>
-    <keyword type="function" name="cd_color_rgb_dup ()" link="colord-cd-color.html#cd-color-rgb-dup" since="0.1.27"/>
-    <keyword type="macro" name="cd_color_rgb_free" link="colord-cd-color.html#cd-color-rgb-free"/>
-    <keyword type="function" name="cd_color_rgb_interpolate ()" link="colord-cd-color.html#cd-color-rgb-interpolate" since="0.1.26"/>
-    <keyword type="macro" name="cd_color_rgb_new" link="colord-cd-color.html#cd-color-rgb-new"/>
-    <keyword type="function" name="cd_color_rgb_set ()" link="colord-cd-color.html#cd-color-rgb-set" since="0.1.27"/>
-    <keyword type="function" name="cd_color_rgb_to_rgb8 ()" link="colord-cd-color.html#cd-color-rgb-to-rgb8" since="0.1.27"/>
-    <keyword type="function" name="cd_color_xyz_clear ()" link="colord-cd-color.html#cd-color-xyz-clear" since="0.1.27"/>
-    <keyword type="function" name="cd_color_xyz_copy ()" link="colord-cd-color.html#cd-color-xyz-copy" since="0.1.27"/>
-    <keyword type="function" name="cd_color_xyz_dup ()" link="colord-cd-color.html#cd-color-xyz-dup" since="0.1.27"/>
-    <keyword type="macro" name="cd_color_xyz_free" link="colord-cd-color.html#cd-color-xyz-free"/>
-    <keyword type="macro" name="cd_color_xyz_new" link="colord-cd-color.html#cd-color-xyz-new"/>
-    <keyword type="function" name="cd_color_xyz_set ()" link="colord-cd-color.html#cd-color-xyz-set" since="0.1.27"/>
-    <keyword type="function" name="cd_color_xyz_to_yxy ()" link="colord-cd-color.html#cd-color-xyz-to-yxy" since="0.1.27"/>
-    <keyword type="function" name="cd_color_yxy_copy ()" link="colord-cd-color.html#cd-color-yxy-copy" since="0.1.27"/>
-    <keyword type="function" name="cd_color_yxy_dup ()" link="colord-cd-color.html#cd-color-yxy-dup" since="0.1.27"/>
-    <keyword type="macro" name="cd_color_yxy_free" link="colord-cd-color.html#cd-color-yxy-free"/>
-    <keyword type="macro" name="cd_color_yxy_new" link="colord-cd-color.html#cd-color-yxy-new"/>
-    <keyword type="function" name="cd_color_yxy_set ()" link="colord-cd-color.html#cd-color-yxy-set" since="0.1.27"/>
-    <keyword type="function" name="cd_color_yxy_to_xyz ()" link="colord-cd-color.html#cd-color-yxy-to-xyz" since="0.1.27"/>
+    <keyword type="constant" name="CD_INTERP_ERROR_FAILED" link="colord-cd-interp.html#CD-INTERP-ERROR-FAILED:CAPS"/>
+    <keyword type="constant" name="CD_INTERP_ERROR_LAST" link="colord-cd-interp.html#CD-INTERP-ERROR-LAST:CAPS"/>
     <keyword type="constant" name="CD_IT8_ERROR_FAILED" link="colord-cd-it8.html#CD-IT8-ERROR-FAILED:CAPS"/>
     <keyword type="constant" name="CD_IT8_ERROR_LAST" link="colord-cd-it8.html#CD-IT8-ERROR-LAST:CAPS"/>
   </functions>

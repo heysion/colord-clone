@@ -1,6 +1,815 @@
+commit 850fe720a4804df6506479d2ec452ad8eab1ca62
+Author: Richard Hughes <richard@hughsie.com>
+Date:   2013-03-18
+
+    Release colord 0.1.31
+
+M	NEWS
+M	doc/website/download.html
+M	po/cs.po
+M	po/de.po
+M	po/en_GB.po
+M	po/eo.po
+M	po/es.po
+M	po/eu.po
+M	po/fi.po
+M	po/gl.po
+M	po/he.po
+M	po/hu.po
+M	po/id.po
+M	po/it.po
+M	po/ja.po
+M	po/kk.po
+M	po/ko.po
+M	po/lv.po
+M	po/nl.po
+M	po/pl.po
+M	po/pt_BR.po
+M	po/ro.po
+M	po/ru.po
+M	po/sk.po
+M	po/sl.po
+M	po/sr.po
+M	po/sv.po
+M	po/tr.po
+M	po/uk.po
+M	po/zh_CN.po
+M	po/zh_TW.po
+
+commit eed5e21654eaea210837b8b041c34453b105d129
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-14
+
+    trivial: Document the embedded Huey unlock code
+
+M	lib/huey/huey-device.c
+M	lib/huey/huey-enum.h
+
+commit 904418e8fdccd80896f1005eb5ff4a6359dafa0b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-14
+
+    trivial: Add a couple more G_DEPRECATED_FOR() entries
+
+M	lib/colord/cd-deprecated.h
+
+commit 0dcef3ee685524518e8769f4114319c36ea09e41
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-14
+
+    trivial: It is customary to use _full when exposing a 'more complete'
+    version of an API call
+
+M	lib/colorhug/ch-device-queue.c
+M	lib/colorhug/ch-device-queue.h
+
+commit b00ef34c0e6496aa3882187c6e4465044ae4d683
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-14
+
+    trivial: CdMath is supposed to be LGPLv2+ like the rest of the library
+
+M	lib/colord/cd-math.c
+M	lib/colord/cd-math.h
+
+commit ea9bcf7dfad885cdb070ed8eb3ab35791d45acdb
+Author: Emanuele Aina <emanuele.aina@collabora.com>
+Date:	2013-03-13
+
+    build: Link to libm for fpclassify()
+
+    Linking with the gold linker failed with an undefined reference to
+    __fpclassify since it uses '--no-copy-dt-needed-entries' by default.
+
+    Fixes: https://bugs.freedesktop.org/show_bug.cgi?id=62264
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	configure.ac
+M	lib/colord/Makefile.am
+M	src/Makefile.am
+
+commit fee09e70746f1cfdc8bb65d27f2786af33630b1c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-12
+
+    Add more sensor capabilities to support the latest ArgyllCMS release
+
+    This allows us to support the ColorMunki Smile
+
+M	client/cd-util.c
+M	lib/colord/cd-enum.c
+M	lib/colord/cd-enum.h
+M	rules/69-cd-sensors.rules.in
+M	src/sensors/cd-sensor-argyll.c
+
+commit 3e6d34401b71408ae71e04c6ff6eb05e26dd40b0
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-09
+
+    libcolord: Use static tables to match enumerated values
+
+    We've had too many bugs where one _from_string() or _to_string()
+    was missing.
+
+M	lib/colord/cd-enum.c
+M	lib/colord/cd-enum.h
+M	lib/colord/cd-self-test.c
+
+commit 888f45071a5df55ea4c340253fc87a81fb9c1baa
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-09
+
+    Setup the device permissions for another embedded Huey colorimeter
+
+M	rules/69-cd-sensors.rules.in
+
+commit 7728af6bb95c4be39b455e1f0971a3e9c724c294
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-09
+
+    Setup the device permissions for the original Spyder colorimeter
+
+M	rules/69-cd-sensors.rules.in
+
+commit 1c4211758fb524c13c3fbcf44898f7fbb3f8170f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-09
+
+    Fix the argyll sensor driver when using the ColorMunki Smile
+
+M	src/sensors/cd-sensor-argyll.c
+
+commit 80c7535f2b6c3b70c736f1018b6195d7b6ac70c6
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-09
+
+    Do not show a critical warning if an unmatched sensor is connected
+
+    This can happen if Argyllcms supports a sensor that colord does
+    not recognise,
+    for instance, the ColorMunki Smile.
+
+M	src/sensors/cd-sensor-argyll.c
+
+commit bbbb7f315a904432f04c319292c237d278ba9545
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-07
+
+    trivial: CdBuffer is supposed to be LGPLv2+ like the rest of the
+    library
+
+M	lib/colord/cd-buffer.c
+M	lib/colord/cd-buffer.h
+
+commit 3a95e46c54f66342553aa1015a4d32647f56ef60
+Author: Dominique Leuenberger <dominique-freedesktop.org@leuenberger.net>
+Date:	2013-03-05
+
+    build: Move the private sensor libraries out of the pure lib space
+
+    From what I understand, those are not 'really' shared libraries,
+    but rather
+    modules that are loaded by a specific version of the library.
+
+    Move the sensors' libs to libdir/colord-sensors, without module
+    versions.
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	lib/dtp94/Makefile.am
+M	lib/huey/Makefile.am
+M	lib/munki/Makefile.am
+
+commit 885936bb38bc5950bc323cb15592c25c2510aaa0
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-05
+
+    Add a warning if compiling with --with-daemon-user=root
+
+    Resolves: https://bugs.freedesktop.org/show_bug.cgi?id=53436
+
+M	configure.ac
+
+commit e17d3f90a12e6ac002a3b0adb819fe0a88ff86f3
+Author: Antoine Jacoutot <ajacoutot@openbsd.org>
+Date:	2013-03-05
+
+    Fix build on OpenBSD
+
+    Resolves: https://bugs.freedesktop.org/show_bug.cgi?id=61842
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	contrib/session-helper/cd-main.c
+
+commit 571358b8f54951c858bf2685b266a8ff72294180
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-04
+
+    trivial: Print the enable-GUsb status in the configure summary
+
+M	configure.ac
+
+commit 764e62d3446850eb96a5c8f9af55af743d30dd30
+Author: Colin Walters <walters@verbum.org>
+Date:	2013-03-04
+
+    build: Add missing backslash
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	lib/Makefile.am
+
+commit 417b4c95c6161090927e61b534d4cc4b924ea5e5
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-04
+
+    Fix compile with --disable-gusb
+
+    Resolves: https://bugs.freedesktop.org/show_bug.cgi?id=61657
+
+M	lib/Makefile.am
+M	src/cd-sensor.c
+M	src/cd-sensor.h
+
+commit c9a2831fb42bf92cbbcca288c6a0db79dfc35a36
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-04
+
+    Fix the gamut warning to check primaries wider than CIERGB and
+    ProPhoto
+
+    Anything bigger than this is going to be a broken profile.
+
+M	src/cd-profile.c
+
+commit 5e6d5e207836e6a234661629fce09ae12174211c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-04
+
+    Add some more display vendor names to the display table
+
+    Also, move this to cd-common.c, and add some self tests.
+
+M	src/cd-common.c
+M	src/cd-common.h
+M	src/cd-device.c
+M	src/cd-self-test.c
+
+commit 677afdcb24a31b27d2c5fb9defbcc19df779cbc3
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-04
+
+    trivial: Only use the new GSlice allocator when building with
+    CD_DISABLE_DEPRECATED
+
+    It's not technically an API or ABI break moving from #define to a
+    symbol, but to
+    avoid crashes where GCM and colord are out of sync in projects like
+    ostree and
+    jhbuild only use the GSlice allocator when building with
+    CD_DISABLE_DEPRECATED.
+
+M	lib/colord/cd-color.c
+M	lib/colord/colord-private.h
+M	lib/colord/colord.h
+
+commit 6919d5a7e6cc4fd476a617ceea9960714c5545a6
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-01
+
+    trivial: Fix up some gtk-doc documentation
+
+M	doc/api/colord-docs.xml
+M	lib/colord/cd-interp-akima.c
+M	lib/colord/cd-interp-linear.c
+
+commit 4e42ac07167d78df48be4d1584986b18d0b253ff
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-01
+
+    libcolord: Re-instate the cd_color_rgb_array_interpolate()
+    functionality
+
+    This uses the new Akima and linear interpolation functionality I
+    spent all night
+    working on. In other news, I hate splines, and maths in general.
+
+M	lib/colord/cd-color.c
+M	lib/colord/cd-self-test.c
+
+commit 4312fdc43763a3cc556b5fe0f615d2c5b3a542a7
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-01
+
+    libcolord: Add an implementation of the linear interpolation method
+
+M	lib/colord/Makefile.am
+A	lib/colord/cd-interp-linear.c
+A	lib/colord/cd-interp-linear.h
+M	lib/colord/cd-interp.c
+M	lib/colord/cd-interp.h
+M	lib/colord/cd-self-test.c
+M	lib/colord/colord-private.h
+M	lib/colord/colord.h
+
+commit aa649907a98a8cbb056c9082e5dad93f3a916aa7
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-28
+
+    libcolord: Add an implementation of the Akima interpolation method
+
+M	lib/colord/Makefile.am
+A	lib/colord/cd-interp-akima.c
+A	lib/colord/cd-interp-akima.h
+M	lib/colord/cd-interp.c
+M	lib/colord/cd-interp.h
+M	lib/colord/cd-self-test.c
+M	lib/colord/colord-private.h
+M	lib/colord/colord.h
+
+commit 6a04cc860132e9a5bed1a07800b02514b88b6592
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-28
+
+    libcolord: Add an CdInterp class to handle 2D interpolation
+
+    The idea is to add different implementations for client code to use
+    such as
+    Akima, cubic spline and linear.
+
+M	lib/colord/Makefile.am
+A	lib/colord/cd-interp.c
+A	lib/colord/cd-interp.h
+M	lib/colord/cd-self-test.c
+M	lib/colord/colord-private.h
+M	lib/colord/colord.h
+
+commit ec700a384c3f72964eb77b177c1939c056eb94e3
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-28
+
+    trivial: Disable the cd_color_rgb_array_interpolate() self tests
+    until the interpolation works
+
+M	lib/colord/cd-self-test.c
+
+commit 572e6470a93bb3c9a27b635d5dd172c177caca17
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-28
+
+    Do not use GSL to interpolate arrays
+
+    GSL is GPLv3+ (wtf!), and libcolord is LGPLv2+ which makes them
+    incompatible.
+
+M	configure.ac
+M	contrib/colord.spec.in
+M	lib/colord/Makefile.am
+M	lib/colord/cd-color.c
+M	lib/colord/colord.pc.in
+
+commit 5b1c880fdef3f1c7490b5ffc0fcc2544d3e0dbe0
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-28
+
+    session-helper: Interpolate the gamma data to the VCGT size using
+    Akima
+
+M	contrib/session-helper/cd-main.c
+
+commit 9037032c93ef6c7686c80a6212f092a5335ada86
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-28
+
+    session-helper: Always make sure local symbols are used in preference
+    to the system versions
+
+M	contrib/session-helper/Makefile.am
+
+commit 44e0829f9831f2e08ab0c41067d405e633843077
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-28
+
+    libcolord: Setup the dummy sensor with a color before taking a
+    virtual reading
+
+    This fixes 'make check' when CreateDummySensor=true is set in
+    colord.conf.
+
+M	lib/colord/cd-self-test.c
+
+commit 286e544baa4571f5d853409b998691421a577f5e
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-28
+
+    libcolord: Fix two small memory leaks when getting details about
+    a sensor
+
+M	lib/colord/cd-sensor.c
+
+commit 3b0d6dd540fc0ff548b2a3f0c1831b9b034eee87
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-28
+
+    libcolord: Create a helper for creating a CdColorRGB array
+
+M	lib/colord/cd-color.c
+M	lib/colord/cd-color.h
+M	lib/colord/cd-self-test.c
+
+commit 073870b4031fd3482fa80041b39bfe067fffd1c0
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-28
+
+    libcolord: Add functionality to interpolate arrays of CdColorRGB
+
+    This is required in a few different projects now, so abstract it
+    out and do it
+    properly using Akima and falling back to cubic spline and then linear.
+
+    This also adds a hard dep on gsl, which is present on all distros,
+    and is
+    already required by projects such as inkscape.
+
+    If anyone has a problem with this, let me know and I'll add a fallback
+    to a
+    linear interpolation if the library is not available.
+
+M	configure.ac
+M	contrib/colord.spec.in
+M	lib/colord/Makefile.am
+M	lib/colord/cd-color.c
+M	lib/colord/cd-color.h
+M	lib/colord/cd-self-test.c
+M	lib/colord/colord.pc.in
+
+commit 8c5c26b08f6d83089489e83ac6e3fc7568732006
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-28
+
+    libcolord: Switch CdColor to using the GSlice allocator for a
+    modest speedup
+
+    GSlice is designed for allocating a large number of small chunks of
+    memory that
+    are the same size. By switching away from g_new0 (which is pretty
+    much, but
+    slower than malloc) we can increase the speed of any program that
+    allocates a
+    large number of color objects without breaking API or ABI.
+
+    Some broken users of the free functions that assumed the free-function
+    was an
+    explicit GDestroyNotify have to be manually casted, but in the worst
+    case this
+    is an easily detected compile warning that is easily fixed.
+
+    This commit also has the benefit that the _new() and _free() functions
+    can be
+    used in languages that use the Colord-1.0 GIR, e.g. JavaScript
+    and Python.
+
+M	lib/colord/cd-color.c
+M	lib/colord/cd-color.h
+M	lib/colord/cd-it8.c
+M	src/sensors/cd-sensor-argyll.c
+M	src/sensors/cd-sensor-colorhug.c
+M	src/sensors/cd-sensor-dtp94.c
+M	src/sensors/cd-sensor-dummy.c
+M	src/sensors/cd-sensor-huey.c
+M	src/sensors/cd-sensor-munki.c
+
+commit 511f085b95cc6bf9ad3764a48cbe458766ea4730
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-27
+
+    session-helper: Calculate the best display calibration based on the
+    Lab *and* target display gamma
+
+    To do this, there's also a gamma scale factor, to weight the error
+    algorithm.
+
+M	contrib/session-helper/cd-main.c
+
+commit 028cd1f3e38af3dd613619ff7378d45a0f10f78b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-27
+
+    session-helper: Add an index factor so each patch knows its position
+    in the data table
+
+    This allows us to check the gamma for each patch in the future.
+
+M	contrib/session-helper/cd-main.c
+
+commit 47d3274c339aaf53ca0cba340b0c2d6fbf6da15e
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-27
+
+    session-helper: Save the absolute XYZ value of the white sample
+
+M	contrib/session-helper/cd-main.c
+
+commit a579108442984831b08c0057573cb5a69c6c2836
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-27
+
+    Set the target gamma when using the session-helper
+
+    This doesn't do much yet, but will be hooked up soon.
+
+M	contrib/session-helper/cd-example.c
+M	contrib/session-helper/cd-main.c
+
+commit f4ad100048eb971114883b3500c9e0af169c7fd6
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-27
+
+    trivial: Fix a critical warning when using the dummy sensor
+
+    The GVariants need to be manually sink'd.
+
+M	contrib/session-helper/cd-main.c
+
+commit 945648e125da7fcf060294c67655d5ba67373cfa
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-26
+
+    session-helper: Set the sample color as a sensor option when
+    displaying patches
+
+    This allows us to return a valid XYZ value, which allows us to write
+    self tests.
+
+M	contrib/session-helper/cd-main.c
+
+commit 38be3e026a55c6478554ded92daf31eb51fce452
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-26
+
+    dummy: Emulate a perfect sRGB screen when returning XYZ values
+
+M	src/sensors/cd-sensor-dummy.c
+
+commit a160085a0e94de2d3af623acad3da03b07b58a86
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-26
+
+    Guess the option type when using 'colormgr sensor-set-options'
+
+    This allows us to send double precision floats rather than just
+    strings.
+
+M	client/cd-util.c
+
+commit 1fa9cf912c7aa047ad23bb0ff682419ff723095d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-24
+
+    libcolorhug: Add extensions to the take_reading_x() commands to set
+    the sensor type
+
+M	lib/colorhug/ch-common.h
+M	lib/colorhug/ch-device-queue.c
+M	lib/colorhug/ch-device-queue.h
+
+commit fe85e482e4162b5830ac71afc3f660a69c943c20
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-24
+
+    libcolorhug: Add 'Since:' lines
+
+M	lib/colorhug/ch-common.c
+M	lib/colorhug/ch-common.h
+M	lib/colorhug/ch-device-queue.c
+M	lib/colorhug/ch-device.c
+M	lib/colorhug/ch-hash.c
+M	lib/colorhug/ch-inhx32.c
+M	lib/colorhug/ch-math.c
+
+commit 52a7e8b869c4f7c3f2e5130bf5f5027296899cc1
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-23
+
+    trivial: Split out the device and profile-file tests from the
+    general section
+
+M	lib/colord/cd-self-test.c
+
+commit 2b8d69e8356c58d997e97d9b69716c5887aa3148
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-23
+
+    trivial: Split out the qualifier tests from the general section
+
+M	lib/colord/cd-self-test.c
+
+commit 51f890670af9e01963be687764320a569e293132
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-23
+
+    Return an error if the client tries to change the profile filename
+    after creation
+
+M	lib/colord/cd-enum.c
+M	lib/colord/cd-enum.h
+M	src/cd-profile.c
+
+commit 2197097e27cbf6f98b8f915a6d0edf82c3b48e6d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-23
+
+    Do not use deprecated functionality in the self test programs
+
+    This has the happy side-effect of fixing 'make check' when the system
+    daemon is
+    running under a different user.
+
+M	lib/colord/cd-self-test.c
+
+commit 084134a35f76b33083ae2c83fbc6f64b9354778e
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-23
+
+    Deprecate both the cd_profile_set_$foo_sync() functions
+
+    Profile helpers were never a good idea as there are too many possible
+    properties
+    that could need setting.
+
+    Also, allowing setting the filename after creating the profle means
+    we don't
+    send the FD at creation time which breaks when the daemon doesn't
+    have read
+    access to the profile.
+
+M	lib/colord/cd-deprecated.h
+M	lib/colord/cd-profile-sync.c
+M	lib/colord/cd-profile-sync.h
+
+commit 8e04bc343c7306f95400f64a17f9c8e4c422e38a
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-23
+
+    Rename the colormgr 'profile-set-$foo' commands to
+    'profile-set-property'
+
+    We only cover two properties using this abstraction, and even
+    setting the
+    profile after creation doesn't really work anymore.
+
+M	client/cd-util.c
+M	client/colormgr-completion.bash
+
+commit 84b294f229cd24b95d7f4483313c68394483ad97
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-23
+
+    trivial: Fix the sorting in the bash completion file
+
+M	client/colormgr-completion.bash
+
+commit 63e85a77505176b5bcf57eeeead26e3c22c260f8
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-23
+
+    Run the programs in 'make check' under valgrind to detect memory leaks
+
+M	lib/colord/Makefile.am
+M	lib/colorhug/Makefile.am
+M	src/Makefile.am
+
+commit fe2b6369090e4647e7dfdedb3c142c72ba602bad
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-23
+
+    libcolord: Do not check if the running daemon matches the project
+    version
+
+    We just want to check for *something* and being anal breaks make
+    check for some people.
+
+M	lib/colord/cd-self-test.c
+
+commit 7f4a59324c5a786e9816a6ec15ea4f4185e5eb06
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-23
+
+    libcolord: ArgyllCMS uses 'YES' for IT8 options so do the same for
+    compatibility
+
+M	lib/colord/cd-it8.c
+
+commit 076d61167b33a6a27dfe45822080e19e6a5cece3
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-21
+
+    libcolorhug: Add the ability to get a spectral reading from the device
+
+M	lib/colorhug/ch-common.h
+M	lib/colorhug/ch-device-queue.c
+M	lib/colorhug/ch-device-queue.h
+
+commit dbf4a145ea39d034221f9a54633c459bd64bc5f6
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-21
+
+    libcolorhug: Add the ability to get and set the CCD calibration values
+
+M	lib/colorhug/ch-common.h
+M	lib/colorhug/ch-device-queue.c
+M	lib/colorhug/ch-device-queue.h
+
+commit e5aca143a33390e1411680f824e015c02286b796
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-21
+
+    libcolorhug: Document the hardware availability of more commands
+
+M	lib/colorhug/ch-common.h
+M	lib/colorhug/ch-device-queue.c
+
+commit 9cfa6c4728fbced8bf69b5a67639efcd1dcc2c9a
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-21
+
+    libcolorhug: Add constant CH_CALIBRATION_INDEX_MAX
+
+M	lib/colorhug/ch-common.h
+M	lib/colorhug/ch-device-queue.c
+
+commit 694790a32811564aa8bdf9ac71cd0ee360978b4b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-21
+
+    Fix some trivial whitespace issues in libcolorhug
+
+M	lib/colorhug/ch-common.h
+M	lib/colorhug/ch-device-queue.h
+
+commit fc5fb60ded69b4f1a2b16111dc9f0282c657cf28
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-21
+
+    trivial: Constify some arguments in libcolorhug
+
+M	lib/colorhug/ch-device-queue.c
+M	lib/colorhug/ch-device-queue.h
+
+commit a40623ced1c4a175c076efe1facb8c5f89d3066a
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-20
+
+    colorhug: Add commands to get the ADC Vref+ and Vref-
+
+M	lib/colorhug/ch-common.h
+M	lib/colorhug/ch-device-queue.c
+M	lib/colorhug/ch-device-queue.h
+
+commit 1824da9a0c66c4f60e01ec12df7706d98fefb8e1
+Author: Christopher James Halse Rogers <raof@ubuntu.com>
+Date:	2013-02-18
+
+    Fix unusual crash in cd_main_get_cmdline_for_pid
+
+    The error handling code would use the GError when g_file_get_contents
+    succeeded but returned len == 0, which is obviously wrong but
+    not clear
+    how it could be hit.
+
+    I seem to be able to hit it on boot, so fix it.
+
+M	src/cd-main.c
+
+commit 1c785840051c0ca32db00a4c65b9aac04eadad42
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-18
+
+    trivial: Use G_SOURCE_CONTINUE and G_SOURCE_REMOVE
+
+M	client/cd-util.c
+M	configure.ac
+M	contrib/session-helper/cd-main.c
+M	lib/colord/cd-client.c
+M	lib/colord/cd-self-test.c
+M	lib/colorhug/ch-device.c
+M	src/cd-main.c
+M	src/sensors/cd-sensor-argyll.c
+M	src/sensors/cd-sensor-dummy.c
+M	src/sensors/cd-spawn.c
+
+commit b4e92f6499602136d3056a8f350a84c5816df693
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-02-17
+
+    trivial: post release version bump
+
+M	RELEASE
+M	configure.ac
+
 commit 4cd2e481d16c0cd1ea6c9f62dd06abc52fc1ab63
 Author: Richard Hughes <richard@hughsie.com>
-Date:   2013-02-17
+Date:	2013-02-17
 
     Release colord 0.1.30
 

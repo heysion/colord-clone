@@ -114,6 +114,9 @@ CdColorXYZ
 CdColorYxy
 cd_color_get_blackbody_rgb
 cd_color_rgb8_to_rgb
+cd_color_rgb_array_interpolate
+cd_color_rgb_array_is_monotonic
+cd_color_rgb_array_new
 cd_color_rgb_copy
 cd_color_rgb_dup
 cd_color_rgb_free
@@ -157,6 +160,8 @@ cd_color_copy_yxy
 cd_color_set_rgb
 cd_color_set_xyz
 cd_color_set_yxy
+cd_profile_set_filename_sync
+cd_profile_set_qualifier_sync
 </SECTION>
 
 <SECTION>
@@ -405,6 +410,70 @@ CD_PROFILE_PROPERTY_IS_SYSTEM_WIDE
 </SECTION>
 
 <SECTION>
+<FILE>cd-interp</FILE>
+CD_INTERP_ERROR
+CD_INTERP_TYPE_ERROR
+CdInterpError
+CdInterpKind
+_cd_interp_reserved1
+_cd_interp_reserved2
+_cd_interp_reserved3
+_cd_interp_reserved4
+_cd_interp_reserved5
+_cd_interp_reserved6
+_cd_interp_reserved7
+_cd_interp_reserved8
+cd_interp_error_quark
+cd_interp_eval
+cd_interp_get_kind
+cd_interp_get_size
+cd_interp_get_x
+cd_interp_get_y
+cd_interp_insert
+cd_interp_kind_to_string
+cd_interp_prepare
+eval
+prepare
+<SUBSECTION Standard>
+CD_INTERP
+CD_INTERP_CLASS
+CD_INTERP_GET_CLASS
+CD_IS_INTERP
+CD_IS_INTERP_CLASS
+CD_TYPE_INTERP
+CdInterpPrivate
+cd_interp_get_type
+</SECTION>
+
+<SECTION>
+<FILE>cd-interp-akima</FILE>
+cd_interp_akima_new
+<SUBSECTION Standard>
+CD_INTERP_AKIMA
+CD_INTERP_AKIMA_CLASS
+CD_INTERP_AKIMA_GET_CLASS
+CD_IS_INTERP_AKIMA
+CD_IS_INTERP_AKIMA_CLASS
+CD_TYPE_INTERP_AKIMA
+CdInterpAkimaPrivate
+cd_interp_akima_get_type
+</SECTION>
+
+<SECTION>
+<FILE>cd-interp-linear</FILE>
+cd_interp_linear_new
+<SUBSECTION Standard>
+CD_INTERP_LINEAR
+CD_INTERP_LINEAR_CLASS
+CD_INTERP_LINEAR_GET_CLASS
+CD_IS_INTERP_LINEAR
+CD_IS_INTERP_LINEAR_CLASS
+CD_TYPE_INTERP_LINEAR
+CdInterpLinearPrivate
+cd_interp_linear_get_type
+</SECTION>
+
+<SECTION>
 <FILE>cd-it8</FILE>
 CD_IT8_ERROR
 CD_IT8_TYPE_ERROR
@@ -547,9 +616,7 @@ cd_profile_get_type
 <FILE>cd-profile-sync</FILE>
 cd_profile_connect_sync
 cd_profile_install_system_wide_sync
-cd_profile_set_filename_sync
 cd_profile_set_property_sync
-cd_profile_set_qualifier_sync
 </SECTION>
 
 <SECTION>
@@ -629,11 +696,11 @@ CD_MINOR_VERSION
 
 <SECTION>
 <FILE>colord</FILE>
-
+CD_USE_ALLOC_GSLICE
 </SECTION>
 
 <SECTION>
 <FILE>colord-private</FILE>
-
+CD_USE_ALLOC_GSLICE
 </SECTION>
 

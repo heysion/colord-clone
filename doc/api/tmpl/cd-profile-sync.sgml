@@ -42,18 +42,6 @@ cd-profile-sync
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_profile_set_filename_sync ##### -->
-<para>
-
-</para>
-
-@profile: 
-@value: 
-@cancellable: 
-@error: 
-@Returns: 
-
-
 <!-- ##### FUNCTION cd_profile_set_property_sync ##### -->
 <para>
 
@@ -61,18 +49,6 @@ cd-profile-sync
 
 @profile: 
 @key: 
-@value: 
-@cancellable: 
-@error: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_profile_set_qualifier_sync ##### -->
-<para>
-
-</para>
-
-@profile: 
 @value: 
 @cancellable: 
 @error: 

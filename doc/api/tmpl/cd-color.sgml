@@ -74,6 +74,34 @@ cd-color
 @dest: 
 
 
+<!-- ##### FUNCTION cd_color_rgb_array_interpolate ##### -->
+<para>
+
+</para>
+
+@array: 
+@new_length: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_color_rgb_array_is_monotonic ##### -->
+<para>
+
+</para>
+
+@array: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_color_rgb_array_new ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
 <!-- ##### FUNCTION cd_color_rgb_copy ##### -->
 <para>
 
@@ -92,11 +120,12 @@ cd-color
 @Returns: 
 
 
-<!-- ##### MACRO cd_color_rgb_free ##### -->
+<!-- ##### FUNCTION cd_color_rgb_free ##### -->
 <para>
 
 </para>
 
+@src: 
 
 
 <!-- ##### FUNCTION cd_color_rgb_interpolate ##### -->
@@ -110,11 +139,13 @@ cd-color
 @result: 
 
 
-<!-- ##### MACRO cd_color_rgb_new ##### -->
+<!-- ##### FUNCTION cd_color_rgb_new ##### -->
 <para>
 
 </para>
 
+@void: 
+@Returns: 
 
 
 <!-- ##### FUNCTION cd_color_rgb_set ##### -->
@@ -163,18 +194,21 @@ cd-color
 @Returns: 
 
 
-<!-- ##### MACRO cd_color_xyz_free ##### -->
+<!-- ##### FUNCTION cd_color_xyz_free ##### -->
 <para>
 
 </para>
 
+@src: 
 
 
-<!-- ##### MACRO cd_color_xyz_new ##### -->
+<!-- ##### FUNCTION cd_color_xyz_new ##### -->
 <para>
 
 </para>
 
+@void: 
+@Returns: 
 
 
 <!-- ##### FUNCTION cd_color_xyz_set ##### -->
@@ -215,18 +249,21 @@ cd-color
 @Returns: 
 
 
-<!-- ##### MACRO cd_color_yxy_free ##### -->
+<!-- ##### FUNCTION cd_color_yxy_free ##### -->
 <para>
 
 </para>
 
+@src: 
 
 
-<!-- ##### MACRO cd_color_yxy_new ##### -->
+<!-- ##### FUNCTION cd_color_yxy_new ##### -->
 <para>
 
 </para>
 
+@void: 
+@Returns: 
 
 
 <!-- ##### FUNCTION cd_color_yxy_set ##### -->

@@ -1,5 +1,5 @@
 <!-- ##### SECTION Title ##### -->
-colord
+cd-interp-linear
 
 <!-- ##### SECTION Short_Description ##### -->
 
@@ -20,10 +20,12 @@ colord
 <!-- ##### SECTION Image ##### -->
 
 
-<!-- ##### MACRO CD_USE_ALLOC_GSLICE ##### -->
+<!-- ##### FUNCTION cd_interp_linear_new ##### -->
 <para>
 
 </para>
 
+@void: 
+@Returns: 
 
 
