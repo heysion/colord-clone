@@ -28,10 +28,8 @@ else
 	confflags += --disable-gudev --disable-sane
 endif
 
-override_dh_clean:
-	-rm -r build-libraries
-	-rm -r build-daemon
-	dh_clean
+override_dh_auto_configure:
+	dh_auto_configure -- $(confflags)
 
 override_dh_install:
 	# The .la file(s) are entirely useless; kill them with fire.
@@ -42,18 +40,6 @@ override_dh_install:
 	-rm debian/tmp/usr/lib/*/libmunki-private.so
 
 	dh_install --list-missing
-
-override_dh_auto_configure:
-	dh_auto_configure -B build-libraries -- $(confflags)
-	dh_auto_configure -B build-daemon -- $(confflags) --libdir=/usr/lib
-
-override_dh_auto_build:
-	dh_auto_build -B build-libraries
-	dh_auto_build -B build-daemon
-
-override_dh_auto_install:
-	dh_auto_install -B build-libraries
-	dh_auto_install -B build-daemon
 
 override_dh_auto_test:
 	@echo "TODO: Test suite disabled - requires running dbus daemon, currently fails"
