@@ -26,6 +26,9 @@ colord (0.1.31-1) UNRELEASED; urgency=low
   * Add build-depend on libsystemd-login-dev for seat identification
   * Add header for single-debian-patch identifying them as upstream cherry-picks
   * Create /var/lib/colord/icc for system-wide profiles (LP: #1083698)
+  * Refresh debian/copyright
+  * Canonicalise Vcs-* URIs
+  * Bump standards-version to 3.9.4; no changes needed
 
  -- Christopher James Halse Rogers <raof@ubuntu.com>  Sat, 02 Mar 2013 16:08:53 +1100
 
