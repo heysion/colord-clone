@@ -1,5 +1,0 @@
-# The sensor libraries are private; we don't install development symlinks
-
-libcolord1: dev-pkg-without-shlib-symlink usr/lib/*/libmunki-private.so.0.0.0 usr/lib/*/libmunki-private.so
-libcolord1: dev-pkg-without-shlib-symlink usr/lib/*/libhuey-private.so.0.0.0 usr/lib/*/libhuey-private.so
-libcolord1: dev-pkg-without-shlib-symlink usr/lib/*/libdtp94-private.so.0.0.0 usr/lib/*/libdtp94-private.so
