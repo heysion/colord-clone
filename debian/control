@@ -22,7 +22,7 @@ Build-Depends:
  gtk-doc-tools,
  autopoint,
  libsystemd-login-dev,
-Standards-Version: 3.9.2
+Standards-Version: 3.9.4
 XS-Testsuite: autopkgtest
 Section: graphics
 Homepage: http://www.freedesktop.org/software/colord/
