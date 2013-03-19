@@ -1,6 +1,2 @@
 usr/lib/*/libcolord.so.1*
 usr/lib/*/libcolordprivate.so.1*
-# (private) Sensor libraries
-usr/lib/*/libdtp94-private.so.*
-usr/lib/*/libhuey-private.so.*
-usr/lib/*/libmunki-private.so.*

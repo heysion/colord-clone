@@ -34,10 +34,6 @@ override_dh_auto_configure:
 override_dh_install:
 	# The .la file(s) are entirely useless; kill them with fire.
 	find debian/tmp -name '*.la' -delete
-	# The sensor libraries are private; remove development symlink
-	-rm debian/tmp/usr/lib/*/libdtp94-private.so
-	-rm debian/tmp/usr/lib/*/libhuey-private.so
-	-rm debian/tmp/usr/lib/*/libmunki-private.so
 
 	dh_install --list-missing
 
@@ -45,10 +41,6 @@ override_dh_auto_test:
 	@echo "TODO: Test suite disabled - requires running dbus daemon, currently fails"
 
 override_dh_makeshlibs:
-	# The semi-private sensor libraries have no ABI guarantee;
-	# Mark anything using them with a strict version dependency
-	sed s/@pkgver@/$(shell dpkg-parsechangelog | grep Version | cut -f 2 -d' ')/g \
-		debian/libcolord1.symbols.in > debian/libcolord1.symbols
 	dh_makeshlibs -- -c4
 
 override_dh_gencontrol:
