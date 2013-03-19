@@ -1,4 +1,4 @@
-colord (0.1.31-1) UNRELEASED; urgency=low
+colord (0.1.31-1) experimental; urgency=low
 
   * New upstream release 0.1.31 (LP: #1099967)
     + Drop patches included in new upstream release
@@ -30,7 +30,7 @@ colord (0.1.31-1) UNRELEASED; urgency=low
   * Canonicalise Vcs-* URIs
   * Bump standards-version to 3.9.4; no changes needed
 
- -- Christopher James Halse Rogers <raof@ubuntu.com>  Sat, 02 Mar 2013 16:08:53 +1100
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Tue, 19 Mar 2013 17:27:41 +1100
 
 colord (0.1.21-4) unstable; urgency=low
 
