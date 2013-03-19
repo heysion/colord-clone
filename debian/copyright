@@ -1,25 +1,49 @@
-Format: http://dep.debian.net/deps/dep5
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: colord
 Source: http://www.freedesktop.org/software/colord/
 
 Files: *
-Copyright: © 2009-2011 Richard Hughes <richard@hughsie.com>
+Copyright: © 2009-2013 Richard Hughes <richard@hughsie.com>
 License: GPL-2+
 
-Files: libcolord/*
-Copyright: © 2010-2011 Richard Huges <richard@hughsie.com>
+Files: lib/colord/*
+Copyright: © 2010-2013 Richard Hughes <richard@hughsie.com>
 License: LGPL-2.1+
 
-Files: libcolord/colord.h
-Copyright: © 2010-2011 Richard Hughes <richard@hughsie.com>
+Files: lib/colorhug/*
+Copyright: © 2011-2013 Richard Hughes <richard@hughsie.com>
 License: GPL-2+
 
-Files: libcolord/cd-color.h
-Copyright: © 2010 Richard Hughes <richard@hughsie.com>
+Files: lib/dtp94/*
+Copyright: © 2010-2013 Richard Hughes <richard@hughsie.com>
 License: GPL-2+
+
+Files: lib/dtp94/dtp94.h
+Copyright: © 2010-2011 Richard Hughes <richard@hughsie.com>
+License: LGPL-2.1+
+
+Files: lib/huey/*
+Copyright: © 2010-2013 Richard Hughes <richard@hughsie.com>
+License: GPL-2+
+
+Files: lib/huey/huey.h
+Copyright: © 2010-2011 Richard Hughes <richard@hughsie.com>
+License: LGPL-2.1+
+
+Files: lib/munki/*
+Copyright: © 2013 Richard Hughes <richard@hughsie.com>
+License: GPL-2+
+
+Files: lib/munki/munki.h
+Copyright: © 2010-2011 Richard Hughes <richard@hughsie.com>
+License: LGPL-2.1+
 
 Files: examples/*
 Copyright: © 2011 Richard Hughes <richard@hughsie.com>
+License: LGPL-2.1+
+
+Files: contrib/session-helper/cd-session.h
+Copyright: © 2012 Richard Hughes <richard@hughsie.com>
 License: LGPL-2.1+
 
 Files: doc/api/dbus/spec-to-docbook.xsl
