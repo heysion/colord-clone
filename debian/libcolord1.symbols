@@ -224,21 +224,30 @@ libcolordprivate.so.1 libcolord1 #MINVER#
  cd_client_error_to_string@Base 0.1.29
  cd_color_get_blackbody_rgb@Base 0.1.29
  cd_color_rgb8_to_rgb@Base 0.1.29
+ cd_color_rgb_array_interpolate@Base 0.1.31
+ cd_color_rgb_array_is_monotonic@Base 0.1.31
+ cd_color_rgb_array_new@Base 0.1.31
  cd_color_rgb_copy@Base 0.1.29
  cd_color_rgb_dup@Base 0.1.29
+ cd_color_rgb_free@Base 0.1.31
  cd_color_rgb_get_type@Base 0.1.29
  cd_color_rgb_interpolate@Base 0.1.29
+ cd_color_rgb_new@Base 0.1.31
  cd_color_rgb_set@Base 0.1.29
  cd_color_rgb_to_rgb8@Base 0.1.29
  cd_color_xyz_clear@Base 0.1.29
  cd_color_xyz_copy@Base 0.1.29
  cd_color_xyz_dup@Base 0.1.29
+ cd_color_xyz_free@Base 0.1.31
  cd_color_xyz_get_type@Base 0.1.29
+ cd_color_xyz_new@Base 0.1.31
  cd_color_xyz_set@Base 0.1.29
  cd_color_xyz_to_yxy@Base 0.1.29
  cd_color_yxy_copy@Base 0.1.29
  cd_color_yxy_dup@Base 0.1.29
+ cd_color_yxy_free@Base 0.1.31
  cd_color_yxy_get_type@Base 0.1.29
+ cd_color_yxy_new@Base 0.1.31
  cd_color_yxy_set@Base 0.1.29
  cd_color_yxy_to_xyz@Base 0.1.29
  cd_colorspace_from_string@Base 0.1.29
@@ -252,6 +261,20 @@ libcolordprivate.so.1 libcolord1 #MINVER#
  cd_device_mode_to_string@Base 0.1.29
  cd_device_relation_from_string@Base 0.1.29
  cd_device_relation_to_string@Base 0.1.29
+ cd_interp_akima_get_type@Base 0.1.31
+ cd_interp_akima_new@Base 0.1.31
+ cd_interp_error_quark@Base 0.1.31
+ cd_interp_eval@Base 0.1.31
+ cd_interp_get_kind@Base 0.1.31
+ cd_interp_get_size@Base 0.1.31
+ cd_interp_get_type@Base 0.1.31
+ cd_interp_get_x@Base 0.1.31
+ cd_interp_get_y@Base 0.1.31
+ cd_interp_insert@Base 0.1.31
+ cd_interp_kind_to_string@Base 0.1.31
+ cd_interp_linear_get_type@Base 0.1.31
+ cd_interp_linear_new@Base 0.1.31
+ cd_interp_prepare@Base 0.1.31
  cd_it8_add_data@Base 0.1.29
  cd_it8_add_option@Base 0.1.29
  cd_it8_error_quark@Base 0.1.29
