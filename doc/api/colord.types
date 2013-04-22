@@ -1,8 +1,12 @@
 cd_client_get_type
+cd_color_lab_get_type
 cd_color_rgb_get_type
+cd_color_swatch_get_type
 cd_color_xyz_get_type
 cd_color_yxy_get_type
 cd_device_get_type
+cd_dom_get_type
+cd_icc_get_type
 cd_interp_akima_get_type
 cd_interp_get_type
 cd_interp_linear_get_type

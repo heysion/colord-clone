@@ -3,7 +3,7 @@ AC_PREREQ(2.63)
 
 m4_define([cd_major_version], [0])
 m4_define([cd_minor_version], [1])
-m4_define([cd_micro_version], [31])
+m4_define([cd_micro_version], [33])
 m4_define([cd_version],
           [cd_major_version.cd_minor_version.cd_micro_version])
 
@@ -38,7 +38,7 @@ AC_SUBST(CD_MICRO_VERSION)
 # REVISION	If the API and ABI remains the same, but bugs are fixed.
 # AGE		Don't use.
 LT_CURRENT=1
-LT_REVISION=18
+LT_REVISION=19
 LT_AGE=0
 AC_SUBST(LT_CURRENT)
 AC_SUBST(LT_REVISION)
@@ -137,6 +137,15 @@ fi
 AM_CONDITIONAL(HAVE_GUSB, test x$enable_gusb = xyes)
 
 PKG_CHECK_MODULES(LCMS, lcms2 >= 2.2)
+AC_CHECK_LIB(lcms2, cmsGetHeaderCreator, have_lcms_creator=yes)
+if test x$have_lcms_creator != x; then
+	AC_DEFINE(HAVE_LCMS_GET_HEADER_CREATOR,1,[cmsGetHeaderCreator is available])
+fi
+AC_CHECK_LIB(lcms2, cmsGetToneCurveEstimatedTableEntries, have_lcms_table_entries=yes)
+if test x$have_lcms_table_entries != x; then
+	AC_DEFINE(HAVE_LCMS_GET_TABLE_ENTRIES,1,[cmsGetToneCurveEstimatedTableEntries is available])
+fi
+
 PKG_CHECK_MODULES(SQLITE, sqlite3)
 
 dnl **** Check for GUDEV ****
@@ -336,6 +345,7 @@ if test x$enable_print_profiles != xno; then
 	if test "$COLPROF" = "false"; then
 		AC_MSG_ERROR([colprof not found, please install argyllcms])
 	fi
+	AC_DEFINE_UNQUOTED([TOOL_COLPROF], ["$COLPROF"], [Full path of colprof binary])
 fi
 
 # per-machine directory

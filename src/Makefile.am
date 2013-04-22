@@ -39,6 +39,7 @@ COLORD_PRIVATE_LIBS =					\
 	$(top_builddir)/lib/colord/libcolordprivate.la
 
 cd-resources.c: colord.gresource.xml $(dist_introspection_DATA)
+	$(AM_V_GEN)					\
 	glib-compile-resources				\
 		--sourcedir=$(srcdir)			\
 		--sourcedir=$(top_builddir)/data	\
@@ -47,6 +48,7 @@ cd-resources.c: colord.gresource.xml $(dist_introspection_DATA)
 		--c-name cd				\
 		$(srcdir)/colord.gresource.xml
 cd-resources.h: colord.gresource.xml
+	$(AM_V_GEN)					\
 	glib-compile-resources				\
 		--sourcedir=$(srcdir)			\
 		--sourcedir=$(top_builddir)/data	\
@@ -160,7 +162,7 @@ BUILT_SOURCES =						\
 	cd-resources.c					\
 	cd-resources.h
 
-CLEANFILES = $(BUILT_SOURCES)
+CLEANFILES = $(BUILT_SOURCES) *.log *.trs
 
 EXTRA_DIST =						\
 	colord.gresource.xml

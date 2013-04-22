@@ -47,6 +47,12 @@
 /* Define to 1 if you have the <inttypes.h> header file. */
 #define HAVE_INTTYPES_H 1
 
+/* cmsGetHeaderCreator is available */
+#define HAVE_LCMS_GET_HEADER_CREATOR 1
+
+/* cmsGetToneCurveEstimatedTableEntries is available */
+#define HAVE_LCMS_GET_TABLE_ENTRIES 1
+
 /* Define to 1 if libsystemd-login is available */
 #define HAVE_LIBSYSTEMD_LOGIN 1
 
@@ -94,7 +100,7 @@
 #define PACKAGE_NAME "colord"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "colord 0.1.31"
+#define PACKAGE_STRING "colord 0.1.33"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "colord"
@@ -103,13 +109,16 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "0.1.31"
+#define PACKAGE_VERSION "0.1.33"
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
+
+/* Full path of colprof binary */
+#define TOOL_COLPROF "/usr/bin/colprof"
 
 /* if we should use PolicyKit */
 #define USE_POLKIT 1
 
 /* Version number of package */
-#define VERSION "0.1.31"
+#define VERSION "0.1.33"

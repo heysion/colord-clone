@@ -53,6 +53,7 @@ struct _CdIt8Private
 	CdMat3x3		 matrix;
 	gboolean		 normalized;
 	gboolean		 spectral;
+	gboolean		 enable_created;
 	gchar			*instrument;
 	gchar			*reference;
 	gchar			*originator;
@@ -91,6 +92,62 @@ cd_it8_error_quark (void)
 		quark = g_quark_from_static_string ("cd_it8_error");
 	}
 	return quark;
+}
+
+/**
+ * _cmsIT8GetPropertyDbl:
+ *
+ * This gets a property ensuring the decimal point is '.' rather than what is
+ * specified in LC_NUMERIC
+ **/
+static gdouble
+_cmsIT8GetPropertyDbl (cmsHANDLE it8_lcms, const gchar *key)
+{
+	const gchar *value;
+	value = cmsIT8GetProperty (it8_lcms, key);
+	return g_ascii_strtod (value, NULL);
+}
+
+/**
+ * _cmsIT8GetDataRowColDbl:
+ *
+ * This gets a data value ensuring the decimal point is '.' rather than what is
+ * specified in LC_NUMERIC
+ **/
+static gdouble
+_cmsIT8GetDataRowColDbl (cmsHANDLE it8_lcms, gint row, gint col)
+{
+	const char *value;
+	value = cmsIT8GetDataRowCol (it8_lcms, row, col);
+	return g_ascii_strtod (value, NULL);
+}
+
+/**
+ * _cmsIT8SetPropertyDbl:
+ *
+ * This sets a property ensuring the decimal point is '.' rather than what is
+ * specified in LC_NUMERIC
+ **/
+static void
+_cmsIT8SetPropertyDbl (cmsHANDLE it8_lcms, const gchar *key, gdouble value)
+{
+	gchar buffer[G_ASCII_DTOSTR_BUF_SIZE];
+	g_ascii_dtostr (buffer, G_ASCII_DTOSTR_BUF_SIZE, value);
+	cmsIT8SetPropertyUncooked (it8_lcms, key, buffer);
+}
+
+/**
+ * _cmsIT8SetDataRowColDbl:
+ *
+ * This sets a data value ensuring the decimal point is '.' rather than what is
+ * specified in LC_NUMERIC
+ **/
+static void
+_cmsIT8SetDataRowColDbl (cmsHANDLE it8_lcms, gint row, gint col, gdouble value)
+{
+	gchar buffer[G_ASCII_DTOSTR_BUF_SIZE];
+	g_ascii_dtostr (buffer, G_ASCII_DTOSTR_BUF_SIZE, value);
+	cmsIT8SetDataRowCol (it8_lcms, row, col, buffer);
 }
 
 /**
@@ -188,9 +245,10 @@ cd_it8_parse_luminance (const gchar *text, CdColorXYZ *xyz, GError **error)
 			     text);
 		goto out;
 	}
-	xyz->X = atof (split[0]);
-	xyz->Y = atof (split[1]);
-	xyz->Z = atof (split[2]);
+
+	xyz->X = g_ascii_strtod (split[0], NULL);
+	xyz->Y = g_ascii_strtod (split[1], NULL);
+	xyz->Z = g_ascii_strtod (split[2], NULL);
 out:
 	g_strfreev (split);
 	return ret;
@@ -265,6 +323,24 @@ cd_it8_get_reference (CdIt8 *it8)
 }
 
 /**
+ * cd_it8_get_enable_created:
+ * @it8: a #CdIt8 instance.
+ *
+ * Gets if the 'CREATED' attribute will be written. This is typically only
+ * set in the self test programs.
+ *
+ * Return value: The reference, or %NULL if unset
+ *
+ * Since: 0.1.33
+ **/
+gboolean
+cd_it8_get_enable_created (CdIt8 *it8)
+{
+	g_return_val_if_fail (CD_IS_IT8 (it8), FALSE);
+	return it8->priv->enable_created;
+}
+
+/**
  * cd_it8_get_normalized:
  * @it8: a #CdIt8 instance.
  *
@@ -319,12 +395,12 @@ cd_it8_load_ti1_cal (CdIt8 *it8, cmsHANDLE it8_lcms, GError **error)
 	}
 
 	/* copy out data entries */
-	number_of_sets = cmsIT8GetPropertyDbl (it8_lcms, "NUMBER_OF_SETS");
+	number_of_sets = _cmsIT8GetPropertyDbl (it8_lcms, "NUMBER_OF_SETS");
 	for (i = 0; i < number_of_sets; i++) {
 		rgb = cd_color_rgb_new ();
-		rgb->R = cmsIT8GetDataRowColDbl(it8_lcms, i, 1);
-		rgb->G = cmsIT8GetDataRowColDbl(it8_lcms, i, 2);
-		rgb->B = cmsIT8GetDataRowColDbl(it8_lcms, i, 3);
+		rgb->R = _cmsIT8GetDataRowColDbl(it8_lcms, i, 1);
+		rgb->G = _cmsIT8GetDataRowColDbl(it8_lcms, i, 2);
+		rgb->B = _cmsIT8GetDataRowColDbl(it8_lcms, i, 3);
 
 		/* ti1 files don't have NORMALIZED_TO_Y_100 so guess on
 		 * the asumption the first patch isn't black */
@@ -384,12 +460,12 @@ cd_it8_load_ti3 (CdIt8 *it8, cmsHANDLE it8_lcms, GError **error)
 	cd_it8_set_instrument (it8, cmsIT8GetProperty (it8_lcms, "TARGET_INSTRUMENT"));
 
 	/* copy out data entries */
-	number_of_sets = cmsIT8GetPropertyDbl (it8_lcms, "NUMBER_OF_SETS");
+	number_of_sets = _cmsIT8GetPropertyDbl (it8_lcms, "NUMBER_OF_SETS");
 	for (i = 0; i < number_of_sets; i++) {
 		rgb = cd_color_rgb_new ();
-		rgb->R = cmsIT8GetDataRowColDbl(it8_lcms, i, 1);
-		rgb->G = cmsIT8GetDataRowColDbl(it8_lcms, i, 2);
-		rgb->B = cmsIT8GetDataRowColDbl(it8_lcms, i, 3);
+		rgb->R = _cmsIT8GetDataRowColDbl(it8_lcms, i, 1);
+		rgb->G = _cmsIT8GetDataRowColDbl(it8_lcms, i, 2);
+		rgb->B = _cmsIT8GetDataRowColDbl(it8_lcms, i, 3);
 		if (scaled_to_y100) {
 			rgb->R /= 100.0f;
 			rgb->G /= 100.0f;
@@ -397,9 +473,9 @@ cd_it8_load_ti3 (CdIt8 *it8, cmsHANDLE it8_lcms, GError **error)
 		}
 		g_ptr_array_add (it8->priv->array_rgb, rgb);
 		xyz = cd_color_xyz_new ();
-		xyz->X = cmsIT8GetDataRowColDbl(it8_lcms, i, 4);
-		xyz->Y = cmsIT8GetDataRowColDbl(it8_lcms, i, 5);
-		xyz->Z = cmsIT8GetDataRowColDbl(it8_lcms, i, 6);
+		xyz->X = _cmsIT8GetDataRowColDbl(it8_lcms, i, 4);
+		xyz->Y = _cmsIT8GetDataRowColDbl(it8_lcms, i, 5);
+		xyz->Z = _cmsIT8GetDataRowColDbl(it8_lcms, i, 6);
 		if (scaled_to_y100) {
 			xyz->X /= 100.0f;
 			xyz->Y /= 100.0f;
@@ -435,15 +511,15 @@ cd_it8_load_ccmx (CdIt8 *it8, cmsHANDLE it8_lcms, GError **error)
 	cd_it8_set_instrument (it8, cmsIT8GetProperty (it8_lcms, "INSTRUMENT"));
 
 	/* just load the matrix */
-	it8->priv->matrix.m00 = cmsIT8GetDataRowColDbl(it8_lcms, 0, 0);
-	it8->priv->matrix.m01 = cmsIT8GetDataRowColDbl(it8_lcms, 0, 1);
-	it8->priv->matrix.m02 = cmsIT8GetDataRowColDbl(it8_lcms, 0, 2);
-	it8->priv->matrix.m10 = cmsIT8GetDataRowColDbl(it8_lcms, 1, 0);
-	it8->priv->matrix.m11 = cmsIT8GetDataRowColDbl(it8_lcms, 1, 1);
-	it8->priv->matrix.m12 = cmsIT8GetDataRowColDbl(it8_lcms, 1, 2);
-	it8->priv->matrix.m20 = cmsIT8GetDataRowColDbl(it8_lcms, 2, 0);
-	it8->priv->matrix.m21 = cmsIT8GetDataRowColDbl(it8_lcms, 2, 1);
-	it8->priv->matrix.m22 = cmsIT8GetDataRowColDbl(it8_lcms, 2, 2);
+	it8->priv->matrix.m00 = _cmsIT8GetDataRowColDbl(it8_lcms, 0, 0);
+	it8->priv->matrix.m01 = _cmsIT8GetDataRowColDbl(it8_lcms, 0, 1);
+	it8->priv->matrix.m02 = _cmsIT8GetDataRowColDbl(it8_lcms, 0, 2);
+	it8->priv->matrix.m10 = _cmsIT8GetDataRowColDbl(it8_lcms, 1, 0);
+	it8->priv->matrix.m11 = _cmsIT8GetDataRowColDbl(it8_lcms, 1, 1);
+	it8->priv->matrix.m12 = _cmsIT8GetDataRowColDbl(it8_lcms, 1, 2);
+	it8->priv->matrix.m20 = _cmsIT8GetDataRowColDbl(it8_lcms, 2, 0);
+	it8->priv->matrix.m21 = _cmsIT8GetDataRowColDbl(it8_lcms, 2, 1);
+	it8->priv->matrix.m22 = _cmsIT8GetDataRowColDbl(it8_lcms, 2, 2);
 out:
 	return ret;
 }
@@ -622,6 +698,19 @@ cd_it8_color_match (CdColorRGB *rgb, gdouble r, gdouble g, gdouble b)
 }
 
 /**
+ * cd_it8_convert_xyz_to_string:
+ **/
+static gchar *
+cd_it8_convert_xyz_to_string (CdColorXYZ *src)
+{
+	gchar buffer[3][G_ASCII_DTOSTR_BUF_SIZE];
+	g_ascii_dtostr (buffer[0], G_ASCII_DTOSTR_BUF_SIZE, src->X);
+	g_ascii_dtostr (buffer[1], G_ASCII_DTOSTR_BUF_SIZE, src->Y);
+	g_ascii_dtostr (buffer[2], G_ASCII_DTOSTR_BUF_SIZE, src->Z);
+	return g_strdup_printf ("%s %s %s", buffer[0], buffer[1], buffer[2]);
+}
+
+/**
  * cd_it8_save_to_file_ti1_ti3:
  **/
 static gboolean
@@ -668,7 +757,7 @@ cd_it8_save_to_file_ti1_ti3 (CdIt8 *it8, cmsHANDLE it8_lcms, GError **error)
 		/* scale all the readings to 100 */
 		normalize = 100.0f / normalize;
 	}
-	lumi_str = g_strdup_printf ("%f %f %f", lumi_xyz.X, lumi_xyz.Y, lumi_xyz.Z);
+	lumi_str = cd_it8_convert_xyz_to_string (&lumi_xyz);
 
 	/* write data */
 	if (it8->priv->kind == CD_IT8_KIND_TI1) {
@@ -697,8 +786,8 @@ cd_it8_save_to_file_ti1_ti3 (CdIt8 *it8, cmsHANDLE it8_lcms, GError **error)
 	} else {
 		cmsIT8SetPropertyStr (it8_lcms, "NORMALIZED_TO_Y_100", "NO");
 	}
-	cmsIT8SetPropertyDbl (it8_lcms, "NUMBER_OF_FIELDS", 7);
-	cmsIT8SetPropertyDbl (it8_lcms, "NUMBER_OF_SETS", it8->priv->array_rgb->len);
+	_cmsIT8SetPropertyDbl (it8_lcms, "NUMBER_OF_FIELDS", 7);
+	_cmsIT8SetPropertyDbl (it8_lcms, "NUMBER_OF_SETS", it8->priv->array_rgb->len);
 	cmsIT8SetDataFormat (it8_lcms, 0, "SAMPLE_ID");
 	cmsIT8SetDataFormat (it8_lcms, 1, "RGB_R");
 	cmsIT8SetDataFormat (it8_lcms, 2, "RGB_G");
@@ -712,21 +801,21 @@ cd_it8_save_to_file_ti1_ti3 (CdIt8 *it8, cmsHANDLE it8_lcms, GError **error)
 		rgb_tmp = g_ptr_array_index (it8->priv->array_rgb, i);
 		xyz_tmp = g_ptr_array_index (it8->priv->array_xyz, i);
 
-		cmsIT8SetDataRowColDbl(it8_lcms, i, 0, i + 1);
+		_cmsIT8SetDataRowColDbl(it8_lcms, i, 0, i + 1);
 		if (it8->priv->normalized) {
-			cmsIT8SetDataRowColDbl(it8_lcms, i, 1, rgb_tmp->R * 100.0f);
-			cmsIT8SetDataRowColDbl(it8_lcms, i, 2, rgb_tmp->G * 100.0f);
-			cmsIT8SetDataRowColDbl(it8_lcms, i, 3, rgb_tmp->B * 100.0f);
-			cmsIT8SetDataRowColDbl(it8_lcms, i, 4, xyz_tmp->X * normalize);
-			cmsIT8SetDataRowColDbl(it8_lcms, i, 5, xyz_tmp->Y * normalize);
-			cmsIT8SetDataRowColDbl(it8_lcms, i, 6, xyz_tmp->Z * normalize);
+			_cmsIT8SetDataRowColDbl(it8_lcms, i, 1, rgb_tmp->R * 100.0f);
+			_cmsIT8SetDataRowColDbl(it8_lcms, i, 2, rgb_tmp->G * 100.0f);
+			_cmsIT8SetDataRowColDbl(it8_lcms, i, 3, rgb_tmp->B * 100.0f);
+			_cmsIT8SetDataRowColDbl(it8_lcms, i, 4, xyz_tmp->X * normalize);
+			_cmsIT8SetDataRowColDbl(it8_lcms, i, 5, xyz_tmp->Y * normalize);
+			_cmsIT8SetDataRowColDbl(it8_lcms, i, 6, xyz_tmp->Z * normalize);
 		} else {
-			cmsIT8SetDataRowColDbl(it8_lcms, i, 1, rgb_tmp->R);
-			cmsIT8SetDataRowColDbl(it8_lcms, i, 2, rgb_tmp->G);
-			cmsIT8SetDataRowColDbl(it8_lcms, i, 3, rgb_tmp->B);
-			cmsIT8SetDataRowColDbl(it8_lcms, i, 4, xyz_tmp->X);
-			cmsIT8SetDataRowColDbl(it8_lcms, i, 5, xyz_tmp->Y);
-			cmsIT8SetDataRowColDbl(it8_lcms, i, 6, xyz_tmp->Z);
+			_cmsIT8SetDataRowColDbl(it8_lcms, i, 1, rgb_tmp->R);
+			_cmsIT8SetDataRowColDbl(it8_lcms, i, 2, rgb_tmp->G);
+			_cmsIT8SetDataRowColDbl(it8_lcms, i, 3, rgb_tmp->B);
+			_cmsIT8SetDataRowColDbl(it8_lcms, i, 4, xyz_tmp->X);
+			_cmsIT8SetDataRowColDbl(it8_lcms, i, 5, xyz_tmp->Y);
+			_cmsIT8SetDataRowColDbl(it8_lcms, i, 6, xyz_tmp->Z);
 		}
 	}
 out:
@@ -754,8 +843,8 @@ cd_it8_save_to_file_cal (CdIt8 *it8, cmsHANDLE it8_lcms, GError **error)
 		cmsIT8SetPropertyStr (it8_lcms, "TARGET_INSTRUMENT",
 				      it8->priv->instrument);
 	}
-	cmsIT8SetPropertyDbl (it8_lcms, "NUMBER_OF_FIELDS", 4);
-	cmsIT8SetPropertyDbl (it8_lcms, "NUMBER_OF_SETS", it8->priv->array_rgb->len);
+	_cmsIT8SetPropertyDbl (it8_lcms, "NUMBER_OF_FIELDS", 4);
+	_cmsIT8SetPropertyDbl (it8_lcms, "NUMBER_OF_SETS", it8->priv->array_rgb->len);
 	cmsIT8SetDataFormat (it8_lcms, 0, "RGB_I");
 	cmsIT8SetDataFormat (it8_lcms, 1, "RGB_R");
 	cmsIT8SetDataFormat (it8_lcms, 2, "RGB_G");
@@ -764,10 +853,10 @@ cd_it8_save_to_file_cal (CdIt8 *it8, cmsHANDLE it8_lcms, GError **error)
 	/* write to the it8 file */
 	for (i = 0; i < it8->priv->array_rgb->len; i++) {
 		rgb_tmp = g_ptr_array_index (it8->priv->array_rgb, i);
-		cmsIT8SetDataRowColDbl(it8_lcms, i, 0, 1.0f / (gdouble) (it8->priv->array_rgb->len - 1) * (gdouble) i);
-		cmsIT8SetDataRowColDbl(it8_lcms, i, 1, rgb_tmp->R);
-		cmsIT8SetDataRowColDbl(it8_lcms, i, 2, rgb_tmp->G);
-		cmsIT8SetDataRowColDbl(it8_lcms, i, 3, rgb_tmp->B);
+		_cmsIT8SetDataRowColDbl(it8_lcms, i, 0, 1.0f / (gdouble) (it8->priv->array_rgb->len - 1) * (gdouble) i);
+		_cmsIT8SetDataRowColDbl(it8_lcms, i, 1, rgb_tmp->R);
+		_cmsIT8SetDataRowColDbl(it8_lcms, i, 2, rgb_tmp->G);
+		_cmsIT8SetDataRowColDbl(it8_lcms, i, 3, rgb_tmp->B);
 	}
 
 	return ret;
@@ -786,8 +875,8 @@ cd_it8_save_to_file_ccmx (CdIt8 *it8, cmsHANDLE it8_lcms, GError **error)
 			      "Device Correction Matrix");
 
 	cmsIT8SetPropertyStr (it8_lcms, "COLOR_REP", "XYZ");
-	cmsIT8SetPropertyDbl (it8_lcms, "NUMBER_OF_FIELDS", 3);
-	cmsIT8SetPropertyDbl (it8_lcms, "NUMBER_OF_SETS", 3);
+	_cmsIT8SetPropertyDbl (it8_lcms, "NUMBER_OF_FIELDS", 3);
+	_cmsIT8SetPropertyDbl (it8_lcms, "NUMBER_OF_SETS", 3);
 	cmsIT8SetDataFormat (it8_lcms, 0, "XYZ_X");
 	cmsIT8SetDataFormat (it8_lcms, 1, "XYZ_Y");
 	cmsIT8SetDataFormat (it8_lcms, 2, "XYZ_Z");
@@ -798,16 +887,16 @@ cd_it8_save_to_file_ccmx (CdIt8 *it8, cmsHANDLE it8_lcms, GError **error)
 				      it8->priv->instrument);
 	}
 
-	/* just load the matrix */
-	cmsIT8SetDataRowColDbl (it8_lcms, 0, 0, it8->priv->matrix.m00);
-	cmsIT8SetDataRowColDbl (it8_lcms, 0, 1, it8->priv->matrix.m01);
-	cmsIT8SetDataRowColDbl (it8_lcms, 0, 2, it8->priv->matrix.m02);
-	cmsIT8SetDataRowColDbl (it8_lcms, 1, 0, it8->priv->matrix.m10);
-	cmsIT8SetDataRowColDbl (it8_lcms, 1, 1, it8->priv->matrix.m11);
-	cmsIT8SetDataRowColDbl (it8_lcms, 1, 2, it8->priv->matrix.m12);
-	cmsIT8SetDataRowColDbl (it8_lcms, 2, 0, it8->priv->matrix.m20);
-	cmsIT8SetDataRowColDbl (it8_lcms, 2, 1, it8->priv->matrix.m21);
-	cmsIT8SetDataRowColDbl (it8_lcms, 2, 2, it8->priv->matrix.m22);
+	/* just save the matrix */
+	_cmsIT8SetDataRowColDbl (it8_lcms, 0, 0, it8->priv->matrix.m00);
+	_cmsIT8SetDataRowColDbl (it8_lcms, 0, 1, it8->priv->matrix.m01);
+	_cmsIT8SetDataRowColDbl (it8_lcms, 0, 2, it8->priv->matrix.m02);
+	_cmsIT8SetDataRowColDbl (it8_lcms, 1, 0, it8->priv->matrix.m10);
+	_cmsIT8SetDataRowColDbl (it8_lcms, 1, 1, it8->priv->matrix.m11);
+	_cmsIT8SetDataRowColDbl (it8_lcms, 1, 2, it8->priv->matrix.m12);
+	_cmsIT8SetDataRowColDbl (it8_lcms, 2, 0, it8->priv->matrix.m20);
+	_cmsIT8SetDataRowColDbl (it8_lcms, 2, 1, it8->priv->matrix.m21);
+	_cmsIT8SetDataRowColDbl (it8_lcms, 2, 2, it8->priv->matrix.m22);
 
 	return ret;
 }
@@ -836,7 +925,7 @@ cd_it8_save_to_data (CdIt8 *it8,
 	gboolean ret;
 	gchar *data_tmp = NULL;
 	gchar *date_str = NULL;
-	GDateTime *datetime;
+	GDateTime *datetime = NULL;
 	gsize size_tmp = 0;
 	guint i;
 
@@ -859,9 +948,11 @@ cd_it8_save_to_data (CdIt8 *it8,
 
 	/* set time and date in crazy ArgllCMS format, e.g.
 	 * 'Wed Dec 19 18:47:57 2012' */
-	datetime = g_date_time_new_now_local ();
-	date_str = g_date_time_format (datetime, "%a %b %d %H:%M:%S %Y");
-	cmsIT8SetPropertyStr (it8_lcms, "CREATED", date_str);
+	if (it8->priv->enable_created) {
+		datetime = g_date_time_new_now_local ();
+		date_str = g_date_time_format (datetime, "%a %b %d %H:%M:%S %Y");
+		cmsIT8SetPropertyStr (it8_lcms, "CREATED", date_str);
+	}
 
 	/* set ti1 and ti3 specific data */
 	if (it8->priv->kind == CD_IT8_KIND_TI1 ||
@@ -902,7 +993,8 @@ cd_it8_save_to_data (CdIt8 *it8,
 out:
 	if (it8_lcms != NULL)
 		cmsIT8Free (it8_lcms);
-	g_date_time_unref (datetime);
+	if (datetime != NULL)
+		g_date_time_unref (datetime);
 	g_free (data_tmp);
 	g_free (date_str);
 	return ret;
@@ -1064,6 +1156,24 @@ cd_it8_set_reference (CdIt8 *it8, const gchar *reference)
 
 	g_free (it8->priv->reference);
 	it8->priv->reference = g_strdup (reference);
+}
+
+/**
+ * cd_it8_set_enable_created:
+ * @it8: a #CdIt8 instance.
+ * @enable_created: Is 'CREATED' should be written
+ *
+ * Sets if the 'CREATED' attribute should be written. This is mainly useful
+ * in the self test programs where we want to string compare the output data
+ * with a known reference.
+ *
+ * Since: 0.1.33
+ **/
+void
+cd_it8_set_enable_created (CdIt8 *it8, gboolean enable_created)
+{
+	g_return_if_fail (CD_IS_IT8 (it8));
+	it8->priv->enable_created = enable_created;
 }
 
 /**
@@ -1337,9 +1447,11 @@ cd_it8_init (CdIt8 *it8)
 {
 	it8->priv = CD_IT8_GET_PRIVATE (it8);
 
+	cd_mat33_clear (&it8->priv->matrix);
 	it8->priv->array_rgb = g_ptr_array_new_with_free_func ((GDestroyNotify) cd_color_rgb_free);
 	it8->priv->array_xyz = g_ptr_array_new_with_free_func ((GDestroyNotify) cd_color_xyz_free);
 	it8->priv->options = g_ptr_array_new_with_free_func (g_free);
+	it8->priv->enable_created = TRUE;
 
 	/* ensure the remote errors are registered */
 	cd_it8_error_quark ();

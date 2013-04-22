@@ -746,7 +746,12 @@ cd_profile_dbus_get_property (GDBusConnection *connection_, const gchar *sender,
 		goto out;
 	}
 
-	g_critical ("failed to set property %s", property_name);
+	/* return an error */
+	g_set_error (error,
+		     CD_PROFILE_ERROR,
+		     CD_PROFILE_ERROR_INTERNAL,
+		     "failed to get profile property %s",
+		     property_name);
 out:
 	return retval;
 }
@@ -818,74 +823,6 @@ cd_profile_get_fake_md5 (const gchar *filename)
 out:
 	g_free (basename);
 	return md5;
-}
-
-/**
- * cd_profile_get_precooked_md5:
- **/
-static gchar *
-cd_profile_get_precooked_md5 (cmsHPROFILE lcms_profile)
-{
-	cmsUInt8Number profile_id[16];
-	gboolean md5_precooked = FALSE;
-	guint i;
-	gchar *md5 = NULL;
-
-	/* check to see if we have a pre-cooked MD5 */
-	cmsGetHeaderProfileID (lcms_profile, profile_id);
-	for (i = 0; i < 16; i++) {
-		if (profile_id[i] != 0) {
-			md5_precooked = TRUE;
-			break;
-		}
-	}
-	if (!md5_precooked)
-		goto out;
-
-	/* convert to a hex string */
-	md5 = g_new0 (gchar, 32 + 1);
-	for (i = 0; i < 16; i++)
-		g_snprintf (md5 + i*2, 3, "%02x", profile_id[i]);
-out:
-	return md5;
-}
-
-/**
- * cd_profile_set_metadata_from_profile:
- **/
-static void
-cd_profile_set_metadata_from_profile (CdProfile *profile,
-				      cmsHPROFILE lcms_profile)
-{
-	cmsHANDLE dict;
-	const cmsDICTentry* entry;
-	gchar ascii_name[1024];
-	gchar ascii_value[1024];
-	CdProfilePrivate *priv = profile->priv;
-
-	/* does profile have metadata? */
-	dict = cmsReadTag (lcms_profile, cmsSigMetaTag);
-	if (dict == NULL) {
-		g_debug ("%s (%s) has no DICT tag",
-			 priv->id ? priv->id : "new profile",
-			 priv->filename);
-		return;
-	}
-
-	/* read each bit of metadata */
-	for (entry = cmsDictGetEntryList (dict);
-	     entry != NULL;
-	     entry = cmsDictNextEntry (entry)) {
-
-		/* convert from wchar_t to char */
-		wcstombs (ascii_name, entry->Name, sizeof (ascii_name));
-		wcstombs (ascii_value, entry->Value, sizeof (ascii_value));
-		g_debug ("Adding metadata %s=%s",
-			 ascii_name, ascii_value);
-		g_hash_table_insert (priv->metadata,
-				     g_strdup (ascii_name),
-				     g_strdup (ascii_value));
-	}
 }
 
 /**
@@ -1290,92 +1227,43 @@ out:
  **/
 static gboolean
 cd_profile_set_from_profile (CdProfile *profile,
-			     cmsHPROFILE lcms_profile,
+			     CdIcc *icc,
 			     GError **error)
 {
 	CdProfilePrivate *priv = profile->priv;
 	CdProfileWarning warning;
-	cmsColorSpaceSignature color_space;
+	cmsHPROFILE lcms_profile;
+	const gchar *key;
 	const gchar *value;
 	GArray *flags = NULL;
 	gboolean ret = FALSE;
-	gchar text[1024];
+	GHashTable *metadata = NULL;
+	GList *keys = NULL;
+	GList *l;
 	guint i;
 	struct tm created;
 
 	/* get the description as the title */
-	cmsGetProfileInfoASCII (lcms_profile,
-				cmsInfoDescription,
-				"en", "US",
-				text, 1024);
-	priv->title = cd_profile_fixup_title (text);
+	value = cd_icc_get_description (icc, NULL, error);
+	if (value == NULL)
+		goto out;
+	priv->title =  cd_profile_fixup_title (value);
 
 	/* get the profile kind */
-	switch (cmsGetDeviceClass (lcms_profile)) {
-	case cmsSigInputClass:
-		priv->kind = CD_PROFILE_KIND_INPUT_DEVICE;
-		break;
-	case cmsSigDisplayClass:
-		priv->kind = CD_PROFILE_KIND_DISPLAY_DEVICE;
-		break;
-	case cmsSigOutputClass:
-		priv->kind = CD_PROFILE_KIND_OUTPUT_DEVICE;
-		break;
-	case cmsSigLinkClass:
-		priv->kind = CD_PROFILE_KIND_DEVICELINK;
-		break;
-	case cmsSigColorSpaceClass:
-		priv->kind = CD_PROFILE_KIND_COLORSPACE_CONVERSION;
-		break;
-	case cmsSigAbstractClass:
-		priv->kind = CD_PROFILE_KIND_ABSTRACT;
-		break;
-	case cmsSigNamedColorClass:
-		priv->kind = CD_PROFILE_KIND_NAMED_COLOR;
-		break;
-	default:
-		priv->kind = CD_PROFILE_KIND_UNKNOWN;
-	}
+	priv->kind = cd_icc_get_kind (icc);
+	priv->colorspace = cd_icc_get_colorspace (icc);
 
-	/* get colorspace */
-	color_space = cmsGetColorSpace (lcms_profile);
-	switch (color_space) {
-	case cmsSigXYZData:
-		priv->colorspace = CD_COLORSPACE_XYZ;
-		break;
-	case cmsSigLabData:
-		priv->colorspace = CD_COLORSPACE_LAB;
-		break;
-	case cmsSigLuvData:
-		priv->colorspace = CD_COLORSPACE_LUV;
-		break;
-	case cmsSigYCbCrData:
-		priv->colorspace = CD_COLORSPACE_YCBCR;
-		break;
-	case cmsSigYxyData:
-		priv->colorspace = CD_COLORSPACE_YXY;
-		break;
-	case cmsSigRgbData:
-		priv->colorspace = CD_COLORSPACE_RGB;
-		break;
-	case cmsSigGrayData:
-		priv->colorspace = CD_COLORSPACE_GRAY;
-		break;
-	case cmsSigHsvData:
-		priv->colorspace = CD_COLORSPACE_HSV;
-		break;
-	case cmsSigCmykData:
-		priv->colorspace = CD_COLORSPACE_CMYK;
-		break;
-	case cmsSigCmyData:
-		priv->colorspace = CD_COLORSPACE_CMY;
-		break;
-	default:
-		priv->colorspace = CD_COLORSPACE_UNKNOWN;
+	/* get metadata */
+	metadata = cd_icc_get_metadata (icc);
+	keys = g_hash_table_get_keys (metadata);
+	for (l = keys; l != NULL; l = l->next) {
+		key = l->data;
+		value = g_hash_table_lookup (metadata, key);
+		g_debug ("Adding metadata %s=%s", key, value);
+		g_hash_table_insert (priv->metadata,
+				     g_strdup (key),
+				     g_strdup (value));
 	}
-
-	/* get metadata from the DICTionary */
-	cd_profile_set_metadata_from_profile (profile, lcms_profile);
 
 	/* set the format from the metadata */
 	value = g_hash_table_lookup (priv->metadata,
@@ -1397,6 +1285,7 @@ cd_profile_set_from_profile (CdProfile *profile,
 	}
 
 	/* get the profile created time and date */
+	lcms_profile = cd_icc_get_handle (icc);
 	ret = cmsGetHeaderCreationDateTime (lcms_profile, &created);
 	if (ret) {
 		priv->created = mktime (&created);
@@ -1409,7 +1298,7 @@ cd_profile_set_from_profile (CdProfile *profile,
 	priv->has_vcgt = cmsIsTag (lcms_profile, cmsSigVcgtTag);
 
 	/* get the checksum for the profile if we can */
-	priv->checksum = cd_profile_get_precooked_md5 (lcms_profile);
+	priv->checksum = g_strdup (cd_icc_get_checksum (icc));
 
 	/* get any warnings for the profile */
 	flags = cd_profile_get_warnings (lcms_profile);
@@ -1423,6 +1312,10 @@ cd_profile_set_from_profile (CdProfile *profile,
 
 	/* success */
 	ret = TRUE;
+out:
+	g_list_free (keys);
+	if (metadata != NULL)
+		g_hash_table_unref (metadata);
 	if (flags != NULL)
 		g_array_unref (flags);
 	return ret;
@@ -1474,9 +1367,11 @@ cd_profile_set_filename (CdProfile *profile,
 			 GError **error)
 {
 	CdProfilePrivate *priv = profile->priv;
-	cmsHPROFILE lcms_profile = NULL;
+	CdIcc *icc = NULL;
 	const gchar *tmp;
 	gboolean ret = FALSE;
+	GError *error_local = NULL;
+	GFile *file = NULL;
 	GBytes *gdata = NULL;
 	gchar *data = NULL;
 	gchar *fake_md5 = NULL;
@@ -1537,24 +1432,33 @@ cd_profile_set_filename (CdProfile *profile,
 	}
 
 	/* load the ICC file using lcms */
+	icc = cd_icc_new ();
 	if (gdata != NULL) {
 		g_debug ("Using built-in %s", data);
-		lcms_profile = cmsOpenProfileFromMem (g_bytes_get_data (gdata, NULL),
-						      g_bytes_get_size (gdata));
+		ret = cd_icc_load_data (icc,
+					g_bytes_get_data (gdata, NULL),
+					g_bytes_get_size (gdata),
+					CD_ICC_LOAD_FLAGS_METADATA,
+					&error_local);
 	} else {
-		lcms_profile = cmsOpenProfileFromFile (filename, "r");
-		if (lcms_profile == NULL) {
-			g_set_error (error,
+		file = g_file_new_for_path (filename);
+		ret = cd_icc_load_file (icc,
+					file,
+					CD_ICC_LOAD_FLAGS_METADATA,
+					NULL,
+					&error_local);
+	}
+	if (!ret) {
+		g_set_error_literal (error,
 				     CD_PROFILE_ERROR,
 				     CD_PROFILE_ERROR_FAILED_TO_PARSE,
-				     "failed to parse %s",
-				     filename);
-			goto out;
-		}
+				     error_local->message);
+		g_error_free (error_local);
+		goto out;
 	}
 
 	/* set the virtual profile from the lcms profile */
-	ret = cd_profile_set_from_profile (profile, lcms_profile, error);
+	ret = cd_profile_set_from_profile (profile, icc, error);
 	if (!ret)
 		goto out;
 
@@ -1590,8 +1494,10 @@ out:
 	g_free (fake_md5);
 	if (gdata != NULL)
 		g_bytes_unref (gdata);
-	if (lcms_profile != NULL)
-		cmsCloseProfile (lcms_profile);
+	if (icc != NULL)
+		g_object_unref (icc);
+	if (file != NULL)
+		g_object_unref (file);
 	return ret;
 }
 
@@ -1603,10 +1509,10 @@ cd_profile_set_fd (CdProfile *profile,
 		   gint fd,
 		   GError **error)
 {
-	cmsHPROFILE lcms_profile = NULL;
-	FILE *stream = NULL;
-	gboolean ret = FALSE;
+	CdIcc *icc = NULL;
+	GError *error_local = NULL;
 	CdProfilePrivate *priv = profile->priv;
+	gboolean ret = FALSE;
 
 	g_return_val_if_fail (CD_IS_PROFILE (profile), FALSE);
 
@@ -1620,14 +1526,18 @@ cd_profile_set_fd (CdProfile *profile,
 		goto out;
 	}
 
-	/* convert the file descriptor to a stream */
-	stream = fdopen (fd, "r");
-	if (stream == NULL) {
-		g_set_error (error,
-			     CD_PROFILE_ERROR,
-			     CD_PROFILE_ERROR_FAILED_TO_READ,
-			     "failed to open stream from fd %i",
-			     fd);
+	/* open fd and parse the file */
+	icc = cd_icc_new ();
+	ret = cd_icc_load_fd (icc,
+			      fd,
+			      CD_ICC_LOAD_FLAGS_METADATA,
+			      &error_local);
+	if (!ret) {
+		g_set_error_literal (error,
+				     CD_PROFILE_ERROR,
+				     CD_PROFILE_ERROR_FAILED_TO_READ,
+				     error_local->message);
+		g_error_free (error_local);
 		goto out;
 	}
 
@@ -1644,26 +1554,16 @@ cd_profile_set_fd (CdProfile *profile,
 	}
 #endif
 
-	/* parse the ICC file */
-	lcms_profile = cmsOpenProfileFromStream (stream, "r");
-	if (lcms_profile == NULL) {
-		g_set_error_literal (error,
-				     CD_PROFILE_ERROR,
-				     CD_PROFILE_ERROR_FAILED_TO_READ,
-				     "failed to open stream");
-		goto out;
-	}
-
 	/* set the virtual profile from the lcms profile */
-	ret = cd_profile_set_from_profile (profile, lcms_profile, error);
+	ret = cd_profile_set_from_profile (profile, icc, error);
 	if (!ret)
 		goto out;
 
 	/* emit all the things that could have changed */
 	cd_profile_emit_parsed_property_changed (profile);
 out:
-	if (lcms_profile != NULL)
-		cmsCloseProfile (lcms_profile);
+	if (icc != NULL)
+		g_object_unref (icc);
 	return ret;
 }
 

@@ -9,10 +9,12 @@ cd-client
 
 </para>
 
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
+
 
 <!-- ##### SECTION Stability_Level ##### -->
 
@@ -32,6 +34,95 @@ cd-client
 
 </para>
 
+
+
+<!-- ##### USER_FUNCTION device_added ##### -->
+<para>
+
+</para>
+
+@client: 
+@device: 
+
+
+<!-- ##### USER_FUNCTION device_removed ##### -->
+<para>
+
+</para>
+
+@client: 
+@device: 
+
+
+<!-- ##### USER_FUNCTION device_changed ##### -->
+<para>
+
+</para>
+
+@client: 
+@device: 
+
+
+<!-- ##### USER_FUNCTION profile_added ##### -->
+<para>
+
+</para>
+
+@client: 
+@profile: 
+
+
+<!-- ##### USER_FUNCTION profile_removed ##### -->
+<para>
+
+</para>
+
+@client: 
+@profile: 
+
+
+<!-- ##### USER_FUNCTION profile_changed ##### -->
+<para>
+
+</para>
+
+@client: 
+@profile: 
+
+
+<!-- ##### USER_FUNCTION sensor_added ##### -->
+<para>
+
+</para>
+
+@client: 
+@sensor: 
+
+
+<!-- ##### USER_FUNCTION sensor_removed ##### -->
+<para>
+
+</para>
+
+@client: 
+@sensor: 
+
+
+<!-- ##### USER_FUNCTION sensor_changed ##### -->
+<para>
+
+</para>
+
+@client: 
+@sensor: 
+
+
+<!-- ##### USER_FUNCTION changed ##### -->
+<para>
+
+</para>
+
+@profile: 
 
 
 <!-- ##### USER_FUNCTION _cd_client_reserved1 ##### -->
@@ -96,6 +187,24 @@ cd-client
 </para>
 
 @void: 
+
+
+<!-- ##### FUNCTION cd_client_error_quark ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_client_new ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
 
 
 <!-- ##### FUNCTION cd_client_connect ##### -->
@@ -170,6 +279,29 @@ cd-client
 @Returns: 
 
 
+<!-- ##### FUNCTION cd_client_import_profile ##### -->
+<para>
+
+</para>
+
+@client: 
+@file: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION cd_client_import_profile_finish ##### -->
+<para>
+
+</para>
+
+@client: 
+@res: 
+@error: 
+@Returns: 
+
+
 <!-- ##### FUNCTION cd_client_delete_device ##### -->
 <para>
 
@@ -216,15 +348,6 @@ cd-client
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_client_error_quark ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
 <!-- ##### FUNCTION cd_client_find_device ##### -->
 <para>
 
@@ -235,6 +358,17 @@ cd-client
 @cancellable: 
 @callback: 
 @user_data: 
+
+
+<!-- ##### FUNCTION cd_client_find_device_finish ##### -->
+<para>
+
+</para>
+
+@client: 
+@res: 
+@error: 
+@Returns: 
 
 
 <!-- ##### FUNCTION cd_client_find_device_by_property ##### -->
@@ -261,17 +395,6 @@ cd-client
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_client_find_device_finish ##### -->
-<para>
-
-</para>
-
-@client: 
-@res: 
-@error: 
-@Returns: 
-
-
 <!-- ##### FUNCTION cd_client_find_profile ##### -->
 <para>
 
@@ -282,6 +405,17 @@ cd-client
 @cancellable: 
 @callback: 
 @user_data: 
+
+
+<!-- ##### FUNCTION cd_client_find_profile_finish ##### -->
+<para>
+
+</para>
+
+@client: 
+@res: 
+@error: 
+@Returns: 
 
 
 <!-- ##### FUNCTION cd_client_find_profile_by_filename ##### -->
@@ -307,20 +441,19 @@ cd-client
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_client_find_profile_by_property ##### -->
+<!-- ##### FUNCTION cd_client_get_standard_space ##### -->
 <para>
 
 </para>
 
 @client: 
-@key: 
-@value: 
+@standard_space: 
 @cancellable: 
 @callback: 
 @user_data: 
 
 
-<!-- ##### FUNCTION cd_client_find_profile_by_property_finish ##### -->
+<!-- ##### FUNCTION cd_client_get_standard_space_finish ##### -->
 <para>
 
 </para>
@@ -328,58 +461,6 @@ cd-client
 @client: 
 @res: 
 @error: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_client_find_profile_finish ##### -->
-<para>
-
-</para>
-
-@client: 
-@res: 
-@error: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_client_find_sensor ##### -->
-<para>
-
-</para>
-
-@client: 
-@id: 
-@cancellable: 
-@callback: 
-@user_data: 
-
-
-<!-- ##### FUNCTION cd_client_find_sensor_finish ##### -->
-<para>
-
-</para>
-
-@client: 
-@res: 
-@error: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_client_get_connected ##### -->
-<para>
-
-</para>
-
-@client: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_client_get_daemon_version ##### -->
-<para>
-
-</para>
-
-@client: 
 @Returns: 
 
 
@@ -392,6 +473,17 @@ cd-client
 @cancellable: 
 @callback: 
 @user_data: 
+
+
+<!-- ##### FUNCTION cd_client_get_devices_finish ##### -->
+<para>
+
+</para>
+
+@client: 
+@res: 
+@error: 
+@Returns: 
 
 
 <!-- ##### FUNCTION cd_client_get_devices_by_kind ##### -->
@@ -414,26 +506,6 @@ cd-client
 @client: 
 @res: 
 @error: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_client_get_devices_finish ##### -->
-<para>
-
-</para>
-
-@client: 
-@res: 
-@error: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_client_get_has_server ##### -->
-<para>
-
-</para>
-
-@client: 
 @Returns: 
 
 
@@ -481,19 +553,20 @@ cd-client
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_client_get_standard_space ##### -->
+<!-- ##### FUNCTION cd_client_find_profile_by_property ##### -->
 <para>
 
 </para>
 
 @client: 
-@standard_space: 
+@key: 
+@value: 
 @cancellable: 
 @callback: 
 @user_data: 
 
 
-<!-- ##### FUNCTION cd_client_get_standard_space_finish ##### -->
+<!-- ##### FUNCTION cd_client_find_profile_by_property_finish ##### -->
 <para>
 
 </para>
@@ -504,19 +577,19 @@ cd-client
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_client_import_profile ##### -->
+<!-- ##### FUNCTION cd_client_find_sensor ##### -->
 <para>
 
 </para>
 
 @client: 
-@file: 
+@id: 
 @cancellable: 
 @callback: 
 @user_data: 
 
 
-<!-- ##### FUNCTION cd_client_import_profile_finish ##### -->
+<!-- ##### FUNCTION cd_client_find_sensor_finish ##### -->
 <para>
 
 </para>
@@ -527,101 +600,30 @@ cd-client
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_client_new ##### -->
+<!-- ##### FUNCTION cd_client_get_connected ##### -->
 <para>
 
 </para>
 
-@void: 
+@client: 
 @Returns: 
 
 
-<!-- ##### USER_FUNCTION changed ##### -->
-<para>
-
-</para>
-
-@profile: 
-
-
-<!-- ##### USER_FUNCTION device_added ##### -->
+<!-- ##### FUNCTION cd_client_get_has_server ##### -->
 <para>
 
 </para>
 
 @client: 
-@device: 
+@Returns: 
 
 
-<!-- ##### USER_FUNCTION device_changed ##### -->
+<!-- ##### FUNCTION cd_client_get_daemon_version ##### -->
 <para>
 
 </para>
 
 @client: 
-@device: 
-
-
-<!-- ##### USER_FUNCTION device_removed ##### -->
-<para>
-
-</para>
-
-@client: 
-@device: 
-
-
-<!-- ##### USER_FUNCTION profile_added ##### -->
-<para>
-
-</para>
-
-@client: 
-@profile: 
-
-
-<!-- ##### USER_FUNCTION profile_changed ##### -->
-<para>
-
-</para>
-
-@client: 
-@profile: 
-
-
-<!-- ##### USER_FUNCTION profile_removed ##### -->
-<para>
-
-</para>
-
-@client: 
-@profile: 
-
-
-<!-- ##### USER_FUNCTION sensor_added ##### -->
-<para>
-
-</para>
-
-@client: 
-@sensor: 
-
-
-<!-- ##### USER_FUNCTION sensor_changed ##### -->
-<para>
-
-</para>
-
-@client: 
-@sensor: 
-
-
-<!-- ##### USER_FUNCTION sensor_removed ##### -->
-<para>
-
-</para>
-
-@client: 
-@sensor: 
+@Returns: 
 
 

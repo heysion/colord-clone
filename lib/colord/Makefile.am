@@ -33,7 +33,9 @@ libcolordbase_include_HEADERS =					\
 	cd-deprecated.h						\
 	cd-device.h						\
 	cd-device-sync.h					\
+	cd-dom.h						\
 	cd-enum.h						\
+	cd-icc.h						\
 	cd-interp-akima.h					\
 	cd-interp-linear.h					\
 	cd-interp.h						\
@@ -49,7 +51,9 @@ libcolordbase_include_HEADERS =					\
 libcolordprivate_la_SOURCES =					\
 	cd-buffer.c						\
 	cd-color.c						\
+	cd-dom.c						\
 	cd-enum.c						\
+	cd-icc.c						\
 	cd-interp-akima.c					\
 	cd-interp-linear.c					\
 	cd-interp.c						\
@@ -119,7 +123,7 @@ EXTRA_DIST =							\
 MAINTAINERCLEANFILES =						\
 	$(noinst_LIBRARIES)
 
-CLEANFILES = $(BUILT_SOURCES)
+CLEANFILES = $(BUILT_SOURCES) *.log *.trs
 
 if HAVE_INTROSPECTION
 introspection_sources =						\
@@ -163,30 +167,6 @@ CLEANFILES += $(dist_vapi_DATA)
 endif
 
 endif
-
-# check-tool: Run tests under $(TOOL)
-check-tool:
-	$(AM_V_at)$(MAKE) $(AM_MAKEFLAGS) check \
-	TESTS_ENVIRONMENT='$(TESTS_ENVIRONMENT) $(top_builddir)/libtool --mode=execute \
-	env $(TOOL)'
-
-# Check tests under valgrind.  Saves log to log-valgrind.txt
-VALGRIND_FLAGS = \
-	--tool=memcheck --suppressions=$(srcdir)/.valgrind-suppressions \
-	--track-origins=yes \
-	--leak-check=yes
-	$(EXTRA_VALGRIND_FLAGS)
-CLEANFILES +=  log-valgrind.txt
-valgrind_verbose = $(valgrind_verbose_$(V))
-valgrind_verbose_ = $(valgrind_verbose_$(AM_DEFAULT_VERBOSITY))
-valgrind_verbose_0 = | \
-	grep '\(^[^=]\|ERROR SUMMARY\|definitely lost\|indirectly lost\)' | grep -v ': 0'
-# TODO: The following check does not fail if valgrind finds error.  It should.
-check-valgrind:
-	$(AM_V_at)$(MAKE) $(AM_MAKEFLGS) check-tool TOOL="valgrind $(VALGRIND_FLAGS)" \
-	2>&1 | tee log-valgrind.txt $(valgrind_verbose)
-
-.PHONY: check-tool check-valgrind
 
 clean-local:
 	rm -f *~
