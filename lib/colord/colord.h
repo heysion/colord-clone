@@ -45,7 +45,9 @@
 #include <colord/cd-deprecated.h>
 #include <colord/cd-device.h>
 #include <colord/cd-device-sync.h>
+#include <colord/cd-dom.h>
 #include <colord/cd-enum.h>
+#include <colord/cd-icc.h>
 #include <colord/cd-interp-akima.h>
 #include <colord/cd-interp-linear.h>
 #include <colord/cd-interp.h>

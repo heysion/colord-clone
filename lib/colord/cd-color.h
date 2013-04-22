@@ -58,25 +58,41 @@ typedef struct {
 	gdouble	 B;
 } CdColorRGB;
 
+typedef struct _CdColorSwatch	CdColorSwatch;
+
 #define	CD_TYPE_COLOR_RGB	(cd_color_rgb_get_type ())
 #define	CD_TYPE_COLOR_XYZ	(cd_color_xyz_get_type ())
+#define	CD_TYPE_COLOR_LAB	(cd_color_lab_get_type ())
 #define	CD_TYPE_COLOR_YXY	(cd_color_yxy_get_type ())
+#define	CD_TYPE_COLOR_SWATCH	(cd_color_swatch_get_type ())
 
 /* types */
 GType		 cd_color_xyz_get_type			(void);
+GType		 cd_color_lab_get_type			(void);
 GType		 cd_color_rgb_get_type			(void);
 GType		 cd_color_yxy_get_type			(void);
+GType		 cd_color_swatch_get_type		(void);
+
+const gchar	*cd_color_swatch_get_name		(const CdColorSwatch	*swatch);
+const CdColorLab*cd_color_swatch_get_value		(const CdColorSwatch	*swatch);
 
 CdColorXYZ	*cd_color_xyz_new			(void);
+CdColorLab	*cd_color_lab_new			(void);
 CdColorRGB	*cd_color_rgb_new			(void);
 CdColorYxy	*cd_color_yxy_new			(void);
+CdColorSwatch	*cd_color_swatch_new			(void);
+
 void		 cd_color_xyz_free			(CdColorXYZ		*src);
 void		 cd_color_rgb_free			(CdColorRGB		*src);
+void		 cd_color_lab_free			(CdColorLab		*src);
 void		 cd_color_yxy_free			(CdColorYxy		*src);
+void		 cd_color_swatch_free			(CdColorSwatch		*src);
 
 CdColorXYZ	*cd_color_xyz_dup			(const CdColorXYZ	*src);
+CdColorLab	*cd_color_lab_dup			(const CdColorLab	*src);
 CdColorRGB	*cd_color_rgb_dup			(const CdColorRGB	*src);
 CdColorYxy	*cd_color_yxy_dup			(const CdColorYxy	*src);
+CdColorSwatch	*cd_color_swatch_dup			(const CdColorSwatch	*src);
 
 void		 cd_color_xyz_set			(CdColorXYZ		*dest,
 							 gdouble		 X,
@@ -86,14 +102,25 @@ void		 cd_color_rgb_set			(CdColorRGB		*dest,
 							 gdouble		 R,
 							 gdouble		 G,
 							 gdouble		 B);
+void		 cd_color_lab_set			(CdColorLab		*dest,
+							 gdouble		 L,
+							 gdouble		 a,
+							 gdouble		 b);
 void		 cd_color_yxy_set			(CdColorYxy		*dest,
 							 gdouble		 Y,
 							 gdouble		 x,
 							 gdouble		 y);
+void		 cd_color_swatch_set_name		(CdColorSwatch		*dest,
+							 const gchar		*name);
+void		 cd_color_swatch_set_value		(CdColorSwatch		*dest,
+							 const CdColorLab	*value);
+
 void		 cd_color_xyz_copy			(const CdColorXYZ	*src,
 							 CdColorXYZ		*dest);
 void		 cd_color_yxy_copy			(const CdColorYxy	*src,
 							 CdColorYxy		*dest);
+void		 cd_color_lab_copy			(const CdColorLab	*src,
+							 CdColorLab		*dest);
 void		 cd_color_xyz_clear			(CdColorXYZ		*dest);
 void		 cd_color_rgb_copy			(const CdColorRGB	*src,
 							 CdColorRGB		*dest);

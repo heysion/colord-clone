@@ -1,6 +1,6 @@
 /* -*- Mode: C; tab-width: 8; indent-tabs-mode: t; c-basic-offset: 8 -*-
  *
- * Copyright (C) 2010-2012 Richard Hughes <richard@hughsie.com>
+ * Copyright (C) 2010-2013 Richard Hughes <richard@hughsie.com>
  *
  * Licensed under the GNU Lesser General Public License Version 2.1
  *
@@ -24,6 +24,7 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <math.h>
+#include <locale.h>
 
 #include <string.h>
 #include <glib.h>
@@ -39,10 +40,13 @@
 #include "cd-color.h"
 #include "cd-device.h"
 #include "cd-device-sync.h"
+#include "cd-dom.h"
+#include "cd-icc.h"
 #include "cd-interp-akima.h"
 #include "cd-interp-linear.h"
 #include "cd-interp.h"
 #include "cd-it8.h"
+#include "cd-it8-utils.h"
 #include "cd-math.h"
 #include "cd-profile.h"
 #include "cd-profile-sync.h"
@@ -185,6 +189,48 @@ colord_it8_raw_func (void)
 }
 
 static void
+colord_it8_locale_func (void)
+{
+	CdIt8 *ccmx;
+	CdMat3x3 mat;
+	const gchar *orig_locale;
+	gboolean ret;
+	gchar *data;
+	GError *error = NULL;
+
+	/* set to a locale with ',' as the decimal point */
+	orig_locale = setlocale (LC_NUMERIC, NULL);
+	setlocale (LC_NUMERIC, "nl_BE.UTF-8");
+
+	ccmx = cd_it8_new_with_kind (CD_IT8_KIND_CCMX);
+	cd_mat33_clear (&mat);
+	mat.m00 = 1.234;
+	cd_it8_set_matrix (ccmx, &mat);
+	cd_it8_set_enable_created (ccmx, FALSE);
+	ret = cd_it8_save_to_data (ccmx, &data, NULL, &error);
+
+	g_assert_no_error (error);
+	g_assert (ret);
+	g_assert_cmpstr (data, ==, "CCMX   \n"
+				   "DESCRIPTOR	\"Device Correction Matrix\"\n"
+				   "COLOR_REP	\"XYZ\"\n"
+				   "NUMBER_OF_FIELDS	3\n"
+				   "NUMBER_OF_SETS	3\n"
+				   "BEGIN_DATA_FORMAT\n"
+				   " XYZ_X	XYZ_Y	XYZ_Z\n"
+				   "END_DATA_FORMAT\n"
+				   "BEGIN_DATA\n"
+				   " 1.234	0	0\n"
+				   " 0	0	0\n"
+				   " 0	0	0\n"
+				   "END_DATA\n");
+	setlocale (LC_NUMERIC, orig_locale);
+
+	g_free (data);
+	g_object_unref (ccmx);
+}
+
+static void
 colord_it8_normalized_func (void)
 {
 	CdColorRGB rgb;
@@ -241,6 +287,46 @@ colord_it8_normalized_func (void)
 	g_object_unref (it8);
 	g_object_unref (file);
 	g_object_unref (file_new);
+}
+
+static void
+colord_it8_ccmx_util_func (void)
+{
+	CdIt8 *ccmx;
+	CdIt8 *meas;
+	CdIt8 *ref;
+	gboolean ret;
+	gchar *filename;
+	GError *error = NULL;
+	GFile *file;
+
+	/* load reference */
+	filename = _g_test_realpath (TESTDATADIR "/reference.ti3");
+	file = g_file_new_for_path (filename);
+	ref = cd_it8_new ();
+	ret = cd_it8_load_from_file (ref, file, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+	g_object_unref (file);
+
+	/* load measured */
+	filename = _g_test_realpath (TESTDATADIR "/measured.ti3");
+	file = g_file_new_for_path (filename);
+	meas = cd_it8_new ();
+	ret = cd_it8_load_from_file (meas, file, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+	g_object_unref (file);
+
+	/* calculate CCMX */
+	ccmx = cd_it8_new_with_kind (CD_IT8_KIND_CCMX);
+	ret = cd_it8_utils_calculate_ccmx (ref, meas, ccmx, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	g_object_unref (ref);
+	g_object_unref (meas);
+	g_object_unref (ccmx);
 }
 
 static void
@@ -1414,6 +1500,128 @@ colord_enum_func (void)
 		g_assert_cmpint (enum_tmp, ==, i);
 	}
 #endif
+}
+
+static void
+colord_dom_func (void)
+{
+	CdDom *dom;
+	const gchar *markup = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><html> <body> <p class='1'>moo1</p> <p wrap='false'>moo2</p>\n</body> </html>";
+	const GNode *tmp;
+	gboolean ret;
+	gchar *str;
+	GError *error = NULL;
+
+	dom = cd_dom_new ();
+
+	/* parse */
+	ret = cd_dom_parse_xml_data (dom, markup, -1, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	/* to string */
+	str = cd_dom_to_string (dom);
+	g_assert_cmpstr (str, ==, "  <html> []\n   <body> []\n    <p> [moo1]\n    <p> [moo2]\n");
+	g_free (str);
+
+	/* get node */
+	tmp = cd_dom_get_node (dom, NULL, "html/body");
+	g_assert (tmp != NULL);
+	g_assert_cmpstr (cd_dom_get_node_name (tmp), ==, "body");
+
+	/* get children */
+	tmp = tmp->children;
+	g_assert_cmpstr (cd_dom_get_node_name (tmp), ==, "p");
+	g_assert_cmpstr (cd_dom_get_node_data (tmp), ==, "moo1");
+	g_assert_cmpstr (cd_dom_get_node_attribute (tmp, "class"), ==, "1");
+
+	tmp = tmp->next;
+	g_assert_cmpstr (cd_dom_get_node_name (tmp), ==, "p");
+	g_assert_cmpstr (cd_dom_get_node_data (tmp), ==, "moo2");
+	g_assert_cmpstr (cd_dom_get_node_attribute (tmp, "wrap"), ==, "false");
+
+	g_object_unref (dom);
+}
+
+static void
+colord_dom_color_func (void)
+{
+	CdColorLab lab;
+	CdColorRGB rgb;
+	CdDom *dom;
+	const gchar *markup = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
+		"<named>"
+		" <color>"
+		"  <name>Dave</name>"
+		"  <L>12.34</L>"
+		"  <a>0.56</a>"
+		"  <b>0.78</b>"
+		" </color>"
+		"</named>";
+	const GNode *tmp;
+	gboolean ret;
+	GError *error = NULL;
+
+	dom = cd_dom_new ();
+
+	/* parse */
+	ret = cd_dom_parse_xml_data (dom, markup, -1, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	/* get node */
+	tmp = cd_dom_get_node (dom, NULL, "named/color");
+	g_assert (tmp != NULL);
+
+	/* get value */
+	ret = cd_dom_get_node_lab (tmp, &lab);
+	g_assert (ret);
+	g_debug ("Lab = %f, %f, %f", lab.L, lab.a, lab.b);
+
+	/* get value */
+	ret = cd_dom_get_node_rgb (tmp, &rgb);
+	g_assert (!ret);
+
+	g_object_unref (dom);
+}
+
+static void
+colord_dom_localized_func (void)
+{
+	CdDom *dom;
+	const gchar *markup = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
+		"<profile>"
+		" <copyright>Colors cannot be copyrighted</copyright>"
+		" <copyright xml:lang=\"en_GB\">Colours cannot be copyrighted</copyright>"
+		"</profile>";
+	const gchar *lang;
+	const GNode *tmp;
+	gboolean ret;
+	GError *error = NULL;
+	GHashTable *hash;
+
+	dom = cd_dom_new ();
+
+	/* parse */
+	ret = cd_dom_parse_xml_data (dom, markup, -1, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	/* get node */
+	tmp = cd_dom_get_node (dom, NULL, "profile");
+	g_assert (tmp != NULL);
+
+	hash = cd_dom_get_node_localized (tmp, "copyright");
+	g_assert (hash != NULL);
+	lang = g_hash_table_lookup (hash, "");
+	g_assert_cmpstr (lang, ==, "Colors cannot be copyrighted");
+	lang = g_hash_table_lookup (hash, "en_GB");
+	g_assert_cmpstr (lang, ==, "Colours cannot be copyrighted");
+	lang = g_hash_table_lookup (hash, "fr");
+	g_assert_cmpstr (lang, ==, NULL);
+	g_hash_table_unref (hash);
+
+	g_object_unref (dom);
 }
 
 static void
@@ -3149,6 +3357,272 @@ colord_buffer_func (void)
 	g_assert_cmpint (cd_buffer_read_uint16_le (buffer), ==, 8192);
 }
 
+static void
+colord_icc_func (void)
+{
+	CdIcc *icc;
+	const CdColorXYZ *xyz_tmp;
+	const gchar *str;
+	gboolean ret;
+	gchar *created_str;
+	gchar *filename;
+	gchar *tmp;
+	GDateTime *created;
+	GError *error = NULL;
+	GFile *file;
+	GHashTable *metadata;
+	gpointer handle;
+	GPtrArray *array;
+
+	/* test invalid */
+	icc = cd_icc_new ();
+	file = g_file_new_for_path ("not-going-to-exist.icc");
+	ret = cd_icc_load_file (icc,
+				file,
+				CD_ICC_LOAD_FLAGS_NONE,
+				NULL,
+				&error);
+	g_assert_error (error, CD_ICC_ERROR, CD_ICC_ERROR_FAILED_TO_OPEN);
+	g_assert (!ret);
+	g_clear_error (&error);
+	g_object_unref (file);
+
+	/* test actual file */
+	filename = _g_test_realpath (TESTDATADIR "/ibm-t61.icc");
+	file = g_file_new_for_path (filename);
+	ret = cd_icc_load_file (icc,
+				file,
+				CD_ICC_LOAD_FLAGS_METADATA |
+				 CD_ICC_LOAD_FLAGS_NAMED_COLORS |
+				 CD_ICC_LOAD_FLAGS_PRIMARIES |
+				 CD_ICC_LOAD_FLAGS_TRANSLATIONS,
+				NULL,
+				&error);
+	g_assert_no_error (error);
+	g_assert (ret);
+	g_object_unref (file);
+	g_free (filename);
+
+	/* get handle */
+	handle = cd_icc_get_handle (icc);
+	g_assert (handle != NULL);
+
+	/* check profile properties */
+	g_assert_cmpint (cd_icc_get_size (icc), ==, 25244);
+	g_assert_cmpstr (cd_icc_get_checksum (icc), ==, "9ace8cce8baac8d492a93a2a232d7702");
+	g_assert_cmpfloat (cd_icc_get_version (icc), ==, 3.4);
+	g_assert (g_str_has_suffix (cd_icc_get_filename (icc), "ibm-t61.icc"));
+	g_assert_cmpint (cd_icc_get_kind (icc), ==, CD_PROFILE_KIND_DISPLAY_DEVICE);
+	g_assert_cmpint (cd_icc_get_colorspace (icc), ==, CD_COLORSPACE_RGB);
+	array = cd_icc_get_named_colors (icc);
+	g_assert (array != NULL);
+	g_assert_cmpint (array->len, ==, 0);
+	g_ptr_array_unref (array);
+
+	/* check profile primaries */
+	xyz_tmp = cd_icc_get_red (icc);
+	g_assert_cmpfloat (ABS (xyz_tmp->X - 0.405), <, 0.01);
+	g_assert_cmpfloat (ABS (xyz_tmp->Y - 0.230), <, 0.01);
+	g_assert_cmpfloat (ABS (xyz_tmp->Z - 0.031), <, 0.01);
+	xyz_tmp = cd_icc_get_white (icc);
+	g_assert_cmpfloat (ABS (xyz_tmp->X - 0.969), <, 0.01);
+	g_assert_cmpfloat (ABS (xyz_tmp->Y - 1.000), <, 0.01);
+	g_assert_cmpfloat (ABS (xyz_tmp->Z - 0.854), <, 0.01);
+	g_assert_cmpint (cd_icc_get_temperature (icc), ==, 5000);
+
+	/* check metadata */
+	metadata = cd_icc_get_metadata (icc);
+	g_assert_cmpint (g_hash_table_size (metadata), ==, 1);
+	g_hash_table_unref (metadata);
+	g_assert_cmpstr (cd_icc_get_metadata_item (icc, "EDID_md5"), ==, "f09e42aa86585d1bb6687d3c322ed0c1");
+
+	/* marshall to a string */
+	tmp = cd_icc_to_string (icc);
+	g_assert_cmpstr (tmp, !=, NULL);
+	g_debug ("CdIcc: '%s'", tmp);
+	g_free (tmp);
+
+	/* check created time */
+	created = cd_icc_get_created (icc);
+	g_assert (created != NULL);
+	created_str = g_date_time_format (created, "%F, %T");
+	g_assert_cmpstr (created_str, ==, "2009-12-23, 22:20:46");
+	g_free (created_str);
+	g_date_time_unref (created);
+
+	/* open a non-localized profile */
+	str = cd_icc_get_description (icc, NULL, &error);
+	g_assert_no_error (error);
+	g_assert_cmpstr (str, ==, "Huey, LENOVO - 6464Y1H - 15\" (2009-12-23)");
+	str = cd_icc_get_description (icc, "en_GB", &error);
+	g_assert_no_error (error);
+	g_assert_cmpstr (str, ==, "Huey, LENOVO - 6464Y1H - 15\" (2009-12-23)");
+	str = cd_icc_get_description (icc, "fr", &error);
+	g_assert_no_error (error);
+	g_assert_cmpstr (str, ==, "Huey, LENOVO - 6464Y1H - 15\" (2009-12-23)");
+
+	g_object_unref (icc);
+}
+
+static void
+colord_icc_edid_func (void)
+{
+	CdColorYxy blue;
+	CdColorYxy green;
+	CdColorYxy red;
+	CdColorYxy white;
+	CdIcc *icc;
+	gboolean ret;
+	GError *error = NULL;
+
+	/* create a profile from the EDID data */
+	icc = cd_icc_new ();
+	cd_color_yxy_set (&red, 1.0f, 0.569336f, 0.332031f);
+	cd_color_yxy_set (&green, 1.0f, 0.311523f, 0.543945f);
+	cd_color_yxy_set (&blue, 1.0f, 0.149414f, 0.131836f);
+	cd_color_yxy_set (&white, 1.0f, 0.313477f, 0.329102f);
+	ret = cd_icc_create_from_edid (icc, 2.2f, &red, &green, &blue, &white, &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	g_object_unref (icc);
+}
+
+static void
+colord_icc_save_func (void)
+{
+	CdIcc *icc;
+	const gchar *str;
+	gboolean ret;
+	gchar *filename;
+	GError *error = NULL;
+	GFile *file;
+
+	/* load source file */
+	icc = cd_icc_new ();
+	filename = _g_test_realpath (TESTDATADIR "/ibm-t61.icc");
+	file = g_file_new_for_path (filename);
+	ret = cd_icc_load_file (icc,
+				file,
+				CD_ICC_LOAD_FLAGS_METADATA,
+				NULL,
+				&error);
+	g_assert_no_error (error);
+	g_assert (ret);
+	g_object_unref (file);
+	g_free (filename);
+
+	/* check original values */
+	g_assert_cmpint (cd_icc_get_kind (icc), ==, CD_PROFILE_KIND_DISPLAY_DEVICE);
+	g_assert_cmpint (cd_icc_get_colorspace (icc), ==, CD_COLORSPACE_RGB);
+
+	/* modify some details about the profile */
+	cd_icc_set_version (icc, 4.09);
+	cd_icc_set_colorspace (icc, CD_COLORSPACE_XYZ);
+	cd_icc_set_kind (icc, CD_PROFILE_KIND_OUTPUT_DEVICE);
+	cd_icc_add_metadata (icc, "SelfTest", "true");
+	cd_icc_remove_metadata (icc, "EDID_md5");
+	cd_icc_set_description (icc, "fr.UTF-8", "Couleurs crayon");
+
+	/* Save to /tmp and reparse new file */
+	file = g_file_new_for_path ("/tmp/new.icc");
+	ret = cd_icc_save_file (icc,
+				file,
+				CD_ICC_SAVE_FLAGS_NONE,
+				NULL,
+				&error);
+	g_assert_no_error (error);
+	g_assert (ret);
+	g_object_unref (icc);
+	icc = cd_icc_new ();
+	ret = cd_icc_load_file (icc,
+				file,
+				CD_ICC_LOAD_FLAGS_METADATA,
+				NULL,
+				&error);
+	g_assert_no_error (error);
+	g_assert (ret);
+	g_object_unref (file);
+
+	/* verify changed values */
+	g_assert_cmpfloat (cd_icc_get_version (icc), ==, 4.09);
+	g_assert_cmpint (cd_icc_get_kind (icc), ==, CD_PROFILE_KIND_OUTPUT_DEVICE);
+	g_assert_cmpint (cd_icc_get_colorspace (icc), ==, CD_COLORSPACE_XYZ);
+	g_assert_cmpstr (cd_icc_get_metadata_item (icc, "SelfTest"), ==, "true");
+	g_assert_cmpstr (cd_icc_get_metadata_item (icc, "EDID_md5"), ==, NULL);
+	str = cd_icc_get_description (icc, "fr.UTF-8", &error);
+	g_assert_no_error (error);
+	g_assert_cmpstr (str, ==, "Couleurs crayon");
+
+	g_object_unref (icc);
+}
+
+static void
+colord_icc_localized_func (void)
+{
+	CdIcc *icc;
+	const gchar *str;
+	gboolean ret;
+	gchar *filename;
+	GError *error = NULL;
+	GFile *file;
+
+	/* open a localized profile */
+	icc = cd_icc_new ();
+	filename = _g_test_realpath (TESTDATADIR "/crayons.icc");
+	file = g_file_new_for_path (filename);
+	ret = cd_icc_load_file (icc,
+				file,
+				CD_ICC_LOAD_FLAGS_NONE,
+				NULL,
+				&error);
+	g_assert_no_error (error);
+	g_assert (ret);
+	g_object_unref (file);
+	g_free (filename);
+
+	/* open a non-localized profile */
+	str = cd_icc_get_description (icc, NULL, &error);
+	g_assert_no_error (error);
+	g_assert_cmpstr (str, ==, "Crayon Colors");
+	str = cd_icc_get_description (icc, "en_US.UTF-8", &error);
+	g_assert_no_error (error);
+	g_assert_cmpstr (str, ==, "Crayon Colors");
+	str = cd_icc_get_description (icc, "en_GB.UTF-8", &error);
+	g_assert_no_error (error);
+	g_assert_cmpstr (str, ==, "Crayon Colours");
+
+	/* get missing data */
+	str = cd_icc_get_manufacturer (icc, NULL, &error);
+	g_assert_error (error,
+			CD_ICC_ERROR,
+			CD_ICC_ERROR_NO_DATA);
+	g_assert_cmpstr (str, ==, NULL);
+	g_clear_error (&error);
+
+	/* use an invalid locale */
+	str = cd_icc_get_description (icc, "cra_ZY", &error);
+	g_assert_error (error,
+			CD_ICC_ERROR,
+			CD_ICC_ERROR_INVALID_LOCALE);
+	g_assert_cmpstr (str, ==, NULL);
+	g_clear_error (&error);
+	str = cd_icc_get_description (icc, "cra", &error);
+	g_assert_error (error,
+			CD_ICC_ERROR,
+			CD_ICC_ERROR_INVALID_LOCALE);
+	g_assert_cmpstr (str, ==, NULL);
+	g_clear_error (&error);
+
+	/* add localized data */
+	cd_icc_set_description (icc, "fr.UTF-8", "Couleurs crayon");
+	str = cd_icc_get_description (icc, "fr.UTF-8", &error);
+	g_assert_no_error (error);
+	g_assert_cmpstr (str, ==, "Couleurs crayon");
+
+	g_object_unref (icc);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -3159,16 +3633,25 @@ main (int argc, char **argv)
 	g_log_set_fatal_mask (NULL, G_LOG_LEVEL_ERROR | G_LOG_LEVEL_CRITICAL);
 
 	/* tests go here */
+	g_test_add_func ("/colord/icc", colord_icc_func);
+	g_test_add_func ("/colord/icc{localized}", colord_icc_localized_func);
+	g_test_add_func ("/colord/icc{edid}", colord_icc_edid_func);
+	g_test_add_func ("/colord/icc{save}", colord_icc_save_func);
 	g_test_add_func ("/colord/buffer", colord_buffer_func);
 	g_test_add_func ("/colord/enum", colord_enum_func);
+	g_test_add_func ("/colord/dom", colord_dom_func);
+	g_test_add_func ("/colord/dom{color}", colord_dom_color_func);
+	g_test_add_func ("/colord/dom{localized}", colord_dom_localized_func);
 	g_test_add_func ("/colord/interp{linear}", colord_interp_linear_func);
 	g_test_add_func ("/colord/interp{akima}", colord_interp_akima_func);
 	g_test_add_func ("/colord/color", colord_color_func);
 	g_test_add_func ("/colord/color{interpolate}", colord_color_interpolate_func);
 	g_test_add_func ("/colord/math", cd_test_math_func);
 	g_test_add_func ("/colord/it8{raw}", colord_it8_raw_func);
+	g_test_add_func ("/colord/it8{locale}", colord_it8_locale_func);
 	g_test_add_func ("/colord/it8{normalized}", colord_it8_normalized_func);
 	g_test_add_func ("/colord/it8{ccmx}", colord_it8_ccmx_func);
+	g_test_add_func ("/colord/it8{ccmx-util", colord_it8_ccmx_util_func);
 	g_test_add_func ("/colord/client", colord_client_func);
 	g_test_add_func ("/colord/device", colord_device_func);
 	g_test_add_func ("/colord/device{embedded}", colord_device_embedded_func);

@@ -1,3 +1,58 @@
+Version 0.1.33
+~~~~~~~~~~~~~~
+Released: 2013-04-16
+
+Notes:
+ - This release is is designed for stable distros. There are quite a few nice
+   bugfixes and also quite a few new translations for all the generated profiles.
+
+New Features:
+ - Add some profile descriptions for the CMYK profiles (Richard Hughes)
+ - Add the FOGRA45L and FOGRA47L CMYK profiles (Richard Hughes)
+ - Include the eciRGBv1 gamma 1.8 profile (Richard Hughes)
+ - libcolord: Add cd_it8_set_enable_created (Richard Hughes)
+ - libcolord: Add helpers for int and double values from the DOM (Richard Hughes)
+
+Bugfixes:
+ - Add ifdef for cmsGetToneCurveEstimatedTableEntries (Richard Hughes)
+ - Build the print profiles from XML descriptions (Richard Hughes)
+ - Check the generated CCMX matrix for invalid data (Richard Hughes)
+ - Do not print a warning if the DBus property does not exist (Richard Hughes)
+ - Ensure mbstowcs() has an LC_CTYPE of 'en_US.UTF-8' (Richard Hughes)
+ - libcolord: Always write C-locale floating point values in IT8 files (Richard Hughes)
+ - libcolord: Initialize the value of the CCMX matrix (Richard Hughes)
+ - libcolord: Return the correct result from cd_mat33_matrix_multiply (Richard Hughes)
+ - Never promote localized v2 ICC profiles to v4 (Richard Hughes)
+ - Rename ISOnewspaper26 to IFRA26S_2004_newsprint (Richard Hughes)
+
+Version 0.1.32
+~~~~~~~~~~~~~~
+Released: 2013-03-28
+
+Notes:
+ - This release is really for the translators. Now that the ICC profiles have
+   translatable generic names and also short descriptions we can get to work
+   creating some really great profiles.
+ - Most commits for this release were for the translated profile feature, so
+   feel free to skip this and wait for 0.1.33 if you're waiting for juicy new
+   features or specific bugfixes.
+
+New Features:
+ - Add a new tool 'cd-iccdump' that can dump V4 and V2 profiles (Richard Hughes)
+ - Add translated descriptions to the ICC profiles (Richard Hughes)
+ - libcolord: Add an object which is a named colord (Richard Hughes)
+ - libcolord: Add an object to factor out the profile load and save (Richard Hughes)
+ - libcolord: Add a really simple XML DOM extractor (Richard Hughes)
+ - libcolord: Add some helpers for dealing with CdColorLab objects (Richard Hughes)
+ - Translate some of the profile source XML file descriptions and licences (Richard Hughes)
+ - Use an XML source format for the generated profiles (Richard Hughes)
+
+Bugfixes:
+ - libcolord: Correctly copy CdColorYxy->Y when used as a property (Richard Hughes)
+ - lib: Fix the licence boilerplate in the sensor libs (Richard Hughes)
+ - Set the default profile locale to be en_US, not EN_us (Richard Hughes)
+ - Use gtkdocize --copy in autogen.sh (Christopher James Halse Rogers)
+
 Version 0.1.31
 ~~~~~~~~~~~~~~
 Released: 2013-03-18
