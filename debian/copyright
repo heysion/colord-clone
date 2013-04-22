@@ -18,25 +18,13 @@ Files: lib/dtp94/*
 Copyright: © 2010-2013 Richard Hughes <richard@hughsie.com>
 License: GPL-2+
 
-Files: lib/dtp94/dtp94.h
-Copyright: © 2010-2011 Richard Hughes <richard@hughsie.com>
-License: LGPL-2.1+
-
 Files: lib/huey/*
 Copyright: © 2010-2013 Richard Hughes <richard@hughsie.com>
 License: GPL-2+
 
-Files: lib/huey/huey.h
-Copyright: © 2010-2011 Richard Hughes <richard@hughsie.com>
-License: LGPL-2.1+
-
 Files: lib/munki/*
 Copyright: © 2013 Richard Hughes <richard@hughsie.com>
 License: GPL-2+
-
-Files: lib/munki/munki.h
-Copyright: © 2010-2011 Richard Hughes <richard@hughsie.com>
-License: LGPL-2.1+
 
 Files: examples/*
 Copyright: © 2011 Richard Hughes <richard@hughsie.com>
