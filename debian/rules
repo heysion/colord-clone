@@ -21,12 +21,13 @@ confflags = \
  --disable-volume-search \
  --with-daemon-user=colord \
  --with-systemdsystemunitdir=/lib/systemd/system \
+ --with-udevrulesdir=/lib/udev/rules.d \
  --enable-vala
 
 ifeq ($(DEB_HOST_ARCH_OS),linux)
-	confflags += --enable-gudev --enable-sane
+	confflags += --enable-gudev --enable-sane --enable-gusb --enable-systemd-login
 else
-	confflags += --disable-gudev --disable-sane
+	confflags += --disable-gudev --disable-sane --disable-gusb --disable-systemd-login
 endif
 
 override_dh_auto_configure:

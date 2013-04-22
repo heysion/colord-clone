@@ -21,7 +21,7 @@ Build-Depends:
  dh-autoreconf,
  gtk-doc-tools,
  autopoint,
- libsystemd-login-dev,
+ libsystemd-login-dev [linux-any],
 Standards-Version: 3.9.4
 XS-Testsuite: autopkgtest
 Section: graphics
@@ -101,7 +101,7 @@ Description: GObject introspection data for the colord library
 
 Package: libcolorhug-dev
 Section: libdevel
-Architecture: any
+Architecture: linux-any
 Depends: 
  libcolorhug1 (= ${binary:Version}),
  libglib2.0-dev,
@@ -119,7 +119,7 @@ Description: library to access the ColorHug colourimeter -- development files
 
 Package: libcolorhug1
 Section: libs
-Architecture: any
+Architecture: linux-any
 Depends: 
  ${shlibs:Depends},
  ${misc:Depends},
@@ -135,7 +135,7 @@ Description: library to access the ColorHug colourimeter -- development files
 
 Package: gir1.2-colorhug-1.0
 Section: introspection
-Architecture: any
+Architecture: linux-any
 Depends: ${gir:Depends},
          ${shlibs:Depends},
          ${misc:Depends}

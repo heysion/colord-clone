@@ -2,8 +2,7 @@ debian/tmp/etc/
 lib/udev/rules.d/
 usr/bin/
 usr/lib/colord*
-usr/lib/*/colord-plugins
-usr/lib/*/colord-sensors
+usr/lib/*/colord-*
 usr/share/color
 usr/share/colord
 usr/share/glib-2.0/schemas
