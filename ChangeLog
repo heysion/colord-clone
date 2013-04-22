@@ -1,6 +1,1382 @@
+commit 05e2b40a40e9752e66a19a90ca853ad45e36c162
+Author: Richard Hughes <richard@hughsie.com>
+Date:   2013-04-16
+
+    Release colord 0.1.33
+
+M	NEWS
+M	RELEASE
+M	doc/website/download.html
+M	po/cs.po
+M	po/de.po
+M	po/en_GB.po
+M	po/eo.po
+M	po/es.po
+M	po/eu.po
+M	po/fi.po
+M	po/fr.po
+M	po/gl.po
+M	po/he.po
+M	po/hu.po
+M	po/id.po
+M	po/it.po
+M	po/ja.po
+M	po/kk.po
+M	po/ko.po
+M	po/lv.po
+M	po/nl.po
+M	po/pl.po
+M	po/pt_BR.po
+M	po/ro.po
+M	po/ru.po
+M	po/sk.po
+M	po/sl.po
+M	po/sr.po
+M	po/sv.po
+M	po/tr.po
+M	po/uk.po
+M	po/zh_CN.po
+M	po/zh_TW.po
+
+commit 3abc2645a60a92a000fff9718fa309a1e62b6da3
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-15
+
+    trivial: Fix the default translation in some applications
+
+    Always write the en_US default translation to the mlu object first.
+
+M	lib/colord/cd-icc.c
+
+commit 714396bdf5fb81323d40f358c729f4854faaed1d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-12
+
+    libcolord: Always write C-locale floating point values in IT8 files
+
+    LCMS uses 'sprintf(.10%g)' to convert floating point values to
+    strings.
+    If LC_NUMERIC is set to something like 'nl_BE' then values such as
+    1.234 are
+    printed as '1,234'. This is against the CGATS standard and Argyll
+    correctly
+    refuses to parse the file.
+
+    Wrap each call to get and set the floating point values with the
+    safe GLib
+    functions of g_ascii_strtod() and g_ascii_dtostr().
+
+M	lib/colord/cd-it8.c
+M	lib/colord/cd-self-test.c
+
+commit 650d78c1387bec59e2e13d82d260058faf0c498f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-12
+
+    libcolord: Add cd_it8_set_enable_created()
+
+    This allows us to supress the date and time in the IT8 file which
+    allows us to
+    string compare it to a known reference in the self test program.
+
+M	lib/colord/cd-it8.c
+M	lib/colord/cd-it8.h
+
+commit 07891289c09bbc1d203fdb2ae96530adcaab1306
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-10
+
+    Add some profile descriptions for the CMYK profiles
+
+    Many thanks to Christ Murphy for all the information and help.
+
+M	data/profiles/FOGRA27L_coated.xml.in
+M	data/profiles/FOGRA28L_webcoated.xml.in
+M	data/profiles/FOGRA29L_uncoated.xml.in
+M	data/profiles/FOGRA30L_uncoated_yellowish.xml.in
+M	data/profiles/FOGRA39L_coated.xml.in
+M	data/profiles/FOGRA40L_SC_paper.xml.in
+M	data/profiles/FOGRA45L_lwc.xml.in
+M	data/profiles/FOGRA47L_uncoated.xml.in
+M	data/profiles/GRACoL_TR006_coated.xml.in
+M	data/profiles/IFRA26S_2004_newsprint.xml.in
+M	data/profiles/SNAP_TR002_newsprint.xml.in
+M	data/profiles/SWOP_TR003_coated_3.xml.in
+M	data/profiles/SWOP_TR005_coated_5.xml.in
+
+commit e3b88689068e8810d2e1663fc5262cd1147c70ab
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-10
+
+    Rename ISOnewspaper26 to IFRA26S_2004_newsprint
+
+    It never was an official ISO profile...
+
+M	contrib/colord.spec.in
+R099	data/profiles/ISOnewspaper26.xml.in
+data/profiles/IFRA26S_2004_newsprint.xml.in
+M	data/profiles/Makefile.am
+M	po/POTFILES.in
+
+commit 840d99c1e031e0ec87d068ec33f5c5c0166c1ef7
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-09
+
+    libcolord: Initialize the value of the CCMX matrix to avoid undefined
+    values
+
+    If we don't call cd_it8_set_matrix() before cd_it8_save_to_file()
+    on a CdIt8
+    object of type @CD_IT8_KIND_CCMX then we could be writing undefined
+    values.
+
+M	lib/colord/cd-it8.c
+
+commit 52dc626250d2dfd7fc1a9b290efd4e8d3c420724
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-09
+
+    trivial: small whitespace fix
+
+M	lib/colord/cd-math.c
+
+commit fdaec65eb14a81bdd54907a1205899b53ec8d653
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-09
+
+    libcolord: Return the correct result from cd_mat33_matrix_multiply()
+
+    If @mat_dest was allocated on the stack then it was never cleared
+    and relied on
+    the undefined behaviour of the default floating point values in
+    the structure.
+
+M	lib/colord/cd-math.c
+
+commit e62d431d512f6eedd3b2ecda5dfcf493e1239cb3
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-09
+
+    trivial: Add a self test for cd_it8_utils_calculate_ccmx()
+
+A	data/tests/measured.ti3
+A	data/tests/reference.ti3
+M	lib/colord/cd-it8.c
+M	lib/colord/cd-self-test.c
+
+commit 5d19bc568d1b6eb45842f3dfe4d034b2f805ec02
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-09
+
+    Check the generated CCMX matrix for invalid data
+
+    We never want to write a CCMX with -nan or +inf values.
+
+M	lib/colord/cd-it8-utils.c
+
+commit 84804cfa08ddbda4be6998eea7d0c8921163bd1b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-09
+
+    trivial: Use g_ascii_strtod() rather than the locale-specific atof()
+
+M	lib/colord/cd-it8.c
+
+commit 2a38d31e08e8054746e4418f0824b75401a24b0d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-08
+
+    trivial: Fix up the FOGRA47L description
+
+M	data/profiles/FOGRA47L_uncoated.xml.in
+
+commit fa54a4f4e97585068dc45e55093e16702a27e1e1
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-05
+
+    Add the FOGRA45L and FOGRA47L CMYK profiles
+
+M	contrib/colord.spec.in
+A	data/profiles/FOGRA45L_lwc.xml.in
+A	data/profiles/FOGRA47L_uncoated.xml.in
+M	data/profiles/Makefile.am
+M	po/POTFILES.in
+
+commit 26f284a012759c1d5bcccd520415a2bc591c7918
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-05
+
+    trivial: Be easier to debug if colprof fails to run
+
+M	client/cd-create-profile.c
+
+commit 7e3637c40038383d6beb88a3185044dd34a512d9
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-02
+
+    trivial: Fix a fallthrough typo spotted by coverity
+
+M	lib/colord/cd-icc.c
+
+commit 0341098a62f9862e0959b77b7567533aa634e696
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-01
+
+    trivial: Build the print profile when building RPMs
+
+M	contrib/colord.spec.in
+
+commit d66c311b22d73dce26942c291d2329a52864d818
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-01
+
+    trivial: Work around an lcms2 bug by only using cmsMLUsetASCII on
+    v2 profiles
+
+    Else we try writing multibyte text to a 'text' type and that doesn't
+    go well.
+
+M	lib/colord/cd-icc.c
+
+commit 01a0a1abf9f0e37032d02aa0df0591e54febbf6a
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-01
+
+    trivial: do not use high quality B2A tables, building takes too long
+
+    3 hours to build all the profiles does seem somewhat excessive...
+
+M	client/cd-create-profile.c
+
+commit 95a86182c8e05a650cdd31d4a778782aabc55a7c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-01
+
+    Do not print a critical warning if the requested property does
+    not exist
+
+M	src/cd-device.c
+M	src/cd-main.c
+M	src/cd-profile.c
+M	src/cd-sensor.c
+
+commit 50369d096886189c588cf4e2a3e3140bd739fa3d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-01
+
+    build: Add ifdef for cmsGetToneCurveEstimatedTableEntries as it was
+    added in lcms 2.4
+
+M	configure.ac
+M	lib/colord/cd-icc.c
+
+commit 6e6c0e45e4293f0c3f899440966815492f45401b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-31
+
+    trivial: fix the build when --disable-print-profiles is used
+
+M	client/cd-create-profile.c
+
+commit 998217e2a8ecd51f8ecba3f51684ddd28a4c34e0
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-31
+
+    trivial: Prettyify the build output when building the DBus docs
+
+M	doc/api/dbus/Makefile.am
+
+commit 3f0a9a2488b31632677e0b21f8992a76cca02573
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-31
+
+    trivial: Prettyify the build output when building the man files
+
+M	man/Makefile.am
+
+commit 41f9d5e3128190375d08bcff1b9ef4228aef8e57
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-31
+
+    Build the print profiles from XML descriptions
+
+M	client/cd-create-profile.c
+M	configure.ac
+R099	data/profiles/FOGRA27L.ti3
+data/profiles/FOGRA27L_coated.xml.in
+R099	data/profiles/FOGRA28L.ti3
+data/profiles/FOGRA28L_webcoated.xml.in
+R099	data/profiles/FOGRA29L.ti3
+data/profiles/FOGRA29L_uncoated.xml.in
+R099	data/profiles/FOGRA30L.ti3
+data/profiles/FOGRA30L_uncoated_yellowish.xml.in
+R099	data/profiles/FOGRA39L.ti3
+data/profiles/FOGRA39L_coated.xml.in
+R099	data/profiles/FOGRA40L.ti3
+data/profiles/FOGRA40L_SC_paper.xml.in
+R099	data/profiles/TR006.ti3 data/profiles/GRACoL_TR006_coated.xml.in
+D	data/profiles/IFRA30S.ti3
+R098	data/profiles/IFRA26S.ti3
+data/profiles/ISOnewspaper26.xml.in
+M	data/profiles/Makefile.am
+R098	data/profiles/TR002.ti3 data/profiles/SNAP_TR002_newsprint.xml.in
+R099	data/profiles/TR003.ti3 data/profiles/SWOP_TR003_coated_3.xml.in
+R099	data/profiles/TR005.ti3 data/profiles/SWOP_TR005_coated_5.xml.in
+M	lib/colord/cd-icc.c
+M	po/POTFILES.in
+
+commit 01577fcde58d7ff8e71edb5d484b7eff1b0fd173
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-31
+
+    trivial: Fix build warning on OpenBSD
+
+    Rename gamma as this is helpfully defined by /usr/include/math.h
+
+M	client/cd-create-profile.c
+
+commit 427b3ee97eda40e27a0174f47db65adb4d59071a
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-31
+
+    Never promote localized v2 ICC profiles to v4 when writing locale data
+
+    Doing this isn't a good idea, and we can achieve the same result
+    using an Apple
+    extension that LCMS2 and colord now understand.
+
+M	lib/colord/cd-icc.c
+
+commit f5afa37c3999cf90f078c518923bddf9b6d615ad
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-31
+
+    libcolord: Load the profile rather than just setting the internal
+    instance
+
+    We need to parse the profile to identify it as a V4 profile.
+
+M	client/cd-create-profile.c
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+
+commit b0511b87569946f17a0451233ccc6e9281faf3b4
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-31
+
+    trivial: Rebuild the sRGB profile if the XML changes
+
+M	data/profiles/Makefile.am
+
+commit 3a77dcd5fd458d84e0fc8fa9ff458d1b772523e1
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-31
+
+    libcolord: Add helpers for getting int and double values from the
+    DOM tree
+
+M	client/cd-create-profile.c
+M	lib/colord/cd-dom.c
+M	lib/colord/cd-dom.h
+
+commit 1b5eee925308515de90924e1e0ae4d7638001ab2
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-29
+
+    trivial: fix up another translation from feedback
+
+M	data/profiles/sRGB.xml.in
+
+commit b3bbf978222614904a0981c0c4ee70c40ca534f9
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-29
+
+    Include the eciRGBv1 gamma 1.8 profile
+
+M	contrib/colord.spec.in
+C050	data/profiles/ECI-RGBv2.xml.in	data/profiles/ECI-RGBv1.xml.in
+M	data/profiles/ECI-RGBv2.xml.in
+M	data/profiles/Makefile.am
+M	po/POTFILES.in
+
+commit 8e6f06847cd6dc0cb9208f34d00cfb55a5f02519
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-28
+
+    trivial: Hide the test-driver files when using 'git status'
+
+M	Makefile.am
+M	lib/colord/Makefile.am
+M	lib/colorhug/Makefile.am
+M	src/Makefile.am
+
+commit 72d10cf7ca23496bbd1a6b974af30775d5289a6b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-28
+
+    trivial: Remove the unused 'make check-valgrind' from libcolord
+
+M	lib/colord/Makefile.am
+
+commit 085b32b6ca9802bbfce509fcb5bf8bf231afaa48
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-28
+
+    Ensure mbstowcs() has an LC_CTYPE of 'en_US.UTF-8'
+
+    This fixes building when the user does not have an explicit UTF-8
+    locale set.
+
+M	lib/colord/cd-icc.c
+
+commit 653d0569dd960f607b58ec6b9ee91bf867fdb039
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-28
+
+    trivial: Be more paranoid when writing ICC wchar_t values
+
+M	lib/colord/cd-icc.c
+
+commit 9f7ef87460b4b40103c59ea8a3839dc8706a7d53
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-28
+
+    trivial: Sanity check the written profile size to be less than 16Mb
+
+M	lib/colord/cd-icc.c
+
+commit e13946311e57981d060225a3ec67a76e825d0248
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-28
+
+    trivial: Add a gobject-introspection element-type
+
+M	lib/colord/cd-icc.c
+
+commit 1d9a5691028db2891b8c2f1e057f0f5eb52e4e7e
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-28
+
+    trivial: post release version bump
+
+M	RELEASE
+M	configure.ac
+
+commit 30494e033039bbc780553dd957834ae01a2c0602
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-28
+
+    Release colord 0.1.32
+
+M	NEWS
+M	configure.ac
+M	data/profiles/BruceRGB.xml.in
+M	doc/website/download.html
+M	po/cs.po
+M	po/de.po
+M	po/en_GB.po
+M	po/eo.po
+M	po/es.po
+M	po/eu.po
+M	po/fi.po
+M	po/gl.po
+M	po/he.po
+M	po/hu.po
+M	po/id.po
+M	po/it.po
+M	po/ja.po
+M	po/kk.po
+M	po/ko.po
+M	po/lv.po
+M	po/nl.po
+M	po/pl.po
+M	po/pt_BR.po
+M	po/ro.po
+M	po/ru.po
+M	po/sk.po
+M	po/sl.po
+M	po/sr.po
+M	po/sv.po
+M	po/tr.po
+M	po/uk.po
+M	po/zh_CN.po
+M	po/zh_TW.po
+
+commit ea0ffafba128f534a607daf8ead97a3b2a35c5f9
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-28
+
+    trivial: Another description tweak requested by Chris
+
+M	data/profiles/sRGB.xml.in
+
+commit b58c93e094ff130953bc4a096af41175ad225257
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-27
+
+    Profile description fixes from Chris Murphy
+
+M	data/profiles/AdobeRGB1998.xml.in
+M	data/profiles/BestRGB.xml.in
+M	data/profiles/BetaRGB.xml.in
+M	data/profiles/Bluish.xml.in
+M	data/profiles/BruceRGB.xml.in
+M	data/profiles/CIE-RGB.xml.in
+M	data/profiles/ColorMatchRGB.xml.in
+M	data/profiles/DonRGB4.xml.in
+M	data/profiles/ECI-RGBv2.xml.in
+M	data/profiles/NTSC-RGB.xml.in
+M	data/profiles/PAL-RGB.xml.in
+M	data/profiles/ProPhotoRGB.xml.in
+M	data/profiles/WideGamutRGB.xml.in
+M	data/profiles/sRGB.xml.in
+
+commit e29a4a99da6bd039460bb4d3f154fabb50fd23c9
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-27
+
+    trivial: Don't ship the lesser used profiles in the main package
+
+M	contrib/colord.spec.in
+
+commit da243cb62a40e7ab29b54e5f93eba2b63eb8d457
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-27
+
+    libcolord: Add some helpers for dealing with CdColorLab objects
+
+M	lib/colord/cd-color.c
+M	lib/colord/cd-color.h
+
+commit 2fc7e3c2ea45f917c58111f4c617d8c55e271d5f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-27
+
+    trivial: Support reading back long MLU entries
+
+M	lib/colord/cd-icc.c
+
+commit 8b5548b76a225a9356b405ba8eb658bf1f66c666
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-27
+
+    libcolord: Read and write the locale as en_US when the default
+    is requested
+
+    Using cmsNoLanguage and cmsNoCountry mean the language matches for
+    any locale
+    request, which may return the wrong translation if the MLU was
+    not constructed
+    with en_US as the last entry.
+
+M	data/tests/crayons.icc
+M	lib/colord/cd-icc.c
+
+commit 75657ab2099354228985561c50ab94382101fcd9
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-27
+
+    libcolord: Add functionality to get the primaries and whitepoint
+    from the profile
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+M	lib/colord/cd-self-test.c
+
+commit b6fb6cf82418353e9d52a2015a8ef9190fd9bae8
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-26
+
+    trivial: Add a self test for cd_icc_create_from_edid()
+
+M	lib/colord/cd-self-test.c
+
+commit cc7fd913170abd2c0647be15633c74925eb3b1a3
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-26
+
+    trivial: Fix the build by #define'ing the correct name
+
+M	lib/colord/cd-icc.c
+
+commit 17c5bbeb095216d3aca8fef72261bbce76becc49
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-26
+
+    trivial: Marti Maria applied my lcms 'dscm' patch upstream to lcms2
+
+M	lib/colord/cd-icc.c
+
+commit 3fb30411e55f8ce095a23873546f19c3d84036e6
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-26
+
+    libcolord: Add the profile creator to the ICC dump output
+
+M	configure.ac
+M	lib/colord/cd-icc.c
+
+commit f45f3345314e12582e1ca54acca5d945344e58bb
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-26
+
+    Add translated descriptions to the ICC profiles
+
+M	data/profiles/AdobeRGB1998.xml.in
+M	data/profiles/AppleRGB.xml.in
+M	data/profiles/BestRGB.xml.in
+M	data/profiles/BetaRGB.xml.in
+M	data/profiles/Bluish.xml.in
+M	data/profiles/BruceRGB.xml.in
+M	data/profiles/CIE-RGB.xml.in
+M	data/profiles/ColorMatchRGB.xml.in
+M	data/profiles/Crayons.xml.in
+M	data/profiles/DonRGB4.xml.in
+M	data/profiles/ECI-RGBv2.xml.in
+M	data/profiles/EktaSpacePS5.xml.in
+M	data/profiles/NTSC-RGB.xml.in
+M	data/profiles/PAL-RGB.xml.in
+M	data/profiles/ProPhotoRGB.xml.in
+M	data/profiles/SMPTE-C-RGB.xml.in
+M	data/profiles/SwappedRedAndGreen.xml.in
+M	data/profiles/WideGamutRGB.xml.in
+M	data/profiles/sRGB.xml.in
+M	data/profiles/x11-colors.xml.in
+
+commit 5c824e758b12d6ab4e0667926c5aedd0f34f3733
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-26
+
+    libcolord: Add information about the header attributes when dumping
+    an ICC profile
+
+M	lib/colord/cd-icc.c
+
+commit a26642f5a9911345dddfc20e4f8387a1cf5c4d43
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-25
+
+    trivial: Fix up a compiler warning
+
+M	src/cd-profile.c
+
+commit 0d8bc48863711974379f362a948313c26985f68f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-25
+
+    libcolord: Add the ability to get a CdIcc instance from a CdProfile
+    abstract object
+
+M	lib/colord/cd-profile.c
+M	lib/colord/cd-profile.h
+
+commit 3b3cf5401aa428e6a2e9ba4a561192390b4bf3b6
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-25
+
+    libcolord: Add the ability to create an ICC profile from EDID data
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+
+commit f41e3c2890cef38d6d6026047b30a076d5c13b46
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-25
+
+    libcolord: Add the ability to get the file embedded profile ID
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+M	lib/colord/cd-self-test.c
+M	src/cd-profile.c
+
+commit e697851132eb122d1b969248f5f4b43b737d76be
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-25
+
+    trivial: Use a shipped test profile rather than using a generated
+    profile
+
+    We want to be sure we're identifying one bug, not two.
+
+M	data/tests/Makefile.am
+A	data/tests/crayons.icc
+M	lib/colord/Makefile.am
+M	lib/colord/cd-self-test.c
+
+commit ffa9dfa580667fd05c3a2328c6d32318a87e7696
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-25
+
+    Do not attempt to use cmsReadRawTag() on a linked tag
+
+M	lib/colord/cd-icc.c
+
+commit 003c3ea474dc94e6c5814ef6a3e4395305a160fc
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-25
+
+    Convert cd-create-profile to using CdIcc
+
+M	client/Makefile.am
+M	client/cd-create-profile.c
+M	client/cd-fix-profile.c
+D	client/cd-lcms-helpers.c
+D	client/cd-lcms-helpers.h
+M	contrib/session-helper/Makefile.am
+M	contrib/session-helper/cd-main.c
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+
+commit 119c5c41a3e48e4e766b014ac0af9e410791bb8f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-25
+
+    libcolord: Add the ability to set multiple localized values in one
+    method call
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+
+commit d7072beeab5e972811dfe61171c8ae847d515f1b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-24
+
+    trivial: Use CdIcc in the session helper
+
+M	contrib/session-helper/cd-main.c
+
+commit 369a8410450d399d9d8e2b6fd86bfc97970800d5
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-24
+
+    Use the new CdIcc object in cd-fix-profile
+
+M	client/Makefile.am
+D	client/cd-common.c
+D	client/cd-common.h
+M	client/cd-create-profile.c
+M	client/cd-fix-profile.c
+
+commit e4c5234efb01d84ea7abe32cfcd8ccb07fecf70c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-24
+
+    libcolord: Remove the metadata dictionary if there are no entries
+    to write
+
+M	lib/colord/cd-icc.c
+
+commit 8102a05d6c4da34e408bbd824decf19b6bad0af8
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-24
+
+    libcolord: Add the ability to set the profile version number
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+M	lib/colord/cd-self-test.c
+
+commit dd478cd556ee7f19cc298a6bc7c4d5dc9127a356
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-24
+
+    Remove the dump option from cd-fix-profile now that cd-iccdump exists
+
+M	client/cd-fix-profile.c
+M	lib/colord/cd-icc.h
+
+commit ace1e8b319fdb86a033fe2503f5668b609904f3a
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-24
+
+    trivial: Always write the profile-id when saving a profile
+
+M	lib/colord/cd-icc.c
+
+commit 75333af079c9459e21116e89ee2b8838a6d1b64f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-24
+
+    libcolord: Add the ability to remove metadata from profiles
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+M	lib/colord/cd-self-test.c
+
+commit c4bb730a467b8f7b41a29c5df66cb88d46b00e4a
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-24
+
+    libcolord: Write the new translations when saving the profile
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-self-test.c
+
+commit 5a6e3cf839e5bbc493e532a2eb204376078e4438
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-24
+
+    trivial: Use the locale _key_ in the localized dictionaries, not
+    the locale itself
+
+M	lib/colord/cd-icc.c
+
+commit 2b0b3650e5370e5973deb72ab4f92a86d075bfc1
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-24
+
+    libcolord: Write the new metadata when saving the profile
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-self-test.c
+
+commit 9543891052724e7331c711927c691c42fa913143
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-24
+
+    trivial: abstract out converting a uint32 to raw text
+
+M	lib/colord/cd-icc.c
+
+commit 234bab74d5d79e6191a3e316a362311bd93e56fd
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-24
+
+    libcolord: Make loading the metadata optional
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+M	lib/colord/cd-self-test.c
+M	src/cd-profile.c
+
+commit 404e21b90dbc4e89ca8168beedceb75cd33398fb
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-23
+
+    libcolord: Write the new profile kind and colorspace when saving
+    the profile
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-self-test.c
+
+commit baf611e1319fb5df7205fe3b236c1d1b4593829a
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-23
+
+    libcolord: Support changing the profile kind and colorspace
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+M	lib/colord/cd-self-test.c
+
+commit d37129196a9c85c433678a3607c48aaa8e448d55
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-23
+
+    libcolord: Optionally load all the translations at parse time
+
+    We really need an extension for LCMS to do this properly, and
+    fingers crossed
+    that comes soon. :)
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+
+commit 134ec2d615b984fba83ae07cd4736d339d2e6e83
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-23
+
+    libcolord: Load the named color profiles when the profile is parsed
+
+    To allow the client to opt-out, add a CdIccLoadFlags value to
+    control this.
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+M	lib/colord/cd-self-test.c
+
+commit ee704dfd7f3a6272829e969cd8a4b558bb938239
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-23
+
+    libcolord: Add cd_icc_set_description() to add translations to the
+    ICC profile
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+M	lib/colord/cd-self-test.c
+
+commit 76a0e14811837ae4d13e9e24f22d8b544f2676ab
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-23
+
+    libcolord: Add some flags to the CdIcc load and save functions for
+    future use
+
+M	client/cd-iccdump.c
+M	contrib/session-helper/cd-main.c
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+M	lib/colord/cd-self-test.c
+M	src/cd-profile.c
+
+commit e373a980e180dba0f4d664de209710931fd1d758
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-22
+
+    libcolord: Add a GCancellable to cd_icc_load_file() and
+    cd_icc_save_file()
+
+M	client/cd-iccdump.c
+M	contrib/session-helper/cd-main.c
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+M	lib/colord/cd-self-test.c
+M	src/cd-profile.c
+
+commit 064563d6c61ca361a63821d984f3ab6e599d2716
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-22
+
+    libcolord: Add cd_icc_save_file() to be able to save the modified
+    ICC profile to disk
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+
+commit 21f5d7123a62ce4c324074f8e4f2f1c00f827670
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-22
+
+    libcolord: Add cd_icc_add_metadata() for adding extra keys to the
+    metadata store
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+
+commit 22bf613885701f0414e1033112db82eb6975c3a8
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-22
+
+    libcolord: Add methods to get localized text values from the profile
+
+M	lib/colord/Makefile.am
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+M	lib/colord/cd-self-test.c
+M	src/cd-profile.c
+
+commit f8e99f3e753896cd92e188fbc77bf24f4ccdc9d6
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-22
+
+    trivial: Update one translation to test the localization stuff
+
+M	po/en_GB.po
+
+commit 6d5970dd47e80e0b80ce75f6e053920c789607e6
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-22
+
+    trivial: Include CdDom in the libcolordprivate documentation
+
+M	doc/api/colord-docs.xml
+
+commit 5c435ba8bdce141ea71a342008e5ac63238268b1
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-22
+
+    trivial: Print the header ID values when dumping a profile
+
+M	lib/colord/cd-icc.c
+
+commit a97e71aa7bcbd6309fcfee17cfd7c202adacf5b5
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-22
+
+    trivial: Print the header rendering intent when dumping a profile
+
+M	lib/colord/cd-icc.c
+
+commit b65b45ee4dea894816aa5fc133ea87c69f3c81be
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-22
+
+    trivial: Print the header 'Use' flags when dumping a profile
+
+M	lib/colord/cd-icc.c
+
+commit 8a1910f05c4ef4c471df30ca65d4bd1733bfb1a7
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-22
+
+    trivial: Print the connection space when dumping a profile
+
+M	lib/colord/cd-icc.c
+
+commit 5bc8ca07a0072a70f8b28120527fc7882429d5a2
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-22
+
+    libcolord: Add cd_icc_get_created() to get the creation time and
+    date of the profile
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+M	lib/colord/cd-self-test.c
+
+commit 94bd00236a8b374cefd74832a631b211f770abeb
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-22
+
+    libcolord: Add cd_icc_get_can_delete() for applications wishing to
+    remove profiles
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+
+commit f48be38de678f50e3114cd813dbfb8028661d1ca
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-22
+
+    libcolord: Add cd_icc_get_named_colors() to return the profile
+    named colors
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+M	lib/colord/cd-self-test.c
+
+commit 605b6143f7439eb88ad10bf04183814edb5f3dc5
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-22
+
+    libcolord: Add cd_icc_get_metadata() to return the profile metadata
+    dictionary
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+M	lib/colord/cd-self-test.c
+M	src/cd-profile.c
+
+commit ffa3f60e774a8bad77646c673ee998c371c09287
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-21
+
+    libcolord: Add cd_icc_get_colorspace() to return the profile
+    colorspace
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+M	lib/colord/cd-self-test.c
+M	src/cd-profile.c
+
+commit 23b1aebabcafee3884228dbcc1c470881f09bf4e
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-21
+
+    libcolord: Add cd_icc_get_kind() to return the profile kind
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+M	lib/colord/cd-self-test.c
+M	src/cd-profile.c
+
+commit 1b2f69826f920d62f564d7f391496cd3abd5fe38
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-21
+
+    libcolord: Add cd_icc_get_version() to return the profile version
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+M	lib/colord/cd-self-test.c
+
+commit c67bb43fab4b6b87c5de1f1b31d43159436f2897
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-21
+
+    libcolord: Add cd_icc_get_filename() to return the profile filename
+    if known
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+M	lib/colord/cd-self-test.c
+
+commit 648527cb7adc6926ac34bc17408e36b30b2a805b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-21
+
+    libcolord: Add cd_icc_get_size() to return the profile size in bytes
+    if known
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+M	lib/colord/cd-self-test.c
+
+commit 4c669ed15bbc41eefd4645fcfd48838bac279770
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-21
+
+    Add a new command line tool 'cd-iccdump' that can dump V4 and
+    V2 profiles
+
+M	client/Makefile.am
+A	client/cd-iccdump.c
+M	lib/colord/cd-icc.c
+M	po/POTFILES.in
+
+commit 1fd8f8e7dc4b5f20fe429ed54fd75138e5b80eaf
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-21
+
+    Use CdIcc in the daemon when loading ICC profiles
+
+M	src/cd-profile.c
+
+commit 3e739dc34cea35e20eea118a4fb37f4b6441e9ae
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-21
+
+    Use CdIcc in the session helper when loading ICC profiles
+
+M	contrib/session-helper/cd-main.c
+
+commit 93b3456a3a454fde1167cfb497ef1861e9f85cc2
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-21
+
+    libcolord: Add a CdIcc object to factor out the low level profile
+    loading
+
+    We sometimes have to load the profile in the client, and we have to
+    load and
+    save profiles in the daemon and various tools we ship. This object
+    will grow
+    as different functions are moved around in the source tree.
+
+M	doc/api/colord-docs.xml
+M	lib/colord/Makefile.am
+A	lib/colord/cd-icc.c
+A	lib/colord/cd-icc.h
+M	lib/colord/cd-self-test.c
+M	lib/colord/colord-private.h
+M	lib/colord/colord.h
+
+commit 085dbbf201fbaba179557a7fb080cae828ec0645
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-21
+
+    trivial: Fix warning when compiling the self tests
+
+M	lib/colord/cd-self-test.c
+
+commit c67bd22e06d05e20672f560da24ba36a374f2f70
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-21
+
+    colord: Add a CdColorSwatch which is a named colord swatch
+
+M	lib/colord/cd-color.c
+M	lib/colord/cd-color.h
+
+commit f4f28d08f45cdd5a6b221586ed82b7d28da5dec6
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-21
+
+    colord: Add cd_color_lab_copy()
+
+M	lib/colord/cd-color.c
+M	lib/colord/cd-color.h
+
+commit 4f28d65ed3124a5ca95be9c47de668ee5e9cc2cb
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-21
+
+    colord: Correctly copy CdColorYxy objects when used as properties
+
+M	lib/colord/cd-color.c
+
+commit 6da75b24135b07a29e18bc3a4ba955ee91d0c434
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-20
+
+    trivial: Fix build on ostree by not including the pre-generated .xml
+    files in the tarball
+
+M	data/profiles/Makefile.am
+
+commit 2fa8f858a29b9badfec308b2f05c9bc29bfbf37e
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-20
+
+    trivial: Don't use a '&' in the profile titles
+
+    There's too much chance of this blowing up in applications, and it
+    makes the translations more fragile.
+
+M	data/profiles/SwappedRedAndGreen.xml.in
+
+commit 168af48bfb7c98da731e61e080b68c642f5372a0
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-20
+
+    Set the default profile locale to be en_US, not EN_us
+
+M	client/cd-lcms-helpers.c
+
+commit 030b0abd96952349577ef930e9f5a7c5b52190f2
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-20
+
+    Write translated descriptions to ICC profiles if they exist
+
+M	client/cd-create-profile.c
+
+commit 14fb7d42905f21d676c230b3e11f41a67008421e
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-20
+
+    libcolord: Add the ability to get localized keys from the DOM
+
+M	lib/colord/cd-dom.c
+M	lib/colord/cd-dom.h
+M	lib/colord/cd-self-test.c
+
+commit df4b745164f3852d3a063c3cf7a33d1ff0f940af
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-20
+
+    Build the generated profiles from the XML descriptions
+
+    This also makes cd-create-profile much less complicated.
+    NOTE: We're not including the translations in the profiles just yet.
+
+M	client/cd-create-profile.c
+M	contrib/colord.spec.in
+M	data/profiles/Makefile.am
+D	data/profiles/crayons.csv
+D	data/profiles/x11-colors.csv
+M	src/colord.gresource.xml
+
+commit 214479430d0b2aa1c6b7c7622ff329ef480811dd
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-20
+
+    Translate some of the profile source XML file descriptions and
+    licences
+
+    Some profiles don't make sense to translate, e.g. 'sRGB' so have
+    been omitted.
+
+M	data/profiles/Makefile.am
+M	po/POTFILES.in
+
+commit 882fae57d3af8c0ac342197282486e4a1c00490c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-20
+
+    Use an XML source format for the generated profiles
+
+    Using cd-create-profile with ~12 arguments per call means we're not
+    sure if the
+    data is in Yxy or xyY format, and also doesn't allow us to translate
+    the
+    descriptions and copyright text information.
+
+    Also, using an XML format allows us to expand the amount of metadata
+    we're using
+    in the future.
+
+A	data/profiles/AdobeRGB1998.xml.in
+A	data/profiles/AppleRGB.xml.in
+A	data/profiles/BestRGB.xml.in
+A	data/profiles/BetaRGB.xml.in
+A	data/profiles/Bluish.xml.in
+A	data/profiles/BruceRGB.xml.in
+A	data/profiles/CIE-RGB.xml.in
+A	data/profiles/ColorMatchRGB.xml.in
+A	data/profiles/Crayons.xml.in
+A	data/profiles/DonRGB4.xml.in
+A	data/profiles/ECI-RGBv2.xml.in
+A	data/profiles/EktaSpacePS5.xml.in
+A	data/profiles/Gamma5000K.xml.in
+A	data/profiles/Gamma5500K.xml.in
+A	data/profiles/Gamma6500K.xml.in
+A	data/profiles/NTSC-RGB.xml.in
+A	data/profiles/PAL-RGB.xml.in
+A	data/profiles/ProPhotoRGB.xml.in
+A	data/profiles/SMPTE-C-RGB.xml.in
+A	data/profiles/SwappedRedAndGreen.xml.in
+A	data/profiles/WideGamutRGB.xml.in
+A	data/profiles/sRGB.xml.in
+A	data/profiles/x11-colors.xml.in
+
+commit 583a4c986631e93097171359e9679a9ca504c6bf
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-20
+
+    trivial: Use AM_V_GEN to prettify the build output a little
+
+M	data/profiles/Makefile.am
+M	src/Makefile.am
+
+commit 77fea278f80c77bb4792a71f2bd65fcf384b9a6b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-19
+
+    libcolord: Add a really simple XML DOM extractor for parsing simple
+    config files
+
+M	lib/colord/Makefile.am
+A	lib/colord/cd-dom.c
+A	lib/colord/cd-dom.h
+M	lib/colord/cd-self-test.c
+M	lib/colord/colord-private.h
+M	lib/colord/colord.h
+
+commit ef3376b43f714d72ef5f1f3ce54f740b3dd7a7dd
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-19
+
+    lib: Fix the licence boilerplate in the sensor libs
+
+M	lib/dtp94/dtp94.h
+M	lib/huey/huey.h
+M	lib/munki/munki.h
+
+commit 5a59a8471515b63c79926d63d0506ff520bc5b57
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-19
+
+    trivial: Update TODO
+
+M	TODO
+
+commit 01c42616d56dc6733875effcc26214c6af00dc16
+Author: Christopher James Halse Rogers <raof@ubuntu.com>
+Date:	2013-03-19
+
+    Use gtkdocize --copy in autogen.sh
+
+    This is what gnome-autogen.sh does, and it makes it easier for
+    packages
+    to regenerate autofoo without having files change to symlinks.
+
+M	autogen.sh
+
+commit 8d06331d088b8c1c0a714377da4512935c3caa3c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-18
+
+    trivial: post release version bump
+
+M	RELEASE
+M	configure.ac
+
 commit 850fe720a4804df6506479d2ec452ad8eab1ca62
 Author: Richard Hughes <richard@hughsie.com>
-Date:   2013-03-18
+Date:	2013-03-18
 
     Release colord 0.1.31
 

@@ -46,6 +46,12 @@
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
+/* cmsGetHeaderCreator is available */
+#undef HAVE_LCMS_GET_HEADER_CREATOR
+
+/* cmsGetToneCurveEstimatedTableEntries is available */
+#undef HAVE_LCMS_GET_TABLE_ENTRIES
+
 /* Define to 1 if libsystemd-login is available */
 #undef HAVE_LIBSYSTEMD_LOGIN
 
@@ -106,6 +112,9 @@
 
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
+
+/* Full path of colprof binary */
+#undef TOOL_COLPROF
 
 /* if we should use PolicyKit */
 #undef USE_POLKIT

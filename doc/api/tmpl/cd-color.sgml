@@ -9,30 +9,17 @@ cd-color
 
 </para>
 
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
 
+
 <!-- ##### SECTION Stability_Level ##### -->
 
 
 <!-- ##### SECTION Image ##### -->
-
-
-<!-- ##### STRUCT CdColorLab ##### -->
-<para>
-
-</para>
-
-@L: 
-@a: 
-@b: 
-
-<!-- ##### STRUCT CdColorRGB ##### -->
-<para>
-
-</para>
 
 
 <!-- ##### STRUCT CdColorRGB8 ##### -->
@@ -44,7 +31,7 @@ cd-color
 @G: 
 @B: 
 
-<!-- ##### STRUCT CdColorXYZ ##### -->
+<!-- ##### STRUCT CdColorLab ##### -->
 <para>
 
 </para>
@@ -56,44 +43,37 @@ cd-color
 </para>
 
 
-<!-- ##### FUNCTION cd_color_get_blackbody_rgb ##### -->
+<!-- ##### STRUCT CdColorXYZ ##### -->
 <para>
 
 </para>
 
-@temp: 
-@result: 
 
-
-<!-- ##### FUNCTION cd_color_rgb8_to_rgb ##### -->
+<!-- ##### STRUCT CdColorRGB ##### -->
 <para>
 
 </para>
 
-@src: 
-@dest: 
 
-
-<!-- ##### FUNCTION cd_color_rgb_array_interpolate ##### -->
+<!-- ##### FUNCTION cd_color_swatch_get_name ##### -->
 <para>
 
 </para>
 
-@array: 
-@new_length: 
+@swatch: 
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_color_rgb_array_is_monotonic ##### -->
+<!-- ##### FUNCTION cd_color_swatch_get_value ##### -->
 <para>
 
 </para>
 
-@array: 
+@swatch: 
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_color_rgb_array_new ##### -->
+<!-- ##### FUNCTION cd_color_xyz_new ##### -->
 <para>
 
 </para>
@@ -102,41 +82,13 @@ cd-color
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_color_rgb_copy ##### -->
+<!-- ##### FUNCTION cd_color_lab_new ##### -->
 <para>
 
 </para>
 
-@src: 
-@dest: 
-
-
-<!-- ##### FUNCTION cd_color_rgb_dup ##### -->
-<para>
-
-</para>
-
-@src: 
+@void: 
 @Returns: 
-
-
-<!-- ##### FUNCTION cd_color_rgb_free ##### -->
-<para>
-
-</para>
-
-@src: 
-
-
-<!-- ##### FUNCTION cd_color_rgb_interpolate ##### -->
-<para>
-
-</para>
-
-@p1: 
-@p2: 
-@index: 
-@result: 
 
 
 <!-- ##### FUNCTION cd_color_rgb_new ##### -->
@@ -148,49 +100,21 @@ cd-color
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_color_rgb_set ##### -->
+<!-- ##### FUNCTION cd_color_yxy_new ##### -->
 <para>
 
 </para>
 
-@dest: 
-@R: 
-@G: 
-@B: 
+@void: 
+@Returns: 
 
 
-<!-- ##### FUNCTION cd_color_rgb_to_rgb8 ##### -->
+<!-- ##### FUNCTION cd_color_swatch_new ##### -->
 <para>
 
 </para>
 
-@src: 
-@dest: 
-
-
-<!-- ##### FUNCTION cd_color_xyz_clear ##### -->
-<para>
-
-</para>
-
-@dest: 
-
-
-<!-- ##### FUNCTION cd_color_xyz_copy ##### -->
-<para>
-
-</para>
-
-@src: 
-@dest: 
-
-
-<!-- ##### FUNCTION cd_color_xyz_dup ##### -->
-<para>
-
-</para>
-
-@src: 
+@void: 
 @Returns: 
 
 
@@ -202,12 +126,80 @@ cd-color
 @src: 
 
 
-<!-- ##### FUNCTION cd_color_xyz_new ##### -->
+<!-- ##### FUNCTION cd_color_rgb_free ##### -->
 <para>
 
 </para>
 
-@void: 
+@src: 
+
+
+<!-- ##### FUNCTION cd_color_lab_free ##### -->
+<para>
+
+</para>
+
+@src: 
+
+
+<!-- ##### FUNCTION cd_color_yxy_free ##### -->
+<para>
+
+</para>
+
+@src: 
+
+
+<!-- ##### FUNCTION cd_color_swatch_free ##### -->
+<para>
+
+</para>
+
+@src: 
+
+
+<!-- ##### FUNCTION cd_color_xyz_dup ##### -->
+<para>
+
+</para>
+
+@src: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_color_lab_dup ##### -->
+<para>
+
+</para>
+
+@src: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_color_rgb_dup ##### -->
+<para>
+
+</para>
+
+@src: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_color_yxy_dup ##### -->
+<para>
+
+</para>
+
+@src: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_color_swatch_dup ##### -->
+<para>
+
+</para>
+
+@src: 
 @Returns: 
 
 
@@ -222,7 +214,58 @@ cd-color
 @Z: 
 
 
-<!-- ##### FUNCTION cd_color_xyz_to_yxy ##### -->
+<!-- ##### FUNCTION cd_color_rgb_set ##### -->
+<para>
+
+</para>
+
+@dest: 
+@R: 
+@G: 
+@B: 
+
+
+<!-- ##### FUNCTION cd_color_lab_set ##### -->
+<para>
+
+</para>
+
+@dest: 
+@L: 
+@a: 
+@b: 
+
+
+<!-- ##### FUNCTION cd_color_yxy_set ##### -->
+<para>
+
+</para>
+
+@dest: 
+@Y: 
+@x: 
+@y: 
+
+
+<!-- ##### FUNCTION cd_color_swatch_set_name ##### -->
+<para>
+
+</para>
+
+@dest: 
+@name: 
+
+
+<!-- ##### FUNCTION cd_color_swatch_set_value ##### -->
+<para>
+
+</para>
+
+@dest: 
+@value: 
+
+
+<!-- ##### FUNCTION cd_color_xyz_copy ##### -->
 <para>
 
 </para>
@@ -240,41 +283,48 @@ cd-color
 @dest: 
 
 
-<!-- ##### FUNCTION cd_color_yxy_dup ##### -->
+<!-- ##### FUNCTION cd_color_lab_copy ##### -->
 <para>
 
 </para>
 
 @src: 
-@Returns: 
+@dest: 
 
 
-<!-- ##### FUNCTION cd_color_yxy_free ##### -->
-<para>
-
-</para>
-
-@src: 
-
-
-<!-- ##### FUNCTION cd_color_yxy_new ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_color_yxy_set ##### -->
+<!-- ##### FUNCTION cd_color_xyz_clear ##### -->
 <para>
 
 </para>
 
 @dest: 
-@Y: 
-@x: 
-@y: 
+
+
+<!-- ##### FUNCTION cd_color_rgb_copy ##### -->
+<para>
+
+</para>
+
+@src: 
+@dest: 
+
+
+<!-- ##### FUNCTION cd_color_rgb8_to_rgb ##### -->
+<para>
+
+</para>
+
+@src: 
+@dest: 
+
+
+<!-- ##### FUNCTION cd_color_rgb_to_rgb8 ##### -->
+<para>
+
+</para>
+
+@src: 
+@dest: 
 
 
 <!-- ##### FUNCTION cd_color_yxy_to_xyz ##### -->
@@ -284,5 +334,68 @@ cd-color
 
 @src: 
 @dest: 
+
+
+<!-- ##### FUNCTION cd_color_xyz_to_yxy ##### -->
+<para>
+
+</para>
+
+@src: 
+@dest: 
+
+
+<!-- ##### FUNCTION cd_color_get_blackbody_rgb ##### -->
+<para>
+
+</para>
+
+@temp: 
+@result: 
+
+
+<!-- ##### FUNCTION cd_color_rgb_interpolate ##### -->
+<para>
+
+</para>
+
+@p1: 
+@p2: 
+@index: 
+@result: 
+
+
+<!-- ##### FUNCTION cd_color_rgb_array_new ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_color_rgb_array_is_monotonic ##### -->
+<para>
+
+</para>
+
+@array: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_color_rgb_array_interpolate ##### -->
+<para>
+
+</para>
+
+@array: 
+@new_length: 
+@Returns: 
+
+
+<!-- ##### STRUCT CdColorSwatch ##### -->
+<para>
+
+</para>
 
 

@@ -9,10 +9,12 @@ cd-sensor-sync
 
 </para>
 
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
+
 
 <!-- ##### SECTION Stability_Level ##### -->
 
@@ -31,19 +33,18 @@ cd-sensor-sync
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_sensor_get_sample_sync ##### -->
+<!-- ##### FUNCTION cd_sensor_lock_sync ##### -->
 <para>
 
 </para>
 
 @sensor: 
-@cap: 
 @cancellable: 
 @error: 
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_sensor_lock_sync ##### -->
+<!-- ##### FUNCTION cd_sensor_unlock_sync ##### -->
 <para>
 
 </para>
@@ -66,12 +67,13 @@ cd-sensor-sync
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_sensor_unlock_sync ##### -->
+<!-- ##### FUNCTION cd_sensor_get_sample_sync ##### -->
 <para>
 
 </para>
 
 @sensor: 
+@cap: 
 @cancellable: 
 @error: 
 @Returns: 
