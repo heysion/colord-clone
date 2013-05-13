@@ -126,13 +126,13 @@ Depends:
  ${misc:Depends},
 Pre-Depends: ${misc:Pre-Depends}
 Multi-Arch: same
-Description: library to access the ColorHug colourimeter -- development files
+Description: library to access the ColorHug colourimeter -- runtime
  libcolorhug is a gobject-based library for using the ColorHug display
  colourimeter. It supports both reading values from the colourimeter and
  device administration, such as firmware updates.
  .
- This package contains the development files required to build programs against
- the libcolorhug library.
+ This package contains a gobject-based convenience library for programs to
+ interact with the ColorHug colourimeter.
 
 Package: gir1.2-colorhug-1.0
 Section: introspection
