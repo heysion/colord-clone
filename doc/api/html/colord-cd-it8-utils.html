@@ -37,10 +37,10 @@
 </tr></table></div>
 <div class="refsynopsisdiv">
 <a name="colord-cd-it8-utils.synopsis"></a><h2>Synopsis</h2>
-<pre class="synopsis"><span class="returnvalue">gboolean</span>            <a class="link" href="colord-cd-it8-utils.html#cd-it8-utils-calculate-ccmx" title="cd_it8_utils_calculate_ccmx ()">cd_it8_utils_calculate_ccmx</a>         (<em class="parameter"><code><span class="type">CdIt8</span> *it8_reference</code></em>,
+<pre class="synopsis"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            <a class="link" href="colord-cd-it8-utils.html#cd-it8-utils-calculate-ccmx" title="cd_it8_utils_calculate_ccmx ()">cd_it8_utils_calculate_ccmx</a>         (<em class="parameter"><code><span class="type">CdIt8</span> *it8_reference</code></em>,
                                                          <em class="parameter"><code><span class="type">CdIt8</span> *it8_measured</code></em>,
                                                          <em class="parameter"><code><span class="type">CdIt8</span> *it8_ccmx</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);
 </pre>
 </div>
 <div class="refsect1">
@@ -53,10 +53,10 @@ Functions to do cool things with sets of reference and measurements.
 <a name="colord-cd-it8-utils.details"></a><h2>Details</h2>
 <div class="refsect2">
 <a name="cd-it8-utils-calculate-ccmx"></a><h3>cd_it8_utils_calculate_ccmx ()</h3>
-<pre class="programlisting"><span class="returnvalue">gboolean</span>            cd_it8_utils_calculate_ccmx         (<em class="parameter"><code><span class="type">CdIt8</span> *it8_reference</code></em>,
+<pre class="programlisting"><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gboolean"><span class="returnvalue">gboolean</span></a>            cd_it8_utils_calculate_ccmx         (<em class="parameter"><code><span class="type">CdIt8</span> *it8_reference</code></em>,
                                                          <em class="parameter"><code><span class="type">CdIt8</span> *it8_measured</code></em>,
                                                          <em class="parameter"><code><span class="type">CdIt8</span> *it8_ccmx</code></em>,
-                                                         <em class="parameter"><code><span class="type">GError</span> **error</code></em>);</pre>
+                                                         <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a> **error</code></em>);</pre>
 <p>
 This calculates the colorimter correction matrix using the Four-Color
 Matrix Method by Yoshihiro Ohno and Jonathan E. Hardis, 1997.
@@ -81,13 +81,13 @@ Matrix Method by Yoshihiro Ohno and Jonathan E. Hardis, 1997.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>A <span class="type">GError</span>, or <code class="literal">NULL</code>
+<td>A <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
 <td>
-<code class="literal">TRUE</code> if a correction matrix was found.</td>
+<a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#TRUE:CAPS"><code class="literal">TRUE</code></a> if a correction matrix was found.</td>
 </tr>
 </tbody>
 </table></div>

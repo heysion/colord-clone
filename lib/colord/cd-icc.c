@@ -21,7 +21,7 @@
 
 /**
  * SECTION:cd-icc
- * @short_description: A XML parser that exposes a ICC tree
+ * @short_description: An object to read and write a binary ICC profile
  */
 
 #include "config.h"
@@ -31,6 +31,7 @@
 #include <locale.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include "cd-icc.h"
 
@@ -1146,6 +1147,7 @@ cd_icc_save_file (CdIcc *icc,
 {
 	CdIccPrivate *priv = icc->priv;
 	cmsHANDLE dict = NULL;
+	cmsUInt32Number length = 0;
 	const gchar *key;
 	const gchar *value;
 	gboolean ret = FALSE;
@@ -1153,7 +1155,6 @@ cd_icc_save_file (CdIcc *icc,
 	GError *error_local = NULL;
 	GList *l;
 	GList *md_keys = NULL;
-	gsize length = 0;
 	guint i;
 
 	g_return_val_if_fail (CD_IS_ICC (icc), FALSE);
@@ -1284,8 +1285,7 @@ cd_icc_save_file (CdIcc *icc,
 
 	/* get size of profile */
 	ret = cmsSaveProfileToMem (priv->lcms_profile,
-				   NULL,
-				   (guint32 *) &length);
+				   NULL, &length);
 	if (!ret) {
 		g_set_error_literal (error,
 				     CD_ICC_ERROR,
@@ -1300,7 +1300,7 @@ cd_icc_save_file (CdIcc *icc,
 		g_set_error (error,
 			     CD_ICC_ERROR,
 			     CD_ICC_ERROR_FAILED_TO_SAVE,
-			     "failed to save ICC file, requested %" G_GSIZE_FORMAT
+			     "failed to save ICC file, requested %u "
 			     "bytes and limit is 16Mb",
 			     length);
 		goto out;
@@ -1309,8 +1309,7 @@ cd_icc_save_file (CdIcc *icc,
 	/* allocate and get profile data */
 	data = g_new0 (gchar, length);
 	ret = cmsSaveProfileToMem (priv->lcms_profile,
-				   data,
-				   (guint32 *) &length);
+				   data, &length);
 	if (!ret) {
 		g_set_error_literal (error,
 				     CD_ICC_ERROR,
@@ -2530,6 +2529,619 @@ out:
 	if (transfer_curve[0] != NULL)
 		cmsFreeToneCurve (transfer_curve[0]);
 	return ret;
+}
+
+/**
+ * cd_icc_get_vcgt:
+ * @icc: A valid #CdIcc
+ * @size: the desired size of the table data
+ * @error: A #GError or %NULL
+ *
+ * Gets the video card calibration data from the profile.
+ *
+ * Return value: (transfer container) (element-type CdColorRGB): VCGT data, or %NULL for error
+ *
+ * Since: 0.1.34
+ **/
+GPtrArray *
+cd_icc_get_vcgt (CdIcc *icc, guint size, GError **error)
+{
+	CdColorRGB *tmp;
+	cmsFloat32Number in;
+	const cmsToneCurve **vcgt;
+	GPtrArray *array = NULL;
+	guint i;
+
+	g_return_val_if_fail (CD_IS_ICC (icc), NULL);
+	g_return_val_if_fail (icc->priv->lcms_profile != NULL, FALSE);
+
+	/* get tone curves from icc */
+	vcgt = cmsReadTag (icc->priv->lcms_profile, cmsSigVcgtType);
+	if (vcgt == NULL || vcgt[0] == NULL) {
+		g_set_error_literal (error,
+				     CD_ICC_ERROR,
+				     CD_ICC_ERROR_NO_DATA,
+				     "icc does not have any VCGT data");
+		goto out;
+	}
+
+	/* create array */
+	array = g_ptr_array_new_with_free_func ((GDestroyNotify) cd_color_rgb_free);
+	for (i = 0; i < size; i++) {
+		in = (gdouble) i / (gdouble) (size - 1);
+		tmp = cd_color_rgb_new ();
+		cd_color_rgb_set (tmp,
+				  cmsEvalToneCurveFloat(vcgt[0], in),
+				  cmsEvalToneCurveFloat(vcgt[1], in),
+				  cmsEvalToneCurveFloat(vcgt[2], in));
+		g_ptr_array_add (array, tmp);
+	}
+out:
+	return array;
+
+}
+
+/**
+ * cd_icc_get_response:
+ * @icc: A valid #CdIcc
+ * @size: the size of the curve to generate
+ * @error: a valid #GError, or %NULL
+ *
+ * Generates a response curve of a specified size.
+ *
+ * Return value: (transfer container) (element-type CdColorRGB): response data, or %NULL for error
+ *
+ * Since: 0.1.34
+ **/
+GPtrArray *
+cd_icc_get_response (CdIcc *icc, guint size, GError **error)
+{
+	CdColorRGB *data;
+	CdColorspace colorspace;
+	cmsHPROFILE srgb_profile = NULL;
+	cmsHTRANSFORM transform = NULL;
+	const guint component_width = 3;
+	gdouble tmp;
+	gdouble *values_in = NULL;
+	gdouble *values_out = NULL;
+	gfloat divadd;
+	gfloat divamount;
+	GPtrArray *array = NULL;
+	guint i;
+
+	/* run through the icc */
+	colorspace = cd_icc_get_colorspace (icc);
+	if (colorspace != CD_COLORSPACE_RGB) {
+		g_set_error_literal (error,
+				     CD_ICC_ERROR,
+				     CD_ICC_ERROR_INVALID_COLORSPACE,
+				     "Only RGB colorspaces are supported");
+		goto out;
+	}
+
+	/* create input array */
+	values_in = g_new0 (gdouble, size * 3 * component_width);
+	divamount = 1.0f / (gfloat) (size - 1);
+	for (i = 0; i < size; i++) {
+		divadd = divamount * (gfloat) i;
+
+		/* red */
+		values_in[(i * 3 * component_width) + 0] = divadd;
+		values_in[(i * 3 * component_width) + 1] = 0.0f;
+		values_in[(i * 3 * component_width) + 2] = 0.0f;
+
+		/* green */
+		values_in[(i * 3 * component_width) + 3] = 0.0f;
+		values_in[(i * 3 * component_width) + 4] = divadd;
+		values_in[(i * 3 * component_width) + 5] = 0.0f;
+
+		/* blue */
+		values_in[(i * 3 * component_width) + 6] = 0.0f;
+		values_in[(i * 3 * component_width) + 7] = 0.0f;
+		values_in[(i * 3 * component_width) + 8] = divadd;
+	}
+
+	/* create a transform from icc to sRGB */
+	values_out = g_new0 (gdouble, size * 3 * component_width);
+	srgb_profile = cmsCreate_sRGBProfile ();
+	transform = cmsCreateTransform (icc->priv->lcms_profile, TYPE_RGB_DBL,
+					srgb_profile, TYPE_RGB_DBL,
+					INTENT_PERCEPTUAL, 0);
+	if (transform == NULL) {
+		g_set_error_literal (error,
+				     CD_ICC_ERROR,
+				     CD_ICC_ERROR_NO_DATA,
+				     "Failed to setup transform");
+		goto out;
+	}
+	cmsDoTransform (transform, values_in, values_out, size * 3);
+
+	/* create output array */
+	array = cd_color_rgb_array_new ();
+	for (i = 0; i < size; i++) {
+		data = cd_color_rgb_new ();
+		cd_color_rgb_set (data, 0.0f, 0.0f, 0.0f);
+
+		/* only save curve data if it is positive */
+		tmp = values_out[(i * 3 * component_width) + 0];
+		if (tmp > 0.0f)
+			data->R = tmp;
+		tmp = values_out[(i * 3 * component_width) + 4];
+		if (tmp > 0.0f)
+			data->G = tmp;
+		tmp = values_out[(i * 3 * component_width) + 8];
+		if (tmp > 0.0f)
+			data->B = tmp;
+		g_ptr_array_add (array, data);
+	}
+out:
+	g_free (values_in);
+	g_free (values_out);
+	if (transform != NULL)
+		cmsDeleteTransform (transform);
+	if (srgb_profile != NULL)
+		cmsCloseProfile (srgb_profile);
+	return array;
+}
+
+/**
+ * cd_icc_set_vcgt:
+ * @icc: A valid #CdIcc
+ * @vcgt: (element-type CdColorRGB): video card calibration data
+ * @error: A #GError or %NULL
+ *
+ * Sets the Video Card Gamma Table from the profile.
+ *
+ * Return vale: %TRUE for success.
+ *
+ * Since: 0.1.34
+ **/
+gboolean
+cd_icc_set_vcgt (CdIcc *icc, GPtrArray *vcgt, GError **error)
+{
+	CdColorRGB *tmp;
+	cmsToneCurve *curve[3];
+	gboolean ret;
+	guint16 *blue;
+	guint16 *green;
+	guint16 *red;
+	guint i;
+
+	g_return_val_if_fail (CD_IS_ICC (icc), FALSE);
+	g_return_val_if_fail (icc->priv->lcms_profile != NULL, FALSE);
+
+	/* unwrap data */
+	red = g_new0 (guint16, vcgt->len);
+	green = g_new0 (guint16, vcgt->len);
+	blue = g_new0 (guint16, vcgt->len);
+	for (i = 0; i < vcgt->len; i++) {
+		tmp = g_ptr_array_index (vcgt, i);
+		red[i]   = tmp->R * (gdouble) 0xffff;
+		green[i] = tmp->G * (gdouble) 0xffff;
+		blue[i]  = tmp->B * (gdouble) 0xffff;
+	}
+
+	/* build tone curve */
+	curve[0] = cmsBuildTabulatedToneCurve16 (NULL, vcgt->len, red);
+	curve[1] = cmsBuildTabulatedToneCurve16 (NULL, vcgt->len, green);
+	curve[2] = cmsBuildTabulatedToneCurve16 (NULL, vcgt->len, blue);
+
+	/* smooth it */
+	for (i = 0; i < 3; i++)
+		cmsSmoothToneCurve (curve[i], 5);
+
+	/* write the tag */
+	ret = cmsWriteTag (icc->priv->lcms_profile, cmsSigVcgtType, curve);
+	if (!ret) {
+		g_set_error_literal (error,
+				     CD_ICC_ERROR,
+				     CD_ICC_ERROR_NO_DATA,
+				     "failed to write VCGT data");
+		goto out;
+	}
+out:
+	for (i = 0; i < 3; i++)
+		cmsFreeToneCurve (curve[i]);
+	g_free (red);
+	g_free (green);
+	g_free (blue);
+	return ret;
+}
+
+/**
+ * cd_icc_check_whitepoint:
+ **/
+static CdProfileWarning
+cd_icc_check_whitepoint (CdIcc *icc)
+{
+	CdProfileWarning warning = CD_PROFILE_WARNING_NONE;
+	guint temp = icc->priv->temperature;
+
+	/* not set */
+	if (temp == 0)
+		goto out;
+
+	/* hardcoded sanity check */
+	if (temp < 3000 || temp > 10000)
+		warning = CD_PROFILE_WARNING_WHITEPOINT_UNLIKELY;
+out:
+	return warning;
+}
+
+/**
+ * cd_icc_check_vcgt:
+ **/
+static CdProfileWarning
+cd_icc_check_vcgt (cmsHPROFILE profile)
+{
+	CdProfileWarning warning = CD_PROFILE_WARNING_NONE;
+	cmsFloat32Number in;
+	cmsFloat32Number now[3];
+	cmsFloat32Number previous[3] = { -1, -1, -1};
+	const cmsToneCurve **vcgt;
+	const guint size = 32;
+	guint i;
+
+	/* does profile have monotonic VCGT */
+	vcgt = cmsReadTag (profile, cmsSigVcgtTag);
+	if (vcgt == NULL)
+		goto out;
+	for (i = 0; i < size; i++) {
+		in = (gdouble) i / (gdouble) (size - 1);
+		now[0] = cmsEvalToneCurveFloat(vcgt[0], in);
+		now[1] = cmsEvalToneCurveFloat(vcgt[1], in);
+		now[2] = cmsEvalToneCurveFloat(vcgt[2], in);
+
+		/* check VCGT is increasing */
+		if (i > 0) {
+			if (now[0] < previous[0] ||
+			    now[1] < previous[1] ||
+			    now[2] < previous[2]) {
+				warning = CD_PROFILE_WARNING_VCGT_NON_MONOTONIC;
+				goto out;
+			}
+		}
+		previous[0] = now[0];
+		previous[1] = now[1];
+		previous[2] = now[2];
+	}
+out:
+	return warning;
+}
+
+/**
+ * cd_profile_check_scum_dot:
+ **/
+static CdProfileWarning
+cd_profile_check_scum_dot (cmsHPROFILE profile)
+{
+	CdProfileWarning warning = CD_PROFILE_WARNING_NONE;
+	cmsCIELab white;
+	cmsHPROFILE profile_lab;
+	cmsHTRANSFORM transform;
+	guint8 rgb[3] = { 0, 0, 0 };
+
+	/* do Lab to RGB transform of 100,0,0 */
+	profile_lab = cmsCreateLab2Profile (cmsD50_xyY ());
+	transform = cmsCreateTransform (profile_lab, TYPE_Lab_DBL,
+					profile, TYPE_RGB_8,
+					INTENT_RELATIVE_COLORIMETRIC,
+					cmsFLAGS_NOOPTIMIZE);
+	if (transform == NULL) {
+		g_warning ("failed to setup Lab -> RGB transform");
+		goto out;
+	}
+	white.L = 100.0;
+	white.a = 0.0;
+	white.b = 0.0;
+	cmsDoTransform (transform, &white, rgb, 1);
+	if (rgb[0] != 255 || rgb[1] != 255 || rgb[2] != 255) {
+		warning = CD_PROFILE_WARNING_SCUM_DOT;
+		goto out;
+	}
+out:
+	if (profile_lab != NULL)
+		cmsCloseProfile (profile_lab);
+	if (transform != NULL)
+		cmsDeleteTransform (transform);
+	return warning;
+}
+
+/**
+ * cd_icc_check_primaries:
+ **/
+static CdProfileWarning
+cd_icc_check_primaries (cmsHPROFILE profile)
+{
+	CdProfileWarning warning = CD_PROFILE_WARNING_NONE;
+	cmsCIEXYZ *tmp;
+
+	/* The values used to check are based on the following ultra-wide
+	 * gamut profile XYZ values:
+	 *
+	 * CIERGB:
+	 * Red:		0.486893 0.174667 -0.001251
+	 * Green:	0.306320 0.824768 0.016998
+	 * Blue:	0.170990 0.000565 0.809158
+
+	 * ProPhoto RGB:
+	 * Red:		0.797546 0.288025 0.000000
+	 * Green:	0.135315 0.711899 -0.000015
+	 * Blue:	0.031342 0.000076 0.824921
+	 */
+
+	/* check red */
+	tmp = cmsReadTag (profile, cmsSigRedColorantTag);
+	if (tmp == NULL)
+		goto out;
+	if (tmp->X > 0.85f || tmp->Y < 0.15f || tmp->Z < -0.01) {
+		warning = CD_PROFILE_WARNING_PRIMARIES_INVALID;
+		goto out;
+	}
+
+	/* check green */
+	tmp = cmsReadTag (profile, cmsSigGreenColorantTag);
+	if (tmp == NULL)
+		goto out;
+	if (tmp->X < 0.10f || tmp->Y > 0.85f || tmp->Z < -0.01f) {
+		warning = CD_PROFILE_WARNING_PRIMARIES_INVALID;
+		goto out;
+	}
+
+	/* check blue */
+	tmp = cmsReadTag (profile, cmsSigBlueColorantTag);
+	if (tmp == NULL)
+		goto out;
+	if (tmp->X < 0.10f || tmp->Y < 0.01f || tmp->Z > 0.87f) {
+		warning = CD_PROFILE_WARNING_PRIMARIES_INVALID;
+		goto out;
+	}
+out:
+	return warning;
+}
+
+/**
+ * cd_icc_check_gray_axis:
+ **/
+static CdProfileWarning
+cd_icc_check_gray_axis (cmsHPROFILE profile)
+{
+	CdProfileWarning warning = CD_PROFILE_WARNING_NONE;
+	cmsCIELab gray[16];
+	cmsHPROFILE profile_lab = NULL;
+	cmsHTRANSFORM transform = NULL;
+	const gdouble gray_error = 5.0f;
+	gdouble last_l = -1;
+	guint8 rgb[3*16];
+	guint8 tmp;
+	guint i;
+
+	/* only do this for display profiles */
+	if (cmsGetDeviceClass (profile) != cmsSigDisplayClass)
+		goto out;
+
+	/* do Lab to RGB transform of 100,0,0 */
+	profile_lab = cmsCreateLab2Profile (cmsD50_xyY ());
+	transform = cmsCreateTransform (profile, TYPE_RGB_8,
+					profile_lab, TYPE_Lab_DBL,
+					INTENT_RELATIVE_COLORIMETRIC,
+					cmsFLAGS_NOOPTIMIZE);
+	if (transform == NULL) {
+		g_warning ("failed to setup RGB -> Lab transform");
+		goto out;
+	}
+
+	/* run a 16 item gray ramp through the transform */
+	for (i = 0; i < 16; i++) {
+		tmp = (255.0f / (16.0f - 1)) * i;
+		rgb[(i * 3) + 0] = tmp;
+		rgb[(i * 3) + 1] = tmp;
+		rgb[(i * 3) + 2] = tmp;
+	}
+	cmsDoTransform (transform, rgb, gray, 16);
+
+	/* check a/b is small */
+	for (i = 0; i < 16; i++) {
+		if (gray[i].a > gray_error ||
+		    gray[i].b > gray_error) {
+			warning = CD_PROFILE_WARNING_GRAY_AXIS_INVALID;
+			goto out;
+		}
+	}
+
+	/* check it's monotonic */
+	for (i = 0; i < 16; i++) {
+		if (last_l > 0 && gray[i].L < last_l) {
+			warning = CD_PROFILE_WARNING_GRAY_AXIS_NON_MONOTONIC;
+			goto out;
+		}
+		last_l = gray[i].L;
+	}
+out:
+	if (profile_lab != NULL)
+		cmsCloseProfile (profile_lab);
+	if (transform != NULL)
+		cmsDeleteTransform (transform);
+	return warning;
+}
+
+/**
+ * cd_icc_check_d50_whitepoint:
+ **/
+static CdProfileWarning
+cd_icc_check_d50_whitepoint (cmsHPROFILE profile)
+{
+	CdProfileWarning warning = CD_PROFILE_WARNING_NONE;
+	cmsCIExyY tmp;
+	cmsCIEXYZ additive;
+	cmsCIEXYZ primaries[4];
+	cmsHPROFILE profile_lab;
+	cmsHTRANSFORM transform;
+	const cmsCIEXYZ *d50;
+	const gdouble rgb_error = 0.05;
+	const gdouble additive_error = 0.1f;
+	const gdouble white_error = 0.05;
+	guint8 rgb[3*4];
+	guint i;
+
+	/* do Lab to RGB transform to get primaries */
+	profile_lab = cmsCreateXYZProfile ();
+	transform = cmsCreateTransform (profile, TYPE_RGB_8,
+					profile_lab, TYPE_XYZ_DBL,
+					INTENT_RELATIVE_COLORIMETRIC,
+					cmsFLAGS_NOOPTIMIZE);
+	if (transform == NULL) {
+		g_warning ("failed to setup RGB -> XYZ transform");
+		goto out;
+	}
+
+	/* Run RGBW through the transform */
+	rgb[0 + 0] = 255;
+	rgb[0 + 1] = 0;
+	rgb[0 + 2] = 0;
+	rgb[3 + 0] = 0;
+	rgb[3 + 1] = 255;
+	rgb[3 + 2] = 0;
+	rgb[6 + 0] = 0;
+	rgb[6 + 1] = 0;
+	rgb[6 + 2] = 255;
+	rgb[9 + 0] = 255;
+	rgb[9 + 1] = 255;
+	rgb[9 + 2] = 255;
+	cmsDoTransform (transform, rgb, primaries, 4);
+
+	/* check red is in gamut */
+	cmsXYZ2xyY (&tmp, &primaries[0]);
+	if (tmp.x - 0.735 > rgb_error || 0.265 - tmp.y > rgb_error) {
+		warning = CD_PROFILE_WARNING_PRIMARIES_UNLIKELY;
+		goto out;
+	}
+
+	/* check green is in gamut */
+	cmsXYZ2xyY (&tmp, &primaries[1]);
+	if (0.160 - tmp.x > rgb_error || tmp.y - 0.840 > rgb_error) {
+		warning = CD_PROFILE_WARNING_PRIMARIES_UNLIKELY;
+		goto out;
+	}
+
+	/* check blue is in gamut */
+	cmsXYZ2xyY (&tmp, &primaries[2]);
+	if (0.037 - tmp.x > rgb_error || tmp.y - 0.358 > rgb_error) {
+		warning = CD_PROFILE_WARNING_PRIMARIES_UNLIKELY;
+		goto out;
+	}
+
+	/* only do the rest for display profiles */
+	if (cmsGetDeviceClass (profile) != cmsSigDisplayClass)
+		goto out;
+
+	/* check white is D50 */
+	d50 = cmsD50_XYZ();
+	if (fabs (primaries[3].X - d50->X) > white_error ||
+	    fabs (primaries[3].Y - d50->Y) > white_error ||
+	    fabs (primaries[3].Z - d50->Z) > white_error) {
+		warning = CD_PROFILE_WARNING_WHITEPOINT_INVALID;
+		goto out;
+	}
+
+	/* check primaries add up to D50 */
+	additive.X = 0;
+	additive.Y = 0;
+	additive.Z = 0;
+	for (i = 0; i < 3; i++) {
+		additive.X += primaries[i].X;
+		additive.Y += primaries[i].Y;
+		additive.Z += primaries[i].Z;
+	}
+	if (fabs (additive.X - d50->X) > additive_error ||
+	    fabs (additive.Y - d50->Y) > additive_error ||
+	    fabs (additive.Z - d50->Z) > additive_error) {
+		warning = CD_PROFILE_WARNING_PRIMARIES_NON_ADDITIVE;
+		goto out;
+	}
+out:
+	if (profile_lab != NULL)
+		cmsCloseProfile (profile_lab);
+	if (transform != NULL)
+		cmsDeleteTransform (transform);
+	return warning;
+}
+
+/**
+ * cd_icc_get_warnings:
+ * @icc: a #CdIcc instance.
+ *
+ * Returns any warnings with profiles
+ *
+ * Return value: (transfer container) (element-type CdProfileWarning): An array of warning values
+ *
+ * Since: 0.1.34
+ **/
+GArray *
+cd_icc_get_warnings (CdIcc *icc)
+{
+	GArray *flags;
+	gboolean ret;
+	gchar ascii_name[1024];
+	CdProfileWarning warning;
+
+	g_return_val_if_fail (CD_IS_ICC (icc), NULL);
+	g_return_val_if_fail (icc->priv->lcms_profile != NULL, NULL);
+
+	flags = g_array_new (FALSE, FALSE, sizeof (CdProfileWarning));
+
+	/* check that the profile has a description and a copyright */
+	ret = cmsGetProfileInfoASCII (icc->priv->lcms_profile,
+				      cmsInfoDescription, "en", "US",
+				      ascii_name, 1024);
+	if (!ret || ascii_name[0] == '\0') {
+		warning = CD_PROFILE_WARNING_DESCRIPTION_MISSING;
+		g_array_append_val (flags, warning);
+	}
+	ret = cmsGetProfileInfoASCII (icc->priv->lcms_profile,
+				      cmsInfoCopyright, "en", "US",
+				      ascii_name, 1024);
+	if (!ret || ascii_name[0] == '\0') {
+		warning = CD_PROFILE_WARNING_COPYRIGHT_MISSING;
+		g_array_append_val (flags, warning);
+	}
+
+	/* not a RGB space */
+	if (cmsGetColorSpace (icc->priv->lcms_profile) != cmsSigRgbData)
+		goto out;
+
+	/* does profile have an unlikely whitepoint */
+	warning = cd_icc_check_whitepoint (icc);
+	if (warning != CD_PROFILE_WARNING_NONE)
+		g_array_append_val (flags, warning);
+
+	/* does profile have monotonic VCGT */
+	warning = cd_icc_check_vcgt (icc->priv->lcms_profile);
+	if (warning != CD_PROFILE_WARNING_NONE)
+		g_array_append_val (flags, warning);
+
+	/* if Lab 100,0,0 does not map to RGB 255,255,255 for relative
+	 * colorimetric then white it will not work on printers */
+	warning = cd_profile_check_scum_dot (icc->priv->lcms_profile);
+	if (warning != CD_PROFILE_WARNING_NONE)
+		g_array_append_val (flags, warning);
+
+	/* gray should give low a/b and should be monotonic */
+	warning = cd_icc_check_gray_axis (icc->priv->lcms_profile);
+	if (warning != CD_PROFILE_WARNING_NONE)
+		g_array_append_val (flags, warning);
+
+	/* tristimulus values cannot be negative */
+	warning = cd_icc_check_primaries (icc->priv->lcms_profile);
+	if (warning != CD_PROFILE_WARNING_NONE)
+		g_array_append_val (flags, warning);
+
+	/* check whitepoint works out to D50 */
+	warning = cd_icc_check_d50_whitepoint (icc->priv->lcms_profile);
+	if (warning != CD_PROFILE_WARNING_NONE)
+		g_array_append_val (flags, warning);
+out:
+	return flags;
 }
 
 /**

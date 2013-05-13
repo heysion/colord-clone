@@ -36,14 +36,6 @@ cd-device
 
 
 
-<!-- ##### USER_FUNCTION changed ##### -->
-<para>
-
-</para>
-
-@profile: 
-
-
 <!-- ##### USER_FUNCTION _cd_device_reserved1 ##### -->
 <para>
 
@@ -108,30 +100,27 @@ cd-device
 @void: 
 
 
-<!-- ##### FUNCTION cd_device_error_quark ##### -->
+<!-- ##### FUNCTION cd_device_add_profile ##### -->
 <para>
 
 </para>
 
-@void: 
-@Returns: 
+@device: 
+@relation: 
+@profile: 
+@cancellable: 
+@callback: 
+@user_data: 
 
 
-<!-- ##### FUNCTION cd_device_new ##### -->
+<!-- ##### FUNCTION cd_device_add_profile_finish ##### -->
 <para>
 
 </para>
 
-@void: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_device_new_with_object_path ##### -->
-<para>
-
-</para>
-
-@object_path: 
+@device: 
+@res: 
+@error: 
 @Returns: 
 
 
@@ -157,164 +146,167 @@ cd-device
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_device_set_property ##### -->
+<!-- ##### FUNCTION cd_device_equal ##### -->
+<para>
+
+</para>
+
+@device1: 
+@device2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_device_error_quark ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_device_get_colorspace ##### -->
+<para>
+
+</para>
+
+@device: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_device_get_connected ##### -->
+<para>
+
+</para>
+
+@device: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_device_get_created ##### -->
+<para>
+
+</para>
+
+@device: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_device_get_default_profile ##### -->
+<para>
+
+</para>
+
+@device: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_device_get_embedded ##### -->
+<para>
+
+</para>
+
+@device: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_device_get_enabled ##### -->
+<para>
+
+</para>
+
+@device: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_device_get_format ##### -->
+<para>
+
+</para>
+
+@device: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_device_get_id ##### -->
+<para>
+
+</para>
+
+@device: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_device_get_kind ##### -->
+<para>
+
+</para>
+
+@device: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_device_get_metadata ##### -->
+<para>
+
+</para>
+
+@device: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_device_get_metadata_item ##### -->
 <para>
 
 </para>
 
 @device: 
 @key: 
-@value: 
-@cancellable: 
-@callback: 
-@user_data: 
-
-
-<!-- ##### FUNCTION cd_device_set_property_finish ##### -->
-<para>
-
-</para>
-
-@device: 
-@res: 
-@error: 
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_device_add_profile ##### -->
+<!-- ##### FUNCTION cd_device_get_mode ##### -->
 <para>
 
 </para>
 
 @device: 
-@relation: 
-@profile: 
-@cancellable: 
-@callback: 
-@user_data: 
-
-
-<!-- ##### FUNCTION cd_device_add_profile_finish ##### -->
-<para>
-
-</para>
-
-@device: 
-@res: 
-@error: 
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_device_remove_profile ##### -->
+<!-- ##### FUNCTION cd_device_get_model ##### -->
 <para>
 
 </para>
 
 @device: 
-@profile: 
-@cancellable: 
-@callback: 
-@user_data: 
-
-
-<!-- ##### FUNCTION cd_device_remove_profile_finish ##### -->
-<para>
-
-</para>
-
-@device: 
-@res: 
-@error: 
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_device_make_profile_default ##### -->
+<!-- ##### FUNCTION cd_device_get_modified ##### -->
 <para>
 
 </para>
 
 @device: 
-@profile: 
-@cancellable: 
-@callback: 
-@user_data: 
-
-
-<!-- ##### FUNCTION cd_device_make_profile_default_finish ##### -->
-<para>
-
-</para>
-
-@device: 
-@res: 
-@error: 
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_device_profiling_inhibit ##### -->
+<!-- ##### FUNCTION cd_device_get_object_path ##### -->
 <para>
 
 </para>
 
 @device: 
-@cancellable: 
-@callback: 
-@user_data: 
-
-
-<!-- ##### FUNCTION cd_device_profiling_inhibit_finish ##### -->
-<para>
-
-</para>
-
-@device: 
-@res: 
-@error: 
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_device_set_enabled ##### -->
+<!-- ##### FUNCTION cd_device_get_owner ##### -->
 <para>
 
 </para>
 
 @device: 
-@enabled: 
-@cancellable: 
-@callback: 
-@user_data: 
-
-
-<!-- ##### FUNCTION cd_device_set_enabled_finish ##### -->
-<para>
-
-</para>
-
-@device: 
-@res: 
-@error: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_device_profiling_uninhibit ##### -->
-<para>
-
-</para>
-
-@device: 
-@cancellable: 
-@callback: 
-@user_data: 
-
-
-<!-- ##### FUNCTION cd_device_profiling_uninhibit_finish ##### -->
-<para>
-
-</para>
-
-@device: 
-@res: 
-@error: 
 @Returns: 
 
 
@@ -364,52 +356,7 @@ cd-device
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_device_get_id ##### -->
-<para>
-
-</para>
-
-@device: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_device_get_model ##### -->
-<para>
-
-</para>
-
-@device: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_device_get_vendor ##### -->
-<para>
-
-</para>
-
-@device: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_device_get_serial ##### -->
-<para>
-
-</para>
-
-@device: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_device_get_seat ##### -->
-<para>
-
-</para>
-
-@device: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_device_get_format ##### -->
+<!-- ##### FUNCTION cd_device_get_profiles ##### -->
 <para>
 
 </para>
@@ -427,69 +374,6 @@ cd-device
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_device_get_created ##### -->
-<para>
-
-</para>
-
-@device: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_device_get_modified ##### -->
-<para>
-
-</para>
-
-@device: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_device_get_kind ##### -->
-<para>
-
-</para>
-
-@device: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_device_get_colorspace ##### -->
-<para>
-
-</para>
-
-@device: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_device_get_mode ##### -->
-<para>
-
-</para>
-
-@device: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_device_get_enabled ##### -->
-<para>
-
-</para>
-
-@device: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_device_get_embedded ##### -->
-<para>
-
-</para>
-
-@device: 
-@Returns: 
-
-
 <!-- ##### FUNCTION cd_device_get_scope ##### -->
 <para>
 
@@ -499,7 +383,7 @@ cd-device
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_device_get_owner ##### -->
+<!-- ##### FUNCTION cd_device_get_seat ##### -->
 <para>
 
 </para>
@@ -508,7 +392,7 @@ cd-device
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_device_get_profiles ##### -->
+<!-- ##### FUNCTION cd_device_get_serial ##### -->
 <para>
 
 </para>
@@ -517,7 +401,7 @@ cd-device
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_device_get_default_profile ##### -->
+<!-- ##### FUNCTION cd_device_get_vendor ##### -->
 <para>
 
 </para>
@@ -526,31 +410,134 @@ cd-device
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_device_get_object_path ##### -->
+<!-- ##### FUNCTION cd_device_make_profile_default ##### -->
 <para>
 
 </para>
 
 @device: 
+@profile: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION cd_device_make_profile_default_finish ##### -->
+<para>
+
+</para>
+
+@device: 
+@res: 
+@error: 
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_device_get_metadata ##### -->
+<!-- ##### FUNCTION cd_device_new ##### -->
 <para>
 
 </para>
 
-@device: 
+@void: 
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_device_get_metadata_item ##### -->
+<!-- ##### FUNCTION cd_device_new_with_object_path ##### -->
+<para>
+
+</para>
+
+@object_path: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_device_profiling_inhibit ##### -->
 <para>
 
 </para>
 
 @device: 
-@key: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION cd_device_profiling_inhibit_finish ##### -->
+<para>
+
+</para>
+
+@device: 
+@res: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_device_profiling_uninhibit ##### -->
+<para>
+
+</para>
+
+@device: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION cd_device_profiling_uninhibit_finish ##### -->
+<para>
+
+</para>
+
+@device: 
+@res: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_device_remove_profile ##### -->
+<para>
+
+</para>
+
+@device: 
+@profile: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION cd_device_remove_profile_finish ##### -->
+<para>
+
+</para>
+
+@device: 
+@res: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_device_set_enabled ##### -->
+<para>
+
+</para>
+
+@device: 
+@enabled: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION cd_device_set_enabled_finish ##### -->
+<para>
+
+</para>
+
+@device: 
+@res: 
+@error: 
 @Returns: 
 
 
@@ -563,12 +550,27 @@ cd-device
 @object_path: 
 
 
-<!-- ##### FUNCTION cd_device_get_connected ##### -->
+<!-- ##### FUNCTION cd_device_set_property ##### -->
 <para>
 
 </para>
 
 @device: 
+@key: 
+@value: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION cd_device_set_property_finish ##### -->
+<para>
+
+</para>
+
+@device: 
+@res: 
+@error: 
 @Returns: 
 
 
@@ -581,13 +583,11 @@ cd-device
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_device_equal ##### -->
+<!-- ##### USER_FUNCTION changed ##### -->
 <para>
 
 </para>
 
-@device1: 
-@device2: 
-@Returns: 
+@profile: 
 
 

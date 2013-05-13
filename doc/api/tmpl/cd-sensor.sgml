@@ -36,14 +36,6 @@ cd-sensor
 
 
 
-<!-- ##### USER_FUNCTION button_pressed ##### -->
-<para>
-
-</para>
-
-@sensor: 
-
-
 <!-- ##### USER_FUNCTION _cd_sensor_reserved1 ##### -->
 <para>
 
@@ -108,31 +100,12 @@ cd-sensor
 @void: 
 
 
-<!-- ##### FUNCTION cd_sensor_error_quark ##### -->
+<!-- ##### USER_FUNCTION button_pressed ##### -->
 <para>
 
 </para>
 
-@void: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_sensor_new ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_sensor_new_with_object_path ##### -->
-<para>
-
-</para>
-
-@object_path: 
-@Returns: 
+@sensor: 
 
 
 <!-- ##### FUNCTION cd_sensor_connect ##### -->
@@ -157,70 +130,150 @@ cd-sensor
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_sensor_lock ##### -->
+<!-- ##### FUNCTION cd_sensor_equal ##### -->
 <para>
 
 </para>
 
-@sensor: 
-@cancellable: 
-@callback: 
-@user_data: 
-
-
-<!-- ##### FUNCTION cd_sensor_lock_finish ##### -->
-<para>
-
-</para>
-
-@sensor: 
-@res: 
-@error: 
+@sensor1: 
+@sensor2: 
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_sensor_unlock ##### -->
+<!-- ##### FUNCTION cd_sensor_error_quark ##### -->
 <para>
 
 </para>
 
-@sensor: 
-@cancellable: 
-@callback: 
-@user_data: 
-
-
-<!-- ##### FUNCTION cd_sensor_unlock_finish ##### -->
-<para>
-
-</para>
-
-@sensor: 
-@res: 
-@error: 
+@void: 
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_sensor_set_options ##### -->
+<!-- ##### FUNCTION cd_sensor_get_caps ##### -->
 <para>
 
 </para>
 
 @sensor: 
-@values: 
-@cancellable: 
-@callback: 
-@user_data: 
+@Returns: 
 
 
-<!-- ##### FUNCTION cd_sensor_set_options_finish ##### -->
+<!-- ##### FUNCTION cd_sensor_get_connected ##### -->
 <para>
 
 </para>
 
 @sensor: 
-@res: 
-@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_sensor_get_embedded ##### -->
+<para>
+
+</para>
+
+@sensor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_sensor_get_id ##### -->
+<para>
+
+</para>
+
+@sensor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_sensor_get_kind ##### -->
+<para>
+
+</para>
+
+@sensor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_sensor_get_locked ##### -->
+<para>
+
+</para>
+
+@sensor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_sensor_get_metadata ##### -->
+<para>
+
+</para>
+
+@sensor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_sensor_get_metadata_item ##### -->
+<para>
+
+</para>
+
+@sensor: 
+@key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_sensor_get_mode ##### -->
+<para>
+
+</para>
+
+@sensor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_sensor_get_model ##### -->
+<para>
+
+</para>
+
+@sensor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_sensor_get_native ##### -->
+<para>
+
+</para>
+
+@sensor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_sensor_get_object_path ##### -->
+<para>
+
+</para>
+
+@sensor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_sensor_get_option ##### -->
+<para>
+
+</para>
+
+@sensor: 
+@key: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_sensor_get_options ##### -->
+<para>
+
+</para>
+
+@sensor: 
 @Returns: 
 
 
@@ -247,34 +300,7 @@ cd-sensor
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_sensor_get_object_path ##### -->
-<para>
-
-</para>
-
-@sensor: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_sensor_get_id ##### -->
-<para>
-
-</para>
-
-@sensor: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_sensor_get_connected ##### -->
-<para>
-
-</para>
-
-@sensor: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_sensor_get_kind ##### -->
+<!-- ##### FUNCTION cd_sensor_get_serial ##### -->
 <para>
 
 </para>
@@ -292,70 +318,7 @@ cd-sensor
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_sensor_get_mode ##### -->
-<para>
-
-</para>
-
-@sensor: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_sensor_get_serial ##### -->
-<para>
-
-</para>
-
-@sensor: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_sensor_get_model ##### -->
-<para>
-
-</para>
-
-@sensor: 
-@Returns: 
-
-
 <!-- ##### FUNCTION cd_sensor_get_vendor ##### -->
-<para>
-
-</para>
-
-@sensor: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_sensor_get_native ##### -->
-<para>
-
-</para>
-
-@sensor: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_sensor_get_embedded ##### -->
-<para>
-
-</para>
-
-@sensor: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_sensor_get_locked ##### -->
-<para>
-
-</para>
-
-@sensor: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_sensor_get_caps ##### -->
 <para>
 
 </para>
@@ -374,41 +337,43 @@ cd-sensor
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_sensor_get_options ##### -->
+<!-- ##### FUNCTION cd_sensor_lock ##### -->
 <para>
 
 </para>
 
 @sensor: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION cd_sensor_lock_finish ##### -->
+<para>
+
+</para>
+
+@sensor: 
+@res: 
+@error: 
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_sensor_get_option ##### -->
+<!-- ##### FUNCTION cd_sensor_new ##### -->
 <para>
 
 </para>
 
-@sensor: 
-@key: 
+@void: 
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_sensor_get_metadata ##### -->
+<!-- ##### FUNCTION cd_sensor_new_with_object_path ##### -->
 <para>
 
 </para>
 
-@sensor: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_sensor_get_metadata_item ##### -->
-<para>
-
-</para>
-
-@sensor: 
-@key: 
+@object_path: 
 @Returns: 
 
 
@@ -421,13 +386,26 @@ cd-sensor
 @object_path: 
 
 
-<!-- ##### FUNCTION cd_sensor_equal ##### -->
+<!-- ##### FUNCTION cd_sensor_set_options ##### -->
 <para>
 
 </para>
 
-@sensor1: 
-@sensor2: 
+@sensor: 
+@values: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION cd_sensor_set_options_finish ##### -->
+<para>
+
+</para>
+
+@sensor: 
+@res: 
+@error: 
 @Returns: 
 
 
@@ -437,6 +415,28 @@ cd-sensor
 </para>
 
 @sensor: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_sensor_unlock ##### -->
+<para>
+
+</para>
+
+@sensor: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION cd_sensor_unlock_finish ##### -->
+<para>
+
+</para>
+
+@sensor: 
+@res: 
+@error: 
 @Returns: 
 
 

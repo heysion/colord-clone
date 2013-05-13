@@ -26,7 +26,7 @@ in's'value,
 out'o'object_path)
 <link linkend="ColorManager.FindProfileByFilename">FindProfileByFilename</link>(in's'filename,
 out'o'object_path)
-<link linkend="ColorManager.GetStandardSpace">GetStandardSpace</link>(in's'standard-space,
+<link linkend="ColorManager.GetStandardSpace">GetStandardSpace</link>(in's'standard_space,
 out'o'object_path)
 <link linkend="ColorManager.GetProfiles">GetProfiles</link>(out'ao'devices)
 <link linkend="ColorManager.GetSensors">GetSensors</link>(out'ao'devices)
@@ -199,7 +199,7 @@ out'o'object_path)</programlisting></refsect2>
             <para>
               A profile path.
             </para>
-          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.GetStandardSpace"/>GetStandardSpace ()</title><indexterm><primary>GetStandardSpace</primary><secondary>ColorManager</secondary></indexterm><programlisting>GetStandardSpace (in's'standard-space,
+          </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.GetStandardSpace"/>GetStandardSpace ()</title><indexterm><primary>GetStandardSpace</primary><secondary>ColorManager</secondary></indexterm><programlisting>GetStandardSpace (in's'standard_space,
 out'o'object_path)</programlisting></refsect2>
           <para>
             Gets a profile path for a defined profile space.
@@ -212,7 +212,7 @@ out'o'object_path)</programlisting></refsect2>
             NOTE: only system wide profiles are able to define
             themselves as standard spaces.
           </para>
-        <variablelist role="params"><varlistentry><term><parameter>standard-space</parameter>:</term><listitem><simpara>
+        <variablelist role="params"><varlistentry><term><parameter>standard_space</parameter>:</term><listitem><simpara>
             <para>
               A profile space, e.g. <literal>srgb</literal> or
               <literal>adobe-srgb</literal>.

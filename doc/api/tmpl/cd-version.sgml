@@ -22,14 +22,17 @@ cd-version
 <!-- ##### SECTION Image ##### -->
 
 
-<!-- ##### MACRO CD_MAJOR_VERSION ##### -->
+<!-- ##### MACRO CD_CHECK_VERSION ##### -->
 <para>
 
 </para>
 
+@major: 
+@minor: 
+@micro: 
 
 
-<!-- ##### MACRO CD_MINOR_VERSION ##### -->
+<!-- ##### MACRO CD_MAJOR_VERSION ##### -->
 <para>
 
 </para>
@@ -43,13 +46,10 @@ cd-version
 
 
 
-<!-- ##### MACRO CD_CHECK_VERSION ##### -->
+<!-- ##### MACRO CD_MINOR_VERSION ##### -->
 <para>
 
 </para>
 
-@major: 
-@minor: 
-@micro: 
 
 

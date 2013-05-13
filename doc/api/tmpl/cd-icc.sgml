@@ -49,6 +49,28 @@ cd-icc
 @CD_ICC_ERROR_FAILED_TO_CREATE: 
 @CD_ICC_ERROR_LAST: 
 
+<!-- ##### ENUM CdIccLoadFlags ##### -->
+<para>
+
+</para>
+
+@CD_ICC_LOAD_FLAGS_NONE: 
+@CD_ICC_LOAD_FLAGS_NAMED_COLORS: 
+@CD_ICC_LOAD_FLAGS_TRANSLATIONS: 
+@CD_ICC_LOAD_FLAGS_METADATA: 
+@CD_ICC_LOAD_FLAGS_FALLBACK_MD5: 
+@CD_ICC_LOAD_FLAGS_PRIMARIES: 
+@CD_ICC_LOAD_FLAGS_ALL: 
+@CD_ICC_LOAD_FLAGS_LAST: 
+
+<!-- ##### ENUM CdIccSaveFlags ##### -->
+<para>
+
+</para>
+
+@CD_ICC_SAVE_FLAGS_NONE: 
+@CD_ICC_SAVE_FLAGS_LAST: 
+
 <!-- ##### USER_FUNCTION _cd_icc_reserved1 ##### -->
 <para>
 
@@ -113,27 +135,30 @@ cd-icc
 @void: 
 
 
-<!-- ##### ENUM CdIccLoadFlags ##### -->
+<!-- ##### FUNCTION cd_icc_add_metadata ##### -->
 <para>
 
 </para>
 
-@CD_ICC_LOAD_FLAGS_NONE: 
-@CD_ICC_LOAD_FLAGS_NAMED_COLORS: 
-@CD_ICC_LOAD_FLAGS_TRANSLATIONS: 
-@CD_ICC_LOAD_FLAGS_METADATA: 
-@CD_ICC_LOAD_FLAGS_FALLBACK_MD5: 
-@CD_ICC_LOAD_FLAGS_PRIMARIES: 
-@CD_ICC_LOAD_FLAGS_ALL: 
-@CD_ICC_LOAD_FLAGS_LAST: 
+@icc: 
+@key: 
+@value: 
 
-<!-- ##### ENUM CdIccSaveFlags ##### -->
+
+<!-- ##### FUNCTION cd_icc_create_from_edid ##### -->
 <para>
 
 </para>
 
-@CD_ICC_SAVE_FLAGS_NONE: 
-@CD_ICC_SAVE_FLAGS_LAST: 
+@icc: 
+@gamma_value: 
+@red: 
+@green: 
+@blue: 
+@white: 
+@error: 
+@Returns: 
+
 
 <!-- ##### FUNCTION cd_icc_error_quark ##### -->
 <para>
@@ -144,79 +169,83 @@ cd-icc
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_icc_new ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_icc_load_data ##### -->
+<!-- ##### FUNCTION cd_icc_get_blue ##### -->
 <para>
 
 </para>
 
 @icc: 
-@data: 
-@data_len: 
-@flags: 
-@error: 
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_icc_load_file ##### -->
+<!-- ##### FUNCTION cd_icc_get_can_delete ##### -->
 <para>
 
 </para>
 
 @icc: 
-@file: 
-@flags: 
-@cancellable: 
-@error: 
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_icc_load_fd ##### -->
+<!-- ##### FUNCTION cd_icc_get_checksum ##### -->
 <para>
 
 </para>
 
 @icc: 
-@fd: 
-@flags: 
-@error: 
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_icc_load_handle ##### -->
+<!-- ##### FUNCTION cd_icc_get_colorspace ##### -->
 <para>
 
 </para>
 
 @icc: 
-@handle: 
-@flags: 
-@error: 
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_icc_save_file ##### -->
+<!-- ##### FUNCTION cd_icc_get_copyright ##### -->
 <para>
 
 </para>
 
 @icc: 
-@file: 
-@flags: 
-@cancellable: 
+@locale: 
 @error: 
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_icc_to_string ##### -->
+<!-- ##### FUNCTION cd_icc_get_created ##### -->
+<para>
+
+</para>
+
+@icc: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_icc_get_description ##### -->
+<para>
+
+</para>
+
+@icc: 
+@locale: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_icc_get_filename ##### -->
+<para>
+
+</para>
+
+@icc: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_icc_get_green ##### -->
 <para>
 
 </para>
@@ -234,42 +263,6 @@ cd-icc
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_icc_get_size ##### -->
-<para>
-
-</para>
-
-@icc: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_icc_get_filename ##### -->
-<para>
-
-</para>
-
-@icc: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_icc_get_version ##### -->
-<para>
-
-</para>
-
-@icc: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_icc_set_version ##### -->
-<para>
-
-</para>
-
-@icc: 
-@version: 
-
-
 <!-- ##### FUNCTION cd_icc_get_kind ##### -->
 <para>
 
@@ -279,31 +272,15 @@ cd-icc
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_icc_set_kind ##### -->
+<!-- ##### FUNCTION cd_icc_get_manufacturer ##### -->
 <para>
 
 </para>
 
 @icc: 
-@kind: 
-
-
-<!-- ##### FUNCTION cd_icc_get_colorspace ##### -->
-<para>
-
-</para>
-
-@icc: 
+@locale: 
+@error: 
 @Returns: 
-
-
-<!-- ##### FUNCTION cd_icc_set_colorspace ##### -->
-<para>
-
-</para>
-
-@icc: 
-@colorspace: 
 
 
 <!-- ##### FUNCTION cd_icc_get_metadata ##### -->
@@ -325,23 +302,15 @@ cd-icc
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_icc_add_metadata ##### -->
+<!-- ##### FUNCTION cd_icc_get_model ##### -->
 <para>
 
 </para>
 
 @icc: 
-@key: 
-@value: 
-
-
-<!-- ##### FUNCTION cd_icc_remove_metadata ##### -->
-<para>
-
-</para>
-
-@icc: 
-@key: 
+@locale: 
+@error: 
+@Returns: 
 
 
 <!-- ##### FUNCTION cd_icc_get_named_colors ##### -->
@@ -353,7 +322,7 @@ cd-icc
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_icc_get_can_delete ##### -->
+<!-- ##### FUNCTION cd_icc_get_red ##### -->
 <para>
 
 </para>
@@ -362,7 +331,7 @@ cd-icc
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_icc_get_created ##### -->
+<!-- ##### FUNCTION cd_icc_get_size ##### -->
 <para>
 
 </para>
@@ -371,7 +340,7 @@ cd-icc
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_icc_get_checksum ##### -->
+<!-- ##### FUNCTION cd_icc_get_temperature ##### -->
 <para>
 
 </para>
@@ -380,48 +349,140 @@ cd-icc
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_icc_get_description ##### -->
+<!-- ##### FUNCTION cd_icc_get_version ##### -->
+<para>
+
+</para>
+
+@icc: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_icc_get_warnings ##### -->
+<para>
+
+</para>
+
+@icc: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_icc_get_white ##### -->
+<para>
+
+</para>
+
+@icc: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_icc_load_data ##### -->
+<para>
+
+</para>
+
+@icc: 
+@data: 
+@data_len: 
+@flags: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_icc_load_fd ##### -->
+<para>
+
+</para>
+
+@icc: 
+@fd: 
+@flags: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_icc_load_file ##### -->
+<para>
+
+</para>
+
+@icc: 
+@file: 
+@flags: 
+@cancellable: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_icc_load_handle ##### -->
+<para>
+
+</para>
+
+@icc: 
+@handle: 
+@flags: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_icc_new ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_icc_remove_metadata ##### -->
+<para>
+
+</para>
+
+@icc: 
+@key: 
+
+
+<!-- ##### FUNCTION cd_icc_save_file ##### -->
+<para>
+
+</para>
+
+@icc: 
+@file: 
+@flags: 
+@cancellable: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_icc_set_colorspace ##### -->
+<para>
+
+</para>
+
+@icc: 
+@colorspace: 
+
+
+<!-- ##### FUNCTION cd_icc_set_copyright ##### -->
 <para>
 
 </para>
 
 @icc: 
 @locale: 
-@error: 
-@Returns: 
+@value: 
 
 
-<!-- ##### FUNCTION cd_icc_get_copyright ##### -->
+<!-- ##### FUNCTION cd_icc_set_copyright_items ##### -->
 <para>
 
 </para>
 
 @icc: 
-@locale: 
-@error: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_icc_get_manufacturer ##### -->
-<para>
-
-</para>
-
-@icc: 
-@locale: 
-@error: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_icc_get_model ##### -->
-<para>
-
-</para>
-
-@icc: 
-@locale: 
-@error: 
-@Returns: 
+@values: 
 
 
 <!-- ##### FUNCTION cd_icc_set_description ##### -->
@@ -443,23 +504,13 @@ cd-icc
 @values: 
 
 
-<!-- ##### FUNCTION cd_icc_set_copyright ##### -->
+<!-- ##### FUNCTION cd_icc_set_kind ##### -->
 <para>
 
 </para>
 
 @icc: 
-@locale: 
-@value: 
-
-
-<!-- ##### FUNCTION cd_icc_set_copyright_items ##### -->
-<para>
-
-</para>
-
-@icc: 
-@values: 
+@kind: 
 
 
 <!-- ##### FUNCTION cd_icc_set_manufacturer ##### -->
@@ -500,63 +551,21 @@ cd-icc
 @values: 
 
 
-<!-- ##### FUNCTION cd_icc_get_red ##### -->
+<!-- ##### FUNCTION cd_icc_set_version ##### -->
 <para>
 
 </para>
 
 @icc: 
-@Returns: 
+@version: 
 
 
-<!-- ##### FUNCTION cd_icc_get_green ##### -->
+<!-- ##### FUNCTION cd_icc_to_string ##### -->
 <para>
 
 </para>
 
 @icc: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_icc_get_blue ##### -->
-<para>
-
-</para>
-
-@icc: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_icc_get_white ##### -->
-<para>
-
-</para>
-
-@icc: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_icc_get_temperature ##### -->
-<para>
-
-</para>
-
-@icc: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_icc_create_from_edid ##### -->
-<para>
-
-</para>
-
-@icc: 
-@gamma_value: 
-@red: 
-@green: 
-@blue: 
-@white: 
-@error: 
 @Returns: 
 
 

@@ -1,6 +1,422 @@
+commit df50a9a94ae489a6aaf259e0c05c417c22b3bf3f
+Author: Richard Hughes <richard@hughsie.com>
+Date:   2013-05-01
+
+    Release colord 0.1.34
+
+M	NEWS
+M	configure.ac
+M	data/tests/Makefile.am
+M	doc/website/download.html
+M	po/cs.po
+M	po/de.po
+M	po/en_GB.po
+M	po/eo.po
+M	po/es.po
+M	po/eu.po
+M	po/fi.po
+M	po/fr.po
+M	po/gl.po
+M	po/he.po
+M	po/hu.po
+M	po/id.po
+M	po/it.po
+M	po/ja.po
+M	po/kk.po
+M	po/ko.po
+M	po/lv.po
+M	po/nl.po
+M	po/pl.po
+M	po/pt_BR.po
+M	po/ro.po
+M	po/ru.po
+M	po/sk.po
+M	po/sl.po
+M	po/sr.po
+M	po/sv.po
+M	po/tr.po
+M	po/uk.po
+M	po/zh_CN.po
+M	po/zh_TW.po
+
+commit fa3db572f33ab753e5a5659d7a45f0aa8312994f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-01
+
+    trivial: Fix a typo in the QtDBus annotations
+
+M	contrib/session-helper/org.freedesktop.ColorHelper.xml
+
+commit b376c91be7422a658be5d55de5889e1c114bc454
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-30
+
+    trivial: Add 'Since:' line to the new cd_icc_get_response()
+
+M	lib/colord/cd-icc.c
+
+commit 77657fba2d926285135e583106a5a1062c420f89
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-30
+
+    Add functionality to return the response of the CdIcc profile object
+
+    This is useful for the graphs in gnome-color-manager.
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+
+commit 1997510e80417c2e83b3f883c15009553b4205b4
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-30
+
+    Allow getting and setting the VCGT table in CdIcc
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+M	lib/colord/cd-self-test.c
+
+commit 84acd2d9278e56bf02c09518fe9a300c245c39e5
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-30
+
+    session-helper: Increase the delay between patches for hardware that
+    is slow
+
+    200ms just isn't enough on some hardware. Also, make this a GSettings
+    key in
+    case we need to change it in the future.
+
+    Hopefully resolves: https://bugzilla.gnome.org/show_bug.cgi?id=699250
+
+M	contrib/session-helper/cd-main.c
+M	contrib/session-helper/org.freedesktop.ColorHelper.gschema.xml.in
+
+commit 19fcdc6543746bdafdbe0397482d4fb26bdde51c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-29
+
+    Move the vendor quirk table to libcolordprivate so it can be used
+    with cd-find-broken
+
+    This way we don't list the same vendor multiple times.
+
+M	client/cd-find-broken.c
+M	lib/colord/Makefile.am
+A	lib/colord/cd-quirk.c
+C051	lib/colord/colord-private.h	lib/colord/cd-quirk.h
+M	lib/colord/colord-private.h
+M	lib/colord/colord.h
+M	src/cd-common.c
+M	src/cd-common.h
+M	src/cd-device.c
+M	src/cd-self-test.c
+
+commit e48fbfdf13290eeca76f4241d2dc4477ec92d480
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-29
+
+    trivial: Add cd-transform to colord.h
+
+M	lib/colord/colord-private.h
+M	lib/colord/colord.h
+
+commit 79fc8b47a511929e1f63e48984a1145529bbb3f8
+Author: Stefan Sperling <freedesktop-bugs@stsp.name>
+Date:	2013-04-29
+
+    Fix building RGB working space profiles when using OpenBSD/sparc64
+
+    sizeof(size_t) is 8 on OpenBSD/sparc64, so it cannot be written via
+    a pointer
+    to an unsigned 32 bit integer.
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	lib/colord/cd-icc.c
+
+commit a32aeb957f3fd8b04ed4d15a01d031738aa9e5ca
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-29
+
+    trivial: Fix cd-find-broken when only scanning one profile
+
+M	client/cd-find-broken.c
+
+commit 5bb8584add221cb8b2400f7a751d2c59279876fe
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-29
+
+    trivial: Adjust the docs now CdTransform exists
+
+M	doc/website/faq.html
+
+commit 934517d2c2954adc209ea546126c8d84e1dc2988
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-29
+
+    Add a ICC transform object for simple RGB conversions
+
+    We don't want to suggest to applications to link to lcms2 and learn
+    a whole new
+    library just to convert small images and icons.
+
+    Larger or more complex applications will want to use lcms2 for
+    the additional
+    control over the input and output buffer formats.
+
+M	doc/api/colord-docs.xml
+M	lib/colord/Makefile.am
+M	lib/colord/cd-enum.c
+M	lib/colord/cd-enum.h
+M	lib/colord/cd-self-test.c
+A	lib/colord/cd-transform.c
+A	lib/colord/cd-transform.h
+
+commit 3d1bd6837cacc1372d83721d7deed273d574963f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-29
+
+    trivial: Add better gtk-doc descriptions for the rendering intents
+
+M	lib/colord/cd-enum.h
+
+commit dabf9c2a88135b39ab14a1eb2c4acbf18c2de9a8
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-29
+
+    trivial: Fix the gtk-doc description for CdIcc
+
+M	lib/colord/cd-icc.c
+
+commit 174c1f8ec25413bad32c2cc1c9a76d4d5fbd612d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-26
+
+    trivial: Add more functionality to cd-find-broken
+
+M	client/cd-find-broken.c
+
+commit e9dcf846db5e00f77f6c0c7083236bc13a0787b8
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-26
+
+    Correct a lot more company names when creating devices
+
+    Also detect and fix vendors like 'To Be Filled By O.E.M.'
+
+M	src/cd-common.c
+
+commit 7b2c49953cf5baa7ad56135cd87774b5619ac731
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-26
+
+    Add device metadata OutputEdidMd5 so we can build a UCMM shim layer
+
+M	doc/metadata-spec.txt
+M	lib/colord/cd-enum.h
+
+commit 55eafd1c1601d99da2f18585ff0c0fc86b36a3d3
+Author: Daniel Nicoletti <dantti12@gmail.com>
+Date:	2013-04-25
+
+    Add Qt DBus annotations
+
+M	contrib/session-helper/org.freedesktop.ColorHelper.xml
+M	src/org.freedesktop.ColorManager.Device.xml
+M	src/org.freedesktop.ColorManager.Profile.xml
+M	src/org.freedesktop.ColorManager.Sensor.xml
+M	src/org.freedesktop.ColorManager.xml
+
+commit b68c7042a1f3439b05588cbdb9aa3a609b2831c2
+Author: Daniel Nicoletti <dantti12@gmail.com>
+Date:	2013-04-25
+
+    Fix standard-space property name into a compilable variable name:
+    standard_space
+
+M	src/org.freedesktop.ColorManager.xml
+
+commit 30801439dd1ad6f4ff926b00e7244de68ad4046d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-25
+
+    trivial: Remove some debugging that crept into cd-find-broken
+
+M	client/cd-find-broken.c
+
+commit 51fdec99491e8680503bd12386829271d3841b59
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-25
+
+    Add an internal program to scan a directory of ICC profiles for
+    warnings
+
+M	client/Makefile.am
+A	client/cd-find-broken.c
+
+commit 2ef49f445055c50ccfac6ba07fb2d6bc678fa764
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-25
+
+    Add a warning for RGB profiles with unlikely whitepoint values
+
+M	lib/colord/cd-enum.c
+M	lib/colord/cd-enum.h
+M	lib/colord/cd-icc.c
+
+commit 92b1a129bbec757cd76863567d5e62e78ddd8b58
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-25
+
+    trivial: Add some missing markup for CdProfileWarning
+
+M	lib/colord/cd-enum.h
+
+commit 87be4ed4411ca90b00509a42e64db3aa7d6dba5c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-24
+
+    Do not automatically add EDID profiles with warnings to devices
+
+M	src/cd-main.c
+
+commit 08f489d5c56130fcfb0c2f39738261b6f856f4df
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-24
+
+    trivial: Get the formatted warnings for the profile in the daemon
+
+M	src/cd-profile.c
+M	src/cd-profile.h
+
+commit 748b727b19c2fedb832e416b5d88b3e5b89a3e2c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-24
+
+    trivial: Fix the introspection docs for cd_icc_get_warnings()
+
+M	lib/colord/cd-icc.c
+
+commit c9607e452074d67a8b2ffede317b469609411c34
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-24
+
+    Move the warning check code from the daemon to libcolord for code
+    reuse
+
+    This allows us to write a helper tool to identify lots of broken
+    profiles.
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+M	lib/colord/cd-self-test.c
+M	src/cd-profile.c
+
+commit d3c84958d237fd335832e40e0e04bc6c5d3f524f
+Author: Václav Pavlín <vpavlin@redhat.com>
+Date:	2013-04-24
+
+    Add new systemd macros to the example spec file
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	contrib/colord.spec.in
+
+commit 92503adb54f645509159722ef993d9d402879478
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-24
+
+    Install the bash completion support into /usr
+
+    Also make it possible to disable installation (for make distcheck)
+    as it now
+    gets the correct system install path from pkg-config.
+
+    Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=923002
+
+M	Makefile.am
+M	client/Makefile.am
+M	configure.ac
+M	contrib/colord.spec.in
+M	data/Makefile.am
+R100	client/colormgr-completion.bash data/colormgr
+
+commit 61ab2f7728a86cd3dc568feade691c69ef4f87ea
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-24
+
+    Allow clients to call org.freedesktop.DBus.Peer
+
+    This fixes Ping() and GetMachineId() which is needed by systemd.
+
+M	data/org.freedesktop.ColorManager.conf.in
+
+commit 11dcaba034edff3955ceff53795df82c57c34adc
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-19
+
+    trivial: Update the website to reflect reality
+
+M	doc/website/bugs.html
+M	doc/website/download.html
+M	doc/website/faq.html
+M	doc/website/help.html
+M	doc/website/index.html
+M	doc/website/intro.html
+M	doc/website/profiles.html
+M	doc/website/screenshots.html
+M	doc/website/specifics.html
+M	doc/website/using.html
+
+commit f43b0242810d8154b42b36d41b376caf03b7dd49
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-18
+
+    Add a webservice URI example that can upload a profile to the Internet
+
+    The script must accept (and validate) a single ICC profile as the
+    form input,
+    and return the full URL of the new profile in 'Location'.
+
+M	contrib/session-helper/org.freedesktop.ColorHelper.gschema.xml.in
+
+commit 9e43ae57d5d8d0c5be688615d9004875767cf03d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-18
+
+    trivial: Add a python version of the CdIcc example
+
+A	examples/cd-icc.py
+
+commit 980a54c9430acb95a211e18db8ae538d54af6819
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-18
+
+    trivial: Include a call to setlocale() in the example applicaton
+
+M	examples/cd-libcolord-icc.c
+
+commit 1d43d71c6a4ccc060183a76965016dcbbb97d769
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-18
+
+    Add an example for using CdIcc in applications
+
+A	examples/cd-libcolord-icc.c
+
+commit 61c802498fe6decc7729d5a1f8ed7ad9a231d8f2
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-04-16
+
+    trivial: post release version bump
+
+M	RELEASE
+M	configure.ac
+
 commit 05e2b40a40e9752e66a19a90ca853ad45e36c162
 Author: Richard Hughes <richard@hughsie.com>
-Date:   2013-04-16
+Date:	2013-04-16
 
     Release colord 0.1.33
 

@@ -98,6 +98,9 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+BASH_COMPLETIONS_DIR = @BASH_COMPLETIONS_DIR@
+BASH_COMPLETION_CFLAGS = @BASH_COMPLETION_CFLAGS@
+BASH_COMPLETION_LIBS = @BASH_COMPLETION_LIBS@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CD_MAJOR_VERSION = @CD_MAJOR_VERSION@
@@ -297,8 +300,10 @@ EXTRA_DIST = \
 	calibration.ccmx				\
 	ibm-t61.icc					\
 	crayons.icc					\
+	measured.ti3					\
 	normalised.ti3					\
-	raw.ti3
+	raw.ti3						\
+	reference.ti3
 
 all: all-am
 

@@ -262,9 +262,12 @@ namespace Cd {
 		public unowned string get_model (string locale) throws GLib.Error;
 		public GLib.GenericArray<weak Cd.ColorSwatch> get_named_colors ();
 		public unowned Cd.ColorXYZ get_red ();
+		public GLib.GenericArray<weak Cd.ColorRGB> get_response (uint size) throws GLib.Error;
 		public uint32 get_size ();
 		public uint get_temperature ();
+		public GLib.GenericArray<weak Cd.ColorRGB> get_vcgt (uint size) throws GLib.Error;
 		public double get_version ();
+		public GLib.Array<weak Cd.ProfileWarning> get_warnings ();
 		public unowned Cd.ColorXYZ get_white ();
 		public bool load_data (uint8 data, size_t data_len, Cd.IccLoadFlags flags) throws GLib.Error;
 		public bool load_fd (int fd, Cd.IccLoadFlags flags) throws GLib.Error;
@@ -282,6 +285,7 @@ namespace Cd {
 		public void set_manufacturer_items (GLib.HashTable<void*,void*> values);
 		public void set_model (string locale, string value);
 		public void set_model_items (GLib.HashTable<void*,void*> values);
+		public bool set_vcgt (GLib.GenericArray<Cd.ColorRGB> vcgt) throws GLib.Error;
 		public void set_version (double version);
 		public string to_string ();
 		public Cd.ColorXYZ blue { get; }
@@ -489,6 +493,30 @@ namespace Cd {
 		public string vendor { get; }
 		public virtual signal void button_pressed ();
 	}
+	[CCode (cheader_filename = "colord.h", type_id = "cd_transform_get_type ()")]
+	public class Transform : GLib.Object {
+		[CCode (has_construct_function = false)]
+		public Transform ();
+		public static GLib.Quark error_quark ();
+		public unowned Cd.Icc get_abstract ();
+		public Cd.PixelFormat get_format ();
+		public unowned Cd.Icc get_input ();
+		public Cd.RenderingIntent get_intent ();
+		public unowned Cd.Icc get_output ();
+		public bool process (void* data_in, void* data_out, uint width, uint height, uint rowstride, GLib.Cancellable? cancellable = null) throws GLib.Error;
+		public void set_abstract (Cd.Icc icc);
+		public void set_format (Cd.PixelFormat pixel_format);
+		public void set_input (Cd.Icc icc);
+		public void set_intent (Cd.RenderingIntent rendering_intent);
+		public void set_output (Cd.Icc icc);
+		public Cd.Icc @abstract { get; set; }
+		public Cd.Icc input { get; set; }
+		public Cd.Icc output { get; set; }
+		[NoAccessorMethod]
+		public uint pixel_format { get; set; }
+		[NoAccessorMethod]
+		public uint rendering_intent { get; set; }
+	}
 	[CCode (cheader_filename = "colord.h", has_type_id = false)]
 	public struct ColorRGB8 {
 		public uint8 R;
@@ -601,6 +629,7 @@ namespace Cd {
 		NO_DATA,
 		FAILED_TO_SAVE,
 		FAILED_TO_CREATE,
+		INVALID_COLORSPACE,
 		LAST
 	}
 	[CCode (cheader_filename = "colord.h", cprefix = "CD_ICC_LOAD_FLAGS_", has_type_id = false)]
@@ -655,6 +684,17 @@ namespace Cd {
 		public static Cd.ObjectScope from_string (string object_scope);
 		public static unowned string to_string (Cd.ObjectScope object_scope);
 	}
+	[CCode (cheader_filename = "colord.h", cprefix = "CD_PIXEL_FORMAT_", has_type_id = false)]
+	public enum PixelFormat {
+		UNKNOWN,
+		RGB_8,
+		RGB_16,
+		RGBA_8,
+		RGBA_16,
+		LAST;
+		public static Cd.PixelFormat from_string (string pixel_format);
+		public static unowned string to_string (Cd.PixelFormat pixel_format);
+	}
 	[CCode (cheader_filename = "colord.h", cprefix = "CD_PROFILE_ERROR_", has_type_id = false)]
 	public enum ProfileError {
 		INTERNAL,
@@ -696,7 +736,8 @@ namespace Cd {
 		PRIMARIES_INVALID,
 		PRIMARIES_NON_ADDITIVE,
 		PRIMARIES_UNLIKELY,
-		WHITEPOINT_INVALID
+		WHITEPOINT_INVALID,
+		WHITEPOINT_UNLIKELY
 	}
 	[CCode (cheader_filename = "colord.h", cprefix = "CD_RENDERING_INTENT_", has_type_id = false)]
 	public enum RenderingIntent {
@@ -788,8 +829,16 @@ namespace Cd {
 		public static Cd.StandardSpace from_string (string standard_space);
 		public static unowned string to_string (Cd.StandardSpace standard_space);
 	}
+	[CCode (cheader_filename = "colord.h", cprefix = "CD_TRANSFORM_ERROR_", has_type_id = false)]
+	public enum TransformError {
+		FAILED_TO_SETUP_TRANSFORM,
+		INVALID_COLORSPACE,
+		LAST
+	}
 	[CCode (cheader_filename = "colord.h", cname = "CD_CLIENT_PROPERTY_DAEMON_VERSION")]
 	public const string CLIENT_PROPERTY_DAEMON_VERSION;
+	[CCode (cheader_filename = "colord.h", cname = "CD_DEVICE_METADATA_OUTPUT_EDID_MD5")]
+	public const string DEVICE_METADATA_OUTPUT_EDID_MD5;
 	[CCode (cheader_filename = "colord.h", cname = "CD_DEVICE_METADATA_OUTPUT_PRIORITY")]
 	public const string DEVICE_METADATA_OUTPUT_PRIORITY;
 	[CCode (cheader_filename = "colord.h", cname = "CD_DEVICE_METADATA_OUTPUT_PRIORITY_PRIMARY")]
@@ -1020,4 +1069,6 @@ namespace Cd {
 	public static string mat33_to_string (Cd.Mat3x3 src);
 	[CCode (cheader_filename = "colord.h")]
 	public static void mat33_vector_multiply (Cd.Mat3x3 mat_src, Cd.Vec3 vec_src, Cd.Vec3 vec_dest);
+	[CCode (cheader_filename = "colord.h")]
+	public static string quirk_vendor_name (string vendor);
 }

@@ -135,7 +135,8 @@ am_libcolordprivate_la_OBJECTS = libcolordprivate_la-cd-buffer.lo \
 	libcolordprivate_la-cd-interp-linear.lo \
 	libcolordprivate_la-cd-interp.lo libcolordprivate_la-cd-it8.lo \
 	libcolordprivate_la-cd-it8-utils.lo \
-	libcolordprivate_la-cd-math.lo
+	libcolordprivate_la-cd-math.lo libcolordprivate_la-cd-quirk.lo \
+	libcolordprivate_la-cd-transform.lo
 libcolordprivate_la_OBJECTS = $(am_libcolordprivate_la_OBJECTS)
 libcolordprivate_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
@@ -400,6 +401,9 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+BASH_COMPLETIONS_DIR = @BASH_COMPLETIONS_DIR@
+BASH_COMPLETION_CFLAGS = @BASH_COMPLETION_CFLAGS@
+BASH_COMPLETION_LIBS = @BASH_COMPLETION_LIBS@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CD_MAJOR_VERSION = @CD_MAJOR_VERSION@
@@ -637,8 +641,10 @@ libcolordbase_include_HEADERS = \
 	cd-math.h						\
 	cd-profile.h						\
 	cd-profile-sync.h					\
+	cd-quirk.h						\
 	cd-sensor.h						\
 	cd-sensor-sync.h					\
+	cd-transform.h						\
 	cd-version.h
 
 libcolordprivate_la_SOURCES = \
@@ -652,7 +658,9 @@ libcolordprivate_la_SOURCES = \
 	cd-interp.c						\
 	cd-it8.c						\
 	cd-it8-utils.c						\
-	cd-math.c
+	cd-math.c						\
+	cd-quirk.c						\
+	cd-transform.c
 
 libcolordprivate_la_LIBADD = \
 	$(LIBM)							\
@@ -858,6 +866,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolordprivate_la-cd-it8-utils.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolordprivate_la-cd-it8.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolordprivate_la-cd-math.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolordprivate_la-cd-quirk.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolordprivate_la-cd-transform.Plo@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -1019,6 +1029,20 @@ libcolordprivate_la-cd-math.lo: cd-math.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-math.c' object='libcolordprivate_la-cd-math.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_la_CFLAGS) $(CFLAGS) -c -o libcolordprivate_la-cd-math.lo `test -f 'cd-math.c' || echo '$(srcdir)/'`cd-math.c
+
+libcolordprivate_la-cd-quirk.lo: cd-quirk.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_la_CFLAGS) $(CFLAGS) -MT libcolordprivate_la-cd-quirk.lo -MD -MP -MF $(DEPDIR)/libcolordprivate_la-cd-quirk.Tpo -c -o libcolordprivate_la-cd-quirk.lo `test -f 'cd-quirk.c' || echo '$(srcdir)/'`cd-quirk.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcolordprivate_la-cd-quirk.Tpo $(DEPDIR)/libcolordprivate_la-cd-quirk.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-quirk.c' object='libcolordprivate_la-cd-quirk.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_la_CFLAGS) $(CFLAGS) -c -o libcolordprivate_la-cd-quirk.lo `test -f 'cd-quirk.c' || echo '$(srcdir)/'`cd-quirk.c
+
+libcolordprivate_la-cd-transform.lo: cd-transform.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_la_CFLAGS) $(CFLAGS) -MT libcolordprivate_la-cd-transform.lo -MD -MP -MF $(DEPDIR)/libcolordprivate_la-cd-transform.Tpo -c -o libcolordprivate_la-cd-transform.lo `test -f 'cd-transform.c' || echo '$(srcdir)/'`cd-transform.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcolordprivate_la-cd-transform.Tpo $(DEPDIR)/libcolordprivate_la-cd-transform.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-transform.c' object='libcolordprivate_la-cd-transform.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_la_CFLAGS) $(CFLAGS) -c -o libcolordprivate_la-cd-transform.lo `test -f 'cd-transform.c' || echo '$(srcdir)/'`cd-transform.c
 
 cd_self_test-cd-self-test.o: cd-self-test.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_self_test_CFLAGS) $(CFLAGS) -MT cd_self_test-cd-self-test.o -MD -MP -MF $(DEPDIR)/cd_self_test-cd-self-test.Tpo -c -o cd_self_test-cd-self-test.o `test -f 'cd-self-test.c' || echo '$(srcdir)/'`cd-self-test.c
