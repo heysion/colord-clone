@@ -22,6 +22,7 @@ Build-Depends:
  gtk-doc-tools,
  autopoint,
  libsystemd-login-dev [linux-any],
+ bash-completion,
 Standards-Version: 3.9.4
 XS-Testsuite: autopkgtest
 Section: graphics
