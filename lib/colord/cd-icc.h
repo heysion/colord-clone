@@ -59,6 +59,7 @@ typedef struct
  * @CD_ICC_ERROR_NO_DATA:		No data to read
  * @CD_ICC_ERROR_FAILED_TO_SAVE:	Failed to save file
  * @CD_ICC_ERROR_FAILED_TO_CREATE:	Failed to create file
+ * @CD_ICC_ERROR_INVALID_COLORSPACE:	Invalid colorspace
  *
  * The ICC error code.
  *
@@ -71,6 +72,7 @@ typedef enum {
 	CD_ICC_ERROR_NO_DATA,
 	CD_ICC_ERROR_FAILED_TO_SAVE,
 	CD_ICC_ERROR_FAILED_TO_CREATE,
+	CD_ICC_ERROR_INVALID_COLORSPACE,
 	CD_ICC_ERROR_LAST
 } CdIccError;
 
@@ -217,12 +219,22 @@ const CdColorXYZ *cd_icc_get_green			(CdIcc		*icc);
 const CdColorXYZ *cd_icc_get_blue			(CdIcc		*icc);
 const CdColorXYZ *cd_icc_get_white			(CdIcc		*icc);
 guint		 cd_icc_get_temperature			(CdIcc		*icc);
+GArray		*cd_icc_get_warnings			(CdIcc		*icc);
 gboolean	 cd_icc_create_from_edid		(CdIcc		*icc,
 							 gdouble	 gamma_value,
 							 const CdColorYxy *red,
 							 const CdColorYxy *green,
 							 const CdColorYxy *blue,
 							 const CdColorYxy *white,
+							 GError		**error);
+GPtrArray	*cd_icc_get_vcgt			(CdIcc		*icc,
+							 guint		 size,
+							 GError		**error);
+gboolean	 cd_icc_set_vcgt			(CdIcc		*icc,
+							 GPtrArray	*vcgt,
+							 GError		**error);
+GPtrArray	*cd_icc_get_response			(CdIcc		*icc,
+							 guint		 size,
 							 GError		**error);
 
 G_END_DECLS

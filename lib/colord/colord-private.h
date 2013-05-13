@@ -48,6 +48,8 @@
 #include <colord/cd-interp.h>
 #include <colord/cd-it8.h>
 #include <colord/cd-math.h>
+#include <colord/cd-quirk.h>
+#include <colord/cd-transform.h>
 
 #undef __COLORD_H_INSIDE__
 

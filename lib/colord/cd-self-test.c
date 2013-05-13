@@ -52,6 +52,7 @@
 #include "cd-profile-sync.h"
 #include "cd-sensor.h"
 #include "cd-sensor-sync.h"
+#include "cd-transform.h"
 #include "cd-version.h"
 
 static gboolean has_colord_process = FALSE;
@@ -3361,8 +3362,10 @@ static void
 colord_icc_func (void)
 {
 	CdIcc *icc;
+	const CdColorRGB *rgb_tmp;
 	const CdColorXYZ *xyz_tmp;
 	const gchar *str;
+	GArray *warnings;
 	gboolean ret;
 	gchar *created_str;
 	gchar *filename;
@@ -3407,6 +3410,21 @@ colord_icc_func (void)
 	handle = cd_icc_get_handle (icc);
 	g_assert (handle != NULL);
 
+	/* check VCGT */
+	array = cd_icc_get_vcgt (icc, 256, &error);
+	g_assert_no_error (error);
+	g_assert (array != NULL);
+	g_assert_cmpint (array->len, ==, 256);
+	rgb_tmp = g_ptr_array_index (array, 0);
+	g_assert_cmpfloat (rgb_tmp->R, <, 0.02);
+	g_assert_cmpfloat (rgb_tmp->G, <, 0.02);
+	g_assert_cmpfloat (rgb_tmp->B, <, 0.02);
+	rgb_tmp = g_ptr_array_index (array, 255);
+	g_assert_cmpfloat (rgb_tmp->R, >, 0.98);
+	g_assert_cmpfloat (rgb_tmp->G, >, 0.98);
+	g_assert_cmpfloat (rgb_tmp->B, >, 0.08);
+	g_ptr_array_unref (array);
+
 	/* check profile properties */
 	g_assert_cmpint (cd_icc_get_size (icc), ==, 25244);
 	g_assert_cmpstr (cd_icc_get_checksum (icc), ==, "9ace8cce8baac8d492a93a2a232d7702");
@@ -3435,6 +3453,11 @@ colord_icc_func (void)
 	g_assert_cmpint (g_hash_table_size (metadata), ==, 1);
 	g_hash_table_unref (metadata);
 	g_assert_cmpstr (cd_icc_get_metadata_item (icc, "EDID_md5"), ==, "f09e42aa86585d1bb6687d3c322ed0c1");
+
+	/* check warnings */
+	warnings = cd_icc_get_warnings (icc);
+	g_assert_cmpint (warnings->len, ==, 0);
+	g_array_unref (warnings);
 
 	/* marshall to a string */
 	tmp = cd_icc_to_string (icc);
@@ -3623,6 +3646,61 @@ colord_icc_localized_func (void)
 	g_object_unref (icc);
 }
 
+static void
+colord_transform_func (void)
+{
+	CdTransform *transform;
+	gboolean ret;
+	GError *error = NULL;
+	guint8 data_in[3] = { 127, 32, 64 };
+	guint8 data_out[3];
+	CdIcc *icc;
+	gchar *filename;
+	GFile *file;
+
+	/* setup transform with 8 bit RGB */
+	transform = cd_transform_new ();
+	cd_transform_set_intent (transform, CD_RENDERING_INTENT_PERCEPTUAL);
+	g_assert_cmpint (cd_transform_get_intent (transform), ==, CD_RENDERING_INTENT_PERCEPTUAL);
+	cd_transform_set_format (transform, CD_PIXEL_FORMAT_RGB_8);
+	g_assert_cmpint (cd_transform_get_format (transform), ==, CD_PIXEL_FORMAT_RGB_8);
+
+	/* setup profiles */
+	cd_transform_set_input (transform, NULL);
+	cd_transform_set_abstract (transform, NULL);
+
+	filename = _g_test_realpath (TESTDATADIR "/ibm-t61.icc");
+	file = g_file_new_for_path (filename);
+	icc = cd_icc_new ();
+	ret = cd_icc_load_file (icc,
+				file,
+				CD_ICC_LOAD_FLAGS_NONE,
+				NULL,
+				&error);
+	g_assert_no_error (error);
+	g_assert (ret);
+	cd_transform_set_output (transform, icc);
+	g_free (filename);
+	g_object_unref (file);
+	g_object_unref (icc);
+
+	/* run through profile */
+	ret = cd_transform_process (transform,
+				    data_in,
+				    data_out,
+				    1, 1, 1,
+				    NULL,
+				    &error);
+	g_assert_no_error (error);
+	g_assert (ret);
+
+	g_assert_cmpint (data_out[0], ==, 144);
+	g_assert_cmpint (data_out[1], ==, 0);
+	g_assert_cmpint (data_out[2], ==, 69);
+
+	g_object_unref (transform);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -3633,6 +3711,7 @@ main (int argc, char **argv)
 	g_log_set_fatal_mask (NULL, G_LOG_LEVEL_ERROR | G_LOG_LEVEL_CRITICAL);
 
 	/* tests go here */
+	g_test_add_func ("/colord/transform", colord_transform_func);
 	g_test_add_func ("/colord/icc", colord_icc_func);
 	g_test_add_func ("/colord/icc{localized}", colord_icc_localized_func);
 	g_test_add_func ("/colord/icc{edid}", colord_icc_edid_func);

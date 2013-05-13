@@ -33,13 +33,29 @@ cd-client-sync
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_client_delete_profile_sync ##### -->
+<!-- ##### FUNCTION cd_client_create_device_sync ##### -->
 <para>
 
 </para>
 
 @client: 
-@profile: 
+@id: 
+@scope: 
+@properties: 
+@cancellable: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_client_create_profile_sync ##### -->
+<para>
+
+</para>
+
+@client: 
+@id: 
+@scope: 
+@properties: 
 @cancellable: 
 @error: 
 @Returns: 
@@ -57,7 +73,32 @@ cd-client-sync
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_client_find_profile_sync ##### -->
+<!-- ##### FUNCTION cd_client_delete_profile_sync ##### -->
+<para>
+
+</para>
+
+@client: 
+@profile: 
+@cancellable: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_client_find_device_by_property_sync ##### -->
+<para>
+
+</para>
+
+@client: 
+@key: 
+@value: 
+@cancellable: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_client_find_device_sync ##### -->
 <para>
 
 </para>
@@ -81,41 +122,50 @@ cd-client-sync
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_client_create_profile_sync ##### -->
+<!-- ##### FUNCTION cd_client_find_profile_by_property_sync ##### -->
+<para>
+
+</para>
+
+@client: 
+@key: 
+@value: 
+@cancellable: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_client_find_profile_sync ##### -->
 <para>
 
 </para>
 
 @client: 
 @id: 
-@scope: 
-@properties: 
 @cancellable: 
 @error: 
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_client_import_profile_sync ##### -->
-<para>
-
-</para>
-
-@client: 
-@file: 
-@cancellable: 
-@error: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_client_create_device_sync ##### -->
+<!-- ##### FUNCTION cd_client_find_sensor_sync ##### -->
 <para>
 
 </para>
 
 @client: 
 @id: 
-@scope: 
-@properties: 
+@cancellable: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_client_get_devices_by_kind_sync ##### -->
+<para>
+
+</para>
+
+@client: 
+@kind: 
 @cancellable: 
 @error: 
 @Returns: 
@@ -154,31 +204,6 @@ cd-client-sync
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_client_find_device_sync ##### -->
-<para>
-
-</para>
-
-@client: 
-@id: 
-@cancellable: 
-@error: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_client_find_device_by_property_sync ##### -->
-<para>
-
-</para>
-
-@client: 
-@key: 
-@value: 
-@cancellable: 
-@error: 
-@Returns: 
-
-
 <!-- ##### FUNCTION cd_client_get_standard_space_sync ##### -->
 <para>
 
@@ -191,38 +216,13 @@ cd-client-sync
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_client_get_devices_by_kind_sync ##### -->
+<!-- ##### FUNCTION cd_client_import_profile_sync ##### -->
 <para>
 
 </para>
 
 @client: 
-@kind: 
-@cancellable: 
-@error: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_client_find_profile_by_property_sync ##### -->
-<para>
-
-</para>
-
-@client: 
-@key: 
-@value: 
-@cancellable: 
-@error: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_client_find_sensor_sync ##### -->
-<para>
-
-</para>
-
-@client: 
-@id: 
+@file: 
 @cancellable: 
 @error: 
 @Returns: 

@@ -3,7 +3,7 @@ AC_PREREQ(2.63)
 
 m4_define([cd_major_version], [0])
 m4_define([cd_minor_version], [1])
-m4_define([cd_micro_version], [33])
+m4_define([cd_micro_version], [34])
 m4_define([cd_version],
           [cd_major_version.cd_minor_version.cd_micro_version])
 
@@ -38,7 +38,7 @@ AC_SUBST(CD_MICRO_VERSION)
 # REVISION	If the API and ABI remains the same, but bugs are fixed.
 # AGE		Don't use.
 LT_CURRENT=1
-LT_REVISION=19
+LT_REVISION=20
 LT_AGE=0
 AC_SUBST(LT_CURRENT)
 AC_SUBST(LT_REVISION)
@@ -156,6 +156,16 @@ if test x$enable_gudev != xno; then
 	AC_DEFINE(HAVE_GUDEV,1,[Use GUDEV support for hardware])
 fi
 AM_CONDITIONAL(HAVE_GUDEV, test x$enable_gudev = xyes)
+
+dnl **** Bash completion ****
+AC_ARG_ENABLE(bash_completion, AS_HELP_STRING([--enable-bash-completion],[Enable bash completion]),
+	      enable_bash_completion=$enableval, enable_bash_completion=yes)
+if test x$enable_bash_completion != xno; then
+	PKG_CHECK_MODULES([BASH_COMPLETION], [bash-completion >= 2.0])
+	BASH_COMPLETIONS_DIR="`pkg-config --variable=completionsdir bash-completion`"
+	AC_SUBST([BASH_COMPLETIONS_DIR])
+fi
+AM_CONDITIONAL([HAVE_BASH_COMPLETION],[test "x$enable_bash_completion" = "xyes"])
 
 dnl ---------------------------------------------------------------------------
 dnl - Is docbook2man available?
@@ -408,6 +418,7 @@ echo "
         Reverse engineering tools: ${enable_reverse}
         File descriptor fallback:  ${enable_fd_fallback}
         External volume searching: ${enable_volume_search}
+        BASH completion support:   ${enable_bash_completion}
         SANE support:              ${has_sane}
         GUdev support:             ${enable_gudev}
         GUsb support:              ${enable_gusb}

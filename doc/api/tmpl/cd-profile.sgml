@@ -36,14 +36,6 @@ cd-profile
 
 
 
-<!-- ##### USER_FUNCTION changed ##### -->
-<para>
-
-</para>
-
-@profile: 
-
-
 <!-- ##### USER_FUNCTION _cd_profile_reserved1 ##### -->
 <para>
 
@@ -108,33 +100,6 @@ cd-profile
 @void: 
 
 
-<!-- ##### FUNCTION cd_profile_error_quark ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_profile_new ##### -->
-<para>
-
-</para>
-
-@void: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_profile_new_with_object_path ##### -->
-<para>
-
-</para>
-
-@object_path: 
-@Returns: 
-
-
 <!-- ##### FUNCTION cd_profile_connect ##### -->
 <para>
 
@@ -157,107 +122,26 @@ cd-profile
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_profile_set_property ##### -->
+<!-- ##### FUNCTION cd_profile_equal ##### -->
 <para>
 
 </para>
 
-@profile: 
-@key: 
-@value: 
-@cancellable: 
-@callback: 
-@user_data: 
-
-
-<!-- ##### FUNCTION cd_profile_set_property_finish ##### -->
-<para>
-
-</para>
-
-@profile: 
-@res: 
-@error: 
+@profile1: 
+@profile2: 
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_profile_install_system_wide ##### -->
+<!-- ##### FUNCTION cd_profile_error_quark ##### -->
 <para>
 
 </para>
 
-@profile: 
-@cancellable: 
-@callback: 
-@user_data: 
-
-
-<!-- ##### FUNCTION cd_profile_install_system_wide_finish ##### -->
-<para>
-
-</para>
-
-@profile: 
-@res: 
-@error: 
+@void: 
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_profile_get_id ##### -->
-<para>
-
-</para>
-
-@profile: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_profile_get_filename ##### -->
-<para>
-
-</para>
-
-@profile: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_profile_get_qualifier ##### -->
-<para>
-
-</para>
-
-@profile: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_profile_get_format ##### -->
-<para>
-
-</para>
-
-@profile: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_profile_get_title ##### -->
-<para>
-
-</para>
-
-@profile: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_profile_get_object_path ##### -->
-<para>
-
-</para>
-
-@profile: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_profile_get_kind ##### -->
+<!-- ##### FUNCTION cd_profile_get_age ##### -->
 <para>
 
 </para>
@@ -275,25 +159,7 @@ cd-profile
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_profile_get_scope ##### -->
-<para>
-
-</para>
-
-@profile: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_profile_get_owner ##### -->
-<para>
-
-</para>
-
-@profile: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_profile_get_warnings ##### -->
+<!-- ##### FUNCTION cd_profile_get_connected ##### -->
 <para>
 
 </para>
@@ -311,7 +177,16 @@ cd-profile
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_profile_get_age ##### -->
+<!-- ##### FUNCTION cd_profile_get_filename ##### -->
+<para>
+
+</para>
+
+@profile: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_profile_get_format ##### -->
 <para>
 
 </para>
@@ -329,7 +204,25 @@ cd-profile
 @Returns: 
 
 
+<!-- ##### FUNCTION cd_profile_get_id ##### -->
+<para>
+
+</para>
+
+@profile: 
+@Returns: 
+
+
 <!-- ##### FUNCTION cd_profile_get_is_system_wide ##### -->
+<para>
+
+</para>
+
+@profile: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_profile_get_kind ##### -->
 <para>
 
 </para>
@@ -357,16 +250,7 @@ cd-profile
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_profile_set_object_path ##### -->
-<para>
-
-</para>
-
-@profile: 
-@object_path: 
-
-
-<!-- ##### FUNCTION cd_profile_get_connected ##### -->
+<!-- ##### FUNCTION cd_profile_get_object_path ##### -->
 <para>
 
 </para>
@@ -375,7 +259,7 @@ cd-profile
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_profile_to_string ##### -->
+<!-- ##### FUNCTION cd_profile_get_owner ##### -->
 <para>
 
 </para>
@@ -384,13 +268,39 @@ cd-profile
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_profile_equal ##### -->
+<!-- ##### FUNCTION cd_profile_get_qualifier ##### -->
 <para>
 
 </para>
 
-@profile1: 
-@profile2: 
+@profile: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_profile_get_scope ##### -->
+<para>
+
+</para>
+
+@profile: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_profile_get_title ##### -->
+<para>
+
+</para>
+
+@profile: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_profile_get_warnings ##### -->
+<para>
+
+</para>
+
+@profile: 
 @Returns: 
 
 
@@ -400,6 +310,28 @@ cd-profile
 </para>
 
 @profile: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_profile_install_system_wide ##### -->
+<para>
+
+</para>
+
+@profile: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION cd_profile_install_system_wide_finish ##### -->
+<para>
+
+</para>
+
+@profile: 
+@res: 
+@error: 
 @Returns: 
 
 
@@ -413,5 +345,73 @@ cd-profile
 @cancellable: 
 @error: 
 @Returns: 
+
+
+<!-- ##### FUNCTION cd_profile_new ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_profile_new_with_object_path ##### -->
+<para>
+
+</para>
+
+@object_path: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_profile_set_object_path ##### -->
+<para>
+
+</para>
+
+@profile: 
+@object_path: 
+
+
+<!-- ##### FUNCTION cd_profile_set_property ##### -->
+<para>
+
+</para>
+
+@profile: 
+@key: 
+@value: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION cd_profile_set_property_finish ##### -->
+<para>
+
+</para>
+
+@profile: 
+@res: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_profile_to_string ##### -->
+<para>
+
+</para>
+
+@profile: 
+@Returns: 
+
+
+<!-- ##### USER_FUNCTION changed ##### -->
+<para>
+
+</para>
+
+@profile: 
 
 

@@ -13,3 +13,4 @@ cd_interp_linear_get_type
 cd_it8_get_type
 cd_profile_get_type
 cd_sensor_get_type
+cd_transform_get_type

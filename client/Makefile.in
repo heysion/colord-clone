@@ -14,7 +14,6 @@
 
 @SET_MAKE@
 
-
 VPATH = @srcdir@
 am__make_dryrun = \
   { \
@@ -51,11 +50,12 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
+noinst_PROGRAMS = cd-find-broken$(EXEEXT)
 bin_PROGRAMS = colormgr$(EXEEXT) cd-create-profile$(EXEEXT) \
 	cd-iccdump$(EXEEXT) cd-fix-profile$(EXEEXT)
 subdir = client
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
-	$(top_srcdir)/depcomp $(dist_bashcompletion_DATA)
+	$(top_srcdir)/depcomp
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/as-linguas.m4 \
 	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/gtk-doc.m4 \
@@ -73,9 +73,8 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-am__installdirs = "$(DESTDIR)$(bindir)" \
-	"$(DESTDIR)$(bashcompletiondir)"
-PROGRAMS = $(bin_PROGRAMS)
+am__installdirs = "$(DESTDIR)$(bindir)"
+PROGRAMS = $(bin_PROGRAMS) $(noinst_PROGRAMS)
 am_cd_create_profile_OBJECTS =  \
 	cd_create_profile-cd-create-profile.$(OBJEXT)
 cd_create_profile_OBJECTS = $(am_cd_create_profile_OBJECTS)
@@ -90,6 +89,13 @@ cd_create_profile_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(cd_create_profile_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
 	-o $@
+am_cd_find_broken_OBJECTS = cd_find_broken-cd-find-broken.$(OBJEXT)
+cd_find_broken_OBJECTS = $(am_cd_find_broken_OBJECTS)
+cd_find_broken_DEPENDENCIES = $(COLORD_LIBS) $(am__DEPENDENCIES_1)
+cd_find_broken_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
+	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
+	$(cd_find_broken_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o \
+	$@
 am_cd_fix_profile_OBJECTS = cd_fix_profile-cd-fix-profile.$(OBJEXT)
 cd_fix_profile_OBJECTS = $(am_cd_fix_profile_OBJECTS)
 cd_fix_profile_DEPENDENCIES = $(am__DEPENDENCIES_1) \
@@ -145,43 +151,17 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(cd_create_profile_SOURCES) $(cd_fix_profile_SOURCES) \
-	$(cd_iccdump_SOURCES) $(colormgr_SOURCES)
-DIST_SOURCES = $(cd_create_profile_SOURCES) $(cd_fix_profile_SOURCES) \
-	$(cd_iccdump_SOURCES) $(colormgr_SOURCES)
+SOURCES = $(cd_create_profile_SOURCES) $(cd_find_broken_SOURCES) \
+	$(cd_fix_profile_SOURCES) $(cd_iccdump_SOURCES) \
+	$(colormgr_SOURCES)
+DIST_SOURCES = $(cd_create_profile_SOURCES) $(cd_find_broken_SOURCES) \
+	$(cd_fix_profile_SOURCES) $(cd_iccdump_SOURCES) \
+	$(colormgr_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
-am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
-am__vpath_adj = case $$p in \
-    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
-    *) f=$$p;; \
-  esac;
-am__strip_dir = f=`echo $$p | sed -e 's|^.*/||'`;
-am__install_max = 40
-am__nobase_strip_setup = \
-  srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*|]/\\\\&/g'`
-am__nobase_strip = \
-  for p in $$list; do echo "$$p"; done | sed -e "s|$$srcdirstrip/||"
-am__nobase_list = $(am__nobase_strip_setup); \
-  for p in $$list; do echo "$$p $$p"; done | \
-  sed "s| $$srcdirstrip/| |;"' / .*\//!s/ .*/ ./; s,\( .*\)/[^/]*$$,\1,' | \
-  $(AWK) 'BEGIN { files["."] = "" } { files[$$2] = files[$$2] " " $$1; \
-    if (++n[$$2] == $(am__install_max)) \
-      { print $$2, files[$$2]; n[$$2] = 0; files[$$2] = "" } } \
-    END { for (dir in files) print dir, files[dir] }'
-am__base_list = \
-  sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
-  sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__uninstall_files_from_dir = { \
-  test -z "$$files" \
-    || { test ! -d "$$dir" && test ! -f "$$dir" && test ! -r "$$dir"; } \
-    || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
-         $(am__cd) "$$dir" && rm -f $$files; }; \
-  }
-DATA = $(dist_bashcompletion_DATA)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 # Read a list of newline-separated strings from the standard input,
 # and print each of them once, without duplicates.  Input order is
@@ -211,6 +191,9 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+BASH_COMPLETIONS_DIR = @BASH_COMPLETIONS_DIR@
+BASH_COMPLETION_CFLAGS = @BASH_COMPLETION_CFLAGS@
+BASH_COMPLETION_LIBS = @BASH_COMPLETION_LIBS@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CD_MAJOR_VERSION = @CD_MAJOR_VERSION@
@@ -426,6 +409,16 @@ COLORD_LIBS = \
 	$(top_builddir)/lib/colord/libcolordprivate.la	\
 	$(top_builddir)/lib/colord/libcolord.la
 
+cd_find_broken_SOURCES = \
+	cd-find-broken.c
+
+cd_find_broken_LDADD = \
+	$(COLORD_LIBS)					\
+	$(GLIB_LIBS)
+
+cd_find_broken_CFLAGS = \
+	$(WARNINGFLAGS_C)
+
 colormgr_SOURCES = \
 	cd-util.c
 
@@ -472,8 +465,6 @@ cd_create_profile_LDADD = \
 cd_create_profile_CFLAGS = \
 	$(WARNINGFLAGS_C)
 
-bashcompletiondir = ${sysconfdir}/bash_completion.d
-dist_bashcompletion_DATA = colormgr-completion.bash
 MAINTAINERCLEANFILES = *.a
 all: all-am
 
@@ -558,9 +549,21 @@ clean-binPROGRAMS:
 	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
 	echo " rm -f" $$list; \
 	rm -f $$list
+
+clean-noinstPROGRAMS:
+	@list='$(noinst_PROGRAMS)'; test -n "$$list" || exit 0; \
+	echo " rm -f" $$list; \
+	rm -f $$list || exit $$?; \
+	test -n "$(EXEEXT)" || exit 0; \
+	list=`for p in $$list; do echo "$$p"; done | sed 's/$(EXEEXT)$$//'`; \
+	echo " rm -f" $$list; \
+	rm -f $$list
 cd-create-profile$(EXEEXT): $(cd_create_profile_OBJECTS) $(cd_create_profile_DEPENDENCIES) $(EXTRA_cd_create_profile_DEPENDENCIES) 
 	@rm -f cd-create-profile$(EXEEXT)
 	$(AM_V_CCLD)$(cd_create_profile_LINK) $(cd_create_profile_OBJECTS) $(cd_create_profile_LDADD) $(LIBS)
+cd-find-broken$(EXEEXT): $(cd_find_broken_OBJECTS) $(cd_find_broken_DEPENDENCIES) $(EXTRA_cd_find_broken_DEPENDENCIES) 
+	@rm -f cd-find-broken$(EXEEXT)
+	$(AM_V_CCLD)$(cd_find_broken_LINK) $(cd_find_broken_OBJECTS) $(cd_find_broken_LDADD) $(LIBS)
 cd-fix-profile$(EXEEXT): $(cd_fix_profile_OBJECTS) $(cd_fix_profile_DEPENDENCIES) $(EXTRA_cd_fix_profile_DEPENDENCIES) 
 	@rm -f cd-fix-profile$(EXEEXT)
 	$(AM_V_CCLD)$(cd_fix_profile_LINK) $(cd_fix_profile_OBJECTS) $(cd_fix_profile_LDADD) $(LIBS)
@@ -578,6 +581,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd_create_profile-cd-create-profile.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd_find_broken-cd-find-broken.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd_fix_profile-cd-fix-profile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd_iccdump-cd-iccdump.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colormgr-cd-util.Po@am__quote@
@@ -616,6 +620,20 @@ cd_create_profile-cd-create-profile.obj: cd-create-profile.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-create-profile.c' object='cd_create_profile-cd-create-profile.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_create_profile_CFLAGS) $(CFLAGS) -c -o cd_create_profile-cd-create-profile.obj `if test -f 'cd-create-profile.c'; then $(CYGPATH_W) 'cd-create-profile.c'; else $(CYGPATH_W) '$(srcdir)/cd-create-profile.c'; fi`
+
+cd_find_broken-cd-find-broken.o: cd-find-broken.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_find_broken_CFLAGS) $(CFLAGS) -MT cd_find_broken-cd-find-broken.o -MD -MP -MF $(DEPDIR)/cd_find_broken-cd-find-broken.Tpo -c -o cd_find_broken-cd-find-broken.o `test -f 'cd-find-broken.c' || echo '$(srcdir)/'`cd-find-broken.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cd_find_broken-cd-find-broken.Tpo $(DEPDIR)/cd_find_broken-cd-find-broken.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-find-broken.c' object='cd_find_broken-cd-find-broken.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_find_broken_CFLAGS) $(CFLAGS) -c -o cd_find_broken-cd-find-broken.o `test -f 'cd-find-broken.c' || echo '$(srcdir)/'`cd-find-broken.c
+
+cd_find_broken-cd-find-broken.obj: cd-find-broken.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_find_broken_CFLAGS) $(CFLAGS) -MT cd_find_broken-cd-find-broken.obj -MD -MP -MF $(DEPDIR)/cd_find_broken-cd-find-broken.Tpo -c -o cd_find_broken-cd-find-broken.obj `if test -f 'cd-find-broken.c'; then $(CYGPATH_W) 'cd-find-broken.c'; else $(CYGPATH_W) '$(srcdir)/cd-find-broken.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cd_find_broken-cd-find-broken.Tpo $(DEPDIR)/cd_find_broken-cd-find-broken.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-find-broken.c' object='cd_find_broken-cd-find-broken.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_find_broken_CFLAGS) $(CFLAGS) -c -o cd_find_broken-cd-find-broken.obj `if test -f 'cd-find-broken.c'; then $(CYGPATH_W) 'cd-find-broken.c'; else $(CYGPATH_W) '$(srcdir)/cd-find-broken.c'; fi`
 
 cd_fix_profile-cd-fix-profile.o: cd-fix-profile.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_fix_profile_CFLAGS) $(CFLAGS) -MT cd_fix_profile-cd-fix-profile.o -MD -MP -MF $(DEPDIR)/cd_fix_profile-cd-fix-profile.Tpo -c -o cd_fix_profile-cd-fix-profile.o `test -f 'cd-fix-profile.c' || echo '$(srcdir)/'`cd-fix-profile.c
@@ -664,27 +682,6 @@ mostlyclean-libtool:
 
 clean-libtool:
 	-rm -rf .libs _libs
-install-dist_bashcompletionDATA: $(dist_bashcompletion_DATA)
-	@$(NORMAL_INSTALL)
-	@list='$(dist_bashcompletion_DATA)'; test -n "$(bashcompletiondir)" || list=; \
-	if test -n "$$list"; then \
-	  echo " $(MKDIR_P) '$(DESTDIR)$(bashcompletiondir)'"; \
-	  $(MKDIR_P) "$(DESTDIR)$(bashcompletiondir)" || exit 1; \
-	fi; \
-	for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  echo "$$d$$p"; \
-	done | $(am__base_list) | \
-	while read files; do \
-	  echo " $(INSTALL_DATA) $$files '$(DESTDIR)$(bashcompletiondir)'"; \
-	  $(INSTALL_DATA) $$files "$(DESTDIR)$(bashcompletiondir)" || exit $$?; \
-	done
-
-uninstall-dist_bashcompletionDATA:
-	@$(NORMAL_UNINSTALL)
-	@list='$(dist_bashcompletion_DATA)'; test -n "$(bashcompletiondir)" || list=; \
-	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	dir='$(DESTDIR)$(bashcompletiondir)'; $(am__uninstall_files_from_dir)
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -770,9 +767,9 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(PROGRAMS) $(DATA)
+all-am: Makefile $(PROGRAMS)
 installdirs:
-	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(bashcompletiondir)"; do \
+	for dir in "$(DESTDIR)$(bindir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -808,7 +805,8 @@ maintainer-clean-generic:
 	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
 clean: clean-am
 
-clean-am: clean-binPROGRAMS clean-generic clean-libtool mostlyclean-am
+clean-am: clean-binPROGRAMS clean-generic clean-libtool \
+	clean-noinstPROGRAMS mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -828,7 +826,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-dist_bashcompletionDATA
+install-data-am:
 
 install-dvi: install-dvi-am
 
@@ -874,25 +872,24 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-binPROGRAMS uninstall-dist_bashcompletionDATA
+uninstall-am: uninstall-binPROGRAMS
 
 .MAKE: install-am install-strip
 
 .PHONY: CTAGS GTAGS TAGS all all-am check check-am clean \
-	clean-binPROGRAMS clean-generic clean-libtool cscopelist-am \
-	ctags ctags-am distclean distclean-compile distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am html \
-	html-am info info-am install install-am install-binPROGRAMS \
-	install-data install-data-am install-dist_bashcompletionDATA \
-	install-dvi install-dvi-am install-exec install-exec-am \
-	install-html install-html-am install-info install-info-am \
-	install-man install-pdf install-pdf-am install-ps \
-	install-ps-am install-strip installcheck installcheck-am \
-	installdirs maintainer-clean maintainer-clean-generic \
-	mostlyclean mostlyclean-compile mostlyclean-generic \
-	mostlyclean-libtool pdf pdf-am ps ps-am tags tags-am uninstall \
-	uninstall-am uninstall-binPROGRAMS \
-	uninstall-dist_bashcompletionDATA
+	clean-binPROGRAMS clean-generic clean-libtool \
+	clean-noinstPROGRAMS cscopelist-am ctags ctags-am distclean \
+	distclean-compile distclean-generic distclean-libtool \
+	distclean-tags distdir dvi dvi-am html html-am info info-am \
+	install install-am install-binPROGRAMS install-data \
+	install-data-am install-dvi install-dvi-am install-exec \
+	install-exec-am install-html install-html-am install-info \
+	install-info-am install-man install-pdf install-pdf-am \
+	install-ps install-ps-am install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
+	tags tags-am uninstall uninstall-am uninstall-binPROGRAMS
 
 
 -include $(top_srcdir)/git.mk

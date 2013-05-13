@@ -77,6 +77,11 @@ typedef enum {
 
 /**
  * CdRenderingIntent:
+ * @CD_RENDERING_INTENT_UNKNOWN:		Unknown rendering intent
+ * @CD_RENDERING_INTENT_PERCEPTUAL:		Used for photos as it maintains contrast
+ * @CD_RENDERING_INTENT_RELATIVE_COLORIMETRIC:	Used for graphic design and named colors
+ * @CD_RENDERING_INTENT_SATURATION:		Used for business charts as it maintains saturation without dithering
+ * @CD_RENDERING_INTENT_ABSOLUTE_COLORIMETRIC:	Used when a specific color is required
  *
  * The rendering intent.
  **/
@@ -88,6 +93,20 @@ typedef enum {
 	CD_RENDERING_INTENT_ABSOLUTE_COLORIMETRIC,
 	CD_RENDERING_INTENT_LAST
 } CdRenderingIntent;
+
+/**
+ * CdPixelFormat:
+ *
+ * The pixel format of an image.
+ **/
+typedef enum {
+	CD_PIXEL_FORMAT_UNKNOWN,
+	CD_PIXEL_FORMAT_RGB_8,
+	CD_PIXEL_FORMAT_RGB_16,
+	CD_PIXEL_FORMAT_RGBA_8,
+	CD_PIXEL_FORMAT_RGBA_16,
+	CD_PIXEL_FORMAT_LAST
+} CdPixelFormat;
 
 /**
  * CdColorspace:
@@ -227,8 +246,10 @@ typedef enum {
  * @CD_PROFILE_WARNING_GRAY_AXIS_INVALID: There is significant a/b for gray
  * @CD_PROFILE_WARNING_GRAY_AXIS_NON_MONOTONIC: The gray ramp is not monotonic
  * @CD_PROFILE_WARNING_PRIMARIES_INVALID: One or more of the primaries are invalid
+ * @CD_PROFILE_WARNING_PRIMARIES_NON_ADDITIVE: The primaries to not add to give D50 white
  * @CD_PROFILE_WARNING_PRIMARIES_UNLIKELY: One or more of the primaries are outside of ROMM RGB
  * @CD_PROFILE_WARNING_WHITEPOINT_INVALID: RGB 255,255,255 does not return D50
+ * @CD_PROFILE_WARNING_WHITEPOINT_UNLIKELY: Whitepoint is outside of usual range
  *
  * The warning about the profile. Profiles with warnings can still be
  * used, but may be of limited use.
@@ -246,6 +267,7 @@ typedef enum {
 	CD_PROFILE_WARNING_PRIMARIES_NON_ADDITIVE,	/* Since: 0.1.25 */
 	CD_PROFILE_WARNING_PRIMARIES_UNLIKELY,		/* Since: 0.1.25 */
 	CD_PROFILE_WARNING_WHITEPOINT_INVALID,		/* Since: 0.1.25 */
+	CD_PROFILE_WARNING_WHITEPOINT_UNLIKELY,		/* Since: 0.1.34 */
 	/*< private >*/
 	CD_PROFILE_WARNING_LAST
 } CdProfileWarning;
@@ -431,6 +453,7 @@ typedef enum {
 
 /* defined in metadata-spec.txt */
 #define CD_DEVICE_METADATA_XRANDR_NAME		"XRANDR_name"
+#define CD_DEVICE_METADATA_OUTPUT_EDID_MD5	"OutputEdidMd5"
 #define CD_DEVICE_METADATA_OUTPUT_PRIORITY	"OutputPriority"
 #define CD_DEVICE_METADATA_OUTPUT_PRIORITY_PRIMARY	"primary"
 #define CD_DEVICE_METADATA_OUTPUT_PRIORITY_SECONDARY	"secondary"
@@ -489,6 +512,8 @@ const gchar	*cd_profile_kind_to_string		(CdProfileKind		 profile_kind);
 CdProfileKind	 cd_profile_kind_from_string		(const gchar		*profile_kind);
 CdRenderingIntent cd_rendering_intent_from_string	(const gchar		*rendering_intent);
 const gchar	*cd_rendering_intent_to_string		(CdRenderingIntent	 rendering_intent);
+CdPixelFormat	 cd_pixel_format_from_string		(const gchar		*pixel_format);
+const gchar	*cd_pixel_format_to_string		(CdPixelFormat		 pixel_format);
 const gchar	*cd_colorspace_to_string		(CdColorspace		 colorspace);
 CdColorspace	 cd_colorspace_from_string		(const gchar		*colorspace);
 const gchar	*cd_device_mode_to_string		(CdDeviceMode		 device_mode);

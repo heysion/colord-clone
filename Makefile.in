@@ -183,6 +183,9 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+BASH_COMPLETIONS_DIR = @BASH_COMPLETIONS_DIR@
+BASH_COMPLETION_CFLAGS = @BASH_COMPLETION_CFLAGS@
+BASH_COMPLETION_LIBS = @BASH_COMPLETION_LIBS@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CD_MAJOR_VERSION = @CD_MAJOR_VERSION@
@@ -395,6 +398,7 @@ DISTCHECK_CONFIGURE_FLAGS = \
 	--enable-gtk					\
 	--enable-sane					\
 	--disable-print-profiles			\
+	--disable-bash-completion			\
 	--enable-gtk-doc				\
 	--with-udevrulesdir=$$dc_install_base/$(udevrulesdir) \
 	--with-systemdsystemunitdir=$$dc_install_base/$(systemdsystemunitdir)

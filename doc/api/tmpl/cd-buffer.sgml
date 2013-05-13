@@ -59,24 +59,6 @@ cd-buffer
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_buffer_write_uint16_be ##### -->
-<para>
-
-</para>
-
-@buffer: 
-@value: 
-
-
-<!-- ##### FUNCTION cd_buffer_write_uint16_le ##### -->
-<para>
-
-</para>
-
-@buffer: 
-@value: 
-
-
 <!-- ##### FUNCTION cd_buffer_read_uint32_be ##### -->
 <para>
 
@@ -93,6 +75,24 @@ cd-buffer
 
 @buffer: 
 @Returns: 
+
+
+<!-- ##### FUNCTION cd_buffer_write_uint16_be ##### -->
+<para>
+
+</para>
+
+@buffer: 
+@value: 
+
+
+<!-- ##### FUNCTION cd_buffer_write_uint16_le ##### -->
+<para>
+
+</para>
+
+@buffer: 
+@value: 
 
 
 <!-- ##### FUNCTION cd_buffer_write_uint32_be ##### -->

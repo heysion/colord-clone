@@ -29,71 +29,11 @@ cd-deprecated
 
 
 
-<!-- ##### FUNCTION cd_color_set_xyz ##### -->
-<para>
-
-</para>
-
-@dest: 
-@X: 
-@Y: 
-@Z: 
-
-
-<!-- ##### FUNCTION cd_color_set_rgb ##### -->
-<para>
-
-</para>
-
-@dest: 
-@R: 
-@G: 
-@B: 
-
-
-<!-- ##### FUNCTION cd_color_set_yxy ##### -->
-<para>
-
-</para>
-
-@dest: 
-@Y: 
-@x: 
-@y: 
-
-
-<!-- ##### FUNCTION cd_color_copy_xyz ##### -->
-<para>
-
-</para>
-
-@src: 
-@dest: 
-
-
-<!-- ##### FUNCTION cd_color_copy_yxy ##### -->
-<para>
-
-</para>
-
-@src: 
-@dest: 
-
-
 <!-- ##### FUNCTION cd_color_clear_xyz ##### -->
 <para>
 
 </para>
 
-@dest: 
-
-
-<!-- ##### FUNCTION cd_color_copy_rgb ##### -->
-<para>
-
-</para>
-
-@src: 
 @dest: 
 
 
@@ -115,6 +55,15 @@ cd-deprecated
 @dest: 
 
 
+<!-- ##### FUNCTION cd_color_convert_xyz_to_yxy ##### -->
+<para>
+
+</para>
+
+@src: 
+@dest: 
+
+
 <!-- ##### FUNCTION cd_color_convert_yxy_to_xyz ##### -->
 <para>
 
@@ -124,13 +73,64 @@ cd-deprecated
 @dest: 
 
 
-<!-- ##### FUNCTION cd_color_convert_xyz_to_yxy ##### -->
+<!-- ##### FUNCTION cd_color_copy_rgb ##### -->
 <para>
 
 </para>
 
 @src: 
 @dest: 
+
+
+<!-- ##### FUNCTION cd_color_copy_xyz ##### -->
+<para>
+
+</para>
+
+@src: 
+@dest: 
+
+
+<!-- ##### FUNCTION cd_color_copy_yxy ##### -->
+<para>
+
+</para>
+
+@src: 
+@dest: 
+
+
+<!-- ##### FUNCTION cd_color_set_rgb ##### -->
+<para>
+
+</para>
+
+@dest: 
+@R: 
+@G: 
+@B: 
+
+
+<!-- ##### FUNCTION cd_color_set_xyz ##### -->
+<para>
+
+</para>
+
+@dest: 
+@X: 
+@Y: 
+@Z: 
+
+
+<!-- ##### FUNCTION cd_color_set_yxy ##### -->
+<para>
+
+</para>
+
+@dest: 
+@Y: 
+@x: 
+@y: 
 
 
 <!-- ##### FUNCTION cd_profile_set_filename_sync ##### -->

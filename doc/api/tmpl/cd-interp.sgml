@@ -36,26 +36,22 @@ cd-interp
 
 
 
-<!-- ##### USER_FUNCTION prepare ##### -->
+<!-- ##### ENUM CdInterpError ##### -->
 <para>
 
 </para>
 
-@interp: 
-@error: 
-@Returns: 
+@CD_INTERP_ERROR_FAILED: 
+@CD_INTERP_ERROR_LAST: 
 
-
-<!-- ##### USER_FUNCTION eval ##### -->
+<!-- ##### ENUM CdInterpKind ##### -->
 <para>
 
 </para>
 
-@interp: 
-@value: 
-@error: 
-@Returns: 
-
+@CD_INTERP_KIND_LINEAR: 
+@CD_INTERP_KIND_AKIMA: 
+@CD_INTERP_KIND_LAST: 
 
 <!-- ##### USER_FUNCTION _cd_interp_reserved1 ##### -->
 <para>
@@ -121,23 +117,6 @@ cd-interp
 @void: 
 
 
-<!-- ##### ENUM CdInterpError ##### -->
-<para>
-
-</para>
-
-@CD_INTERP_ERROR_FAILED: 
-@CD_INTERP_ERROR_LAST: 
-
-<!-- ##### ENUM CdInterpKind ##### -->
-<para>
-
-</para>
-
-@CD_INTERP_KIND_LINEAR: 
-@CD_INTERP_KIND_AKIMA: 
-@CD_INTERP_KIND_LAST: 
-
 <!-- ##### FUNCTION cd_interp_error_quark ##### -->
 <para>
 
@@ -147,7 +126,27 @@ cd-interp
 @Returns: 
 
 
+<!-- ##### FUNCTION cd_interp_eval ##### -->
+<para>
+
+</para>
+
+@interp: 
+@value: 
+@error: 
+@Returns: 
+
+
 <!-- ##### FUNCTION cd_interp_get_kind ##### -->
+<para>
+
+</para>
+
+@interp: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_interp_get_size ##### -->
 <para>
 
 </para>
@@ -174,15 +173,6 @@ cd-interp
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_interp_get_size ##### -->
-<para>
-
-</para>
-
-@interp: 
-@Returns: 
-
-
 <!-- ##### FUNCTION cd_interp_insert ##### -->
 <para>
 
@@ -191,6 +181,15 @@ cd-interp
 @interp: 
 @x: 
 @y: 
+
+
+<!-- ##### FUNCTION cd_interp_kind_to_string ##### -->
+<para>
+
+</para>
+
+@kind: 
+@Returns: 
 
 
 <!-- ##### FUNCTION cd_interp_prepare ##### -->
@@ -203,7 +202,7 @@ cd-interp
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_interp_eval ##### -->
+<!-- ##### USER_FUNCTION eval ##### -->
 <para>
 
 </para>
@@ -214,12 +213,13 @@ cd-interp
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_interp_kind_to_string ##### -->
+<!-- ##### USER_FUNCTION prepare ##### -->
 <para>
 
 </para>
 
-@kind: 
+@interp: 
+@error: 
 @Returns: 
 
 
