@@ -22,7 +22,8 @@ confflags = \
  --with-daemon-user=colord \
  --with-systemdsystemunitdir=/lib/systemd/system \
  --with-udevrulesdir=/lib/udev/rules.d \
- --enable-vala
+ --enable-vala \
+ --disable-silent-rules
 
 ifeq ($(DEB_HOST_ARCH_OS),linux)
 	confflags += --enable-gudev --enable-sane --enable-gusb --enable-systemd-login
