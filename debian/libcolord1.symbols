@@ -160,6 +160,7 @@ libcolord.so.1 libcolord1 #MINVER#
  cd_profile_install_system_wide@Base 0.1.10
  cd_profile_install_system_wide_finish@Base 0.1.10
  cd_profile_install_system_wide_sync@Base 0.1.10
+ cd_profile_load_icc@Base 0.1.34
  cd_profile_new@Base 0.1.10
  cd_profile_new_with_object_path@Base 0.1.10
  cd_profile_set_filename_sync@Base 0.1.10
@@ -223,6 +224,12 @@ libcolordprivate.so.1 libcolord1 #MINVER#
  cd_client_error_from_string@Base 0.1.29
  cd_client_error_to_string@Base 0.1.29
  cd_color_get_blackbody_rgb@Base 0.1.29
+ cd_color_lab_copy@Base 0.1.34
+ cd_color_lab_dup@Base 0.1.34
+ cd_color_lab_free@Base 0.1.34
+ cd_color_lab_get_type@Base 0.1.34
+ cd_color_lab_new@Base 0.1.34
+ cd_color_lab_set@Base 0.1.34
  cd_color_rgb8_to_rgb@Base 0.1.29
  cd_color_rgb_array_interpolate@Base 0.1.31
  cd_color_rgb_array_is_monotonic@Base 0.1.31
@@ -235,6 +242,14 @@ libcolordprivate.so.1 libcolord1 #MINVER#
  cd_color_rgb_new@Base 0.1.31
  cd_color_rgb_set@Base 0.1.29
  cd_color_rgb_to_rgb8@Base 0.1.29
+ cd_color_swatch_dup@Base 0.1.34
+ cd_color_swatch_free@Base 0.1.34
+ cd_color_swatch_get_name@Base 0.1.34
+ cd_color_swatch_get_type@Base 0.1.34
+ cd_color_swatch_get_value@Base 0.1.34
+ cd_color_swatch_new@Base 0.1.34
+ cd_color_swatch_set_name@Base 0.1.34
+ cd_color_swatch_set_value@Base 0.1.34
  cd_color_xyz_clear@Base 0.1.29
  cd_color_xyz_copy@Base 0.1.29
  cd_color_xyz_dup@Base 0.1.29
@@ -261,6 +276,69 @@ libcolordprivate.so.1 libcolord1 #MINVER#
  cd_device_mode_to_string@Base 0.1.29
  cd_device_relation_from_string@Base 0.1.29
  cd_device_relation_to_string@Base 0.1.29
+ cd_dom_error_quark@Base 0.1.34
+ cd_dom_get_node@Base 0.1.34
+ cd_dom_get_node_attribute@Base 0.1.34
+ cd_dom_get_node_data@Base 0.1.34
+ cd_dom_get_node_data_as_double@Base 0.1.34
+ cd_dom_get_node_data_as_int@Base 0.1.34
+ cd_dom_get_node_lab@Base 0.1.34
+ cd_dom_get_node_localized@Base 0.1.34
+ cd_dom_get_node_name@Base 0.1.34
+ cd_dom_get_node_rgb@Base 0.1.34
+ cd_dom_get_node_yxy@Base 0.1.34
+ cd_dom_get_type@Base 0.1.34
+ cd_dom_new@Base 0.1.34
+ cd_dom_parse_xml_data@Base 0.1.34
+ cd_dom_to_string@Base 0.1.34
+ cd_icc_add_metadata@Base 0.1.34
+ cd_icc_create_from_edid@Base 0.1.34
+ cd_icc_error_quark@Base 0.1.34
+ cd_icc_get_blue@Base 0.1.34
+ cd_icc_get_can_delete@Base 0.1.34
+ cd_icc_get_checksum@Base 0.1.34
+ cd_icc_get_colorspace@Base 0.1.34
+ cd_icc_get_copyright@Base 0.1.34
+ cd_icc_get_created@Base 0.1.34
+ cd_icc_get_description@Base 0.1.34
+ cd_icc_get_filename@Base 0.1.34
+ cd_icc_get_green@Base 0.1.34
+ cd_icc_get_handle@Base 0.1.34
+ cd_icc_get_kind@Base 0.1.34
+ cd_icc_get_manufacturer@Base 0.1.34
+ cd_icc_get_metadata@Base 0.1.34
+ cd_icc_get_metadata_item@Base 0.1.34
+ cd_icc_get_model@Base 0.1.34
+ cd_icc_get_named_colors@Base 0.1.34
+ cd_icc_get_red@Base 0.1.34
+ cd_icc_get_response@Base 0.1.34
+ cd_icc_get_size@Base 0.1.34
+ cd_icc_get_temperature@Base 0.1.34
+ cd_icc_get_type@Base 0.1.34
+ cd_icc_get_vcgt@Base 0.1.34
+ cd_icc_get_version@Base 0.1.34
+ cd_icc_get_warnings@Base 0.1.34
+ cd_icc_get_white@Base 0.1.34
+ cd_icc_load_data@Base 0.1.34
+ cd_icc_load_fd@Base 0.1.34
+ cd_icc_load_file@Base 0.1.34
+ cd_icc_load_handle@Base 0.1.34
+ cd_icc_new@Base 0.1.34
+ cd_icc_remove_metadata@Base 0.1.34
+ cd_icc_save_file@Base 0.1.34
+ cd_icc_set_colorspace@Base 0.1.34
+ cd_icc_set_copyright@Base 0.1.34
+ cd_icc_set_copyright_items@Base 0.1.34
+ cd_icc_set_description@Base 0.1.34
+ cd_icc_set_description_items@Base 0.1.34
+ cd_icc_set_kind@Base 0.1.34
+ cd_icc_set_manufacturer@Base 0.1.34
+ cd_icc_set_manufacturer_items@Base 0.1.34
+ cd_icc_set_model@Base 0.1.34
+ cd_icc_set_model_items@Base 0.1.34
+ cd_icc_set_vcgt@Base 0.1.34
+ cd_icc_set_version@Base 0.1.34
+ cd_icc_to_string@Base 0.1.34
  cd_interp_akima_get_type@Base 0.1.31
  cd_interp_akima_new@Base 0.1.31
  cd_interp_error_quark@Base 0.1.31
@@ -280,6 +358,7 @@ libcolordprivate.so.1 libcolord1 #MINVER#
  cd_it8_error_quark@Base 0.1.29
  cd_it8_get_data_item@Base 0.1.29
  cd_it8_get_data_size@Base 0.1.29
+ cd_it8_get_enable_created@Base 0.1.34
  cd_it8_get_instrument@Base 0.1.29
  cd_it8_get_kind@Base 0.1.29
  cd_it8_get_matrix@Base 0.1.29
@@ -296,6 +375,7 @@ libcolordprivate.so.1 libcolord1 #MINVER#
  cd_it8_new_with_kind@Base 0.1.29
  cd_it8_save_to_data@Base 0.1.29
  cd_it8_save_to_file@Base 0.1.29
+ cd_it8_set_enable_created@Base 0.1.34
  cd_it8_set_instrument@Base 0.1.29
  cd_it8_set_kind@Base 0.1.29
  cd_it8_set_matrix@Base 0.1.29
@@ -318,6 +398,8 @@ libcolordprivate.so.1 libcolord1 #MINVER#
  cd_mat33_vector_multiply@Base 0.1.29
  cd_object_scope_from_string@Base 0.1.29
  cd_object_scope_to_string@Base 0.1.29
+ cd_pixel_format_from_string@Base 0.1.34
+ cd_pixel_format_to_string@Base 0.1.34
  cd_profile_error_from_string@Base 0.1.29
  cd_profile_error_to_string@Base 0.1.29
  cd_profile_kind_from_string@Base 0.1.29
@@ -326,6 +408,7 @@ libcolordprivate.so.1 libcolord1 #MINVER#
  cd_profile_quality_to_string@Base 0.1.29
  cd_profile_warning_from_string@Base 0.1.29
  cd_profile_warning_to_string@Base 0.1.29
+ cd_quirk_vendor_name@Base 0.1.34
  cd_rendering_intent_from_string@Base 0.1.29
  cd_rendering_intent_to_string@Base 0.1.29
  cd_sensor_cap_from_string@Base 0.1.29
@@ -338,6 +421,20 @@ libcolordprivate.so.1 libcolord1 #MINVER#
  cd_sensor_state_to_string@Base 0.1.29
  cd_standard_space_from_string@Base 0.1.29
  cd_standard_space_to_string@Base 0.1.29
+ cd_transform_error_quark@Base 0.1.34
+ cd_transform_get_abstract@Base 0.1.34
+ cd_transform_get_format@Base 0.1.34
+ cd_transform_get_input@Base 0.1.34
+ cd_transform_get_intent@Base 0.1.34
+ cd_transform_get_output@Base 0.1.34
+ cd_transform_get_type@Base 0.1.34
+ cd_transform_new@Base 0.1.34
+ cd_transform_process@Base 0.1.34
+ cd_transform_set_abstract@Base 0.1.34
+ cd_transform_set_format@Base 0.1.34
+ cd_transform_set_input@Base 0.1.34
+ cd_transform_set_intent@Base 0.1.34
+ cd_transform_set_output@Base 0.1.34
  cd_vec3_add@Base 0.1.29
  cd_vec3_clear@Base 0.1.29
  cd_vec3_copy@Base 0.1.29
