@@ -1,2 +1,2 @@
-Tests: make_check
+Tests: make-check
 Restrictions: build-needed
