@@ -52,6 +52,9 @@
 /* cmsGetToneCurveEstimatedTableEntries is available */
 #undef HAVE_LCMS_GET_TABLE_ENTRIES
 
+/* cmsMLUtranslationsCount is available */
+#undef HAVE_LCMS_MLU_TRANSLATIONS_COUNT
+
 /* Define to 1 if libsystemd-login is available */
 #undef HAVE_LIBSYSTEMD_LOGIN
 

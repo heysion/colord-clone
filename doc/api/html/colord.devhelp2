@@ -226,8 +226,10 @@
     <keyword type="function" name="cd_icc_get_model ()" link="colord-cd-icc.html#cd-icc-get-model" since="0.1.32"/>
     <keyword type="function" name="cd_icc_get_named_colors ()" link="colord-cd-icc.html#cd-icc-get-named-colors" since="0.1.32"/>
     <keyword type="function" name="cd_icc_get_red ()" link="colord-cd-icc.html#cd-icc-get-red" since="0.1.32"/>
+    <keyword type="function" name="cd_icc_get_response ()" link="colord-cd-icc.html#cd-icc-get-response" since="0.1.34"/>
     <keyword type="function" name="cd_icc_get_size ()" link="colord-cd-icc.html#cd-icc-get-size" since="0.1.32"/>
     <keyword type="function" name="cd_icc_get_temperature ()" link="colord-cd-icc.html#cd-icc-get-temperature" since="0.1.32"/>
+    <keyword type="function" name="cd_icc_get_vcgt ()" link="colord-cd-icc.html#cd-icc-get-vcgt" since="0.1.34"/>
     <keyword type="function" name="cd_icc_get_version ()" link="colord-cd-icc.html#cd-icc-get-version" since="0.1.32"/>
     <keyword type="function" name="cd_icc_get_warnings ()" link="colord-cd-icc.html#cd-icc-get-warnings" since="0.1.34"/>
     <keyword type="function" name="cd_icc_get_white ()" link="colord-cd-icc.html#cd-icc-get-white" since="0.1.32"/>
@@ -248,6 +250,7 @@
     <keyword type="function" name="cd_icc_set_manufacturer_items ()" link="colord-cd-icc.html#cd-icc-set-manufacturer-items" since="0.1.32"/>
     <keyword type="function" name="cd_icc_set_model ()" link="colord-cd-icc.html#cd-icc-set-model" since="0.1.32"/>
     <keyword type="function" name="cd_icc_set_model_items ()" link="colord-cd-icc.html#cd-icc-set-model-items" since="0.1.32"/>
+    <keyword type="function" name="cd_icc_set_vcgt ()" link="colord-cd-icc.html#cd-icc-set-vcgt" since="0.1.34"/>
     <keyword type="function" name="cd_icc_set_version ()" link="colord-cd-icc.html#cd-icc-set-version" since="0.1.32"/>
     <keyword type="function" name="cd_icc_to_string ()" link="colord-cd-icc.html#cd-icc-to-string" since="0.1.32"/>
     <keyword type="macro" name="CD_TRANSFORM_ERROR" link="colord-cd-transform.html#CD-TRANSFORM-ERROR:CAPS"/>
@@ -621,6 +624,7 @@
     <keyword type="constant" name="CD_ICC_ERROR_NO_DATA" link="colord-cd-icc.html#CD-ICC-ERROR-NO-DATA:CAPS"/>
     <keyword type="constant" name="CD_ICC_ERROR_FAILED_TO_SAVE" link="colord-cd-icc.html#CD-ICC-ERROR-FAILED-TO-SAVE:CAPS"/>
     <keyword type="constant" name="CD_ICC_ERROR_FAILED_TO_CREATE" link="colord-cd-icc.html#CD-ICC-ERROR-FAILED-TO-CREATE:CAPS"/>
+    <keyword type="constant" name="CD_ICC_ERROR_INVALID_COLORSPACE" link="colord-cd-icc.html#CD-ICC-ERROR-INVALID-COLORSPACE:CAPS"/>
     <keyword type="constant" name="CD_ICC_ERROR_LAST" link="colord-cd-icc.html#CD-ICC-ERROR-LAST:CAPS"/>
     <keyword type="constant" name="CD_ICC_LOAD_FLAGS_NONE" link="colord-cd-icc.html#CD-ICC-LOAD-FLAGS-NONE:CAPS"/>
     <keyword type="constant" name="CD_ICC_LOAD_FLAGS_NAMED_COLORS" link="colord-cd-icc.html#CD-ICC-LOAD-FLAGS-NAMED-COLORS:CAPS"/>

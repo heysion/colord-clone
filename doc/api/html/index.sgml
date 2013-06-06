@@ -191,6 +191,7 @@
 <ANCHOR id="CD-ICC-ERROR-NO-DATA:CAPS" href="colord/colord-cd-icc.html#CD-ICC-ERROR-NO-DATA:CAPS">
 <ANCHOR id="CD-ICC-ERROR-FAILED-TO-SAVE:CAPS" href="colord/colord-cd-icc.html#CD-ICC-ERROR-FAILED-TO-SAVE:CAPS">
 <ANCHOR id="CD-ICC-ERROR-FAILED-TO-CREATE:CAPS" href="colord/colord-cd-icc.html#CD-ICC-ERROR-FAILED-TO-CREATE:CAPS">
+<ANCHOR id="CD-ICC-ERROR-INVALID-COLORSPACE:CAPS" href="colord/colord-cd-icc.html#CD-ICC-ERROR-INVALID-COLORSPACE:CAPS">
 <ANCHOR id="CD-ICC-ERROR-LAST:CAPS" href="colord/colord-cd-icc.html#CD-ICC-ERROR-LAST:CAPS">
 <ANCHOR id="CdIccLoadFlags" href="colord/colord-cd-icc.html#CdIccLoadFlags">
 <ANCHOR id="CD-ICC-LOAD-FLAGS-NONE:CAPS" href="colord/colord-cd-icc.html#CD-ICC-LOAD-FLAGS-NONE:CAPS">
@@ -232,8 +233,10 @@
 <ANCHOR id="cd-icc-get-model" href="colord/colord-cd-icc.html#cd-icc-get-model">
 <ANCHOR id="cd-icc-get-named-colors" href="colord/colord-cd-icc.html#cd-icc-get-named-colors">
 <ANCHOR id="cd-icc-get-red" href="colord/colord-cd-icc.html#cd-icc-get-red">
+<ANCHOR id="cd-icc-get-response" href="colord/colord-cd-icc.html#cd-icc-get-response">
 <ANCHOR id="cd-icc-get-size" href="colord/colord-cd-icc.html#cd-icc-get-size">
 <ANCHOR id="cd-icc-get-temperature" href="colord/colord-cd-icc.html#cd-icc-get-temperature">
+<ANCHOR id="cd-icc-get-vcgt" href="colord/colord-cd-icc.html#cd-icc-get-vcgt">
 <ANCHOR id="cd-icc-get-version" href="colord/colord-cd-icc.html#cd-icc-get-version">
 <ANCHOR id="cd-icc-get-warnings" href="colord/colord-cd-icc.html#cd-icc-get-warnings">
 <ANCHOR id="cd-icc-get-white" href="colord/colord-cd-icc.html#cd-icc-get-white">
@@ -254,6 +257,7 @@
 <ANCHOR id="cd-icc-set-manufacturer-items" href="colord/colord-cd-icc.html#cd-icc-set-manufacturer-items">
 <ANCHOR id="cd-icc-set-model" href="colord/colord-cd-icc.html#cd-icc-set-model">
 <ANCHOR id="cd-icc-set-model-items" href="colord/colord-cd-icc.html#cd-icc-set-model-items">
+<ANCHOR id="cd-icc-set-vcgt" href="colord/colord-cd-icc.html#cd-icc-set-vcgt">
 <ANCHOR id="cd-icc-set-version" href="colord/colord-cd-icc.html#cd-icc-set-version">
 <ANCHOR id="cd-icc-to-string" href="colord/colord-cd-icc.html#cd-icc-to-string">
 <ANCHOR id="colord-cd-transform" href="colord/colord-cd-transform.html">

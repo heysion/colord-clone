@@ -1,6 +1,481 @@
+commit f052e56acec739705e78421c2e75419481074673
+Author: Richard Hughes <richard@hughsie.com>
+Date:   2013-05-13
+
+    Release colord 1.0.0
+
+M	NEWS
+M	doc/website/download.html
+M	doc/website/faq.html
+
+commit 61b93bdd5d6243e39523a5ea755060b02ebe8d18
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-13
+
+    trivial: Fix two double-unrefs in the self test suite
+
+M	lib/colord/cd-self-test.c
+
+commit 9711913a1d1de7d2a0e65d9ac5513ddd54ce7bdb
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-13
+
+    trivial: Fix a signed warning on ARM
+
+M	lib/colord/cd-icc.c
+M	po/it.po
+
+commit 3e133d378cc21803914b1bb82dbf2d1882c77768
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-03-27
+
+    libcolord: Show all the translations when dumping an ICC profile
+
+    Note: You need a new version of lcms2 for this to work.
+
+M	configure.ac
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-self-test.c
+
+commit ea2cef35fb8126f221f39dc9c221aa4c1564625a
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-11
+
+    Fix crash in cd-iccdump by working around an lcms2 bug
+
+    cmsReadRawTag(hProfile, sig, buffer, sizeof(buffer)) actually writes
+    past the
+    end of the buffer, rather than respecting the BufferSize argument.
+
+M	lib/colord/cd-icc.c
+
+commit fef9feecdff273d9d0ac99a76710dfb26afb2329
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-10
+
+    trivial: Allow non-RGB profiles now we accept CD_PIXEL_FORMAT_CMYK32
+    as a pixel format
+
+M	lib/colord/cd-transform.c
+
+commit a556da5fd42aa8fe4409b65bc48cb46c40b99a2e
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-10
+
+    Add a simple BGRA32 (default cairo-surface) pixel format
+
+M	lib/colord/cd-enum.h
+
+commit bf0670ada0e0b73f0814273077f2951b10711b0f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-10
+
+    trivial: Correctly log the qualifier strings when calling
+    GetProfileForQualifiers()
+
+M	src/cd-device.c
+
+commit 7b5019d40842e7971f48a6ccd06a4ae6ffba6098
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-10
+
+    Do not show a warning when using 'colormgr
+    device-get-profile-for-qualifier'
+
+    Additionally, do not use the object path as an extra qualifier
+    [typo?].
+
+M	client/cd-util.c
+
+commit 2e243b33b8dfcbe95e48e9e5d44ed96e7255a65a
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-10
+
+    trivial: Correct the method names for getting and setting the
+    CdTransform profiles
+
+M	lib/colord/cd-self-test.c
+M	lib/colord/cd-transform.c
+M	lib/colord/cd-transform.h
+
+commit 7d0e5d6c7a58d03b075ea395c708ae123a6e17cc
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-10
+
+    Allow a different input and output format in CdTransform
+
+M	lib/colord/cd-self-test.c
+M	lib/colord/cd-transform.c
+M	lib/colord/cd-transform.h
+
+commit db8cc054aeb3d2bb5a8b98c74f5d084993bfd1bf
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-10
+
+    trivial: Correct the method naming on
+    cd_transform_[g|s]et_rendering_intent()
+
+M	lib/colord/cd-self-test.c
+M	lib/colord/cd-transform.c
+M	lib/colord/cd-transform.h
+
+commit 8fd786e1cb7901c3eef31419085c84e91938f0a4
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-10
+
+    Add a simple CMYK32 pixel format
+
+M	lib/colord/cd-enum.c
+M	lib/colord/cd-enum.h
+M	lib/colord/cd-transform.c
+
+commit d93ff0ed48b928309431011548745ea8f0b675c6
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-10
+
+    Add API to control the use of BPC in CdTransform
+
+M	lib/colord/cd-transform.c
+M	lib/colord/cd-transform.h
+
+commit 46a2b9cead5491a7420ca6c30ffb8ed0331251af
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-10
+
+    trivial: Turn on the print profiles in the Fedora spec file
+
+M	contrib/colord.spec.in
+
+commit 4eaaad2d1f14e0b50ca7b1ddbf4fb18fc8b436ae
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-10
+
+    Use the same pixel format names as Cairo and the same in-memory
+    value as lcms2
+
+    There's no point us re-inventing the wheel here.
+
+M	lib/colord/cd-enum.c
+M	lib/colord/cd-enum.h
+M	lib/colord/cd-self-test.c
+M	lib/colord/cd-transform.c
+
+commit d4841b6f4878624355bd7255a2ea9916ebe1dd18
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-10
+
+    Set the STANDARD_space metadata for the print profiles
+
+M	data/profiles/FOGRA27L_coated.xml.in
+M	data/profiles/FOGRA28L_webcoated.xml.in
+M	data/profiles/FOGRA29L_uncoated.xml.in
+M	data/profiles/FOGRA30L_uncoated_yellowish.xml.in
+M	data/profiles/FOGRA39L_coated.xml.in
+M	data/profiles/FOGRA40L_SC_paper.xml.in
+M	data/profiles/FOGRA45L_lwc.xml.in
+M	data/profiles/FOGRA47L_uncoated.xml.in
+M	data/profiles/GRACoL_TR006_coated.xml.in
+M	data/profiles/IFRA26S_2004_newsprint.xml.in
+M	data/profiles/SNAP_TR002_newsprint.xml.in
+M	data/profiles/SWOP_TR003_coated_3.xml.in
+M	data/profiles/SWOP_TR005_coated_5.xml.in
+
+commit 468a28da08bf3354d9a84709f824a684cabc6fc5
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-10
+
+    trivial: Avoid a format warning when building the self tests on ARM
+
+M	lib/colorhug/ch-self-test.c
+
+commit c3c84b7f725aeb35b9409e1cb0e218640b4878b2
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-10
+
+    trivial: Avoid cast-align warning when building the self tests on ARM
+
+M	lib/colord/cd-self-test.c
+
+commit f86a0864bb2dc836cb1990aae6fadca18c9a3e39
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-10
+
+    Fix using the ColorHug color sensor on ARM hardware
+
+    Convert libcolorhug to use the fixed cd_buffer_* functions and memcpy
+    to get
+    rid of all the -Wcast-align warnings.
+
+M	lib/colorhug/ch-device-queue.c
+
+commit 11c313c9b15a61a895fe15ead4911a0093b94033
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-09
+
+    Fix using the Huey color sensor on ARM hardware
+
+    We were not byte-swapping correctly, so use a memcpy and the Glib
+    helpers, which
+    will be optimised to a NOP on most systems by the compiler.
+
+M	lib/colord/cd-buffer.c
+
+commit 5e6e3e54953cc39386b9fd2a8f233c00f9014d4c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-09
+
+    trivial: Post branch version bump
+
+M	RELEASE
+M	configure.ac
+
+commit 2f3ec7e5dbbc895a6c8ce3915cf3d4a5075b2d99
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-09
+
+    Use G_GNUC_WARN_UNUSED_RESULT in public and private headers
+
+M	lib/colord/cd-client-sync.h
+M	lib/colord/cd-client.h
+M	lib/colord/cd-color.c
+M	lib/colord/cd-color.h
+M	lib/colord/cd-deprecated.h
+M	lib/colord/cd-device-sync.h
+M	lib/colord/cd-device.h
+M	lib/colord/cd-dom.h
+M	lib/colord/cd-icc.h
+M	lib/colord/cd-interp.h
+M	lib/colord/cd-it8-utils.h
+M	lib/colord/cd-it8.h
+M	lib/colord/cd-math.h
+M	lib/colord/cd-profile-sync.h
+M	lib/colord/cd-profile.h
+M	lib/colord/cd-quirk.h
+M	lib/colord/cd-sensor-sync.h
+M	lib/colord/cd-sensor.h
+M	lib/colord/cd-transform.h
+M	lib/colorhug/ch-device-queue.h
+M	lib/colorhug/ch-device.h
+M	lib/colorhug/ch-inhx32.h
+M	lib/dtp94/dtp94-device.h
+M	lib/huey/huey-ctx.h
+M	lib/huey/huey-device.h
+M	src/cd-common.h
+M	src/cd-device-db.h
+M	src/cd-device.h
+M	src/cd-inhibit.h
+M	src/cd-mapping-db.h
+M	src/cd-profile.h
+
+commit 7e4eac459d0703a24b4a91f1c8509111e81a1be4
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-09
+
+    trivial: Add a FAQ entry about the new version numbers
+
+M	doc/website/faq.html
+
+commit 39dd8a19b0ab88ded1f0b030b37bf53c59da2b9e
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-09
+
+    trivial: Include a couple of missing config.h includes
+
+M	client/cd-find-broken.c
+M	src/sensors/cd-parse-beagle.c
+
+commit f4bb2a339448368985d100dd27e97f382d74cc4f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-09
+
+    trivial: Remove trailing comma from enum
+
+    Some compilers barf at this.
+
+M	lib/colord/cd-enum.h
+
+commit 31e3992391107dd9fa504fa9b8b553600111d9aa
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-09
+
+    trivial: Add a C++ example
+
+A	examples/cd-libcolord++.cpp
+
+commit f46815917e54b84326fbed5c309953ad1f9d762f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-09
+
+    Add some missing G_BEGIN_DECLS/G_END_DECLS in header files
+
+    This ensures libcolord can be used in C++ applications.
+
+M	lib/colord/cd-buffer.h
+M	lib/colord/cd-color.h
+M	lib/colord/cd-deprecated.h
+M	lib/colord/cd-it8-utils.h
+M	lib/colorhug/ch-common.h
+M	lib/colorhug/ch-device.h
+
+commit 58c8f223ff61b508ad50f460db4446f84a14da61
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-09
+
+    trivial: NULL != FALSE for some compilers
+
+M	lib/colord/cd-client.c
+M	lib/colord/cd-device.c
+M	lib/colord/cd-icc.c
+M	lib/colorhug/ch-self-test.c
+M	src/cd-device-db.c
+M	src/cd-mapping-db.c
+
+commit 2b7739fe03e7cdb743c64d047fa1f45b5f0caf6b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-09
+
+    trivial: Use g_error_matches() to avoid another clang warning
+
+M	lib/colord/cd-client.c
+
+commit 254a947f0b02415e5c0e1ed71d055301b7e3c436
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-09
+
+    trivial: Fix up a clang false-positive that can't happen in reality
+
+M	lib/colord/cd-interp.c
+
+commit 64c3f838e52cf5c29c7957c89fe09819e40dcfff
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-09
+
+    Always return an error if cd_main_device_add() failed
+
+M	src/cd-main.c
+
+commit 941e49547fe23a3ad366992da82233dfe63cd167
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-09
+
+    trivial: Add a 'make clang' target
+
+M	Makefile.am
+
+commit 2377884d8a97d968e5600be95fcb2dc7576752c9
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-07
+
+    Build the colord binary with full RELRO
+
+    Force the linker to resolve all library symbols at startup, instead
+    of on-demand.
+    This allows it to then make the global offset table (GOT) read-only,
+    which makes
+    some security attacks harder.
+
+M	configure.ac
+M	contrib/colord.spec.in
+M	src/Makefile.am
+
+commit 8020696cd5ddcb9a07c419356d96d2aabd9dd3ba
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-07
+
+    Build all installed binaries with PIE
+
+    Position Independent Executable adds security to executables by
+    composing them
+    entirely of position-independent code. This for allows Exec Shield
+    to use
+    ASLR to prevent attackers from knowing where existing executable
+    code is.
+
+M	client/Makefile.am
+M	configure.ac
+M	contrib/colord-sane/Makefile.am
+M	contrib/session-helper/Makefile.am
+A	m4/ax_check_compile_flag.m4
+A	m4/ax_check_link_flag.m4
+M	src/Makefile.am
+
+commit 3014efdf15edb6dde422e22878fef3cc3e3cd397
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-07
+
+    Fix example spec file: argyllcms is not available on RHEL
+
+M	contrib/colord.spec.in
+
+commit 7fe71d19c9b4a2711dc9ca22d1cdde50f6dec251
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-07
+
+    Fix example spec file: bash-completion is not available on RHEL
+
+M	contrib/colord.spec.in
+
+commit 5374f5ec3f94da5982f3afb41017bee086243d7b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-03
+
+    Build the distro package with full RELRO support
+
+M	contrib/colord.spec.in
+
+commit b22e960c1d35b06c6361193611841874bdf310a3
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-03
+
+    Add a simple colord.conf manpage
+
+M	man/Makefile.am
+A	man/colord.conf.sgml
+
+commit 2db6c8d13ef2729e667562be4cf8e7c6e91f79a7
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-03
+
+    Add a config option to allow multiple monitors with identical EDID
+    values to be used
+
+    Using the XRandR name allows us to treat the monitors as seporate
+    pieces of
+    hardware, but means we're mapping the profile to the output port,
+    not to the
+    monitor itself.
+
+M	etc/colord.conf.in
+M	src/cd-main.c
+
+commit 884dc6a1a5b41f73fee5bb76667dbd7321a13cdc
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-03
+
+    trivial: Remove some debugging left in of cd-find-broken
+
+M	client/cd-find-broken.c
+
+commit 0e5765e6b4609ba437d305a1e4a0df14f54ff548
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-02
+
+    Ensure the parent directories exist when calling cd_icc_save_file()
+
+M	lib/colord/cd-icc.c
+
+commit 96d5e9c3eba12c4c92ff09bfcf9f7fe0da22cc3e
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-01
+
+    trivial: post release version bump
+
+M	RELEASE
+M	configure.ac
+
 commit df50a9a94ae489a6aaf259e0c05c417c22b3bf3f
 Author: Richard Hughes <richard@hughsie.com>
-Date:   2013-05-01
+Date:	2013-05-01
 
     Release colord 0.1.34
 

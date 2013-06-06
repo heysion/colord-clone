@@ -176,6 +176,7 @@ cd_icc_to_string (CdIcc *icc)
 	cmsTagSignature sig_link;
 	cmsTagTypeSignature tag_type;
 	gboolean ret;
+	gchar *tag_wrfix;
 	gchar tag_str[5] = "    ";
 	GDateTime *created;
 	GString *str;
@@ -308,7 +309,23 @@ cd_icc_to_string (CdIcc *icc)
 			continue;
 		}
 
-		tag_size = cmsReadRawTag (priv->lcms_profile, sig, &tmp, 4);
+		/* get the tag type
+		 *
+		 * LCMS2 has an interesting bug where calling:
+		 *  cmsReadRawTag(hProfile, sig, buffer, sizeof(buffer))
+		 * actually writes the wrole tag to buffer, which overflows if
+		 * tag_size > buffer. To work around this allocate a hugely
+		 * wasteful buffer of the whole tag size just to get the first
+		 * four bytes.
+		 *
+		 * But hey, at least we don't crash anymore...
+		 */
+		tag_size = cmsReadRawTag (priv->lcms_profile, sig, NULL, 0);
+		tag_wrfix = g_new0 (gchar, tag_size);
+		tag_size = cmsReadRawTag (priv->lcms_profile, sig, tag_wrfix, 4);
+		memcpy (&tmp, tag_wrfix, 4);
+		g_free (tag_wrfix);
+
 		cd_icc_uint32_to_str (tmp, tag_str);
 		tag_type = GUINT32_FROM_BE (tmp);
 		g_string_append_printf (str, "  type\t'%s' [0x%x]\n", tag_str, tag_type);
@@ -323,6 +340,14 @@ cd_icc_to_string (CdIcc *icc)
 			cmsMLU *mlu;
 			gchar text_buffer[128];
 			guint32 text_size;
+#ifdef HAVE_LCMS_MLU_TRANSLATIONS_COUNT
+			gchar country_code[3] = "\0\0\0";
+			gchar language_code[3] = "\0\0\0";
+			gsize rc;
+			guint32 j;
+			guint32 mlu_size;
+			wchar_t wtext[128];
+#endif
 
 			g_string_append_printf (str, "Text:\n");
 			mlu = cmsReadTag (priv->lcms_profile, sig);
@@ -330,6 +355,40 @@ cd_icc_to_string (CdIcc *icc)
 				g_string_append_printf (str, "  Info:\t\tMLU invalid!\n");
 				break;
 			}
+#ifdef HAVE_LCMS_MLU_TRANSLATIONS_COUNT
+			mlu_size = cmsMLUtranslationsCount (mlu);
+			if (mlu_size == 0)
+				g_string_append_printf (str, "  Info:\t\tMLU empty!\n");
+			for (j = 0; j < mlu_size; j++) {
+				ret = cmsMLUtranslationsCodes (mlu,
+							       j,
+							       language_code,
+							       country_code);
+				if (!ret)
+					continue;
+				text_size = cmsMLUgetWide (mlu,
+							   language_code,
+							   country_code,
+							   wtext,
+							   sizeof (wtext));
+				if (text_size == 0)
+					continue;
+				rc = wcstombs (text_buffer,
+					       wtext,
+					       sizeof (text_buffer));
+				if (rc == (gsize) -1) {
+					g_string_append_printf (str, "  %s_%s:\tInvalid!\n",
+								language_code[0] != '\0' ? language_code : "en",
+								country_code[0] != '\0' ? country_code : "US");
+					continue;
+				}
+				g_string_append_printf (str, "  %s_%s:\t%s [%i bytes]\n",
+							language_code[0] != '\0' ? language_code : "**",
+							country_code[0] != '\0' ? country_code : "**",
+							text_buffer,
+							text_size);
+			}
+#else
 			text_size = cmsMLUgetASCII (mlu,
 						    cmsNoLanguage,
 						    cmsNoCountry,
@@ -339,6 +398,7 @@ cd_icc_to_string (CdIcc *icc)
 				g_string_append_printf (str, "  en_US:\t%s [%i bytes]\n",
 							text_buffer, text_size);
 			}
+#endif
 			break;
 		}
 		case cmsSigXYZType:
@@ -1125,6 +1185,38 @@ out:
 }
 
 /**
+ * cd_icc_save_file_mkdir_parents:
+ **/
+static gboolean
+cd_icc_save_file_mkdir_parents (GFile *file, GError **error)
+{
+	gboolean ret = FALSE;
+	GFile *parent_dir = NULL;
+
+	/* get parent directory */
+	parent_dir = g_file_get_parent (file);
+	if (parent_dir == NULL) {
+		g_set_error_literal (error,
+				     CD_ICC_ERROR,
+				     CD_ICC_ERROR_FAILED_TO_CREATE,
+				     "could not get parent dir");
+		goto out;
+	}
+
+	/* ensure desination does not already exist */
+	ret = g_file_query_exists (parent_dir, NULL);
+	if (ret)
+		goto out;
+	ret = g_file_make_directory_with_parents (parent_dir, NULL, error);
+	if (!ret)
+		goto out;
+out:
+	if (parent_dir != NULL)
+		g_object_unref (parent_dir);
+	return ret;
+}
+
+/**
  * cd_icc_save_file:
  * @icc: a #CdIcc instance.
  * @file: a #GFile
@@ -1317,6 +1409,11 @@ cd_icc_save_file (CdIcc *icc,
 				     "failed to dump ICC file to memory");
 		goto out;
 	}
+
+	/* ensure parent directories exist */
+	ret = cd_icc_save_file_mkdir_parents (file, error);
+	if (!ret)
+		goto out;
 
 	/* actually write file */
 	ret = g_file_replace_contents (file,
@@ -2553,7 +2650,7 @@ cd_icc_get_vcgt (CdIcc *icc, guint size, GError **error)
 	guint i;
 
 	g_return_val_if_fail (CD_IS_ICC (icc), NULL);
-	g_return_val_if_fail (icc->priv->lcms_profile != NULL, FALSE);
+	g_return_val_if_fail (icc->priv->lcms_profile != NULL, NULL);
 
 	/* get tone curves from icc */
 	vcgt = cmsReadTag (icc->priv->lcms_profile, cmsSigVcgtType);

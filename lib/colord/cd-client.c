@@ -438,13 +438,13 @@ cd_client_create_device_finish (CdClient *client,
 {
 	GSimpleAsyncResult *simple;
 
-	g_return_val_if_fail (CD_IS_CLIENT (client), FALSE);
-	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), FALSE);
-	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+	g_return_val_if_fail (CD_IS_CLIENT (client), NULL);
+	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), NULL);
+	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
 	simple = G_SIMPLE_ASYNC_RESULT (res);
 	if (g_simple_async_result_propagate_error (simple, error))
-		return FALSE;
+		return NULL;
 
 	return g_object_ref (g_simple_async_result_get_op_res_gpointer (simple));
 }
@@ -957,8 +957,9 @@ cd_client_import_profile_find_filename_cb (GObject *source_object,
 		cd_client_import_free_helper (helper);
 		goto out;
 	}
-	if (error->domain != CD_CLIENT_ERROR ||
-	    error->code != CD_CLIENT_ERROR_NOT_FOUND) {
+	if (!g_error_matches (error,
+			      CD_CLIENT_ERROR,
+			      CD_CLIENT_ERROR_NOT_FOUND)) {
 		cd_client_fixup_dbus_error (error);
 		g_simple_async_result_set_from_error (helper->res,
 						      error);
@@ -1328,13 +1329,13 @@ cd_client_find_device_finish (CdClient *client,
 {
 	GSimpleAsyncResult *simple;
 
-	g_return_val_if_fail (CD_IS_CLIENT (client), FALSE);
-	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), FALSE);
-	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+	g_return_val_if_fail (CD_IS_CLIENT (client), NULL);
+	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), NULL);
+	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
 	simple = G_SIMPLE_ASYNC_RESULT (res);
 	if (g_simple_async_result_propagate_error (simple, error))
-		return FALSE;
+		return NULL;
 
 	return g_object_ref (g_simple_async_result_get_op_res_gpointer (simple));
 }
@@ -1439,13 +1440,13 @@ cd_client_find_device_by_property_finish (CdClient *client,
 {
 	GSimpleAsyncResult *simple;
 
-	g_return_val_if_fail (CD_IS_CLIENT (client), FALSE);
-	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), FALSE);
-	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+	g_return_val_if_fail (CD_IS_CLIENT (client), NULL);
+	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), NULL);
+	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
 	simple = G_SIMPLE_ASYNC_RESULT (res);
 	if (g_simple_async_result_propagate_error (simple, error))
-		return FALSE;
+		return NULL;
 
 	return g_object_ref (g_simple_async_result_get_op_res_gpointer (simple));
 }
@@ -1552,13 +1553,13 @@ cd_client_find_profile_finish (CdClient *client,
 {
 	GSimpleAsyncResult *simple;
 
-	g_return_val_if_fail (CD_IS_CLIENT (client), FALSE);
-	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), FALSE);
-	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+	g_return_val_if_fail (CD_IS_CLIENT (client), NULL);
+	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), NULL);
+	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
 	simple = G_SIMPLE_ASYNC_RESULT (res);
 	if (g_simple_async_result_propagate_error (simple, error))
-		return FALSE;
+		return NULL;
 
 	return g_object_ref (g_simple_async_result_get_op_res_gpointer (simple));
 }
@@ -1663,13 +1664,13 @@ cd_client_find_profile_by_filename_finish (CdClient *client,
 {
 	GSimpleAsyncResult *simple;
 
-	g_return_val_if_fail (CD_IS_CLIENT (client), FALSE);
-	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), FALSE);
-	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+	g_return_val_if_fail (CD_IS_CLIENT (client), NULL);
+	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), NULL);
+	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
 	simple = G_SIMPLE_ASYNC_RESULT (res);
 	if (g_simple_async_result_propagate_error (simple, error))
-		return FALSE;
+		return NULL;
 
 	return g_object_ref (g_simple_async_result_get_op_res_gpointer (simple));
 }
@@ -1774,13 +1775,13 @@ cd_client_get_standard_space_finish (CdClient *client,
 {
 	GSimpleAsyncResult *simple;
 
-	g_return_val_if_fail (CD_IS_CLIENT (client), FALSE);
-	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), FALSE);
-	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+	g_return_val_if_fail (CD_IS_CLIENT (client), NULL);
+	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), NULL);
+	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
 	simple = G_SIMPLE_ASYNC_RESULT (res);
 	if (g_simple_async_result_propagate_error (simple, error))
-		return FALSE;
+		return NULL;
 
 	return g_object_ref (g_simple_async_result_get_op_res_gpointer (simple));
 }
@@ -1915,13 +1916,13 @@ cd_client_get_devices_finish (CdClient *client,
 {
 	GSimpleAsyncResult *simple;
 
-	g_return_val_if_fail (CD_IS_CLIENT (client), FALSE);
-	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), FALSE);
-	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+	g_return_val_if_fail (CD_IS_CLIENT (client), NULL);
+	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), NULL);
+	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
 	simple = G_SIMPLE_ASYNC_RESULT (res);
 	if (g_simple_async_result_propagate_error (simple, error))
-		return FALSE;
+		return NULL;
 
 	return g_ptr_array_ref (g_simple_async_result_get_op_res_gpointer (simple));
 }
@@ -2021,13 +2022,13 @@ cd_client_get_devices_by_kind_finish (CdClient *client,
 {
 	GSimpleAsyncResult *simple;
 
-	g_return_val_if_fail (CD_IS_CLIENT (client), FALSE);
-	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), FALSE);
-	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+	g_return_val_if_fail (CD_IS_CLIENT (client), NULL);
+	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), NULL);
+	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
 	simple = G_SIMPLE_ASYNC_RESULT (res);
 	if (g_simple_async_result_propagate_error (simple, error))
-		return FALSE;
+		return NULL;
 
 	return g_ptr_array_ref (g_simple_async_result_get_op_res_gpointer (simple));
 }
@@ -2160,13 +2161,13 @@ cd_client_get_profiles_finish (CdClient *client,
 {
 	GSimpleAsyncResult *simple;
 
-	g_return_val_if_fail (CD_IS_CLIENT (client), FALSE);
-	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), FALSE);
-	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+	g_return_val_if_fail (CD_IS_CLIENT (client), NULL);
+	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), NULL);
+	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
 	simple = G_SIMPLE_ASYNC_RESULT (res);
 	if (g_simple_async_result_propagate_error (simple, error))
-		return FALSE;
+		return NULL;
 
 	return g_ptr_array_ref (g_simple_async_result_get_op_res_gpointer (simple));
 }
@@ -2296,13 +2297,13 @@ cd_client_get_sensors_finish (CdClient *client,
 {
 	GSimpleAsyncResult *simple;
 
-	g_return_val_if_fail (CD_IS_CLIENT (client), FALSE);
-	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), FALSE);
-	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+	g_return_val_if_fail (CD_IS_CLIENT (client), NULL);
+	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), NULL);
+	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
 	simple = G_SIMPLE_ASYNC_RESULT (res);
 	if (g_simple_async_result_propagate_error (simple, error))
-		return FALSE;
+		return NULL;
 
 	return g_ptr_array_ref (g_simple_async_result_get_op_res_gpointer (simple));
 }
@@ -2402,13 +2403,13 @@ cd_client_find_profile_by_property_finish (CdClient *client,
 {
 	GSimpleAsyncResult *simple;
 
-	g_return_val_if_fail (CD_IS_CLIENT (client), FALSE);
-	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), FALSE);
-	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+	g_return_val_if_fail (CD_IS_CLIENT (client), NULL);
+	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), NULL);
+	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
 	simple = G_SIMPLE_ASYNC_RESULT (res);
 	if (g_simple_async_result_propagate_error (simple, error))
-		return FALSE;
+		return NULL;
 
 	return g_object_ref (g_simple_async_result_get_op_res_gpointer (simple));
 }
@@ -2515,13 +2516,13 @@ cd_client_find_sensor_finish (CdClient *client,
 {
 	GSimpleAsyncResult *simple;
 
-	g_return_val_if_fail (CD_IS_CLIENT (client), FALSE);
-	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), FALSE);
-	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+	g_return_val_if_fail (CD_IS_CLIENT (client), NULL);
+	g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (res), NULL);
+	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
 	simple = G_SIMPLE_ASYNC_RESULT (res);
 	if (g_simple_async_result_propagate_error (simple, error))
-		return FALSE;
+		return NULL;
 
 	return g_object_ref (g_simple_async_result_get_op_res_gpointer (simple));
 }

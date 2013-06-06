@@ -58,15 +58,16 @@ DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(top_srcdir)/depcomp
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/as-linguas.m4 \
+	$(top_srcdir)/m4/ax_check_compile_flag.m4 \
+	$(top_srcdir)/m4/ax_check_link_flag.m4 \
 	$(top_srcdir)/m4/gettext.m4 $(top_srcdir)/m4/gtk-doc.m4 \
 	$(top_srcdir)/m4/iconv.m4 $(top_srcdir)/m4/intlmacosx.m4 \
 	$(top_srcdir)/m4/intltool.m4 $(top_srcdir)/m4/lib-ld.m4 \
 	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
 	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
 	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
-	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/nls.m4 \
-	$(top_srcdir)/m4/po.m4 $(top_srcdir)/m4/progtest.m4 \
-	$(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
+	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -87,36 +88,36 @@ am__v_lt_0 = --silent
 am__v_lt_1 = 
 cd_create_profile_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
-	$(cd_create_profile_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
-	-o $@
+	$(cd_create_profile_CFLAGS) $(CFLAGS) \
+	$(cd_create_profile_LDFLAGS) $(LDFLAGS) -o $@
 am_cd_find_broken_OBJECTS = cd_find_broken-cd-find-broken.$(OBJEXT)
 cd_find_broken_OBJECTS = $(am_cd_find_broken_OBJECTS)
 cd_find_broken_DEPENDENCIES = $(COLORD_LIBS) $(am__DEPENDENCIES_1)
 cd_find_broken_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
-	$(cd_find_broken_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o \
-	$@
+	$(cd_find_broken_CFLAGS) $(CFLAGS) $(cd_find_broken_LDFLAGS) \
+	$(LDFLAGS) -o $@
 am_cd_fix_profile_OBJECTS = cd_fix_profile-cd-fix-profile.$(OBJEXT)
 cd_fix_profile_OBJECTS = $(am_cd_fix_profile_OBJECTS)
 cd_fix_profile_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(COLORD_LIBS)
 cd_fix_profile_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
-	$(cd_fix_profile_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o \
-	$@
+	$(cd_fix_profile_CFLAGS) $(CFLAGS) $(cd_fix_profile_LDFLAGS) \
+	$(LDFLAGS) -o $@
 am_cd_iccdump_OBJECTS = cd_iccdump-cd-iccdump.$(OBJEXT)
 cd_iccdump_OBJECTS = $(am_cd_iccdump_OBJECTS)
 cd_iccdump_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 	$(COLORD_LIBS)
 cd_iccdump_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(cd_iccdump_CFLAGS) \
-	$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+	$(CFLAGS) $(cd_iccdump_LDFLAGS) $(LDFLAGS) -o $@
 am_colormgr_OBJECTS = colormgr-cd-util.$(OBJEXT)
 colormgr_OBJECTS = $(am_colormgr_OBJECTS)
 colormgr_DEPENDENCIES = $(COLORD_LIBS) $(am__DEPENDENCIES_1)
 colormgr_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(colormgr_CFLAGS) \
-	$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+	$(CFLAGS) $(colormgr_LDFLAGS) $(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -308,6 +309,8 @@ PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
+PIE_CFLAGS = @PIE_CFLAGS@
+PIE_LDFLAGS = @PIE_LDFLAGS@
 PKG_CONFIG = @PKG_CONFIG@
 PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
 PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
@@ -315,6 +318,7 @@ POLKIT_CFLAGS = @POLKIT_CFLAGS@
 POLKIT_LIBS = @POLKIT_LIBS@
 POSUB = @POSUB@
 RANLIB = @RANLIB@
+RELRO_LDFLAGS = @RELRO_LDFLAGS@
 SANE_CFLAGS = @SANE_CFLAGS@
 SANE_LIBS = @SANE_LIBS@
 SED = @SED@
@@ -390,6 +394,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 udevrulesdir = @udevrulesdir@
 AM_CPPFLAGS = \
+	$(PIE_CFLAGS)					\
 	$(GLIB_CFLAGS)					\
 	$(GTK_CFLAGS)					\
 	-I$(top_srcdir)					\
@@ -416,6 +421,9 @@ cd_find_broken_LDADD = \
 	$(COLORD_LIBS)					\
 	$(GLIB_LIBS)
 
+cd_find_broken_LDFLAGS = \
+	$(PIE_LDFLAGS)
+
 cd_find_broken_CFLAGS = \
 	$(WARNINGFLAGS_C)
 
@@ -425,6 +433,9 @@ colormgr_SOURCES = \
 colormgr_LDADD = \
 	$(COLORD_LIBS)					\
 	$(GLIB_LIBS)
+
+colormgr_LDFLAGS = \
+	$(PIE_LDFLAGS)
 
 colormgr_CFLAGS = \
 	$(WARNINGFLAGS_C)
@@ -441,6 +452,9 @@ cd_fix_profile_LDADD = \
 cd_fix_profile_CFLAGS = \
 	$(WARNINGFLAGS_C)
 
+cd_fix_profile_LDFLAGS = \
+	$(PIE_LDFLAGS)
+
 cd_iccdump_SOURCES = \
 	cd-iccdump.c
 
@@ -449,6 +463,9 @@ cd_iccdump_LDADD = \
 	$(LCMS_LIBS)					\
 	$(COLORD_LIBS)					\
 	-lm
+
+cd_iccdump_LDFLAGS = \
+	$(PIE_LDFLAGS)
 
 cd_iccdump_CFLAGS = \
 	$(WARNINGFLAGS_C)
@@ -461,6 +478,9 @@ cd_create_profile_LDADD = \
 	$(LCMS_LIBS)					\
 	$(COLORD_LIBS)					\
 	-lm
+
+cd_create_profile_LDFLAGS = \
+	$(PIE_LDFLAGS)
 
 cd_create_profile_CFLAGS = \
 	$(WARNINGFLAGS_C)
