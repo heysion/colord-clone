@@ -450,7 +450,7 @@ ch_client_get_default (GError **error)
 	GUsbDevice *device = NULL;
 	GUsbDeviceList *list;
 
-	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+	g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
 	/* try to find the ColorHug device */
 	usb_ctx = g_usb_context_new (NULL);
@@ -617,7 +617,8 @@ ch_test_state_func (void)
 		g_assert_no_error (error);
 		g_assert (ret);
 		elapsed = g_timer_elapsed (timer, NULL);
-		g_debug ("%li writes in %.1fms", sizeof(data) / 60, elapsed * 1000);
+		g_debug ("%" G_GSIZE_FORMAT " writes in %.1fms",
+			 sizeof(data) / 60, elapsed * 1000);
 		g_assert_cmpfloat (elapsed, <, 0.75);
 
 		/* test reading */
@@ -634,7 +635,8 @@ ch_test_state_func (void)
 		g_assert_no_error (error);
 		g_assert (ret);
 		elapsed = g_timer_elapsed (timer, NULL);
-		g_debug ("%li reads in %.1fms", sizeof(data) / 60, elapsed * 1000);
+		g_debug ("%" G_GSIZE_FORMAT " reads in %.1fms",
+			 sizeof(data) / 60, elapsed * 1000);
 		g_assert_cmpfloat (elapsed, <, 0.75);
 		g_timer_destroy (timer);
 	}

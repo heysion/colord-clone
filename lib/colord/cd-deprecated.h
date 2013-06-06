@@ -30,6 +30,8 @@
 #include <colord/cd-color.h>
 #include <colord/cd-profile.h>
 
+G_BEGIN_DECLS
+
 #ifndef CD_DISABLE_DEPRECATED
 
 /* Damn you x-rite for re-using the 'ColorMunki' brand for lots of
@@ -85,13 +87,17 @@ G_DEPRECATED_FOR(cd_profile_set_property_sync)
 gboolean	 cd_profile_set_filename_sync		(CdProfile	*profile,
 							 const gchar	*value,
 							 GCancellable	*cancellable,
-							 GError		**error);
+							 GError		**error)
+							 G_GNUC_WARN_UNUSED_RESULT;
 G_DEPRECATED_FOR(cd_profile_set_property_sync)
 gboolean	 cd_profile_set_qualifier_sync		(CdProfile	*profile,
 							 const gchar	*value,
 							 GCancellable	*cancellable,
-							 GError		**error);
+							 GError		**error)
+							 G_GNUC_WARN_UNUSED_RESULT;
 
 #endif /* CD_DISABLE_DEPRECATED */
+
+G_END_DECLS
 
 #endif /* __CD_DEPRECATED_H__ */

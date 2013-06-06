@@ -502,8 +502,10 @@ cd_icc_get_metadata_item
 cd_icc_get_model
 cd_icc_get_named_colors
 cd_icc_get_red
+cd_icc_get_response
 cd_icc_get_size
 cd_icc_get_temperature
+cd_icc_get_vcgt
 cd_icc_get_version
 cd_icc_get_warnings
 cd_icc_get_white
@@ -524,6 +526,7 @@ cd_icc_set_manufacturer
 cd_icc_set_manufacturer_items
 cd_icc_set_model
 cd_icc_set_model_items
+cd_icc_set_vcgt
 cd_icc_set_version
 cd_icc_to_string
 <SUBSECTION Standard>
@@ -748,6 +751,11 @@ cd_profile_get_type
 cd_profile_connect_sync
 cd_profile_install_system_wide_sync
 cd_profile_set_property_sync
+</SECTION>
+
+<SECTION>
+<FILE>cd-quirk</FILE>
+cd_quirk_vendor_name
 </SECTION>
 
 <SECTION>

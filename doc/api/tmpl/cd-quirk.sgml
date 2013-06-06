@@ -1,5 +1,5 @@
 <!-- ##### SECTION Title ##### -->
-cd-it8-utils
+cd-quirk
 
 <!-- ##### SECTION Short_Description ##### -->
 
@@ -20,15 +20,12 @@ cd-it8-utils
 <!-- ##### SECTION Image ##### -->
 
 
-<!-- ##### FUNCTION cd_it8_utils_calculate_ccmx ##### -->
+<!-- ##### FUNCTION cd_quirk_vendor_name ##### -->
 <para>
 
 </para>
 
-@it8_reference: 
-@it8_measured: 
-@it8_ccmx: 
-@error: 
+@vendor: 
 @Returns: 
 
 

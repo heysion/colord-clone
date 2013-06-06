@@ -85,21 +85,29 @@ GType		 cd_transform_get_type			(void);
 GQuark		 cd_transform_error_quark		(void);
 CdTransform	*cd_transform_new			(void);
 
-void		 cd_transform_set_input			(CdTransform	*transform,
+void		 cd_transform_set_input_icc		(CdTransform	*transform,
 							 CdIcc		*icc);
-CdIcc		*cd_transform_get_input			(CdTransform	*transform);
-void		 cd_transform_set_output		(CdTransform	*transform,
-							 CdIcc		*icc);
-CdIcc		*cd_transform_get_output		(CdTransform	*transform);
-void		 cd_transform_set_abstract		(CdTransform	*transform,
-							 CdIcc		*icc);
-CdIcc		*cd_transform_get_abstract		(CdTransform	*transform);
-void		 cd_transform_set_format		(CdTransform	*transform,
+void		 cd_transform_set_input_pixel_format	(CdTransform	*transform,
 							 CdPixelFormat	 pixel_format);
-CdPixelFormat	 cd_transform_get_format		(CdTransform	*transform);
-void		 cd_transform_set_intent		(CdTransform	*transform,
+CdIcc		*cd_transform_get_input_icc		(CdTransform	*transform);
+CdPixelFormat	 cd_transform_get_input_pixel_format	(CdTransform	*transform);
+
+void		 cd_transform_set_output_icc		(CdTransform	*transform,
+							 CdIcc		*icc);
+void		 cd_transform_set_output_pixel_format	(CdTransform	*transform,
+							 CdPixelFormat	 pixel_format);
+CdIcc		*cd_transform_get_output_icc		(CdTransform	*transform);
+CdPixelFormat	 cd_transform_get_output_pixel_format	(CdTransform	*transform);
+
+void		 cd_transform_set_abstract_icc		(CdTransform	*transform,
+							 CdIcc		*icc);
+CdIcc		*cd_transform_get_abstract_icc		(CdTransform	*transform);
+void		 cd_transform_set_rendering_intent	(CdTransform	*transform,
 							 CdRenderingIntent rendering_intent);
-CdRenderingIntent cd_transform_get_intent		(CdTransform	*transform);
+CdRenderingIntent cd_transform_get_rendering_intent	(CdTransform	*transform);
+void		 cd_transform_set_bpc			(CdTransform	*transform,
+							 gboolean	 bpc);
+gboolean	 cd_transform_get_bpc			(CdTransform	*transform);
 gboolean	 cd_transform_process			(CdTransform	*transform,
 							 gpointer	 data_in,
 							 gpointer	 data_out,
@@ -107,7 +115,8 @@ gboolean	 cd_transform_process			(CdTransform	*transform,
 							 guint		 height,
 							 guint		 rowstride,
 							 GCancellable	*cancellable,
-							 GError		**error);
+							 GError		**error)
+							 G_GNUC_WARN_UNUSED_RESULT;
 
 G_END_DECLS
 

@@ -956,7 +956,6 @@ colord_device_id_mapping_pd_func (void)
 					    &error);
 	g_assert_no_error (error);
 	g_assert (ret);
-	g_object_unref (device);
 
 	g_hash_table_unref (profile_props);
 	g_object_unref (profile);
@@ -1055,7 +1054,6 @@ colord_device_id_mapping_dp_func (void)
 					    &error);
 	g_assert_no_error (error);
 	g_assert (ret);
-	g_object_unref (device);
 
 	/* delete profile */
 	ret = cd_client_delete_profile_sync (client,
@@ -3250,6 +3248,7 @@ colord_interp_linear_func (void)
 	CdInterp *interp;
 	GArray *array_tmp;
 	gboolean ret;
+	gdouble tmp;
 	gdouble x;
 	gdouble y;
 	GError *error = NULL;
@@ -3274,14 +3273,16 @@ colord_interp_linear_func (void)
 	/* check X */
 	array_tmp = cd_interp_get_x (interp);
 	g_assert_cmpint (array_tmp->len, ==, 5);
-	g_assert_cmpfloat (*((gdouble *) array_tmp->data), <, 0.01);
-	g_assert_cmpfloat (*((gdouble *) array_tmp->data), >, -0.01);
+	tmp = g_array_index (array_tmp, gdouble, 0);
+	g_assert_cmpfloat (tmp, <, 0.01);
+	g_assert_cmpfloat (tmp, >, -0.01);
 
 	/* check Y */
 	array_tmp = cd_interp_get_y (interp);
 	g_assert_cmpint (array_tmp->len, ==, 5);
-	g_assert_cmpfloat (*((gdouble *) array_tmp->data), <, 0.11);
-	g_assert_cmpfloat (*((gdouble *) array_tmp->data), >, 0.09);
+	tmp = g_array_index (array_tmp, gdouble, 0);
+	g_assert_cmpfloat (tmp, <, 0.11);
+	g_assert_cmpfloat (tmp, >, 0.09);
 
 	/* check preparing */
 	ret = cd_interp_prepare (interp, &error);
@@ -3587,6 +3588,7 @@ colord_icc_localized_func (void)
 	const gchar *str;
 	gboolean ret;
 	gchar *filename;
+	gchar *tmp;
 	GError *error = NULL;
 	GFile *file;
 
@@ -3603,6 +3605,12 @@ colord_icc_localized_func (void)
 	g_assert (ret);
 	g_object_unref (file);
 	g_free (filename);
+
+	/* marshall to a string */
+	tmp = cd_icc_to_string (icc);
+	g_assert_cmpstr (tmp, !=, NULL);
+	g_debug ("CdIcc: '%s'", tmp);
+	g_free (tmp);
 
 	/* open a non-localized profile */
 	str = cd_icc_get_description (icc, NULL, &error);
@@ -3660,14 +3668,16 @@ colord_transform_func (void)
 
 	/* setup transform with 8 bit RGB */
 	transform = cd_transform_new ();
-	cd_transform_set_intent (transform, CD_RENDERING_INTENT_PERCEPTUAL);
-	g_assert_cmpint (cd_transform_get_intent (transform), ==, CD_RENDERING_INTENT_PERCEPTUAL);
-	cd_transform_set_format (transform, CD_PIXEL_FORMAT_RGB_8);
-	g_assert_cmpint (cd_transform_get_format (transform), ==, CD_PIXEL_FORMAT_RGB_8);
+	cd_transform_set_rendering_intent (transform, CD_RENDERING_INTENT_PERCEPTUAL);
+	g_assert_cmpint (cd_transform_get_rendering_intent (transform), ==, CD_RENDERING_INTENT_PERCEPTUAL);
+	cd_transform_set_input_pixel_format (transform, CD_PIXEL_FORMAT_RGB24);
+	g_assert_cmpint (cd_transform_get_input_pixel_format (transform), ==, CD_PIXEL_FORMAT_RGB24);
+	cd_transform_set_output_pixel_format (transform, CD_PIXEL_FORMAT_RGB24);
+	g_assert_cmpint (cd_transform_get_output_pixel_format (transform), ==, CD_PIXEL_FORMAT_RGB24);
 
 	/* setup profiles */
-	cd_transform_set_input (transform, NULL);
-	cd_transform_set_abstract (transform, NULL);
+	cd_transform_set_input_icc (transform, NULL);
+	cd_transform_set_abstract_icc (transform, NULL);
 
 	filename = _g_test_realpath (TESTDATADIR "/ibm-t61.icc");
 	file = g_file_new_for_path (filename);
@@ -3679,7 +3689,7 @@ colord_transform_func (void)
 				&error);
 	g_assert_no_error (error);
 	g_assert (ret);
-	cd_transform_set_output (transform, icc);
+	cd_transform_set_output_icc (transform, icc);
 	g_free (filename);
 	g_object_unref (file);
 	g_object_unref (icc);

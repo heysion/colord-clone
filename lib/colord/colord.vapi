@@ -498,23 +498,27 @@ namespace Cd {
 		[CCode (has_construct_function = false)]
 		public Transform ();
 		public static GLib.Quark error_quark ();
-		public unowned Cd.Icc get_abstract ();
-		public Cd.PixelFormat get_format ();
-		public unowned Cd.Icc get_input ();
-		public Cd.RenderingIntent get_intent ();
-		public unowned Cd.Icc get_output ();
+		public unowned Cd.Icc get_abstract_icc ();
+		public bool get_bpc ();
+		public unowned Cd.Icc get_input_icc ();
+		public Cd.PixelFormat get_input_pixel_format ();
+		public unowned Cd.Icc get_output_icc ();
+		public Cd.PixelFormat get_output_pixel_format ();
+		public Cd.RenderingIntent get_rendering_intent ();
 		public bool process (void* data_in, void* data_out, uint width, uint height, uint rowstride, GLib.Cancellable? cancellable = null) throws GLib.Error;
-		public void set_abstract (Cd.Icc icc);
-		public void set_format (Cd.PixelFormat pixel_format);
-		public void set_input (Cd.Icc icc);
-		public void set_intent (Cd.RenderingIntent rendering_intent);
-		public void set_output (Cd.Icc icc);
-		public Cd.Icc @abstract { get; set; }
-		public Cd.Icc input { get; set; }
-		public Cd.Icc output { get; set; }
-		[NoAccessorMethod]
-		public uint pixel_format { get; set; }
-		[NoAccessorMethod]
+		public void set_abstract_icc (Cd.Icc icc);
+		public void set_bpc (bool bpc);
+		public void set_input_icc (Cd.Icc icc);
+		public void set_input_pixel_format (Cd.PixelFormat pixel_format);
+		public void set_output_icc (Cd.Icc icc);
+		public void set_output_pixel_format (Cd.PixelFormat pixel_format);
+		public void set_rendering_intent (Cd.RenderingIntent rendering_intent);
+		public Cd.Icc abstract_icc { get; set; }
+		public bool bpc { get; set; }
+		public Cd.Icc input_icc { get; set; }
+		public uint input_pixel_format { get; set; }
+		public Cd.Icc output_icc { get; set; }
+		public uint output_pixel_format { get; set; }
 		public uint rendering_intent { get; set; }
 	}
 	[CCode (cheader_filename = "colord.h", has_type_id = false)]
@@ -534,6 +538,12 @@ namespace Cd {
 		public double m20;
 		public double m21;
 		public double m22;
+	}
+	[CCode (cheader_filename = "colord.h")]
+	[SimpleType]
+	public struct PixelFormat : uint32 {
+		public static Cd.PixelFormat from_string (string pixel_format);
+		public static unowned string to_string (Cd.PixelFormat pixel_format);
 	}
 	[CCode (cheader_filename = "colord.h", has_type_id = false)]
 	public struct Vec3 {
@@ -683,17 +693,6 @@ namespace Cd {
 		LAST;
 		public static Cd.ObjectScope from_string (string object_scope);
 		public static unowned string to_string (Cd.ObjectScope object_scope);
-	}
-	[CCode (cheader_filename = "colord.h", cprefix = "CD_PIXEL_FORMAT_", has_type_id = false)]
-	public enum PixelFormat {
-		UNKNOWN,
-		RGB_8,
-		RGB_16,
-		RGBA_8,
-		RGBA_16,
-		LAST;
-		public static Cd.PixelFormat from_string (string pixel_format);
-		public static unowned string to_string (Cd.PixelFormat pixel_format);
 	}
 	[CCode (cheader_filename = "colord.h", cprefix = "CD_PROFILE_ERROR_", has_type_id = false)]
 	public enum ProfileError {
@@ -891,6 +890,16 @@ namespace Cd {
 	public const int MICRO_VERSION;
 	[CCode (cheader_filename = "colord.h", cname = "CD_MINOR_VERSION")]
 	public const int MINOR_VERSION;
+	[CCode (cheader_filename = "colord.h", cname = "CD_PIXEL_FORMAT_ARGB32")]
+	public const int PIXEL_FORMAT_ARGB32;
+	[CCode (cheader_filename = "colord.h", cname = "CD_PIXEL_FORMAT_BGRA32")]
+	public const int PIXEL_FORMAT_BGRA32;
+	[CCode (cheader_filename = "colord.h", cname = "CD_PIXEL_FORMAT_CMYK32")]
+	public const int PIXEL_FORMAT_CMYK32;
+	[CCode (cheader_filename = "colord.h", cname = "CD_PIXEL_FORMAT_RGB24")]
+	public const int PIXEL_FORMAT_RGB24;
+	[CCode (cheader_filename = "colord.h", cname = "CD_PIXEL_FORMAT_UNKNOWN")]
+	public const int PIXEL_FORMAT_UNKNOWN;
 	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_ACCURACY_DE76_AVG")]
 	public const string PROFILE_METADATA_ACCURACY_DE76_AVG;
 	[CCode (cheader_filename = "colord.h", cname = "CD_PROFILE_METADATA_ACCURACY_DE76_MAX")]

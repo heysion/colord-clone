@@ -27,8 +27,7 @@
  * spaces to other simple RGB spaces using one, two or three ICC profiles.
  *
  * This object is not supposed to re-implement LCMS, and if you need anything more
- * complicated than simple RGB buffers (for instance, floating point, CMYK, BPC,
- * etc.) then you are better off using lcms2 directly.
+ * complicated then you are better off using lcms2 directly.
  */
 
 #include "config.h"
@@ -51,24 +50,28 @@ static void	cd_transform_finalize		(GObject		*object);
  **/
 struct _CdTransformPrivate
 {
-	CdIcc			*input;
-	CdIcc			*output;
-	CdIcc			*abstract;
-	CdPixelFormat		 pixel_format;
+	CdIcc			*input_icc;
+	CdIcc			*output_icc;
+	CdIcc			*abstract_icc;
+	CdPixelFormat		 input_pixel_format;
+	CdPixelFormat		 output_pixel_format;
 	CdRenderingIntent	 rendering_intent;
 	cmsHPROFILE		 srgb;
 	cmsHTRANSFORM		 lcms_transform;
+	gboolean		 bpc;
 };
 
 G_DEFINE_TYPE (CdTransform, cd_transform, G_TYPE_OBJECT)
 
 enum {
 	PROP_0,
+	PROP_BPC,
 	PROP_RENDERING_INTENT,
-	PROP_PIXEL_FORMAT,
-	PROP_INPUT,
-	PROP_OUTPUT,
-	PROP_ABSTRACT,
+	PROP_INPUT_PIXEL_FORMAT,
+	PROP_OUTPUT_PIXEL_FORMAT,
+	PROP_INPUT_ICC,
+	PROP_OUTPUT_ICC,
+	PROP_ABSTRACT_ICC,
 	PROP_LAST
 };
 
@@ -100,170 +103,206 @@ cd_transform_invalidate (CdTransform *transform)
 }
 
 /**
- * cd_transform_set_input:
+ * cd_transform_set_input_icc:
  * @transform: a #CdTransform instance.
  * @icc: a #CdIcc instance or %NULL.
  *
  * Sets the input profile to use for the transform.
  *
- * Since: 0.1.34
+ * Since: 1.0.0
  **/
 void
-cd_transform_set_input (CdTransform *transform, CdIcc *icc)
+cd_transform_set_input_icc (CdTransform *transform, CdIcc *icc)
 {
 	g_return_if_fail (CD_IS_TRANSFORM (transform));
 	g_return_if_fail (icc == NULL || CD_IS_ICC (icc));
 
-	if (transform->priv->input != NULL)
-		g_clear_object (&transform->priv->input);
+	if (transform->priv->input_icc != NULL)
+		g_clear_object (&transform->priv->input_icc);
 	if (icc != NULL)
-		transform->priv->input = g_object_ref (icc);
+		transform->priv->input_icc = g_object_ref (icc);
 	cd_transform_invalidate (transform);
 }
 
 /**
- * cd_transform_get_input:
+ * cd_transform_get_input_icc:
  * @transform: a #CdTransform instance.
  *
  * Gets the input profile to use for the transform.
  *
  * Return value: (transfer none): The input profile
  *
- * Since: 0.1.34
+ * Since: 1.0.0
  **/
 CdIcc *
-cd_transform_get_input (CdTransform *transform)
+cd_transform_get_input_icc (CdTransform *transform)
 {
 	g_return_val_if_fail (CD_IS_TRANSFORM (transform), NULL);
-	return transform->priv->input;
+	return transform->priv->input_icc;
 }
 
 /**
- * cd_transform_set_output:
+ * cd_transform_set_output_icc:
  * @transform: a #CdTransform instance.
  * @icc: a #CdIcc instance or %NULL.
  *
  * Sets the output profile to use for the transform.
  *
- * Since: 0.1.34
+ * Since: 1.0.0
  **/
 void
-cd_transform_set_output (CdTransform *transform, CdIcc *icc)
+cd_transform_set_output_icc (CdTransform *transform, CdIcc *icc)
 {
 	g_return_if_fail (CD_IS_TRANSFORM (transform));
 	g_return_if_fail (icc == NULL || CD_IS_ICC (icc));
 
-	if (transform->priv->output != NULL)
-		g_clear_object (&transform->priv->output);
+	if (transform->priv->output_icc != NULL)
+		g_clear_object (&transform->priv->output_icc);
 	if (icc != NULL)
-		transform->priv->output = g_object_ref (icc);
+		transform->priv->output_icc = g_object_ref (icc);
 	cd_transform_invalidate (transform);
 }
 
 /**
- * cd_transform_get_output:
+ * cd_transform_get_output_icc:
  * @transform: a #CdTransform instance.
  *
  * Gets the input profile to use for the transform.
  *
  * Return value: (transfer none): The output profile
  *
- * Since: 0.1.34
+ * Since: 1.0.0
  **/
 CdIcc *
-cd_transform_get_output (CdTransform *transform)
+cd_transform_get_output_icc (CdTransform *transform)
 {
 	g_return_val_if_fail (CD_IS_TRANSFORM (transform), NULL);
-	return transform->priv->output;
+	return transform->priv->output_icc;
 }
 
 /**
- * cd_transform_set_abstract:
+ * cd_transform_set_abstract_icc:
  * @transform: a #CdTransform instance.
  * @icc: a #CdIcc instance or %NULL.
  *
  * Sets the abstract profile to use for the transform.
  * This is typically only needed for soft-proofing.
  *
- * Since: 0.1.34
+ * Since: 1.0.0
  **/
 void
-cd_transform_set_abstract (CdTransform *transform, CdIcc *icc)
+cd_transform_set_abstract_icc (CdTransform *transform, CdIcc *icc)
 {
 	g_return_if_fail (CD_IS_TRANSFORM (transform));
 	g_return_if_fail (icc == NULL || CD_IS_ICC (icc));
 
-	if (transform->priv->abstract != NULL)
-		g_clear_object (&transform->priv->abstract);
+	if (transform->priv->abstract_icc != NULL)
+		g_clear_object (&transform->priv->abstract_icc);
 	if (icc != NULL)
-		transform->priv->abstract = g_object_ref (icc);
+		transform->priv->abstract_icc = g_object_ref (icc);
 	cd_transform_invalidate (transform);
 }
 
 /**
- * cd_transform_get_abstract:
+ * cd_transform_get_abstract_icc:
  * @transform: a #CdTransform instance.
  *
  * Gets the abstract profile to use for the transform.
  *
  * Return value: (transfer none): The abstract profile
  *
- * Since: 0.1.34
+ * Since: 1.0.0
  **/
 CdIcc *
-cd_transform_get_abstract (CdTransform *transform)
+cd_transform_get_abstract_icc (CdTransform *transform)
 {
 	g_return_val_if_fail (CD_IS_TRANSFORM (transform), NULL);
-	return transform->priv->abstract;
+	return transform->priv->abstract_icc;
 }
 
 /**
- * cd_transform_set_format:
+ * cd_transform_set_input_pixel_format:
  * @transform: a #CdTransform instance.
  * @pixel_format: The pixel format, e.g. %CD_PIXEL_FORMAT_RGBA_8
  *
  * Sets the pixel format to use for the transform.
  *
- * Since: 0.1.34
+ * Since: 1.0.0
  **/
 void
-cd_transform_set_format (CdTransform *transform, CdPixelFormat pixel_format)
+cd_transform_set_input_pixel_format (CdTransform *transform, CdPixelFormat pixel_format)
 {
 	g_return_if_fail (CD_IS_TRANSFORM (transform));
 	g_return_if_fail (pixel_format != CD_PIXEL_FORMAT_UNKNOWN);
 
-	transform->priv->pixel_format = pixel_format;
+	transform->priv->input_pixel_format = pixel_format;
 	cd_transform_invalidate (transform);
 }
 
 /**
- * cd_transform_get_format:
+ * cd_transform_get_input_pixel_format:
  * @transform: a #CdTransform instance.
  *
  * Gets the pixel format to use for the transform.
  *
  * Return value: the pixel format, e.g. %CD_PIXEL_FORMAT_RGBA_8
  *
- * Since: 0.1.34
+ * Since: 1.0.0
  **/
 CdPixelFormat
-cd_transform_get_format (CdTransform *transform)
+cd_transform_get_input_pixel_format (CdTransform *transform)
 {
 	g_return_val_if_fail (CD_IS_TRANSFORM (transform), CD_PIXEL_FORMAT_UNKNOWN);
-	return transform->priv->pixel_format;
+	return transform->priv->input_pixel_format;
 }
 
 /**
- * cd_transform_set_intent:
+ * cd_transform_set_output_pixel_format:
+ * @transform: a #CdTransform instance.
+ * @pixel_format: The pixel format, e.g. %CD_PIXEL_FORMAT_RGBA_8
+ *
+ * Sets the pixel format to use for the transform.
+ *
+ * Since: 1.0.0
+ **/
+void
+cd_transform_set_output_pixel_format (CdTransform *transform, CdPixelFormat pixel_format)
+{
+	g_return_if_fail (CD_IS_TRANSFORM (transform));
+	g_return_if_fail (pixel_format != CD_PIXEL_FORMAT_UNKNOWN);
+
+	transform->priv->output_pixel_format = pixel_format;
+	cd_transform_invalidate (transform);
+}
+
+/**
+ * cd_transform_get_output_pixel_format:
+ * @transform: a #CdTransform instance.
+ *
+ * Gets the pixel format to use for the transform.
+ *
+ * Return value: the pixel format, e.g. %CD_PIXEL_FORMAT_RGBA_8
+ *
+ * Since: 1.0.0
+ **/
+CdPixelFormat
+cd_transform_get_output_pixel_format (CdTransform *transform)
+{
+	g_return_val_if_fail (CD_IS_TRANSFORM (transform), CD_PIXEL_FORMAT_UNKNOWN);
+	return transform->priv->output_pixel_format;
+}
+
+/**
+ * cd_transform_set_rendering_intent:
  * @transform: a #CdTransform instance.
  * @rendering_intent: the rendering intent, e.g. %CD_RENDERING_INTENT_PERCEPTUAL
  *
  * Sets the rendering intent to use for the transform.
  *
- * Since: 0.1.34
+ * Since: 1.0.0
  **/
 void
-cd_transform_set_intent (CdTransform *transform, CdRenderingIntent rendering_intent)
+cd_transform_set_rendering_intent (CdTransform *transform, CdRenderingIntent rendering_intent)
 {
 	g_return_if_fail (CD_IS_TRANSFORM (transform));
 	g_return_if_fail (rendering_intent != CD_RENDERING_INTENT_UNKNOWN);
@@ -273,33 +312,56 @@ cd_transform_set_intent (CdTransform *transform, CdRenderingIntent rendering_int
 }
 
 /**
- * cd_transform_get_intent:
+ * cd_transform_get_rendering_intent:
  * @transform: a #CdTransform instance.
  *
  * Gets the rendering intent to use for the transform.
  *
  * Return value: The rendering intent, e.g. %CD_RENDERING_INTENT_PERCEPTUAL
  *
- * Since: 0.1.34
+ * Since: 1.0.0
  **/
 CdRenderingIntent
-cd_transform_get_intent (CdTransform *transform)
+cd_transform_get_rendering_intent (CdTransform *transform)
 {
 	g_return_val_if_fail (CD_IS_TRANSFORM (transform), CD_RENDERING_INTENT_UNKNOWN);
 	return transform->priv->rendering_intent;
 }
 
-/* map lcms profile class to colord type */
-const struct {
-	guint32				lcms;
-	CdPixelFormat			colord;
-} map_pixel_format[] = {
-	{ TYPE_RGB_8,			CD_PIXEL_FORMAT_RGB_8 },
-	{ TYPE_RGBA_8,			CD_PIXEL_FORMAT_RGBA_8 },
-	{ TYPE_RGB_16,			CD_PIXEL_FORMAT_RGB_16 },
-	{ TYPE_RGBA_16,			CD_PIXEL_FORMAT_RGBA_16 },
-	{ 0,				CD_PIXEL_FORMAT_LAST }
-};
+/**
+ * cd_transform_set_bpc:
+ * @transform: a #CdTransform instance.
+ * @bpc: black point compensation
+ *
+ * Sets if black point compensation should be used for the transform.
+ *
+ * Since: 1.0.0
+ **/
+void
+cd_transform_set_bpc (CdTransform *transform, gboolean bpc)
+{
+	g_return_if_fail (CD_IS_TRANSFORM (transform));
+
+	transform->priv->bpc = bpc;
+	cd_transform_invalidate (transform);
+}
+
+/**
+ * cd_transform_get_bpc:
+ * @transform: a #CdTransform instance.
+ *
+ * Gets the rendering bpc to use for the transform.
+ *
+ * Return value: If black point compensation should be used for the transform.
+ *
+ * Since: 1.0.0
+ **/
+gboolean
+cd_transform_get_bpc (CdTransform *transform)
+{
+	g_return_val_if_fail (CD_IS_TRANSFORM (transform), FALSE);
+	return transform->priv->bpc;
+}
 
 /* map lcms intent to colord type */
 const struct {
@@ -322,9 +384,9 @@ cd_transform_setup (CdTransform *transform, GError **error)
 	CdTransformPrivate *priv = transform->priv;
 	cmsHPROFILE profile_in;
 	cmsHPROFILE profile_out;
+	cmsUInt32Number lcms_flags = 0;
 	gboolean ret = TRUE;
 	gint lcms_intent = -1;
-	guint32 lcms_format = 0;
 	guint i;
 
 	/* find native rendering intent */
@@ -336,56 +398,34 @@ cd_transform_setup (CdTransform *transform, GError **error)
 	}
 	g_assert (lcms_intent != -1);
 
-	/* find native pixel format */
-	for (i = 0; map_pixel_format[i].colord != CD_PIXEL_FORMAT_LAST; i++) {
-		if (map_pixel_format[i].colord == priv->pixel_format) {
-			lcms_format = map_pixel_format[i].lcms;
-			break;
-		}
-	}
-	g_assert (lcms_format > 0);
-
 	/* get input profile */
-	if (priv->input != NULL) {
-		if (cd_icc_get_colorspace (priv->input) != CD_COLORSPACE_RGB) {
-			ret = FALSE;
-			g_set_error_literal (error,
-					     CD_TRANSFORM_ERROR,
-					     CD_TRANSFORM_ERROR_INVALID_COLORSPACE,
-					     "input colorspace has to be RGB");
-			goto out;
-		}
+	if (priv->input_icc != NULL) {
 		g_debug ("using input profile of %s",
-			 cd_icc_get_filename (priv->input));
-		profile_in = cd_icc_get_handle (priv->input);
+			 cd_icc_get_filename (priv->input_icc));
+		profile_in = cd_icc_get_handle (priv->input_icc);
 	} else {
 		g_debug ("no input profile, assume sRGB");
 		profile_in = priv->srgb;
 	}
 
 	/* get output profile */
-	if (priv->output != NULL) {
-		if (cd_icc_get_colorspace (priv->output) != CD_COLORSPACE_RGB) {
-			ret = FALSE;
-			g_set_error_literal (error,
-					     CD_TRANSFORM_ERROR,
-					     CD_TRANSFORM_ERROR_INVALID_COLORSPACE,
-					     "output colorspace has to be RGB");
-			goto out;
-		}
+	if (priv->output_icc != NULL) {
 		g_debug ("using output profile of %s",
-			 cd_icc_get_filename (priv->output));
-		profile_out = cd_icc_get_handle (priv->output);
+			 cd_icc_get_filename (priv->output_icc));
+		profile_out = cd_icc_get_handle (priv->output_icc);
 	} else {
 		g_debug ("no output profile, assume sRGB");
 		profile_out = priv->srgb;
 	}
 
+	/* get flags */
+	lcms_flags &= cmsFLAGS_BLACKPOINTCOMPENSATION;
+
 	/* get abstract profile */
-	if (priv->abstract != NULL) {
+	if (priv->abstract_icc != NULL) {
 		cmsHPROFILE profiles[3];
 
-		if (cd_icc_get_colorspace (priv->abstract) != CD_COLORSPACE_LAB) {
+		if (cd_icc_get_colorspace (priv->abstract_icc) != CD_COLORSPACE_LAB) {
 			ret = FALSE;
 			g_set_error_literal (error,
 					     CD_TRANSFORM_ERROR,
@@ -396,23 +436,23 @@ cd_transform_setup (CdTransform *transform, GError **error)
 
 		/* generate a devicelink */
 		profiles[0] = profile_in;
-		profiles[1] = cd_icc_get_handle (priv->abstract);
+		profiles[1] = cd_icc_get_handle (priv->abstract_icc);
 		profiles[2] = profile_out;
 		priv->lcms_transform = cmsCreateMultiprofileTransform (profiles,
 								       3,
-								       lcms_format,
-								       lcms_format,
+								       priv->input_pixel_format,
+								       priv->output_pixel_format,
 								       lcms_intent,
-								       0);
+								       lcms_flags);
 
 	} else {
 		/* create basic transform */
 		priv->lcms_transform = cmsCreateTransform (profile_in,
-							   lcms_format,
+							   priv->input_pixel_format,
 							   profile_out,
-							   lcms_format,
+							   priv->output_pixel_format,
 							   lcms_intent,
-							   0);
+							   lcms_flags);
 	}
 
 	/* failed? */
@@ -479,7 +519,8 @@ cd_transform_process (CdTransform *transform,
 				     "rendering intent not set");
 		goto out;
 	}
-	if (priv->pixel_format == CD_PIXEL_FORMAT_UNKNOWN) {
+	if (priv->input_pixel_format == CD_PIXEL_FORMAT_UNKNOWN ||
+	    priv->output_pixel_format == CD_PIXEL_FORMAT_UNKNOWN) {
 		ret = FALSE;
 		g_set_error_literal (error,
 				     CD_TRANSFORM_ERROR,
@@ -517,20 +558,26 @@ cd_transform_get_property (GObject *object, guint prop_id, GValue *value, GParam
 	CdTransformPrivate *priv = transform->priv;
 
 	switch (prop_id) {
-	case PROP_INPUT:
-		g_value_set_object (value, priv->input);
+	case PROP_INPUT_ICC:
+		g_value_set_object (value, priv->input_icc);
 		break;
-	case PROP_OUTPUT:
-		g_value_set_object (value, priv->output);
+	case PROP_OUTPUT_ICC:
+		g_value_set_object (value, priv->output_icc);
 		break;
-	case PROP_ABSTRACT:
-		g_value_set_object (value, priv->abstract);
+	case PROP_ABSTRACT_ICC:
+		g_value_set_object (value, priv->abstract_icc);
 		break;
 	case PROP_RENDERING_INTENT:
 		g_value_set_uint (value, priv->rendering_intent);
 		break;
-	case PROP_PIXEL_FORMAT:
-		g_value_set_uint (value, priv->pixel_format);
+	case PROP_BPC:
+		g_value_set_boolean (value, priv->bpc);
+		break;
+	case PROP_INPUT_PIXEL_FORMAT:
+		g_value_set_uint (value, priv->input_pixel_format);
+		break;
+	case PROP_OUTPUT_PIXEL_FORMAT:
+		g_value_set_uint (value, priv->output_pixel_format);
 		break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -547,19 +594,25 @@ cd_transform_set_property (GObject *object, guint prop_id, const GValue *value, 
 	CdTransform *transform = CD_TRANSFORM (object);
 	switch (prop_id) {
 	case PROP_RENDERING_INTENT:
-		cd_transform_set_intent (transform, g_value_get_uint (value));
+		cd_transform_set_rendering_intent (transform, g_value_get_uint (value));
 		break;
-	case PROP_PIXEL_FORMAT:
-		cd_transform_set_format (transform, g_value_get_uint (value));
+	case PROP_BPC:
+		cd_transform_set_bpc (transform, g_value_get_boolean (value));
 		break;
-	case PROP_INPUT:
-		cd_transform_set_input (transform, g_value_get_object (value));
+	case PROP_INPUT_PIXEL_FORMAT:
+		cd_transform_set_input_pixel_format (transform, g_value_get_uint (value));
 		break;
-	case PROP_OUTPUT:
-		cd_transform_set_output (transform, g_value_get_object (value));
+	case PROP_OUTPUT_PIXEL_FORMAT:
+		cd_transform_set_output_pixel_format (transform, g_value_get_uint (value));
 		break;
-	case PROP_ABSTRACT:
-		cd_transform_set_abstract (transform, g_value_get_object (value));
+	case PROP_INPUT_ICC:
+		cd_transform_set_input_icc (transform, g_value_get_object (value));
+		break;
+	case PROP_OUTPUT_ICC:
+		cd_transform_set_output_icc (transform, g_value_get_object (value));
+		break;
+	case PROP_ABSTRACT_ICC:
+		cd_transform_set_abstract_icc (transform, g_value_get_object (value));
 		break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -589,36 +642,52 @@ cd_transform_class_init (CdTransformClass *klass)
 	g_object_class_install_property (object_class, PROP_RENDERING_INTENT, pspec);
 
 	/**
-	 * CdTransform: pixel-format:
+	 * CdTransform: bpc:
 	 */
-	pspec = g_param_spec_uint ("pixel-format", NULL, NULL,
+	pspec = g_param_spec_boolean ("bpc", NULL, NULL,
+				      FALSE,
+				      G_PARAM_READWRITE);
+	g_object_class_install_property (object_class, PROP_BPC, pspec);
+
+	/**
+	 * CdTransform: input-pixel-format:
+	 */
+	pspec = g_param_spec_uint ("input-pixel-format", NULL, NULL,
 				   0, G_MAXUINT, 0,
 				   G_PARAM_READWRITE);
-	g_object_class_install_property (object_class, PROP_PIXEL_FORMAT, pspec);
+	g_object_class_install_property (object_class, PROP_INPUT_PIXEL_FORMAT, pspec);
 
 	/**
-	 * CdTransform: input:
+	 * CdTransform: output-pixel-format:
 	 */
-	pspec = g_param_spec_object ("input", NULL, NULL,
-				     CD_TYPE_ICC,
-				     G_PARAM_READWRITE);
-	g_object_class_install_property (object_class, PROP_INPUT, pspec);
+	pspec = g_param_spec_uint ("output-pixel-format", NULL, NULL,
+				   0, G_MAXUINT, 0,
+				   G_PARAM_READWRITE);
+	g_object_class_install_property (object_class, PROP_OUTPUT_PIXEL_FORMAT, pspec);
 
 	/**
-	 * CdTransform: output:
+	 * CdTransform: input-icc:
 	 */
-	pspec = g_param_spec_object ("output", NULL, NULL,
+	pspec = g_param_spec_object ("input-icc", NULL, NULL,
 				     CD_TYPE_ICC,
 				     G_PARAM_READWRITE);
-	g_object_class_install_property (object_class, PROP_OUTPUT, pspec);
+	g_object_class_install_property (object_class, PROP_INPUT_ICC, pspec);
 
 	/**
-	 * CdTransform: abstract:
+	 * CdTransform: output-icc:
 	 */
-	pspec = g_param_spec_object ("abstract", NULL, NULL,
+	pspec = g_param_spec_object ("output-icc", NULL, NULL,
 				     CD_TYPE_ICC,
 				     G_PARAM_READWRITE);
-	g_object_class_install_property (object_class, PROP_ABSTRACT, pspec);
+	g_object_class_install_property (object_class, PROP_OUTPUT_ICC, pspec);
+
+	/**
+	 * CdTransform: abstract-icc:
+	 */
+	pspec = g_param_spec_object ("abstract-icc", NULL, NULL,
+				     CD_TYPE_ICC,
+				     G_PARAM_READWRITE);
+	g_object_class_install_property (object_class, PROP_ABSTRACT_ICC, pspec);
 
 	g_type_class_add_private (klass, sizeof (CdTransformPrivate));
 }
@@ -631,7 +700,8 @@ cd_transform_init (CdTransform *transform)
 {
 	transform->priv = CD_TRANSFORM_GET_PRIVATE (transform);
 	transform->priv->rendering_intent = CD_RENDERING_INTENT_UNKNOWN;
-	transform->priv->pixel_format = CD_PIXEL_FORMAT_UNKNOWN;
+	transform->priv->input_pixel_format = CD_PIXEL_FORMAT_UNKNOWN;
+	transform->priv->output_pixel_format = CD_PIXEL_FORMAT_UNKNOWN;
 	transform->priv->srgb = cmsCreate_sRGBProfile ();
 }
 
@@ -645,12 +715,12 @@ cd_transform_finalize (GObject *object)
 	CdTransformPrivate *priv = transform->priv;
 
 	cmsCloseProfile (transform->priv->srgb);
-	if (priv->input != NULL)
-		g_object_unref (priv->input);
-	if (priv->output != NULL)
-		g_object_unref (priv->output);
-	if (priv->abstract != NULL)
-		g_object_unref (priv->abstract);
+	if (priv->input_icc != NULL)
+		g_object_unref (priv->input_icc);
+	if (priv->output_icc != NULL)
+		g_object_unref (priv->output_icc);
+	if (priv->abstract_icc != NULL)
+		g_object_unref (priv->abstract_icc);
 	if (priv->lcms_transform != NULL)
 		cmsDeleteTransform (priv->lcms_transform);
 

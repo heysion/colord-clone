@@ -9,12 +9,10 @@ cd-enum
 
 </para>
 
-
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
-
 
 <!-- ##### SECTION Stability_Level ##### -->
 
@@ -761,6 +759,8 @@ cd-enum
 @CD_PIXEL_FORMAT_RGB_16: 
 @CD_PIXEL_FORMAT_RGBA_8: 
 @CD_PIXEL_FORMAT_RGBA_16: 
+@CD_PIXEL_FORMAT_BGRA_8: 
+@CD_PIXEL_FORMAT_BGRA_16: 
 @CD_PIXEL_FORMAT_LAST: 
 
 <!-- ##### ENUM CdProfileError ##### -->
