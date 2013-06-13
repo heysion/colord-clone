@@ -541,7 +541,7 @@ cd-client
 
 </para>
 
-@profile: 
+@client: 
 
 
 <!-- ##### USER_FUNCTION device_added ##### -->
