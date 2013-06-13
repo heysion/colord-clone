@@ -1,6 +1,106 @@
+commit 40446f09daf90257a37545e44af2f6cc0c1acd77
+Author: Richard Hughes <richard@hughsie.com>
+Date:   2013-06-11
+
+    Release colord 1.0.1
+
+M	NEWS
+M	RELEASE
+
+commit c2d74e86068a368766bba8359434fd7f2fede37c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-06-03
+
+    session-helper: Record the gamma table in the error message
+
+    Record the gamma table in the error message if the calibration was
+    non-monotonic.
+    This should help debugging some sensors.
+
+M	contrib/session-helper/cd-main.c
+
+commit 4a0cf6c97d2fd5de5f74d2beaa485a550b805d5d
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-06-07
+
+    trivial: Remove the website source
+
+    This is only to be modified in master to avoid confusion.
+
+D	doc/website/bugs.html
+D	doc/website/download.html
+D	doc/website/faq.html
+D	doc/website/favicon.ico
+D	doc/website/help.html
+D	doc/website/img/architecture-plan.png
+D	doc/website/img/cups-detailed-plan.png
+D	doc/website/img/cups-plan.png
+D	doc/website/img/dialog-information.png
+D	doc/website/img/large-accessories-text-editor.png
+D	doc/website/img/large-application-certificate.png
+D	doc/website/img/large-applications-development.png
+D	doc/website/img/large-authors.png
+D	doc/website/img/large-dialog-information.png
+D	doc/website/img/large-emblem-favorite.png
+D	doc/website/img/large-emblem-photos.png
+D	doc/website/img/large-help-browser.png
+D	doc/website/img/large-preferences-system.png
+D	doc/website/img/large-system-users.png
+D	doc/website/img/profile-bevan.png
+D	doc/website/img/profile-graham.png
+D	doc/website/img/profile-suzan.png
+D	doc/website/index.html
+D	doc/website/intro.html
+D	doc/website/profiles.html
+D	doc/website/screenshots.html
+D	doc/website/specifics.html
+D	doc/website/style.css
+D	doc/website/upload.sh
+D	doc/website/using.html
+
+commit ac8fe2d92c95a1c39eebedabf85743ffbf551410
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-06-07
+
+    Add 0.1.34 to 1.0.0 deprecated methods to preserve ABI
+
+    These methods were never used (as they didn't yet work) but Debian is
+    threatening to bump the soname in their packages.
+
+M	lib/colord/cd-deprecated.c
+M	lib/colord/cd-deprecated.h
+
+commit 0b9a8395c1a0625a992af193f28e7b5d857d5ded
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-13
+
+    Do not unconditionally enable BPC on the color transform
+
+M	lib/colord/cd-transform.c
+
+commit 7eaf33101c9cbbbc080e91ee31470855c836efaf
+Author: Christopher James Halse Rogers <raof@ubuntu.com>
+Date:	2013-05-13
+
+    Fix ‘created’ time for non-UTC timezones again.
+
+    The tests now all pass. Woo!
+
+M	lib/colord/cd-icc.c
+M	src/cd-profile.c
+
+commit 2e0698166845dd8562f78153c9d697b8467755f2
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-05-13
+
+    trivial: post release version bump
+
+M	RELEASE
+M	configure.ac
+
 commit f052e56acec739705e78421c2e75419481074673
 Author: Richard Hughes <richard@hughsie.com>
-Date:   2013-05-13
+Date:	2013-05-13
 
     Release colord 1.0.0
 

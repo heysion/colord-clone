@@ -749,19 +749,11 @@ cd-enum
 @CD_OBJECT_SCOPE_DISK: 
 @CD_OBJECT_SCOPE_LAST: 
 
-<!-- ##### ENUM CdPixelFormat ##### -->
+<!-- ##### TYPEDEF CdPixelFormat ##### -->
 <para>
 
 </para>
 
-@CD_PIXEL_FORMAT_UNKNOWN: 
-@CD_PIXEL_FORMAT_RGB_8: 
-@CD_PIXEL_FORMAT_RGB_16: 
-@CD_PIXEL_FORMAT_RGBA_8: 
-@CD_PIXEL_FORMAT_RGBA_16: 
-@CD_PIXEL_FORMAT_BGRA_8: 
-@CD_PIXEL_FORMAT_BGRA_16: 
-@CD_PIXEL_FORMAT_LAST: 
 
 <!-- ##### ENUM CdProfileError ##### -->
 <para>

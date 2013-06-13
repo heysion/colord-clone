@@ -265,18 +265,8 @@
     <keyword type="function" name="_cd_transform_reserved7 ()" link="colord-cd-transform.html#cd-transform-reserved7"/>
     <keyword type="function" name="_cd_transform_reserved8 ()" link="colord-cd-transform.html#cd-transform-reserved8"/>
     <keyword type="function" name="cd_transform_error_quark ()" link="colord-cd-transform.html#cd-transform-error-quark" since="0.1.34"/>
-    <keyword type="function" name="cd_transform_get_abstract ()" link="colord-cd-transform.html#cd-transform-get-abstract" since="0.1.34"/>
-    <keyword type="function" name="cd_transform_get_format ()" link="colord-cd-transform.html#cd-transform-get-format" since="0.1.34"/>
-    <keyword type="function" name="cd_transform_get_input ()" link="colord-cd-transform.html#cd-transform-get-input" since="0.1.34"/>
-    <keyword type="function" name="cd_transform_get_intent ()" link="colord-cd-transform.html#cd-transform-get-intent" since="0.1.34"/>
-    <keyword type="function" name="cd_transform_get_output ()" link="colord-cd-transform.html#cd-transform-get-output" since="0.1.34"/>
     <keyword type="function" name="cd_transform_new ()" link="colord-cd-transform.html#cd-transform-new" since="0.1.34"/>
     <keyword type="function" name="cd_transform_process ()" link="colord-cd-transform.html#cd-transform-process" since="0.1.34"/>
-    <keyword type="function" name="cd_transform_set_abstract ()" link="colord-cd-transform.html#cd-transform-set-abstract" since="0.1.34"/>
-    <keyword type="function" name="cd_transform_set_format ()" link="colord-cd-transform.html#cd-transform-set-format" since="0.1.34"/>
-    <keyword type="function" name="cd_transform_set_input ()" link="colord-cd-transform.html#cd-transform-set-input" since="0.1.34"/>
-    <keyword type="function" name="cd_transform_set_intent ()" link="colord-cd-transform.html#cd-transform-set-intent" since="0.1.34"/>
-    <keyword type="function" name="cd_transform_set_output ()" link="colord-cd-transform.html#cd-transform-set-output" since="0.1.34"/>
     <keyword type="function" name="cd_interp_akima_new ()" link="colord-cd-interp-akima.html#cd-interp-akima-new" since="0.1.31"/>
     <keyword type="function" name="cd_interp_linear_new ()" link="colord-cd-interp-linear.html#cd-interp-linear-new" since="0.1.31"/>
     <keyword type="macro" name="CD_INTERP_ERROR" link="colord-cd-interp.html#CD-INTERP-ERROR:CAPS"/>
