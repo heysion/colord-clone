@@ -1,3 +1,25 @@
+colord (1.0.1-1) unstable; urgency=low
+
+  [ Pino Toscano ]
+  * Fix build on non-Linux architectures (Closes: 703423)
+
+  [ Christopher James Halse Rogers ]
+  * New upstream release (Closes: 711802)
+  * Update copyright file to match fixed sensor library copyrights
+  * Add new bash-completion build-dep
+  * Update libcolord symbols for new upstream
+  * Disable silent build rules
+  * Make autopkgtest test name policy compliant
+  * Differentiate libcolorhug1 description from libcolorhug-dev
+  * Add Valgrind dependency to DEP 8 tests
+  * Tighten version dependency on valac; needs >= 0.20 (Closes: 707348)
+  * Fix typo in debug message (Closes: 688654). Thanks, Christian T. Steigies!
+
+  [ Martin Pitt ]
+  * Fix Depends: syntax for DEP 8 tests
+
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Fri, 14 Jun 2013 15:53:02 +1000
+
 colord (0.1.31-1) experimental; urgency=low
 
   * New upstream release 0.1.31 (LP: #1099967)
