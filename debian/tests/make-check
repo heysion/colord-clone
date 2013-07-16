@@ -1,1 +1,5 @@
-make check
+#!/bin/sh
+
+make -C lib/colord check || (cat lib/colord/cd-self-test.log && false)
+#make -C lib/colorhug check || (cat lib/colorhug/ch-self-test.log && false)
+make -C src check || (cat src/cd-self-test.log && false)
