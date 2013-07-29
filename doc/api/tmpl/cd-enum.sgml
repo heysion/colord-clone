@@ -195,6 +195,41 @@ cd-enum
 
 
 
+<!-- ##### MACRO CD_PIXEL_FORMAT_ARGB32 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CD_PIXEL_FORMAT_BGRA32 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CD_PIXEL_FORMAT_CMYK32 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CD_PIXEL_FORMAT_RGB24 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CD_PIXEL_FORMAT_UNKNOWN ##### -->
+<para>
+
+</para>
+
+
+
 <!-- ##### MACRO CD_PROFILE_METADATA_ACCURACY_DE76_AVG ##### -->
 <para>
 
@@ -669,7 +704,6 @@ cd-enum
 @CD_CLIENT_ERROR_NOT_FOUND: 
 @CD_CLIENT_ERROR_INPUT_INVALID: 
 @CD_CLIENT_ERROR_FILE_INVALID: 
-@CD_CLIENT_ERROR_LAST: 
 
 <!-- ##### ENUM CdColorspace ##### -->
 <para>
@@ -687,7 +721,6 @@ cd-enum
 @CD_COLORSPACE_HSV: 
 @CD_COLORSPACE_CMYK: 
 @CD_COLORSPACE_CMY: 
-@CD_COLORSPACE_LAST: 
 
 <!-- ##### ENUM CdDeviceError ##### -->
 <para>
@@ -703,7 +736,6 @@ cd-enum
 @CD_DEVICE_ERROR_FAILED_TO_UNINHIBIT: 
 @CD_DEVICE_ERROR_FAILED_TO_AUTHENTICATE: 
 @CD_DEVICE_ERROR_NOT_ENABLED: 
-@CD_DEVICE_ERROR_LAST: 
 
 <!-- ##### ENUM CdDeviceKind ##### -->
 <para>
@@ -716,7 +748,6 @@ cd-enum
 @CD_DEVICE_KIND_PRINTER: 
 @CD_DEVICE_KIND_CAMERA: 
 @CD_DEVICE_KIND_WEBCAM: 
-@CD_DEVICE_KIND_LAST: 
 
 <!-- ##### ENUM CdDeviceMode ##### -->
 <para>
@@ -726,7 +757,6 @@ cd-enum
 @CD_DEVICE_MODE_UNKNOWN: 
 @CD_DEVICE_MODE_PHYSICAL: 
 @CD_DEVICE_MODE_VIRTUAL: 
-@CD_DEVICE_MODE_LAST: 
 
 <!-- ##### ENUM CdDeviceRelation ##### -->
 <para>
@@ -736,7 +766,6 @@ cd-enum
 @CD_DEVICE_RELATION_UNKNOWN: 
 @CD_DEVICE_RELATION_SOFT: 
 @CD_DEVICE_RELATION_HARD: 
-@CD_DEVICE_RELATION_LAST: 
 
 <!-- ##### ENUM CdObjectScope ##### -->
 <para>
@@ -747,7 +776,6 @@ cd-enum
 @CD_OBJECT_SCOPE_NORMAL: 
 @CD_OBJECT_SCOPE_TEMP: 
 @CD_OBJECT_SCOPE_DISK: 
-@CD_OBJECT_SCOPE_LAST: 
 
 <!-- ##### TYPEDEF CdPixelFormat ##### -->
 <para>
@@ -767,7 +795,6 @@ cd-enum
 @CD_PROFILE_ERROR_FAILED_TO_READ: 
 @CD_PROFILE_ERROR_FAILED_TO_AUTHENTICATE: 
 @CD_PROFILE_ERROR_PROPERTY_INVALID: 
-@CD_PROFILE_ERROR_LAST: 
 
 <!-- ##### ENUM CdProfileKind ##### -->
 <para>
@@ -782,7 +809,6 @@ cd-enum
 @CD_PROFILE_KIND_COLORSPACE_CONVERSION: 
 @CD_PROFILE_KIND_ABSTRACT: 
 @CD_PROFILE_KIND_NAMED_COLOR: 
-@CD_PROFILE_KIND_LAST: 
 
 <!-- ##### ENUM CdProfileQuality ##### -->
 <para>
@@ -821,7 +847,6 @@ cd-enum
 @CD_RENDERING_INTENT_RELATIVE_COLORIMETRIC: 
 @CD_RENDERING_INTENT_SATURATION: 
 @CD_RENDERING_INTENT_ABSOLUTE_COLORIMETRIC: 
-@CD_RENDERING_INTENT_LAST: 
 
 <!-- ##### ENUM CdSensorCap ##### -->
 <para>
@@ -843,7 +868,6 @@ cd-enum
 @CD_SENSOR_CAP_LCD_WHITE_LED: 
 @CD_SENSOR_CAP_WIDE_GAMUT_LCD_CCFL: 
 @CD_SENSOR_CAP_WIDE_GAMUT_LCD_RGB_LED: 
-@CD_SENSOR_CAP_LAST: 
 
 <!-- ##### ENUM CdSensorError ##### -->
 <para>
@@ -859,7 +883,6 @@ cd-enum
 @CD_SENSOR_ERROR_FAILED_TO_AUTHENTICATE: 
 @CD_SENSOR_ERROR_REQUIRED_POSITION_CALIBRATE: 
 @CD_SENSOR_ERROR_REQUIRED_POSITION_SURFACE: 
-@CD_SENSOR_ERROR_LAST: 
 
 <!-- ##### ENUM CdSensorKind ##### -->
 <para>
@@ -890,7 +913,6 @@ cd-enum
 @CD_SENSOR_KIND_I1_MONITOR: 
 @CD_SENSOR_KIND_SPYDER4: 
 @CD_SENSOR_KIND_COLOR_MUNKI_SMILE: 
-@CD_SENSOR_KIND_LAST: 
 
 <!-- ##### ENUM CdSensorState ##### -->
 <para>
@@ -902,7 +924,6 @@ cd-enum
 @CD_SENSOR_STATE_IDLE: 
 @CD_SENSOR_STATE_MEASURING: 
 @CD_SENSOR_STATE_BUSY: 
-@CD_SENSOR_STATE_LAST: 
 
 <!-- ##### ENUM CdStandardSpace ##### -->
 <para>
@@ -913,7 +934,6 @@ cd-enum
 @CD_STANDARD_SPACE_SRGB: 
 @CD_STANDARD_SPACE_ADOBE_RGB: 
 @CD_STANDARD_SPACE_PROPHOTO_RGB: 
-@CD_STANDARD_SPACE_LAST: 
 
 <!-- ##### MACRO cd_bitfield_add ##### -->
 <para>

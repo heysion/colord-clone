@@ -46,7 +46,6 @@ cd-icc
 @CD_ICC_ERROR_FAILED_TO_SAVE: 
 @CD_ICC_ERROR_FAILED_TO_CREATE: 
 @CD_ICC_ERROR_INVALID_COLORSPACE: 
-@CD_ICC_ERROR_LAST: 
 
 <!-- ##### ENUM CdIccLoadFlags ##### -->
 <para>
@@ -60,7 +59,6 @@ cd-icc
 @CD_ICC_LOAD_FLAGS_FALLBACK_MD5: 
 @CD_ICC_LOAD_FLAGS_PRIMARIES: 
 @CD_ICC_LOAD_FLAGS_ALL: 
-@CD_ICC_LOAD_FLAGS_LAST: 
 
 <!-- ##### ENUM CdIccSaveFlags ##### -->
 <para>
@@ -68,7 +66,6 @@ cd-icc
 </para>
 
 @CD_ICC_SAVE_FLAGS_NONE: 
-@CD_ICC_SAVE_FLAGS_LAST: 
 
 <!-- ##### USER_FUNCTION _cd_icc_reserved1 ##### -->
 <para>
@@ -465,6 +462,17 @@ cd-icc
 @key: 
 
 
+<!-- ##### FUNCTION cd_icc_save_data ##### -->
+<para>
+
+</para>
+
+@icc: 
+@flags: 
+@error: 
+@Returns: 
+
+
 <!-- ##### FUNCTION cd_icc_save_file ##### -->
 <para>
 
@@ -523,6 +531,15 @@ cd-icc
 
 @icc: 
 @values: 
+
+
+<!-- ##### FUNCTION cd_icc_set_filename ##### -->
+<para>
+
+</para>
+
+@icc: 
+@filename: 
 
 
 <!-- ##### FUNCTION cd_icc_set_kind ##### -->

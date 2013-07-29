@@ -13,6 +13,7 @@
       <sub name="cd-color" link="colord-cd-color.html"/>
       <sub name="cd-dom" link="colord-cd-dom.html"/>
       <sub name="cd-icc" link="colord-cd-icc.html"/>
+      <sub name="CdIccStore" link="CdIccStore.html"/>
       <sub name="cd-transform" link="colord-cd-transform.html"/>
       <sub name="cd-interp-akima" link="colord-cd-interp-akima.html"/>
       <sub name="cd-interp-linear" link="colord-cd-interp-linear.html"/>
@@ -63,6 +64,8 @@
     <keyword type="" name="The SensorRemoved signal" link="ColorManager.html#ColorManager::SensorRemoved"/>
     <keyword type="" name="The ProfileChanged signal" link="ColorManager.html#ColorManager::ProfileChanged"/>
     <keyword type="" name="The &quot;DaemonVersion&quot; property" link="ColorManager.html#ColorManager:DaemonVersion"/>
+    <keyword type="" name="The &quot;SystemVendor&quot; property" link="ColorManager.html#ColorManager:SystemVendor"/>
+    <keyword type="" name="The &quot;SystemModel&quot; property" link="ColorManager.html#ColorManager:SystemModel"/>
     <keyword type="" name="SetProperty ()" link="Device.html#Device.SetProperty"/>
     <keyword type="" name="AddProfile ()" link="Device.html#Device.AddProfile"/>
     <keyword type="" name="RemoveProfile ()" link="Device.html#Device.RemoveProfile"/>
@@ -239,12 +242,14 @@
     <keyword type="function" name="cd_icc_load_handle ()" link="colord-cd-icc.html#cd-icc-load-handle" since="0.1.33"/>
     <keyword type="function" name="cd_icc_new ()" link="colord-cd-icc.html#cd-icc-new" since="0.1.32"/>
     <keyword type="function" name="cd_icc_remove_metadata ()" link="colord-cd-icc.html#cd-icc-remove-metadata" since="0.1.32"/>
+    <keyword type="function" name="cd_icc_save_data ()" link="colord-cd-icc.html#cd-icc-save-data" since="1.0.2"/>
     <keyword type="function" name="cd_icc_save_file ()" link="colord-cd-icc.html#cd-icc-save-file" since="0.1.32"/>
     <keyword type="function" name="cd_icc_set_colorspace ()" link="colord-cd-icc.html#cd-icc-set-colorspace" since="0.1.32"/>
     <keyword type="function" name="cd_icc_set_copyright ()" link="colord-cd-icc.html#cd-icc-set-copyright" since="0.1.32"/>
     <keyword type="function" name="cd_icc_set_copyright_items ()" link="colord-cd-icc.html#cd-icc-set-copyright-items" since="0.1.32"/>
     <keyword type="function" name="cd_icc_set_description ()" link="colord-cd-icc.html#cd-icc-set-description" since="0.1.32"/>
     <keyword type="function" name="cd_icc_set_description_items ()" link="colord-cd-icc.html#cd-icc-set-description-items" since="0.1.32"/>
+    <keyword type="function" name="cd_icc_set_filename ()" link="colord-cd-icc.html#cd-icc-set-filename" since="1.1.1"/>
     <keyword type="function" name="cd_icc_set_kind ()" link="colord-cd-icc.html#cd-icc-set-kind" since="0.1.32"/>
     <keyword type="function" name="cd_icc_set_manufacturer ()" link="colord-cd-icc.html#cd-icc-set-manufacturer" since="0.1.32"/>
     <keyword type="function" name="cd_icc_set_manufacturer_items ()" link="colord-cd-icc.html#cd-icc-set-manufacturer-items" since="0.1.32"/>
@@ -253,6 +258,21 @@
     <keyword type="function" name="cd_icc_set_vcgt ()" link="colord-cd-icc.html#cd-icc-set-vcgt" since="0.1.34"/>
     <keyword type="function" name="cd_icc_set_version ()" link="colord-cd-icc.html#cd-icc-set-version" since="0.1.32"/>
     <keyword type="function" name="cd_icc_to_string ()" link="colord-cd-icc.html#cd-icc-to-string" since="0.1.32"/>
+    <keyword type="struct" name="struct CdIccStore" link="CdIccStore.html#CdIccStore-struct"/>
+    <keyword type="struct" name="struct CdIccStoreClass" link="CdIccStore.html#CdIccStoreClass"/>
+    <keyword type="enum" name="enum CdIccStoreSearchFlags" link="CdIccStore.html#CdIccStoreSearchFlags" since="1.1.1"/>
+    <keyword type="enum" name="enum CdIccStoreSearchKind" link="CdIccStore.html#CdIccStoreSearchKind" since="1.1.1"/>
+    <keyword type="function" name="cd_icc_store_find_by_checksum ()" link="CdIccStore.html#cd-icc-store-find-by-checksum" since="1.0.2"/>
+    <keyword type="function" name="cd_icc_store_find_by_filename ()" link="CdIccStore.html#cd-icc-store-find-by-filename" since="1.0.2"/>
+    <keyword type="function" name="cd_icc_store_get_all ()" link="CdIccStore.html#cd-icc-store-get-all" since="1.0.2"/>
+    <keyword type="function" name="cd_icc_store_get_load_flags ()" link="CdIccStore.html#cd-icc-store-get-load-flags" since="1.0.2"/>
+    <keyword type="function" name="cd_icc_store_new ()" link="CdIccStore.html#cd-icc-store-new" since="1.0.2"/>
+    <keyword type="function" name="cd_icc_store_search_kind ()" link="CdIccStore.html#cd-icc-store-search-kind" since="1.0.2"/>
+    <keyword type="function" name="cd_icc_store_search_location ()" link="CdIccStore.html#cd-icc-store-search-location" since="1.0.2"/>
+    <keyword type="function" name="cd_icc_store_set_cache ()" link="CdIccStore.html#cd-icc-store-set-cache" since="1.0.2"/>
+    <keyword type="function" name="cd_icc_store_set_load_flags ()" link="CdIccStore.html#cd-icc-store-set-load-flags" since="1.0.2"/>
+    <keyword type="signal" name="The &quot;added&quot; signal" link="CdIccStore.html#CdIccStore-added"/>
+    <keyword type="signal" name="The &quot;removed&quot; signal" link="CdIccStore.html#CdIccStore-removed"/>
     <keyword type="macro" name="CD_TRANSFORM_ERROR" link="colord-cd-transform.html#CD-TRANSFORM-ERROR:CAPS"/>
     <keyword type="macro" name="CD_TRANSFORM_TYPE_ERROR" link="colord-cd-transform.html#CD-TRANSFORM-TYPE-ERROR:CAPS"/>
     <keyword type="enum" name="enum CdTransformError" link="colord-cd-transform.html#CdTransformError" since="0.1.34"/>
@@ -265,8 +285,22 @@
     <keyword type="function" name="_cd_transform_reserved7 ()" link="colord-cd-transform.html#cd-transform-reserved7"/>
     <keyword type="function" name="_cd_transform_reserved8 ()" link="colord-cd-transform.html#cd-transform-reserved8"/>
     <keyword type="function" name="cd_transform_error_quark ()" link="colord-cd-transform.html#cd-transform-error-quark" since="0.1.34"/>
+    <keyword type="function" name="cd_transform_get_abstract_icc ()" link="colord-cd-transform.html#cd-transform-get-abstract-icc" since="1.0.0"/>
+    <keyword type="function" name="cd_transform_get_bpc ()" link="colord-cd-transform.html#cd-transform-get-bpc" since="1.0.0"/>
+    <keyword type="function" name="cd_transform_get_input_icc ()" link="colord-cd-transform.html#cd-transform-get-input-icc" since="1.0.0"/>
+    <keyword type="function" name="cd_transform_get_input_pixel_format ()" link="colord-cd-transform.html#cd-transform-get-input-pixel-format" since="1.0.0"/>
+    <keyword type="function" name="cd_transform_get_output_icc ()" link="colord-cd-transform.html#cd-transform-get-output-icc" since="1.0.0"/>
+    <keyword type="function" name="cd_transform_get_output_pixel_format ()" link="colord-cd-transform.html#cd-transform-get-output-pixel-format" since="1.0.0"/>
+    <keyword type="function" name="cd_transform_get_rendering_intent ()" link="colord-cd-transform.html#cd-transform-get-rendering-intent" since="1.0.0"/>
     <keyword type="function" name="cd_transform_new ()" link="colord-cd-transform.html#cd-transform-new" since="0.1.34"/>
     <keyword type="function" name="cd_transform_process ()" link="colord-cd-transform.html#cd-transform-process" since="0.1.34"/>
+    <keyword type="function" name="cd_transform_set_abstract_icc ()" link="colord-cd-transform.html#cd-transform-set-abstract-icc" since="1.0.0"/>
+    <keyword type="function" name="cd_transform_set_bpc ()" link="colord-cd-transform.html#cd-transform-set-bpc" since="1.0.0"/>
+    <keyword type="function" name="cd_transform_set_input_icc ()" link="colord-cd-transform.html#cd-transform-set-input-icc" since="1.0.0"/>
+    <keyword type="function" name="cd_transform_set_input_pixel_format ()" link="colord-cd-transform.html#cd-transform-set-input-pixel-format" since="1.0.0"/>
+    <keyword type="function" name="cd_transform_set_output_icc ()" link="colord-cd-transform.html#cd-transform-set-output-icc" since="1.0.0"/>
+    <keyword type="function" name="cd_transform_set_output_pixel_format ()" link="colord-cd-transform.html#cd-transform-set-output-pixel-format" since="1.0.0"/>
+    <keyword type="function" name="cd_transform_set_rendering_intent ()" link="colord-cd-transform.html#cd-transform-set-rendering-intent" since="1.0.0"/>
     <keyword type="function" name="cd_interp_akima_new ()" link="colord-cd-interp-akima.html#cd-interp-akima-new" since="0.1.31"/>
     <keyword type="function" name="cd_interp_linear_new ()" link="colord-cd-interp-linear.html#cd-interp-linear-new" since="0.1.31"/>
     <keyword type="macro" name="CD_INTERP_ERROR" link="colord-cd-interp.html#CD-INTERP-ERROR:CAPS"/>
@@ -615,7 +649,6 @@
     <keyword type="constant" name="CD_ICC_ERROR_FAILED_TO_SAVE" link="colord-cd-icc.html#CD-ICC-ERROR-FAILED-TO-SAVE:CAPS"/>
     <keyword type="constant" name="CD_ICC_ERROR_FAILED_TO_CREATE" link="colord-cd-icc.html#CD-ICC-ERROR-FAILED-TO-CREATE:CAPS"/>
     <keyword type="constant" name="CD_ICC_ERROR_INVALID_COLORSPACE" link="colord-cd-icc.html#CD-ICC-ERROR-INVALID-COLORSPACE:CAPS"/>
-    <keyword type="constant" name="CD_ICC_ERROR_LAST" link="colord-cd-icc.html#CD-ICC-ERROR-LAST:CAPS"/>
     <keyword type="constant" name="CD_ICC_LOAD_FLAGS_NONE" link="colord-cd-icc.html#CD-ICC-LOAD-FLAGS-NONE:CAPS"/>
     <keyword type="constant" name="CD_ICC_LOAD_FLAGS_NAMED_COLORS" link="colord-cd-icc.html#CD-ICC-LOAD-FLAGS-NAMED-COLORS:CAPS"/>
     <keyword type="constant" name="CD_ICC_LOAD_FLAGS_TRANSLATIONS" link="colord-cd-icc.html#CD-ICC-LOAD-FLAGS-TRANSLATIONS:CAPS"/>
@@ -623,15 +656,23 @@
     <keyword type="constant" name="CD_ICC_LOAD_FLAGS_FALLBACK_MD5" link="colord-cd-icc.html#CD-ICC-LOAD-FLAGS-FALLBACK-MD5:CAPS"/>
     <keyword type="constant" name="CD_ICC_LOAD_FLAGS_PRIMARIES" link="colord-cd-icc.html#CD-ICC-LOAD-FLAGS-PRIMARIES:CAPS"/>
     <keyword type="constant" name="CD_ICC_LOAD_FLAGS_ALL" link="colord-cd-icc.html#CD-ICC-LOAD-FLAGS-ALL:CAPS"/>
-    <keyword type="constant" name="CD_ICC_LOAD_FLAGS_LAST" link="colord-cd-icc.html#CD-ICC-LOAD-FLAGS-LAST:CAPS"/>
     <keyword type="constant" name="CD_ICC_SAVE_FLAGS_NONE" link="colord-cd-icc.html#CD-ICC-SAVE-FLAGS-NONE:CAPS"/>
-    <keyword type="constant" name="CD_ICC_SAVE_FLAGS_LAST" link="colord-cd-icc.html#CD-ICC-SAVE-FLAGS-LAST:CAPS"/>
+    <keyword type="constant" name="CD_ICC_STORE_SEARCH_FLAGS_NONE" link="CdIccStore.html#CD-ICC-STORE-SEARCH-FLAGS-NONE:CAPS"/>
+    <keyword type="constant" name="CD_ICC_STORE_SEARCH_FLAGS_CREATE_LOCATION" link="CdIccStore.html#CD-ICC-STORE-SEARCH-FLAGS-CREATE-LOCATION:CAPS"/>
+    <keyword type="constant" name="CD_ICC_STORE_SEARCH_KIND_SYSTEM" link="CdIccStore.html#CD-ICC-STORE-SEARCH-KIND-SYSTEM:CAPS"/>
+    <keyword type="constant" name="CD_ICC_STORE_SEARCH_KIND_MACHINE" link="CdIccStore.html#CD-ICC-STORE-SEARCH-KIND-MACHINE:CAPS"/>
+    <keyword type="constant" name="CD_ICC_STORE_SEARCH_KIND_USER" link="CdIccStore.html#CD-ICC-STORE-SEARCH-KIND-USER:CAPS"/>
     <keyword type="constant" name="CD_TRANSFORM_ERROR_FAILED_TO_SETUP_TRANSFORM" link="colord-cd-transform.html#CD-TRANSFORM-ERROR-FAILED-TO-SETUP-TRANSFORM:CAPS"/>
     <keyword type="constant" name="CD_TRANSFORM_ERROR_INVALID_COLORSPACE" link="colord-cd-transform.html#CD-TRANSFORM-ERROR-INVALID-COLORSPACE:CAPS"/>
     <keyword type="constant" name="CD_TRANSFORM_ERROR_LAST" link="colord-cd-transform.html#CD-TRANSFORM-ERROR-LAST:CAPS"/>
     <keyword type="constant" name="CD_INTERP_ERROR_FAILED" link="colord-cd-interp.html#CD-INTERP-ERROR-FAILED:CAPS"/>
-    <keyword type="constant" name="CD_INTERP_ERROR_LAST" link="colord-cd-interp.html#CD-INTERP-ERROR-LAST:CAPS"/>
+    <keyword type="constant" name="CD_INTERP_KIND_LINEAR" link="colord-cd-interp.html#CD-INTERP-KIND-LINEAR:CAPS"/>
+    <keyword type="constant" name="CD_INTERP_KIND_AKIMA" link="colord-cd-interp.html#CD-INTERP-KIND-AKIMA:CAPS"/>
     <keyword type="constant" name="CD_IT8_ERROR_FAILED" link="colord-cd-it8.html#CD-IT8-ERROR-FAILED:CAPS"/>
-    <keyword type="constant" name="CD_IT8_ERROR_LAST" link="colord-cd-it8.html#CD-IT8-ERROR-LAST:CAPS"/>
+    <keyword type="constant" name="CD_IT8_KIND_UNKNOWN" link="colord-cd-it8.html#CD-IT8-KIND-UNKNOWN:CAPS"/>
+    <keyword type="constant" name="CD_IT8_KIND_TI1" link="colord-cd-it8.html#CD-IT8-KIND-TI1:CAPS"/>
+    <keyword type="constant" name="CD_IT8_KIND_TI3" link="colord-cd-it8.html#CD-IT8-KIND-TI3:CAPS"/>
+    <keyword type="constant" name="CD_IT8_KIND_CCMX" link="colord-cd-it8.html#CD-IT8-KIND-CCMX:CAPS"/>
+    <keyword type="constant" name="CD_IT8_KIND_CAL" link="colord-cd-it8.html#CD-IT8-KIND-CAL:CAPS"/>
   </functions>
 </book>

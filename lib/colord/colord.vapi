@@ -35,19 +35,23 @@ namespace Cd {
 		public unowned string get_daemon_version ();
 		public async GLib.GenericArray<Cd.Device> get_devices (GLib.Cancellable? cancellable) throws GLib.Error;
 		public async GLib.GenericArray<Cd.Device> get_devices_by_kind (Cd.DeviceKind kind, GLib.Cancellable? cancellable) throws GLib.Error;
-		public GLib.GenericArray<Cd.Device> get_devices_by_kind_sync (Cd.DeviceKind kind, GLib.Cancellable? cancellable = null) throws GLib.Error;
-		public GLib.GenericArray<Cd.Device> get_devices_sync (GLib.Cancellable? cancellable = null) throws GLib.Error;
+		public GLib.GenericArray<weak Cd.Device> get_devices_by_kind_sync (Cd.DeviceKind kind, GLib.Cancellable? cancellable = null) throws GLib.Error;
+		public GLib.GenericArray<weak Cd.Device> get_devices_sync (GLib.Cancellable? cancellable = null) throws GLib.Error;
 		public bool get_has_server ();
 		public async GLib.GenericArray<Cd.Profile> get_profiles (GLib.Cancellable? cancellable) throws GLib.Error;
-		public GLib.GenericArray<Cd.Profile> get_profiles_sync (GLib.Cancellable? cancellable = null) throws GLib.Error;
+		public GLib.GenericArray<weak Cd.Profile> get_profiles_sync (GLib.Cancellable? cancellable = null) throws GLib.Error;
 		public async GLib.GenericArray<Cd.Sensor> get_sensors (GLib.Cancellable? cancellable) throws GLib.Error;
-		public GLib.GenericArray<Cd.Sensor> get_sensors_sync (GLib.Cancellable? cancellable = null) throws GLib.Error;
+		public GLib.GenericArray<weak Cd.Sensor> get_sensors_sync (GLib.Cancellable? cancellable = null) throws GLib.Error;
 		public async Cd.Profile get_standard_space (Cd.StandardSpace standard_space, GLib.Cancellable? cancellable) throws GLib.Error;
 		public Cd.Profile get_standard_space_sync (Cd.StandardSpace standard_space, GLib.Cancellable? cancellable = null) throws GLib.Error;
+		public unowned string get_system_model ();
+		public unowned string get_system_vendor ();
 		public async Cd.Profile import_profile (GLib.File file, GLib.Cancellable? cancellable) throws GLib.Error;
 		public Cd.Profile import_profile_sync (GLib.File file, GLib.Cancellable? cancellable = null) throws GLib.Error;
 		public string connected { get; }
 		public string daemon_version { get; }
+		public string system_model { get; }
+		public string system_vendor { get; }
 		public virtual signal void changed ();
 		public virtual signal void device_added (Cd.Device device);
 		public virtual signal void device_changed (Cd.Device device);
@@ -152,7 +156,7 @@ namespace Cd {
 		public unowned string get_format ();
 		public unowned string get_id ();
 		public Cd.DeviceKind get_kind ();
-		public GLib.HashTable<string,string> get_metadata ();
+		public GLib.HashTable<weak string,weak string> get_metadata ();
 		public unowned string get_metadata_item (string key);
 		public Cd.DeviceMode get_mode ();
 		public unowned string get_model ();
@@ -274,12 +278,14 @@ namespace Cd {
 		public bool load_file (GLib.File file, Cd.IccLoadFlags flags, GLib.Cancellable? cancellable = null) throws GLib.Error;
 		public bool load_handle (void* handle, Cd.IccLoadFlags flags) throws GLib.Error;
 		public void remove_metadata (string key);
+		public GLib.Bytes save_data (Cd.IccSaveFlags flags) throws GLib.Error;
 		public bool save_file (GLib.File file, Cd.IccSaveFlags flags, GLib.Cancellable? cancellable = null) throws GLib.Error;
 		public void set_colorspace (Cd.Colorspace colorspace);
 		public void set_copyright (string locale, string value);
 		public void set_copyright_items (GLib.HashTable<void*,void*> values);
 		public void set_description (string locale, string value);
 		public void set_description_items (GLib.HashTable<void*,void*> values);
+		public void set_filename (string filename);
 		public void set_kind (Cd.ProfileKind kind);
 		public void set_manufacturer (string locale, string value);
 		public void set_manufacturer_items (GLib.HashTable<void*,void*> values);
@@ -300,6 +306,21 @@ namespace Cd {
 		public uint temperature { get; }
 		public double version { get; set; }
 		public Cd.ColorXYZ white { get; }
+	}
+	[CCode (cheader_filename = "colord.h", type_id = "cd_icc_store_get_type ()")]
+	public class IccStore : GLib.Object {
+		[CCode (has_construct_function = false)]
+		public IccStore ();
+		public Cd.Icc find_by_checksum (string checksum);
+		public Cd.Icc find_by_filename (string filename);
+		public GLib.GenericArray<weak Cd.Icc> get_all ();
+		public Cd.IccLoadFlags get_load_flags ();
+		public bool search_kind (Cd.IccStoreSearchKind search_kind, Cd.IccStoreSearchFlags search_flags, GLib.Cancellable? cancellable = null) throws GLib.Error;
+		public bool search_location (string location, Cd.IccStoreSearchFlags search_flags, GLib.Cancellable? cancellable = null) throws GLib.Error;
+		public void set_cache (GLib.Resource cache);
+		public void set_load_flags (Cd.IccLoadFlags load_flags);
+		public virtual signal void added (Cd.Icc icc);
+		public virtual signal void removed (Cd.Icc icc);
 	}
 	[CCode (cheader_filename = "colord.h", type_id = "cd_interp_get_type ()")]
 	public class Interp : GLib.Object {
@@ -390,7 +411,7 @@ namespace Cd {
 		public unowned string get_id ();
 		public bool get_is_system_wide ();
 		public Cd.ProfileKind get_kind ();
-		public GLib.HashTable<string,string> get_metadata ();
+		public GLib.HashTable<weak string,weak string> get_metadata ();
 		public unowned string get_metadata_item (string key);
 		public unowned string get_object_path ();
 		public uint get_owner ();
@@ -451,14 +472,14 @@ namespace Cd {
 		public unowned string get_id ();
 		public Cd.SensorKind get_kind ();
 		public bool get_locked ();
-		public GLib.HashTable<string,string> get_metadata ();
+		public GLib.HashTable<weak string,weak string> get_metadata ();
 		public unowned string get_metadata_item (string key);
 		public Cd.SensorCap get_mode ();
 		public unowned string get_model ();
 		public bool get_native ();
 		public unowned string get_object_path ();
 		public unowned string get_option (string key);
-		public GLib.HashTable<string,GLib.Variant> get_options ();
+		public GLib.HashTable<weak string,weak GLib.Variant> get_options ();
 		public async Cd.ColorXYZ get_sample (Cd.SensorCap cap, GLib.Cancellable? cancellable) throws GLib.Error;
 		public Cd.ColorXYZ get_sample_sync (Cd.SensorCap cap, GLib.Cancellable? cancellable = null) throws GLib.Error;
 		public unowned string get_serial ();
@@ -659,6 +680,17 @@ namespace Cd {
 		NONE,
 		LAST
 	}
+	[CCode (cheader_filename = "colord.h", cprefix = "CD_ICC_STORE_SEARCH_FLAGS_", has_type_id = false)]
+	public enum IccStoreSearchFlags {
+		NONE,
+		CREATE_LOCATION
+	}
+	[CCode (cheader_filename = "colord.h", cprefix = "CD_ICC_STORE_SEARCH_KIND_", has_type_id = false)]
+	public enum IccStoreSearchKind {
+		SYSTEM,
+		MACHINE,
+		USER
+	}
 	[CCode (cheader_filename = "colord.h", cprefix = "CD_INTERP_ERROR_", has_type_id = false)]
 	public enum InterpError {
 		FAILED,
@@ -836,6 +868,10 @@ namespace Cd {
 	}
 	[CCode (cheader_filename = "colord.h", cname = "CD_CLIENT_PROPERTY_DAEMON_VERSION")]
 	public const string CLIENT_PROPERTY_DAEMON_VERSION;
+	[CCode (cheader_filename = "colord.h", cname = "CD_CLIENT_PROPERTY_SYSTEM_MODEL")]
+	public const string CLIENT_PROPERTY_SYSTEM_MODEL;
+	[CCode (cheader_filename = "colord.h", cname = "CD_CLIENT_PROPERTY_SYSTEM_VENDOR")]
+	public const string CLIENT_PROPERTY_SYSTEM_VENDOR;
 	[CCode (cheader_filename = "colord.h", cname = "CD_DEVICE_METADATA_OUTPUT_EDID_MD5")]
 	public const string DEVICE_METADATA_OUTPUT_EDID_MD5;
 	[CCode (cheader_filename = "colord.h", cname = "CD_DEVICE_METADATA_OUTPUT_PRIORITY")]
