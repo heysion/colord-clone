@@ -23,6 +23,7 @@ Build-Depends:
  autopoint,
  libsystemd-login-dev [linux-any],
  bash-completion,
+ dh-systemd (>= 1.4),
 Standards-Version: 3.9.4
 XS-Testsuite: autopkgtest
 Section: graphics
