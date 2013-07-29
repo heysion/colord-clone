@@ -52,6 +52,8 @@ libcolord.so.1 libcolord1 #MINVER#
  cd_client_get_standard_space@Base 0.1.10
  cd_client_get_standard_space_finish@Base 0.1.10
  cd_client_get_standard_space_sync@Base 0.1.10
+ cd_client_get_system_model@Base 1.0.2
+ cd_client_get_system_vendor@Base 1.0.2
  cd_client_get_type@Base 0.1.10
  cd_client_import_profile@Base 0.1.12
  cd_client_import_profile_finish@Base 0.1.12
@@ -333,12 +335,14 @@ libcolordprivate.so.1 libcolord1 #MINVER#
  cd_icc_load_handle@Base 0.1.34
  cd_icc_new@Base 0.1.34
  cd_icc_remove_metadata@Base 0.1.34
+ cd_icc_save_data@Base 1.0.2
  cd_icc_save_file@Base 0.1.34
  cd_icc_set_colorspace@Base 0.1.34
  cd_icc_set_copyright@Base 0.1.34
  cd_icc_set_copyright_items@Base 0.1.34
  cd_icc_set_description@Base 0.1.34
  cd_icc_set_description_items@Base 0.1.34
+ cd_icc_set_filename@Base 1.0.2
  cd_icc_set_kind@Base 0.1.34
  cd_icc_set_manufacturer@Base 0.1.34
  cd_icc_set_manufacturer_items@Base 0.1.34
@@ -346,6 +350,16 @@ libcolordprivate.so.1 libcolord1 #MINVER#
  cd_icc_set_model_items@Base 0.1.34
  cd_icc_set_vcgt@Base 0.1.34
  cd_icc_set_version@Base 0.1.34
+ cd_icc_store_find_by_checksum@Base 1.0.2
+ cd_icc_store_find_by_filename@Base 1.0.2
+ cd_icc_store_get_all@Base 1.0.2
+ cd_icc_store_get_load_flags@Base 1.0.2
+ cd_icc_store_get_type@Base 1.0.2
+ cd_icc_store_new@Base 1.0.2
+ cd_icc_store_search_kind@Base 1.0.2
+ cd_icc_store_search_location@Base 1.0.2
+ cd_icc_store_set_cache@Base 1.0.2
+ cd_icc_store_set_load_flags@Base 1.0.2
  cd_icc_to_string@Base 0.1.34
  cd_interp_akima_get_type@Base 0.1.31
  cd_interp_akima_new@Base 0.1.31
