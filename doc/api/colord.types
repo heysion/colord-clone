@@ -7,6 +7,7 @@ cd_color_yxy_get_type
 cd_device_get_type
 cd_dom_get_type
 cd_icc_get_type
+cd_icc_store_get_type
 cd_interp_akima_get_type
 cd_interp_get_type
 cd_interp_linear_get_type

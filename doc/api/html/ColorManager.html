@@ -8,7 +8,7 @@
 <link rel="up" href="ref-dbus.html" title="D-Bus API Reference">
 <link rel="prev" href="ref-dbus.html" title="D-Bus API Reference">
 <link rel="next" href="Device.html" title="org.freedesktop.ColorManager.Device">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -84,7 +84,7 @@ out'o'object_path)
 </pre>
 </div>
 <div class="refsect1">
-<a name="idm226378515808"></a><h2>Signals</h2>
+<a name="id-1.2.4.4"></a><h2>Signals</h2>
 <pre class="synopsis"><a class="link" href="ColorManager.html#ColorManager::Changed">Changed</a>()
 <a class="link" href="ColorManager.html#ColorManager::DeviceAdded">DeviceAdded</a>('o'object_path)
 <a class="link" href="ColorManager.html#ColorManager::DeviceRemoved">DeviceRemoved</a>('o'object_path)
@@ -97,7 +97,7 @@ out'o'object_path)
 </pre>
 </div>
 <div class="refsect1">
-<a name="idm226380326224"></a><h2>Implemented Interfaces</h2>
+<a name="id-1.2.4.5"></a><h2>Implemented Interfaces</h2>
 <p>
     Objects implementing org.freedesktop.ColorManager also implements
     org.freedesktop.DBus.Introspectable,
@@ -105,12 +105,14 @@ out'o'object_path)
     </p>
 </div>
 <div class="refsect1">
-<a name="idm226380324192"></a><h2>Properties</h2>
+<a name="id-1.2.4.6"></a><h2>Properties</h2>
 <pre class="synopsis"><a class="link" href="ColorManager.html#ColorManager:DaemonVersion">'DaemonVersion'</a>read's'
+<a class="link" href="ColorManager.html#ColorManager:SystemVendor">'SystemVendor'</a>read's'
+<a class="link" href="ColorManager.html#ColorManager:SystemModel">'SystemModel'</a>read's'
 </pre>
 </div>
 <div class="refsect1">
-<a name="idm226380321456"></a><h2>Description</h2>
+<a name="id-1.2.4.7"></a><h2>Description</h2>
 <p>
       
         </p>
@@ -122,9 +124,9 @@ out'o'object_path)
     </p>
 </div>
 <div class="refsect1">
-<a name="idm226378587088"></a><h2>Details</h2>
+<a name="id-1.2.4.8"></a><h2>Details</h2>
 <div class="refsect2">
-<a name="idm226378586128"></a><h3>
+<a name="id-1.2.4.8.2"></a><h3>
 <a name="ColorManager.GetDevices"></a>GetDevices ()</h3>
 <pre class="programlisting">GetDevices (out'ao'devices)</pre>
 </div>
@@ -147,7 +149,7 @@ out'o'object_path)
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idm226378579872"></a><h3>
+<a name="id-1.2.4.8.5"></a><h3>
 <a name="ColorManager.GetDevicesByKind"></a>GetDevicesByKind ()</h3>
 <pre class="programlisting">GetDevicesByKind (in's'kind,
 out'ao'devices)</pre>
@@ -182,7 +184,7 @@ out'ao'devices)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idm226378794176"></a><h3>
+<a name="id-1.2.4.8.8"></a><h3>
 <a name="ColorManager.FindDeviceById"></a>FindDeviceById ()</h3>
 <pre class="programlisting">FindDeviceById (in's'device_id,
 out'o'object_path)</pre>
@@ -220,7 +222,7 @@ out'o'object_path)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idm226377106976"></a><h3>
+<a name="id-1.2.4.8.11"></a><h3>
 <a name="ColorManager.FindSensorById"></a>FindSensorById ()</h3>
 <pre class="programlisting">FindSensorById (in's'sensor_id,
 out'o'object_path)</pre>
@@ -254,7 +256,7 @@ out'o'object_path)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idm226377099696"></a><h3>
+<a name="id-1.2.4.8.14"></a><h3>
 <a name="ColorManager.FindDeviceByProperty"></a>FindDeviceByProperty ()</h3>
 <pre class="programlisting">FindDeviceByProperty (in's'key,
 in's'value,
@@ -297,7 +299,7 @@ out'o'object_path)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idm226377089072"></a><h3>
+<a name="id-1.2.4.8.17"></a><h3>
 <a name="ColorManager.FindProfileById"></a>FindProfileById ()</h3>
 <pre class="programlisting">FindProfileById (in's'profile_id,
 out'o'object_path)</pre>
@@ -331,7 +333,7 @@ out'o'object_path)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idm226377081696"></a><h3>
+<a name="id-1.2.4.8.20"></a><h3>
 <a name="ColorManager.FindProfileByProperty"></a>FindProfileByProperty ()</h3>
 <pre class="programlisting">FindProfileByProperty (in's'key,
 in's'value,
@@ -374,7 +376,7 @@ out'o'object_path)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idm226377070928"></a><h3>
+<a name="id-1.2.4.8.23"></a><h3>
 <a name="ColorManager.FindProfileByFilename"></a>FindProfileByFilename ()</h3>
 <pre class="programlisting">FindProfileByFilename (in's'filename,
 out'o'object_path)</pre>
@@ -408,7 +410,7 @@ out'o'object_path)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idm226377063504"></a><h3>
+<a name="id-1.2.4.8.26"></a><h3>
 <a name="ColorManager.GetStandardSpace"></a>GetStandardSpace ()</h3>
 <pre class="programlisting">GetStandardSpace (in's'standard_space,
 out'o'object_path)</pre>
@@ -451,7 +453,7 @@ out'o'object_path)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idm226377052432"></a><h3>
+<a name="id-1.2.4.8.30"></a><h3>
 <a name="ColorManager.GetProfiles"></a>GetProfiles ()</h3>
 <pre class="programlisting">GetProfiles (out'ao'devices)</pre>
 </div>
@@ -474,7 +476,7 @@ out'o'object_path)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idm226380628160"></a><h3>
+<a name="id-1.2.4.8.33"></a><h3>
 <a name="ColorManager.GetSensors"></a>GetSensors ()</h3>
 <pre class="programlisting">GetSensors (out'ao'devices)</pre>
 </div>
@@ -497,7 +499,7 @@ out'o'object_path)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idm226380622016"></a><h3>
+<a name="id-1.2.4.8.36"></a><h3>
 <a name="ColorManager.GetProfilesByKind"></a>GetProfilesByKind ()</h3>
 <pre class="programlisting">GetProfilesByKind (in's'kind,
 out'ao'devices)</pre>
@@ -532,7 +534,7 @@ out'ao'devices)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idm226380612512"></a><h3>
+<a name="id-1.2.4.8.39"></a><h3>
 <a name="ColorManager.CreateProfileWithFd"></a>CreateProfileWithFd ()</h3>
 <pre class="programlisting">CreateProfileWithFd (in's'profile_id,
 in's'scope,
@@ -626,7 +628,7 @@ out'o'object_path)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idm226380593792"></a><h3>
+<a name="id-1.2.4.8.45"></a><h3>
 <a name="ColorManager.CreateProfile"></a>CreateProfile ()</h3>
 <pre class="programlisting">CreateProfile (in's'profile_id,
 in's'scope,
@@ -683,7 +685,7 @@ out'o'object_path)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idm226380582304"></a><h3>
+<a name="id-1.2.4.8.48"></a><h3>
 <a name="ColorManager.CreateDevice"></a>CreateDevice ()</h3>
 <pre class="programlisting">CreateDevice (in's'device_id,
 in's'scope,
@@ -756,7 +758,7 @@ out'o'object_path)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idm226380567200"></a><h3>
+<a name="id-1.2.4.8.52"></a><h3>
 <a name="ColorManager.DeleteDevice"></a>DeleteDevice ()</h3>
 <pre class="programlisting">DeleteDevice (in'o'object_path)</pre>
 </div>
@@ -779,7 +781,7 @@ out'o'object_path)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idm226380561712"></a><h3>
+<a name="id-1.2.4.8.55"></a><h3>
 <a name="ColorManager.DeleteProfile"></a>DeleteProfile ()</h3>
 <pre class="programlisting">DeleteProfile (in'o'object_path)</pre>
 </div>
@@ -802,9 +804,9 @@ out'o'object_path)</pre>
 </table></div>
 </div>
 <div class="refsect1">
-<a name="idm226380556064"></a><h2>Signal Details</h2>
+<a name="id-1.2.4.9"></a><h2>Signal Details</h2>
 <div class="refsect2">
-<a name="idm226380555104"></a><h3>
+<a name="id-1.2.4.9.2"></a><h3>
 <a name="ColorManager::Changed"></a>The Changed signal</h3>
 <pre class="programlisting">Changed ()</pre>
 </div>
@@ -821,7 +823,7 @@ out'o'object_path)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idm226380551344"></a><h3>
+<a name="id-1.2.4.9.5"></a><h3>
 <a name="ColorManager::DeviceAdded"></a>The DeviceAdded signal</h3>
 <pre class="programlisting">DeviceAdded ('o'object_path)</pre>
 </div>
@@ -844,7 +846,7 @@ out'o'object_path)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idm226380546224"></a><h3>
+<a name="id-1.2.4.9.8"></a><h3>
 <a name="ColorManager::DeviceRemoved"></a>The DeviceRemoved signal</h3>
 <pre class="programlisting">DeviceRemoved ('o'object_path)</pre>
 </div>
@@ -867,7 +869,7 @@ out'o'object_path)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idm226380541088"></a><h3>
+<a name="id-1.2.4.9.11"></a><h3>
 <a name="ColorManager::DeviceChanged"></a>The DeviceChanged signal</h3>
 <pre class="programlisting">DeviceChanged ('o'object_path)</pre>
 </div>
@@ -890,7 +892,7 @@ out'o'object_path)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idm226380535952"></a><h3>
+<a name="id-1.2.4.9.14"></a><h3>
 <a name="ColorManager::ProfileAdded"></a>The ProfileAdded signal</h3>
 <pre class="programlisting">ProfileAdded ('o'object_path)</pre>
 </div>
@@ -913,7 +915,7 @@ out'o'object_path)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idm226380530832"></a><h3>
+<a name="id-1.2.4.9.17"></a><h3>
 <a name="ColorManager::ProfileRemoved"></a>The ProfileRemoved signal</h3>
 <pre class="programlisting">ProfileRemoved ('o'object_path)</pre>
 </div>
@@ -936,7 +938,7 @@ out'o'object_path)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idm226380525696"></a><h3>
+<a name="id-1.2.4.9.20"></a><h3>
 <a name="ColorManager::SensorAdded"></a>The SensorAdded signal</h3>
 <pre class="programlisting">SensorAdded ('o'object_path)</pre>
 </div>
@@ -959,7 +961,7 @@ out'o'object_path)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idm226380520576"></a><h3>
+<a name="id-1.2.4.9.23"></a><h3>
 <a name="ColorManager::SensorRemoved"></a>The SensorRemoved signal</h3>
 <pre class="programlisting">SensorRemoved ('o'object_path)</pre>
 </div>
@@ -982,7 +984,7 @@ out'o'object_path)</pre>
 </table></div>
 <hr>
 <div class="refsect2">
-<a name="idm226380515440"></a><h3>
+<a name="id-1.2.4.9.26"></a><h3>
 <a name="ColorManager::ProfileChanged"></a>The ProfileChanged signal</h3>
 <pre class="programlisting">ProfileChanged ('o'object_path)</pre>
 </div>
@@ -1005,9 +1007,9 @@ out'o'object_path)</pre>
 </table></div>
 </div>
 <div class="refsect1">
-<a name="idm226380510144"></a><h2>Property Details</h2>
+<a name="id-1.2.4.10"></a><h2>Property Details</h2>
 <div class="refsect2">
-<a name="idm226380509184"></a><h3>
+<a name="id-1.2.4.10.2"></a><h3>
 <a name="ColorManager:DaemonVersion"></a>The "DaemonVersion" property</h3>
 <pre class="programlisting">'DaemonVersion'read's'
 </pre>
@@ -1022,10 +1024,44 @@ out'o'object_path)</pre>
 </colgroup>
 <tbody></tbody>
 </table></div>
+<hr>
+<div class="refsect2">
+<a name="id-1.2.4.10.5"></a><h3>
+<a name="ColorManager:SystemVendor"></a>The "SystemVendor" property</h3>
+<pre class="programlisting">'SystemVendor'read's'
+</pre>
+</div>
+<p>
+            The system vendor.
+          </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody></tbody>
+</table></div>
+<hr>
+<div class="refsect2">
+<a name="id-1.2.4.10.8"></a><h3>
+<a name="ColorManager:SystemModel"></a>The "SystemModel" property</h3>
+<pre class="programlisting">'SystemModel'read's'
+</pre>
+</div>
+<p>
+            The system model.
+          </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody></tbody>
+</table></div>
 </div>
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

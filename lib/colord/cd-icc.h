@@ -156,6 +156,10 @@ gboolean	 cd_icc_load_handle			(CdIcc		*icc,
 							 CdIccLoadFlags	 flags,
 							 GError		**error)
 							 G_GNUC_WARN_UNUSED_RESULT;
+GBytes		*cd_icc_save_data			(CdIcc		*icc,
+							 CdIccSaveFlags	 flags,
+							 GError		**error)
+							 G_GNUC_WARN_UNUSED_RESULT;
 gboolean	 cd_icc_save_file			(CdIcc		*icc,
 							 GFile		*file,
 							 CdIccSaveFlags	 flags,
@@ -167,6 +171,8 @@ gchar		*cd_icc_to_string			(CdIcc		*icc)
 gpointer	 cd_icc_get_handle			(CdIcc		*icc);
 guint32		 cd_icc_get_size			(CdIcc		*icc);
 const gchar	*cd_icc_get_filename			(CdIcc		*icc);
+void		 cd_icc_set_filename			(CdIcc		*icc,
+							 const gchar	*filename);
 gdouble		 cd_icc_get_version			(CdIcc		*icc);
 void		 cd_icc_set_version			(CdIcc		*icc,
 							 gdouble	 version);

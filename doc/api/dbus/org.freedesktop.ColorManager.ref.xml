@@ -73,6 +73,8 @@ out'o'object_path)
   <refsect1 role="properties">
     <title role="properties.title">Properties</title>
     <synopsis><link linkend="ColorManager:DaemonVersion">'DaemonVersion'</link>read's'
+<link linkend="ColorManager:SystemVendor">'SystemVendor'</link>read's'
+<link linkend="ColorManager:SystemModel">'SystemModel'</link>read's'
 </synopsis>
   </refsect1>
   <refsect1 role="desc">
@@ -475,6 +477,16 @@ out'o'object_path)</programlisting></refsect2>
 </programlisting></refsect2>
           <para>
             The daemon version.
+          </para>
+        <variablelist role="params"/><refsect2><title><anchor role="function" id="ColorManager:SystemVendor"/>The "SystemVendor" property</title><indexterm><primary>SystemVendor</primary><secondary>ColorManager</secondary></indexterm><programlisting>'SystemVendor'read's'
+</programlisting></refsect2>
+          <para>
+            The system vendor.
+          </para>
+        <variablelist role="params"/><refsect2><title><anchor role="function" id="ColorManager:SystemModel"/>The "SystemModel" property</title><indexterm><primary>SystemModel</primary><secondary>ColorManager</secondary></indexterm><programlisting>'SystemModel'read's'
+</programlisting></refsect2>
+          <para>
+            The system model.
           </para>
         <variablelist role="params"/></refsect1>
 </refentry>

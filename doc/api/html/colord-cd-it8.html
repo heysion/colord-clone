@@ -8,7 +8,7 @@
 <link rel="up" href="libcolordprivate.html" title="libcolord GObjects">
 <link rel="prev" href="colord-cd-it8-utils.html" title="cd-it8-utils">
 <link rel="next" href="colord-cd-math.html" title="cd-math">
-<meta name="generator" content="GTK-Doc V1.18 (XML mode)">
+<meta name="generator" content="GTK-Doc V1.19 (XML mode)">
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -135,8 +135,7 @@ or normalized sample data.
 <div class="refsect2">
 <a name="CdIt8Error"></a><h3>enum CdIt8Error</h3>
 <pre class="programlisting">typedef enum {
-	CD_IT8_ERROR_FAILED,
-	CD_IT8_ERROR_LAST
+	CD_IT8_ERROR_FAILED,				/* Since: 0.1.20 */
 } CdIt8Error;
 </pre>
 <p>
@@ -147,35 +146,60 @@ Errors that can be thrown
 <col align="left" valign="top">
 <col>
 </colgroup>
-<tbody>
-<tr>
+<tbody><tr>
 <td><p><a name="CD-IT8-ERROR-FAILED:CAPS"></a><span class="term"><code class="literal">CD_IT8_ERROR_FAILED</code></span></p></td>
 <td>the transaction failed for an unknown reason
 </td>
-</tr>
-<tr>
-<td><p><a name="CD-IT8-ERROR-LAST:CAPS"></a><span class="term"><code class="literal">CD_IT8_ERROR_LAST</code></span></p></td>
-<td>
-</td>
-</tr>
-</tbody>
+</tr></tbody>
 </table></div>
 </div>
 <hr>
 <div class="refsect2">
 <a name="CdIt8Kind"></a><h3>enum CdIt8Kind</h3>
 <pre class="programlisting">typedef enum {
-	CD_IT8_KIND_UNKNOWN,
-	CD_IT8_KIND_TI1,
-	CD_IT8_KIND_TI3,
-	CD_IT8_KIND_CCMX,
-	CD_IT8_KIND_CAL,
-	CD_IT8_KIND_LAST
+	CD_IT8_KIND_UNKNOWN,				/* Since: 0.1.20 */
+	CD_IT8_KIND_TI1,				/* Since: 0.1.20 */
+	CD_IT8_KIND_TI3,				/* Since: 0.1.20 */
+	CD_IT8_KIND_CCMX,				/* Since: 0.1.20 */
+	CD_IT8_KIND_CAL,				/* Since: 0.1.26 */
 } CdIt8Kind;
 </pre>
 <p>
 The kind of IT8 file.
 </p>
+<div class="variablelist"><table border="0" class="variablelist">
+<colgroup>
+<col align="left" valign="top">
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p><a name="CD-IT8-KIND-UNKNOWN:CAPS"></a><span class="term"><code class="literal">CD_IT8_KIND_UNKNOWN</code></span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><a name="CD-IT8-KIND-TI1:CAPS"></a><span class="term"><code class="literal">CD_IT8_KIND_TI1</code></span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><a name="CD-IT8-KIND-TI3:CAPS"></a><span class="term"><code class="literal">CD_IT8_KIND_TI3</code></span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><a name="CD-IT8-KIND-CCMX:CAPS"></a><span class="term"><code class="literal">CD_IT8_KIND_CCMX</code></span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><a name="CD-IT8-KIND-CAL:CAPS"></a><span class="term"><code class="literal">CD_IT8_KIND_CAL</code></span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
 </div>
 <hr>
 <div class="refsect2">
@@ -255,12 +279,12 @@ a black reading (0.0, 0.0, 0.0) is added instead.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>rgb</code></em> :</span></p></td>
-<td>a <a class="link" href="colord-cd-color.html#CdColorRGB"><span class="type">CdColorRGB</span></a>, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>
+<td>a <a class="link" href="colord-cd-color.html#CdColorRGB"><span class="type">CdColorRGB</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>xyz</code></em> :</span></p></td>
-<td>a <a class="link" href="colord-cd-color.html#CdColorXYZ"><span class="type">CdColorXYZ</span></a>, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>
+<td>a <a class="link" href="colord-cd-color.html#CdColorXYZ"><span class="type">CdColorXYZ</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 </tbody>
@@ -396,7 +420,7 @@ set in the self test programs.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The reference, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> if unset</td>
+<td>The reference, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unset</td>
 </tr>
 </tbody>
 </table></div>
@@ -421,7 +445,7 @@ Gets the instrument the file was created by.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The instrument, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> if unset</td>
+<td>The instrument, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unset</td>
 </tr>
 </tbody>
 </table></div>
@@ -446,7 +470,7 @@ Gets the kind of IT8 file.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>a <a class="link" href="colord-cd-it8.html#CdIt8Kind" title="enum CdIt8Kind"><span class="type">CdIt8Kind</span></a>, e.g <code class="literal">CD_IT8_KIND_TI3</code>.</td>
+<td>a <a class="link" href="colord-cd-it8.html#CdIt8Kind" title="enum CdIt8Kind"><span class="type">CdIt8Kind</span></a>, e.g <a class="link" href="colord-cd-it8.html#CD-IT8-KIND-TI3:CAPS"><code class="literal">CD_IT8_KIND_TI3</code></a>.</td>
 </tr>
 </tbody>
 </table></div>
@@ -522,7 +546,7 @@ Gets the file orginator.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The originator, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> if unset</td>
+<td>The originator, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unset</td>
 </tr>
 </tbody>
 </table></div>
@@ -547,7 +571,7 @@ Gets the reference the file was created against.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The reference, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> if unset</td>
+<td>The reference, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unset</td>
 </tr>
 </tbody>
 </table></div>
@@ -598,7 +622,7 @@ Gets the file title.
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
-<td>The title, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a> if unset</td>
+<td>The title, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a> if unset</td>
 </tr>
 </tbody>
 </table></div>
@@ -665,7 +689,7 @@ Loads a it8 file from data.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -703,7 +727,7 @@ Loads a it8 file from disk.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -749,7 +773,7 @@ Creates a new <span class="type">CdIt8</span> object.
 <tbody>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>kind</code></em> :</span></p></td>
-<td>a <a class="link" href="colord-cd-it8.html#CdIt8Kind" title="enum CdIt8Kind"><span class="type">CdIt8Kind</span></a>, e.g <code class="literal">CD_IT8_KIND_TI3</code>.</td>
+<td>a <a class="link" href="colord-cd-it8.html#CdIt8Kind" title="enum CdIt8Kind"><span class="type">CdIt8Kind</span></a>, e.g <a class="link" href="colord-cd-it8.html#CD-IT8-KIND-TI3:CAPS"><code class="literal">CD_IT8_KIND_TI3</code></a>.</td>
 </tr>
 <tr>
 <td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
@@ -790,7 +814,7 @@ Saves a it8 file to an area of memory.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -828,7 +852,7 @@ Saves a it8 file to disk
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
-<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>, or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>
+<td>a <a href="http://library.gnome.org/devel/glib/unstable/glib-Error-Reporting.html#GError"><span class="type">GError</span></a>, or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>
 </td>
 </tr>
 <tr>
@@ -914,7 +938,7 @@ Set the kind of IT8 file.
 </tr>
 <tr>
 <td><p><span class="term"><em class="parameter"><code>kind</code></em> :</span></p></td>
-<td>a <a class="link" href="colord-cd-it8.html#CdIt8Kind" title="enum CdIt8Kind"><span class="type">CdIt8Kind</span></a>, e.g <code class="literal">CD_IT8_KIND_TI3</code>.</td>
+<td>a <a class="link" href="colord-cd-it8.html#CdIt8Kind" title="enum CdIt8Kind"><span class="type">CdIt8Kind</span></a>, e.g <a class="link" href="colord-cd-it8.html#CD-IT8-KIND-TI3:CAPS"><code class="literal">CD_IT8_KIND_TI3</code></a>.</td>
 </tr>
 </tbody>
 </table></div>
@@ -1080,6 +1104,6 @@ Sets the display name for the file.
 </div>
 <div class="footer">
 <hr>
-          Generated by GTK-Doc V1.18</div>
+          Generated by GTK-Doc V1.19</div>
 </body>
 </html>

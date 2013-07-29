@@ -1,6 +1,189 @@
+commit 2311eb26702f10b6287bee8b59dd66296f0679bb
+Author: Richard Hughes <richard@hughsie.com>
+Date:   2013-07-07
+
+    Release colord 1.0.2
+
+M	NEWS
+M	configure.ac
+
+commit a2cae90b5d6a9bd5ecfd7f41d19960b54951ac55
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-07-05
+
+    trivial: Remove some dead code
+
+    Our GLib dep is 2.32.0 now.
+
+M	src/cd-device.c
+M	src/cd-profile.c
+
+commit 85e0f8fd0b7b8f972d665d7764d5b3e9bb84fb69
+Author: Christopher James Halse Rogers <raof@ubuntu.com>
+Date:	2013-06-14
+
+    trivial: Fix typo in debug message
+
+M	src/cd-main.c
+
+commit 35d51d529c2d5973aa6a44c1f2095de1730a653f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-06-03
+
+    trivial: Update TODO to reflect reality
+
+M	TODO
+
+commit 22b4f6c0d9510b112907edb1495250af0579835f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-07-02
+
+    trivial: Add another python example that shows getting a refcounted
+    list
+
+A	examples/cd-get-devices.py
+
+commit 2982d43036d163f94f92692d87875dd86e3e2d7b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-07-03
+
+    Allow the user to specify a non-qualified path when using
+    FindProfileByFilename
+
+    This allows the user to call FindProfileByFilename('Bluish.icc')
+    rather than
+    specify the full file path and is required for the ucmm-shim used
+    by Argyllcms.
+
+M	lib/colord/cd-self-test.c
+M	src/cd-profile-array.c
+M	src/org.freedesktop.ColorManager.xml
+
+commit 37a626b06bcfa8da102e2a05ba027df48cd1f9d3
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-07-05
+
+    Add SystemVendor and SystemModel string properties to the main
+    interface
+
+    This functonality allows colord-kde, gnome-settings-daemon and xiccd
+    to drop the
+    manual DMI parsing and it also allows us to sanitize the vendor
+    string so that
+    it looks in the same style as the EDID-derived value.
+
+M	client/cd-util.c
+M	lib/colord/cd-client.c
+M	lib/colord/cd-client.h
+M	lib/colord/cd-enum.h
+M	src/cd-main.c
+M	src/org.freedesktop.ColorManager.xml
+
+commit ae9f2948d40f03296dbebb4944e2280118c4b53c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-07-04
+
+    trivial: Include cd-icc-store.h in colord.h
+
+M	lib/colord/colord.h
+
+commit 12186ae129588cca2b016d204dd08fe875757797
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-07-03
+
+    Add CdIccStore to monitor directories of ICC profiles
+
+    This allows clients to watch special directories and be notified
+    when profiles
+    are deleted or created.
+
+M	doc/api/colord-docs.xml
+M	lib/colord/Makefile.am
+A	lib/colord/cd-icc-store.c
+A	lib/colord/cd-icc-store.h
+M	lib/colord/cd-self-test.c
+M	lib/colord/colord-private.h
+
+commit 467d436a1858c01060830b1a6f3cec3ff5f25533
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-07-03
+
+    Add a way to set the CdIcc filename manually
+
+    This may be required if the CdIcc object has been loaded from an
+    on-disk cache.
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+
+commit 46ee852447972f46e2b48316dfb4e96f740a10eb
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-07-02
+
+    Fix GObject introspection when getting metadata
+
+    It's proper to return a container when returning a GHashTable array,
+    although
+    nothing bad seems to happen if we return full.
+
+M	lib/colord/cd-device.c
+M	lib/colord/cd-profile.c
+M	lib/colord/cd-sensor.c
+
+commit 16c4b027cca220433239c6040f6fa898f8886a4c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-07-03
+
+    Add cd_icc_save_data() so that we can set _ICC_PROFILE without
+    re-reading the file
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-icc.h
+
+commit ca892204b423080cc9c5441120da9e394b7fd7f2
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-07-03
+
+    Always return the error if any sync method failed
+
+    It seems we could rely on the structure being zeroed by coincidence,
+    which fails sometimes.
+
+M	lib/colord/cd-client-sync.c
+M	lib/colord/cd-device-sync.c
+M	lib/colord/cd-profile-sync.c
+M	lib/colord/cd-sensor-sync.c
+
+commit 5049e8beec9b341679a6e47daaca7aed9cf96593
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-07-03
+
+    Allow using the key 'Filename' when using FindProfileByProperty
+
+M	src/cd-profile-array.c
+
+commit 31f8406d1558d43a9d48384286fb9e9ac003b72b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-07-02
+
+    Fix GObject introspection when getting lists
+
+    We want to return the container when returning a pointer array.
+
+M	lib/colord/cd-client-sync.c
+
+commit 654a7ee116198916c4e94439e23c28fe6bf3baaf
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-06-11
+
+    trivial: post release version bump
+
+M	RELEASE
+M	configure.ac
+
 commit 40446f09daf90257a37545e44af2f6cc0c1acd77
 Author: Richard Hughes <richard@hughsie.com>
-Date:   2013-06-11
+Date:	2013-06-11
 
     Release colord 1.0.1
 

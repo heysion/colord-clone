@@ -100,8 +100,9 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/as-linguas.m4 \
 	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
 	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
 	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
-	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
-	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/nls.m4 \
+	$(top_srcdir)/m4/po.m4 $(top_srcdir)/m4/progtest.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -160,6 +161,7 @@ libcolordprivate_la_DEPENDENCIES = $(am__DEPENDENCIES_1) \
 am_libcolordprivate_la_OBJECTS = libcolordprivate_la-cd-buffer.lo \
 	libcolordprivate_la-cd-color.lo libcolordprivate_la-cd-dom.lo \
 	libcolordprivate_la-cd-enum.lo libcolordprivate_la-cd-icc.lo \
+	libcolordprivate_la-cd-icc-store.lo \
 	libcolordprivate_la-cd-interp-akima.lo \
 	libcolordprivate_la-cd-interp-linear.lo \
 	libcolordprivate_la-cd-interp.lo libcolordprivate_la-cd-it8.lo \
@@ -642,6 +644,7 @@ AM_CPPFLAGS = \
 	-DCD_COMPILATION					\
 	-DG_LOG_DOMAIN=\"libcolord\"				\
 	-DTESTDATADIR=\""$(top_srcdir)/data/tests"\"		\
+	-DCD_SYSTEM_PROFILES_DIR="\"$(CD_SYSTEM_PROFILES_DIR)"\" \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\"
 
 lib_LTLIBRARIES = \
@@ -665,6 +668,7 @@ libcolordbase_include_HEADERS = \
 	cd-dom.h						\
 	cd-enum.h						\
 	cd-icc.h						\
+	cd-icc-store.h						\
 	cd-interp-akima.h					\
 	cd-interp-linear.h					\
 	cd-interp.h						\
@@ -685,6 +689,7 @@ libcolordprivate_la_SOURCES = \
 	cd-dom.c						\
 	cd-enum.c						\
 	cd-icc.c						\
+	cd-icc-store.c						\
 	cd-interp-akima.c					\
 	cd-interp-linear.c					\
 	cd-interp.c						\
@@ -894,6 +899,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolordprivate_la-cd-color.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolordprivate_la-cd-dom.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolordprivate_la-cd-enum.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolordprivate_la-cd-icc-store.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolordprivate_la-cd-icc.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolordprivate_la-cd-interp-akima.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcolordprivate_la-cd-interp-linear.Plo@am__quote@
@@ -1022,6 +1028,13 @@ libcolordprivate_la-cd-icc.lo: cd-icc.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-icc.c' object='libcolordprivate_la-cd-icc.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_la_CFLAGS) $(CFLAGS) -c -o libcolordprivate_la-cd-icc.lo `test -f 'cd-icc.c' || echo '$(srcdir)/'`cd-icc.c
+
+libcolordprivate_la-cd-icc-store.lo: cd-icc-store.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_la_CFLAGS) $(CFLAGS) -MT libcolordprivate_la-cd-icc-store.lo -MD -MP -MF $(DEPDIR)/libcolordprivate_la-cd-icc-store.Tpo -c -o libcolordprivate_la-cd-icc-store.lo `test -f 'cd-icc-store.c' || echo '$(srcdir)/'`cd-icc-store.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libcolordprivate_la-cd-icc-store.Tpo $(DEPDIR)/libcolordprivate_la-cd-icc-store.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-icc-store.c' object='libcolordprivate_la-cd-icc-store.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_la_CFLAGS) $(CFLAGS) -c -o libcolordprivate_la-cd-icc-store.lo `test -f 'cd-icc-store.c' || echo '$(srcdir)/'`cd-icc-store.c
 
 libcolordprivate_la-cd-interp-akima.lo: cd-interp-akima.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcolordprivate_la_CFLAGS) $(CFLAGS) -MT libcolordprivate_la-cd-interp-akima.lo -MD -MP -MF $(DEPDIR)/libcolordprivate_la-cd-interp-akima.Tpo -c -o libcolordprivate_la-cd-interp-akima.lo `test -f 'cd-interp-akima.c' || echo '$(srcdir)/'`cd-interp-akima.c
