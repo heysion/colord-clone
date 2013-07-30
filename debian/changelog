@@ -1,3 +1,17 @@
+colord (1.0.2-1) unstable; urgency=low
+
+  * New upstream stable release
+  * Disable colorhug test; fails without USB hardware
+  * Test for usb-db in udev rules before running it. (Closes: 717503)
+  * Use dh-systemd for upgrade/removal support. Thanks, Michael Stapelberg!
+    (Closes: 715266)
+  * Fix upgrades from Wheezy with old colorhug-client installed.
+    (Closes: 718015)
+  * Refresh symbols file for new upstream
+  * Remove no-longer used lintian hardening overrides
+
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Tue, 30 Jul 2013 17:13:39 +1000
+
 colord (1.0.1-1) unstable; urgency=low
 
   [ Pino Toscano ]
