@@ -1,4 +1,5 @@
 # Compulsory line, this is a version 3 file
 version=3
 
-http://www.freedesktop.org/software/colord/releases/colord-([\d\.]+)\.tar\.xz
+# 1.1 is a development branch; only notify of stable 1.0 releases until 1.2
+opts="uversionmangle=s/^1.1/0.0/" http://www.freedesktop.org/software/colord/releases/colord-([\d\.]+)\.tar\.xz
