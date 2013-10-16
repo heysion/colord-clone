@@ -111,8 +111,8 @@ Depends:
  libcolord-dev,
  gir1.2-colorhug-1.0,
  ${misc:Depends},
-Breaks: colorhug-client (<= 0.2.0-3)
-Replaces: colorhug-client (<= 0.2.0-3)
+Breaks: colorhug-client (<< 0.2.0-3)
+Replaces: colorhug-client (<< 0.2.0-3)
 Description: library to access the ColorHug colourimeter -- development files
  libcolorhug is a gobject-based library for using the ColorHug display
  colourimeter. It supports both reading values from the colourimeter and
