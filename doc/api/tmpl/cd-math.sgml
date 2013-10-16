@@ -9,10 +9,12 @@ cd-math
 
 </para>
 
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
+
 
 <!-- ##### SECTION Stability_Level ##### -->
 
@@ -44,105 +46,12 @@ cd-math
 @v1: 
 @v2: 
 
-<!-- ##### FUNCTION cd_mat33_clear ##### -->
+<!-- ##### FUNCTION cd_vec3_clear ##### -->
 <para>
 
 </para>
 
 @src: 
-
-
-<!-- ##### FUNCTION cd_mat33_copy ##### -->
-<para>
-
-</para>
-
-@src: 
-@dest: 
-
-
-<!-- ##### FUNCTION cd_mat33_determinant ##### -->
-<para>
-
-</para>
-
-@src: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_mat33_get_data ##### -->
-<para>
-
-</para>
-
-@src: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_mat33_matrix_multiply ##### -->
-<para>
-
-</para>
-
-@mat_src1: 
-@mat_src2: 
-@mat_dest: 
-
-
-<!-- ##### FUNCTION cd_mat33_normalize ##### -->
-<para>
-
-</para>
-
-@src: 
-@dest: 
-
-
-<!-- ##### FUNCTION cd_mat33_reciprocal ##### -->
-<para>
-
-</para>
-
-@src: 
-@dest: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_mat33_scalar_multiply ##### -->
-<para>
-
-</para>
-
-@mat_src: 
-@value: 
-@mat_dest: 
-
-
-<!-- ##### FUNCTION cd_mat33_set_identity ##### -->
-<para>
-
-</para>
-
-@src: 
-
-
-<!-- ##### FUNCTION cd_mat33_to_string ##### -->
-<para>
-
-</para>
-
-@src: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_mat33_vector_multiply ##### -->
-<para>
-
-</para>
-
-@mat_src: 
-@vec_src: 
-@vec_dest: 
 
 
 <!-- ##### FUNCTION cd_vec3_add ##### -->
@@ -155,12 +64,24 @@ cd-math
 @dest: 
 
 
-<!-- ##### FUNCTION cd_vec3_clear ##### -->
+<!-- ##### FUNCTION cd_vec3_subtract ##### -->
+<para>
+
+</para>
+
+@src1: 
+@src2: 
+@dest: 
+
+
+<!-- ##### FUNCTION cd_vec3_scalar_multiply ##### -->
 <para>
 
 </para>
 
 @src: 
+@value: 
+@dest: 
 
 
 <!-- ##### FUNCTION cd_vec3_copy ##### -->
@@ -170,6 +91,25 @@ cd-math
 
 @src: 
 @dest: 
+
+
+<!-- ##### FUNCTION cd_vec3_squared_error ##### -->
+<para>
+
+</para>
+
+@src1: 
+@src2: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_vec3_to_string ##### -->
+<para>
+
+</para>
+
+@src: 
+@Returns: 
 
 
 <!-- ##### FUNCTION cd_vec3_get_data ##### -->
@@ -192,42 +132,104 @@ cd-math
 @v2: 
 
 
-<!-- ##### FUNCTION cd_vec3_scalar_multiply ##### -->
+<!-- ##### FUNCTION cd_mat33_clear ##### -->
 <para>
 
 </para>
 
 @src: 
+
+
+<!-- ##### FUNCTION cd_mat33_to_string ##### -->
+<para>
+
+</para>
+
+@src: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_mat33_get_data ##### -->
+<para>
+
+</para>
+
+@src: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_mat33_set_identity ##### -->
+<para>
+
+</para>
+
+@src: 
+
+
+<!-- ##### FUNCTION cd_mat33_scalar_multiply ##### -->
+<para>
+
+</para>
+
+@mat_src: 
 @value: 
-@dest: 
+@mat_dest: 
 
 
-<!-- ##### FUNCTION cd_vec3_squared_error ##### -->
+<!-- ##### FUNCTION cd_mat33_vector_multiply ##### -->
 <para>
 
 </para>
 
-@src1: 
-@src2: 
+@mat_src: 
+@vec_src: 
+@vec_dest: 
+
+
+<!-- ##### FUNCTION cd_mat33_matrix_multiply ##### -->
+<para>
+
+</para>
+
+@mat_src1: 
+@mat_src2: 
+@mat_dest: 
+
+
+<!-- ##### FUNCTION cd_mat33_reciprocal ##### -->
+<para>
+
+</para>
+
+@src: 
+@dest: 
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_vec3_subtract ##### -->
-<para>
-
-</para>
-
-@src1: 
-@src2: 
-@dest: 
-
-
-<!-- ##### FUNCTION cd_vec3_to_string ##### -->
+<!-- ##### FUNCTION cd_mat33_determinant ##### -->
 <para>
 
 </para>
 
 @src: 
 @Returns: 
+
+
+<!-- ##### FUNCTION cd_mat33_normalize ##### -->
+<para>
+
+</para>
+
+@src: 
+@dest: 
+
+
+<!-- ##### FUNCTION cd_mat33_copy ##### -->
+<para>
+
+</para>
+
+@src: 
+@dest: 
 
 

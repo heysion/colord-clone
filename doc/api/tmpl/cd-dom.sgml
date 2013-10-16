@@ -9,10 +9,12 @@ cd-dom
 
 </para>
 
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
+
 
 <!-- ##### SECTION Stability_Level ##### -->
 
@@ -107,6 +109,36 @@ cd-dom
 @Returns: 
 
 
+<!-- ##### FUNCTION cd_dom_new ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_dom_to_string ##### -->
+<para>
+
+</para>
+
+@dom: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_dom_parse_xml_data ##### -->
+<para>
+
+</para>
+
+@dom: 
+@data: 
+@data_len: 
+@error: 
+@Returns: 
+
+
 <!-- ##### FUNCTION cd_dom_get_node ##### -->
 <para>
 
@@ -118,26 +150,16 @@ cd-dom
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_dom_get_node_attribute ##### -->
+<!-- ##### FUNCTION cd_dom_get_node_name ##### -->
 <para>
 
 </para>
 
 @node: 
-@key: 
 @Returns: 
 
 
 <!-- ##### FUNCTION cd_dom_get_node_data ##### -->
-<para>
-
-</para>
-
-@node: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_dom_get_node_data_as_double ##### -->
 <para>
 
 </para>
@@ -155,32 +177,22 @@ cd-dom
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_dom_get_node_lab ##### -->
+<!-- ##### FUNCTION cd_dom_get_node_data_as_double ##### -->
 <para>
 
 </para>
 
 @node: 
-@lab: 
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_dom_get_node_localized ##### -->
+<!-- ##### FUNCTION cd_dom_get_node_attribute ##### -->
 <para>
 
 </para>
 
 @node: 
 @key: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_dom_get_node_name ##### -->
-<para>
-
-</para>
-
-@node: 
 @Returns: 
 
 
@@ -204,33 +216,23 @@ cd-dom
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_dom_new ##### -->
+<!-- ##### FUNCTION cd_dom_get_node_lab ##### -->
 <para>
 
 </para>
 
-@void: 
+@node: 
+@lab: 
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_dom_parse_xml_data ##### -->
+<!-- ##### FUNCTION cd_dom_get_node_localized ##### -->
 <para>
 
 </para>
 
-@dom: 
-@data: 
-@data_len: 
-@error: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_dom_to_string ##### -->
-<para>
-
-</para>
-
-@dom: 
+@node: 
+@key: 
 @Returns: 
 
 

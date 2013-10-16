@@ -9,15 +9,41 @@ cd-device-sync
 
 </para>
 
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
 
+
 <!-- ##### SECTION Stability_Level ##### -->
 
 
 <!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### FUNCTION cd_device_connect_sync ##### -->
+<para>
+
+</para>
+
+@device: 
+@cancellable: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_device_set_property_sync ##### -->
+<para>
+
+</para>
+
+@device: 
+@key: 
+@value: 
+@cancellable: 
+@error: 
+@Returns: 
 
 
 <!-- ##### FUNCTION cd_device_add_profile_sync ##### -->
@@ -33,12 +59,13 @@ cd-device-sync
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_device_connect_sync ##### -->
+<!-- ##### FUNCTION cd_device_remove_profile_sync ##### -->
 <para>
 
 </para>
 
 @device: 
+@profile: 
 @cancellable: 
 @error: 
 @Returns: 
@@ -51,18 +78,6 @@ cd-device-sync
 
 @device: 
 @qualifiers: 
-@cancellable: 
-@error: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_device_get_profile_relation_sync ##### -->
-<para>
-
-</para>
-
-@device: 
-@profile: 
 @cancellable: 
 @error: 
 @Returns: 
@@ -102,25 +117,13 @@ cd-device-sync
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_device_remove_profile_sync ##### -->
+<!-- ##### FUNCTION cd_device_get_profile_relation_sync ##### -->
 <para>
 
 </para>
 
 @device: 
 @profile: 
-@cancellable: 
-@error: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_device_set_colorspace_sync ##### -->
-<para>
-
-</para>
-
-@device: 
-@colorspace: 
 @cancellable: 
 @error: 
 @Returns: 
@@ -138,49 +141,12 @@ cd-device-sync
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_device_set_kind_sync ##### -->
-<para>
-
-</para>
-
-@device: 
-@kind: 
-@cancellable: 
-@error: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_device_set_mode_sync ##### -->
-<para>
-
-</para>
-
-@device: 
-@mode: 
-@cancellable: 
-@error: 
-@Returns: 
-
-
 <!-- ##### FUNCTION cd_device_set_model_sync ##### -->
 <para>
 
 </para>
 
 @device: 
-@value: 
-@cancellable: 
-@error: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_device_set_property_sync ##### -->
-<para>
-
-</para>
-
-@device: 
-@key: 
 @value: 
 @cancellable: 
 @error: 
@@ -206,6 +172,42 @@ cd-device-sync
 
 @device: 
 @value: 
+@cancellable: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_device_set_kind_sync ##### -->
+<para>
+
+</para>
+
+@device: 
+@kind: 
+@cancellable: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_device_set_colorspace_sync ##### -->
+<para>
+
+</para>
+
+@device: 
+@colorspace: 
+@cancellable: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_device_set_mode_sync ##### -->
+<para>
+
+</para>
+
+@device: 
+@mode: 
 @cancellable: 
 @error: 
 @Returns: 

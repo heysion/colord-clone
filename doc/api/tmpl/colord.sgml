@@ -9,14 +9,23 @@ colord
 
 </para>
 
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
 
+
 <!-- ##### SECTION Stability_Level ##### -->
 
 
 <!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### MACRO CD_USE_ALLOC_GSLICE ##### -->
+<para>
+
+</para>
+
 
 

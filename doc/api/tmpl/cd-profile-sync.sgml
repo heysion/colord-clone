@@ -9,10 +9,12 @@ cd-profile-sync
 
 </para>
 
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
+
 
 <!-- ##### SECTION Stability_Level ##### -->
 
@@ -31,17 +33,6 @@ cd-profile-sync
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_profile_install_system_wide_sync ##### -->
-<para>
-
-</para>
-
-@profile: 
-@cancellable: 
-@error: 
-@Returns: 
-
-
 <!-- ##### FUNCTION cd_profile_set_property_sync ##### -->
 <para>
 
@@ -50,6 +41,17 @@ cd-profile-sync
 @profile: 
 @key: 
 @value: 
+@cancellable: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_profile_install_system_wide_sync ##### -->
+<para>
+
+</para>
+
+@profile: 
 @cancellable: 
 @error: 
 @Returns: 

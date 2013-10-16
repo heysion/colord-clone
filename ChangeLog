@@ -1,6 +1,195 @@
+commit 2f1b80313b6e9e10f02d1339dbafdde7796870bb
+Author: Richard Hughes <richard@hughsie.com>
+Date:   2013-08-19
+
+    Release colord 1.0.3
+
+M	NEWS
+M	RELEASE
+
+commit eb16b03bb626392fa209f61c5e8ec2ecc7483a16
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-08-19
+
+    trivial: use foreign in automake as we're not shipping INSTALL now
+
+M	Makefile.am
+M	configure.ac
+
+commit 8cbade18a9aeda6e6cb77dccc5227b7635353bd5
+Author: Conley Moorhous <conleymoorhous@gmail.com>
+Date:	2013-08-16
+
+    Do not mix up device paths and device IDs in the documentation
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	src/org.freedesktop.ColorManager.Device.xml
+M	src/org.freedesktop.ColorManager.xml
+
+commit 3f6af809eb903bb1c055d1d76843ea4f1d9f9ebf
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-08-15
+
+    trivial: Add a metadata quirk for keys set by i1Profiler
+
+M	src/cd-profile.c
+
+commit 3f76fa035997b5efd3cc07671cb6b628e4e0e061
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-08-15
+
+    Use %ghost in the example spec file to avoid removing databases
+    on upgrades
+
+M	contrib/colord.spec.in
+
+commit 6c4b5655b3432f7e6d64c37f9ed327085d4e2f9c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-08-16
+
+    Always return soft-add calibration profiles before soft-add EDID
+    profiles
+
+    In the situation where you have a system-wide soft-add profile
+    with matching
+    device_id and a session soft-add profile with matching device_id
+    the latter will
+    always be the default as it is added last. In the situation where
+    the former is
+    a calibration profile, and the latter is an EDID profile, this
+    probably isn't
+    what the users wants.
+
+    In the normal case you can hard-add the former so that it is set in
+    the mapping
+    database, but in the case where it is a LiveCD you have to rely on
+    some kind of
+    heuristic to match the profiles to the device in the right order.
+    A good heuristic seems to be 1)HARD, 2)SOFT+CALIB, 3)SOFT+EDID.
+
+    I'm not expecting many users to hit this as it's quite an unusual
+    use case.
+
+M	src/cd-device.c
+
+commit eee50c3d7a54fdbbd3e4c7f5e0621488a9e1b294
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-08-15
+
+    Fix warning when any test profile has an EDID source and no ICC file
+
+    If we create a test profile with the 'DATA_source=edid' metadata
+    and no backing
+    file, the daemon issues a critical warning when accessing the
+    profile warnings
+    value as the profile is added.
+
+M	src/cd-main.c
+
+commit dea98d83dcd798654311f682c25117996a71b854
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-08-15
+
+    trivial: Do not print debugging entries when a client requests
+    a property
+
+    This increases the SNR of the debugging an order of magnitude.
+
+M	src/cd-device.c
+M	src/cd-sensor.c
+
+commit 3d351e593717916396aa61cd0290b8cc2ee43004
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-08-07
+
+    trivial: Add 'Sonix' as a vendor quirk entry
+
+M	lib/colord/cd-quirk.c
+
+commit 266197078d23ad87ec5393797e745bfa2cf0300a
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-08-14
+
+    Allow profiles to be added or removed when the device is not enabled
+
+    In the case where the device is not enabled at session startup we
+    want the
+    session component (i.e. colord-kde/gnome-settings-daemon/xiccd)
+    to be able to
+    add the auto-EDID profile. This allows the user to enable the
+    device later
+    without first manually adding the profile in the control center.
+
+M	src/cd-device.c
+M	src/org.freedesktop.ColorManager.Device.xml
+
+commit 5efc67eaee16bf29be2ff0173595057c171438d8
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-08-14
+
+    libcolord: Do not assert on finalize if connecting to the profile
+    failed
+
+    If we create a profile and delete it very quickly afterwards, the
+    client may not
+    have time to connect and retrieve all the properties. In this case
+    it returns
+    without connecting up the signals.
+
+    If this happens, we assert when we finalize the object as we
+    explicitly check
+    for success.
+    This fixes xiccd crashing when running 'make check' in the colord
+    project.
+
+M	lib/colord/cd-profile.c
+
+commit 975d63139cb462a49124a2bd97536deae6fca783
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-08-03
+
+    libcolord: Always calculate the fallback checksum when using
+    CdIccStore
+
+    Using profiles without an embedded profile-id is still very common,
+    and given
+    the CdIccStore relies so much on the checksum for duplicate checking
+    we should
+    enforce that at *least* this flag is set by default.
+
+M	lib/colord/cd-icc-store.c
+
+commit a0037bbb26a10d967cfa5061e942ac1152176304
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-07-29
+
+    trivial: Do not crash when trying to dump an invalid ICC profile
+
+M	lib/colord/cd-icc.c
+
+commit 3b8f6e2c232686f2bfe1fc74bd2a0c742fb989ea
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-07-26
+
+    libcolord: Register a log handler when using lcms2
+
+M	lib/colord/cd-icc.c
+M	lib/colord/cd-it8.c
+M	lib/colord/cd-transform.c
+
+commit bb03c2e2d03a91d4ef67d401791ffad9a190a2cf
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-07-07
+
+    trivial: post release version bump
+
+M	RELEASE
+M	configure.ac
+
 commit 2311eb26702f10b6287bee8b59dd66296f0679bb
 Author: Richard Hughes <richard@hughsie.com>
-Date:   2013-07-07
+Date:	2013-07-07
 
     Release colord 1.0.2
 
