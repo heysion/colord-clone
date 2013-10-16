@@ -10,10 +10,10 @@ This way we are compatible with both old and new udev.
  rules/69-cd-sensors.rules | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rules/69-cd-sensors.rules b/rules/69-cd-sensors.rules
+diff --git a/rules/69-cd-sensors.rules.in b/rules/69-cd-sensors.rules.in
 index a955a63..5bc8cdb 100644
---- a/rules/69-cd-sensors.rules
-+++ b/rules/69-cd-sensors.rules
+--- a/rules/69-cd-sensors.rules.in
++++ b/rules/69-cd-sensors.rules.in
 @@ -87,7 +87,7 @@ ATTRS{idVendor}=="273f", ATTRS{idProduct}=="1002", ENV{COLORD_SENSOR_KIND}="colo
  # color calibration device
  ENV{COLORD_SENSOR_KIND}=="*?", ENV{COLOR_MEASUREMENT_DEVICE}="1"
@@ -22,7 +22,7 @@ index a955a63..5bc8cdb 100644
 +ENV{COLORD_SENSOR_KIND}=="*?", ENV{ID_MODEL_FROM_DATABASE}=="", TEST=="/lib/udev/usb-db", IMPORT{program}="usb-db %p"
  
  # Allow the daemon to access the color devices
- ENV{COLORD_SENSOR_KIND}=="*?", GROUP="root"
+ ENV{COLORD_SENSOR_KIND}=="*?", GROUP="@daemon_user@"
 -- 
 1.8.3.2
 
