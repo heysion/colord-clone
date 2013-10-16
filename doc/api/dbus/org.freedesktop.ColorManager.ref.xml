@@ -93,7 +93,7 @@ out'o'object_path)
           </para>
         <variablelist role="params"><varlistentry><term><parameter>devices</parameter>:</term><listitem><simpara>
             <para>
-              An array of device IDs, e.g. <literal>['/org/freedesktop/ColorManager/device/xrandr_ibm_france_ltn154p2_l05']</literal>.
+              An array of device paths, e.g. <literal>['/org/freedesktop/ColorManager/device/xrandr_ibm_france_ltn154p2_l05']</literal>.
             </para>
           </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.GetDevicesByKind"/>GetDevicesByKind ()</title><indexterm><primary>GetDevicesByKind</primary><secondary>ColorManager</secondary></indexterm><programlisting>GetDevicesByKind (in's'kind,
 out'ao'devices)</programlisting></refsect2>
@@ -107,7 +107,7 @@ out'ao'devices)</programlisting></refsect2>
             </para>
           </simpara></listitem></varlistentry><varlistentry><term><parameter>devices</parameter>:</term><listitem><simpara>
             <para>
-              An array of device IDs, e.g. <literal>['/org/freedesktop/ColorManager/device/xrandr_ibm_france_ltn154p2_l05']</literal>.
+              An array of device paths, e.g. <literal>['/org/freedesktop/ColorManager/device/xrandr_ibm_france_ltn154p2_l05']</literal>.
             </para>
           </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.FindDeviceById"/>FindDeviceById ()</title><indexterm><primary>FindDeviceById</primary><secondary>ColorManager</secondary></indexterm><programlisting>FindDeviceById (in's'device_id,
 out'o'object_path)</programlisting></refsect2>
@@ -191,7 +191,8 @@ out'o'object_path)</programlisting></refsect2>
           </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.FindProfileByFilename"/>FindProfileByFilename ()</title><indexterm><primary>FindProfileByFilename</primary><secondary>ColorManager</secondary></indexterm><programlisting>FindProfileByFilename (in's'filename,
 out'o'object_path)</programlisting></refsect2>
           <para>
-            Gets a profile path for the profile filename.
+            Gets a profile path for the profile filename, either a fully-qualified
+            filename with path or just the basename of the profile.
           </para>
         <variablelist role="params"><varlistentry><term><parameter>filename</parameter>:</term><listitem><simpara>
             <para>
@@ -229,7 +230,7 @@ out'o'object_path)</programlisting></refsect2>
           </para>
         <variablelist role="params"><varlistentry><term><parameter>devices</parameter>:</term><listitem><simpara>
             <para>
-              An array of profile IDs, e.g. <literal>['/org/freedesktop/ColorManager/profile/adobe_rgb']</literal>.
+              An array of profile paths, e.g. <literal>['/org/freedesktop/ColorManager/profile/adobe_rgb']</literal>.
             </para>
           </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.GetSensors"/>GetSensors ()</title><indexterm><primary>GetSensors</primary><secondary>ColorManager</secondary></indexterm><programlisting>GetSensors (out'ao'devices)</programlisting></refsect2>
           <para>
@@ -237,7 +238,7 @@ out'o'object_path)</programlisting></refsect2>
           </para>
         <variablelist role="params"><varlistentry><term><parameter>devices</parameter>:</term><listitem><simpara>
             <para>
-              An array of sensor IDs, e.g. <literal>['/org/freedesktop/ColorManager/sensor/colormunki']</literal>.
+              An array of sensor paths, e.g. <literal>['/org/freedesktop/ColorManager/sensor/colormunki']</literal>.
             </para>
           </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.GetProfilesByKind"/>GetProfilesByKind ()</title><indexterm><primary>GetProfilesByKind</primary><secondary>ColorManager</secondary></indexterm><programlisting>GetProfilesByKind (in's'kind,
 out'ao'devices)</programlisting></refsect2>
@@ -251,7 +252,7 @@ out'ao'devices)</programlisting></refsect2>
             </para>
           </simpara></listitem></varlistentry><varlistentry><term><parameter>devices</parameter>:</term><listitem><simpara>
             <para>
-              An array of device IDs, e.g. <literal>['/org/freedesktop/ColorManager/device/xrandr_ibm_france_ltn154p2_l05']</literal>.
+              An array of device paths, e.g. <literal>['/org/freedesktop/ColorManager/device/xrandr_ibm_france_ltn154p2_l05']</literal>.
             </para>
           </simpara></listitem></varlistentry></variablelist><refsect2><title><anchor role="function" id="ColorManager.CreateProfileWithFd"/>CreateProfileWithFd ()</title><indexterm><primary>CreateProfileWithFd</primary><secondary>ColorManager</secondary></indexterm><programlisting>CreateProfileWithFd (in's'profile_id,
 in's'scope,

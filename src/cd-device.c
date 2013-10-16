@@ -555,18 +555,38 @@ cd_device_get_profiles_as_variant (CdDevice *device)
 	const gchar *tmp;
 	CdDeviceProfileItem *item;
 
-	/* copy the object paths, hard then soft */
+	/* Object paths are assembled in this order:
+	 *
+	 *  1. Hard mapped profiles from the database
+	 *  2. Soft mapped profiles of DATA_source != EDID
+	 *  2. Soft mapped profiles of DATA_source == EDID
+	 */
 	profiles = g_new0 (GVariant *, device->priv->profiles->len + 1);
 	for (i = 0; i < device->priv->profiles->len; i++) {
 		item = g_ptr_array_index (device->priv->profiles, i);
-		if (item->relation == CD_DEVICE_RELATION_SOFT)
+		if (item->relation != CD_DEVICE_RELATION_HARD)
 			continue;
 		tmp = cd_profile_get_object_path (item->profile);
 		profiles[idx++] = g_variant_new_object_path (tmp);
 	}
 	for (i = 0; i < device->priv->profiles->len; i++) {
 		item = g_ptr_array_index (device->priv->profiles, i);
-		if (item->relation == CD_DEVICE_RELATION_HARD)
+		if (item->relation != CD_DEVICE_RELATION_SOFT)
+			continue;
+		tmp = cd_profile_get_metadata_item (item->profile,
+						    CD_PROFILE_METADATA_DATA_SOURCE);
+		if (g_strcmp0 (tmp, CD_PROFILE_METADATA_DATA_SOURCE_EDID) == 0)
+			continue;
+		tmp = cd_profile_get_object_path (item->profile);
+		profiles[idx++] = g_variant_new_object_path (tmp);
+	}
+	for (i = 0; i < device->priv->profiles->len; i++) {
+		item = g_ptr_array_index (device->priv->profiles, i);
+		if (item->relation != CD_DEVICE_RELATION_SOFT)
+			continue;
+		tmp = cd_profile_get_metadata_item (item->profile,
+						    CD_PROFILE_METADATA_DATA_SOURCE);
+		if (g_strcmp0 (tmp, CD_PROFILE_METADATA_DATA_SOURCE_EDID) != 0)
 			continue;
 		tmp = cd_profile_get_object_path (item->profile);
 		profiles[idx++] = g_variant_new_object_path (tmp);
@@ -592,15 +612,6 @@ cd_device_remove_profile (CdDevice *device,
 	CdDeviceProfileItem *item;
 	gboolean ret = FALSE;
 	guint i;
-
-	/* device is disabled */
-	if (priv->enabled == FALSE) {
-		g_set_error_literal (error,
-				     CD_DEVICE_ERROR,
-				     CD_DEVICE_ERROR_NOT_ENABLED,
-				     "device is disabled");
-		goto out;
-	}
 
 	/* check the profile exists on this device */
 	for (i = 0; i < priv->profiles->len; i++) {
@@ -711,16 +722,6 @@ cd_device_add_profile (CdDevice *device,
 	gboolean create_item = TRUE;
 	gboolean ret = TRUE;
 	guint i;
-
-	/* device is disabled */
-	if (priv->enabled == FALSE) {
-		ret = FALSE;
-		g_set_error_literal (error,
-				     CD_DEVICE_ERROR,
-				     CD_DEVICE_ERROR_NOT_ENABLED,
-				     "device is disabled");
-		goto out;
-	}
 
 	/* is it available */
 	profile = cd_profile_array_get_by_object_path (priv->profile_array,
@@ -1007,15 +1008,6 @@ cd_device_make_default (CdDevice *device,
 	guint i;
 	gboolean ret = FALSE;
 	CdDevicePrivate *priv = device->priv;
-
-	/* device is disabled */
-	if (priv->enabled == FALSE) {
-		g_set_error_literal (error,
-				     CD_DEVICE_ERROR,
-				     CD_DEVICE_ERROR_NOT_ENABLED,
-				     "device is disabled");
-		goto out;
-	}
 
 	/* find profile */
 	profile = cd_device_find_profile_by_object_path (priv->profiles,
@@ -1563,8 +1555,6 @@ cd_device_dbus_get_property (GDBusConnection *connection_, const gchar *sender,
 	gchar **bus_names = NULL;
 	GVariant *retval = NULL;
 
-	g_debug ("CdDevice %s:GetProperty '%s'",
-		 sender, property_name);
 	if (g_strcmp0 (property_name, CD_DEVICE_PROPERTY_CREATED) == 0) {
 		retval = g_variant_new_uint64 (priv->created);
 		goto out;

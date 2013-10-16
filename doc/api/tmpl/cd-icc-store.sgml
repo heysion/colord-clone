@@ -9,10 +9,12 @@ CdIccStore
 
 </para>
 
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
+
 
 <!-- ##### SECTION Stability_Level ##### -->
 
@@ -68,63 +70,12 @@ CdIccStore
 @CD_ICC_STORE_SEARCH_KIND_MACHINE: 
 @CD_ICC_STORE_SEARCH_KIND_USER: 
 
-<!-- ##### FUNCTION cd_icc_store_find_by_checksum ##### -->
-<para>
-
-</para>
-
-@store: 
-@checksum: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_icc_store_find_by_filename ##### -->
-<para>
-
-</para>
-
-@store: 
-@filename: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_icc_store_get_all ##### -->
-<para>
-
-</para>
-
-@store: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_icc_store_get_load_flags ##### -->
-<para>
-
-</para>
-
-@store: 
-@Returns: 
-
-
 <!-- ##### FUNCTION cd_icc_store_new ##### -->
 <para>
 
 </para>
 
 @void: 
-@Returns: 
-
-
-<!-- ##### FUNCTION cd_icc_store_search_kind ##### -->
-<para>
-
-</para>
-
-@store: 
-@search_kind: 
-@search_flags: 
-@cancellable: 
-@error: 
 @Returns: 
 
 
@@ -141,13 +92,17 @@ CdIccStore
 @Returns: 
 
 
-<!-- ##### FUNCTION cd_icc_store_set_cache ##### -->
+<!-- ##### FUNCTION cd_icc_store_search_kind ##### -->
 <para>
 
 </para>
 
 @store: 
-@cache: 
+@search_kind: 
+@search_flags: 
+@cancellable: 
+@error: 
+@Returns: 
 
 
 <!-- ##### FUNCTION cd_icc_store_set_load_flags ##### -->
@@ -157,5 +112,52 @@ CdIccStore
 
 @store: 
 @load_flags: 
+
+
+<!-- ##### FUNCTION cd_icc_store_get_load_flags ##### -->
+<para>
+
+</para>
+
+@store: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_icc_store_set_cache ##### -->
+<para>
+
+</para>
+
+@store: 
+@cache: 
+
+
+<!-- ##### FUNCTION cd_icc_store_get_all ##### -->
+<para>
+
+</para>
+
+@store: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_icc_store_find_by_filename ##### -->
+<para>
+
+</para>
+
+@store: 
+@filename: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_icc_store_find_by_checksum ##### -->
+<para>
+
+</para>
+
+@store: 
+@checksum: 
+@Returns: 
 
 
