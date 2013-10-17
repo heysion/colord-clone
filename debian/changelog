@@ -1,3 +1,16 @@
+colord (1.0.3-1) unstable; urgency=low
+
+  * New upstream stable release
+  * Update watch file to pull stable 1.0.x releases rather than development
+    1.1.x releases
+  * Update test-for-usb-db patch to apply to 69-cd-sensors.rules.in, rather
+    than the generated 69-cd-sensors.rules file. (Closes: 717503)
+  * Clean up stale colord-sane dbus and bash-completion config files on upgrade.
+    (Closes: 713854)
+  * Relax over-eager versioning on Breaks: colorhug-client. (Closes: 722588)
+
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Thu, 17 Oct 2013 15:30:07 +1100
+
 colord (1.0.2-1) unstable; urgency=low
 
   * New upstream stable release
