@@ -8,8 +8,9 @@ colord (1.0.5-1) unstable; urgency=low
   * Clean up stale colord-sane dbus and bash-completion config files on upgrade.
     (Closes: 713854)
   * Relax over-eager versioning on Breaks: colorhug-client. (Closes: 722588)
+  * Let adduser create /var/lib/colord for us. (Closes: 730476)
 
- -- Christopher James Halse Rogers <raof@ubuntu.com>  Thu, 17 Oct 2013 15:30:07 +1100
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Wed, 18 Dec 2013 16:37:06 +0800
 
 colord (1.0.2-1) unstable; urgency=low
 
