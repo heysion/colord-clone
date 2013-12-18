@@ -1,6 +1,6 @@
-colord (1.0.3-1) unstable; urgency=low
+colord (1.0.5-1) unstable; urgency=low
 
-  * New upstream stable release
+  * New upstream stable release (LP: #1219108)
   * Update watch file to pull stable 1.0.x releases rather than development
     1.1.x releases
   * Update test-for-usb-db patch to apply to 69-cd-sensors.rules.in, rather
