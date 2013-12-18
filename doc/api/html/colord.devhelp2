@@ -593,7 +593,7 @@
     <keyword type="function" name="cd_profile_to_string ()" link="colord-cd-profile.html#cd-profile-to-string" since="0.1.0"/>
     <keyword type="function" name="cd_profile_equal ()" link="colord-cd-profile.html#cd-profile-equal" since="0.1.8"/>
     <keyword type="function" name="cd_profile_has_access ()" link="colord-cd-profile.html#cd-profile-has-access" since="0.1.13"/>
-    <keyword type="function" name="cd_profile_load_icc ()" link="colord-cd-profile.html#cd-profile-load-icc" since="0.1.8"/>
+    <keyword type="function" name="cd_profile_load_icc ()" link="colord-cd-profile.html#cd-profile-load-icc" since="0.1.32"/>
     <keyword type="function" name="cd_sensor_connect_sync ()" link="colord-cd-sensor-sync.html#cd-sensor-connect-sync" since="0.1.8"/>
     <keyword type="function" name="cd_sensor_lock_sync ()" link="colord-cd-sensor-sync.html#cd-sensor-lock-sync" since="0.1.6"/>
     <keyword type="function" name="cd_sensor_unlock_sync ()" link="colord-cd-sensor-sync.html#cd-sensor-unlock-sync" since="0.1.6"/>
