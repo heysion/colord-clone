@@ -88,11 +88,12 @@ cd_icc_store_helper_free (CdIccStoreDirHelper *helper)
 
 /**
  * cd_icc_store_find_by_filename:
+ * @store: a #CdIccStore instance.
  * @filename: a fully qualified filename
  *
  * Finds a ICC object in the store by filename.
  *
- * Return value: (transfer full) (element-type CdIcc): an ICC profile object or %NULL
+ * Return value: (transfer full): an ICC profile object or %NULL
  *
  * Since: 1.0.2
  **/
@@ -102,6 +103,9 @@ cd_icc_store_find_by_filename (CdIccStore *store, const gchar *filename)
 	CdIcc *tmp;
 	guint i;
 	GPtrArray *array = store->priv->icc_array;
+
+	g_return_val_if_fail (CD_IS_ICC_STORE (store), NULL);
+	g_return_val_if_fail (filename != NULL, NULL);
 
 	for (i = 0; i < array->len; i++) {
 		tmp = g_ptr_array_index (array, i);
@@ -113,11 +117,12 @@ cd_icc_store_find_by_filename (CdIccStore *store, const gchar *filename)
 
 /**
  * cd_icc_store_find_by_checksum:
+ * @store: a #CdIccStore instance.
  * @checksum: a checksum value
  *
  * Finds a ICC object in the store by checksum.
  *
- * Return value: (transfer full) (element-type CdIcc): an ICC profile object or %NULL
+ * Return value: (transfer full): an ICC profile object or %NULL
  *
  * Since: 1.0.2
  **/
@@ -127,6 +132,9 @@ cd_icc_store_find_by_checksum (CdIccStore *store, const gchar *checksum)
 	CdIcc *tmp;
 	guint i;
 	GPtrArray *array = store->priv->icc_array;
+
+	g_return_val_if_fail (CD_IS_ICC_STORE (store), NULL);
+	g_return_val_if_fail (checksum != NULL, NULL);
 
 	for (i = 0; i < array->len; i++) {
 		tmp = g_ptr_array_index (array, i);
@@ -633,6 +641,9 @@ cd_icc_store_search_kind (CdIccStore *store,
 	GPtrArray *locations;
 	guint i;
 
+	g_return_val_if_fail (CD_IS_ICC_STORE (store), FALSE);
+	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
 	/* get the locations for each kind */
 	locations = g_ptr_array_new_with_free_func (g_free);
 	switch (search_kind) {
@@ -663,6 +674,9 @@ cd_icc_store_search_kind (CdIccStore *store,
 						    search_flags,
 						    cancellable,
 						    error);
+                /* only create the first location */
+		search_flags &= ~CD_ICC_STORE_SEARCH_FLAGS_CREATE_LOCATION;
+
 		if (!ret)
 			goto out;
 	}
@@ -698,6 +712,7 @@ cd_icc_store_search_location (CdIccStore *store,
 
 	g_return_val_if_fail (CD_IS_ICC_STORE (store), FALSE);
 	g_return_val_if_fail (location != NULL, FALSE);
+	g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
 	/* does folder exist? */
 	file = g_file_new_for_path (location);

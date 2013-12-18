@@ -1,6 +1,250 @@
+commit 60c62b0712a480664161c84524a4af0114f52d81
+Author: Richard Hughes <richard@hughsie.com>
+Date:   2013-12-04
+
+    Release colord 1.0.5
+
+M	NEWS
+M	configure.ac
+
+commit 7a0c53d9de1056d591c536c0848d75059d5a67e6
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-12-03
+
+    Detect at runtime if the lcms2 function MemoryWrite is faulty
+
+    This allows us to switch to a slower, but non-buggy version of
+    the profile
+    serialization code that uses a temporary file.
+
+M	lib/colord/cd-icc.c
+
+commit d0db566168ce0044ff2ba4bc97bafdd175954c14
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-12-02
+
+    trivial: Correct the 'Since:' tag for cd_profile_load_icc()
+
+M	lib/colord/cd-profile.c
+
+commit 583371c5131505584a2e0665fbe593439a093269
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-11-28
+
+    libcolord: Ensure the version is set when using
+    cd_icc_create_from_edid()
+
+    Although this looks trivial as just the version isn't set, it's
+    actually an
+    important bug as if we write the file we write a v2 file as the
+    version < 4.0.
+
+M	lib/colord/cd-icc.c
+
+commit 5e73e46814621cba60ecf97c6fb9b03f3fd23f12
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-11-28
+
+    libcolord: Do not write an invalid dict or mluc data when the resaving
+    a profile
+
+M	lib/colord/cd-icc.c
+
+commit d35d9689f9673291e965f5548d33217f9cca6948
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-11-26
+
+    Never add USB hubs as scanner devices even if tagged by libsane
+
+M	src/plugins/cd-plugin-scanner.c
+
+commit ab81a80e2dc31d7b2c8f955cd0f2d898e84505fb
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-11-26
+
+    Never create color managed webcam devices
+
+    Web camera are typically low resolution, are difficult to profile
+    due to
+    auto-contrast being forced-on and so should not be shown in the
+    various UIs.
+
+M	src/plugins/cd-plugin-camera.c
+
+commit ab5ab413e6c4fbaddcb9de0347e592ee571327bf
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-11-14
+
+    trivial: Fix up three GObjectIntrospection warnings
+
+M	lib/colord/cd-icc-store.c
+
+commit 59d3f89cbbbbdcdc5cdad511e878b6aff2559e3b
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-07-05
+
+    trivial: Require __COLORD_H_INSIDE__ for cd-icc-store.h
+
+M	lib/colord/cd-icc-store.h
+
+commit 93044c49e095bef19eff8ac5de0bd9c34b7a12b5
+Author: Matthias Clasen <mclasen@redhat.com>
+Date:	2013-11-23
+
+    icc store: Don't create legacy locations
+
+    When cd_icc_store_search_kind is called with the
+    CD_ICC_STORE_SEARCH_FLAGS_CREATE_LOCATION flag, it creates
+    all the locations for the given kind. That is not really
+    ideal, since all but the first one are basically legacy,
+    and should not be forced into existence. The patch changes
+    things so that the create-location flag only affects the
+    first location.
+
+    https://bugs.freedesktop.org/show_bug.cgi?id=69765
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	lib/colord/cd-icc-store.c
+
+commit b1ff66e0db88ff1e99f8278484855be4b7775621
+Author: Marti Raudsepp <marti@juffo.org>
+Date:	2013-11-20
+
+    Don't crash with empty ICC file.
+
+    Code already exists to handle corrupt files, but empty files caused an
+    assertion to fail instead.
+
+    Fixes: https://bugzilla.gnome.org/show_bug.cgi?id=709233
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	lib/colord/cd-icc.c
+
+commit df283ec33a0a7f6db8b0e9c4b0c750b15bddf798
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-10-30
+
+    trivial: post release version bump
+
+M	RELEASE
+M	configure.ac
+
+commit 5677e9e4762c7cf53ede001ef9892410caa239c6
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-10-30
+
+    Release colord 1.0.4
+
+M	NEWS
+
+commit fe28792d200697718503b6ddb9862da116fd8316
+Author: Florian Höch <florian.hoech@gmx.de>
+Date:	2013-08-24
+
+    Remove duplicated Hewlett Packard entry
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	lib/colord/cd-quirk.c
+
+commit ea4303a95c4bcf6c164a535af27c4e6547e8e3f6
+Author: Florian Höch <florian.hoech@gmx.de>
+Date:	2013-08-24
+
+    Fix typo: Liyama should be Iiyama
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	lib/colord/cd-quirk.c
+
+commit 7efe9fe132dac72adf06c5a36112b8028d0499b4
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-08-29
+
+    Fix the AdobeRGB and WideGamutRGB gamma values
+
+    According to http://www.adobe.com/digitalimag/pdfs/AdobeRGB1998.pdf
+    they are
+    *not* 2.2, but '2 + 51/256' which isn't quite 2.2.
+
+    This is also the value used by ArgyllCMS, many thanks to Elle Stone
+    for the hint.
+
+M	data/profiles/AdobeRGB1998.xml.in
+M	data/profiles/WideGamutRGB.xml.in
+
+commit 4254d064b787a816bf5e1710293ff147bc17c205
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-08-29
+
+    Use the exact D50 whitepoint values
+
+    I don't think it matters that the values are 0.014% different,
+    but the CIE
+    specification says we should use these exact values.
+
+M	client/cd-create-profile.c
+
+commit 66b4c907055c9e3923349c1433815e0c5d8775f2
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-10-14
+
+    trivial: Add some more method checks in CdIccStore
+
+M	lib/colord/cd-icc-store.c
+
+commit dddc344da803a5d821467b285878d9feafe6fc3f
+Author: Christopher James Halse Rogers <raof@ubuntu.com>
+Date:	2013-10-16
+
+    trivial: Don't include generated udev rules in the tarball
+
+M	rules/Makefile.am
+
+commit 68133425bfb583136be60c24a1b18bfdb7ea87b7
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-10-21
+
+    Restrict the length of key and values when setting metadata
+
+    By setting very long keys and/or values over-and-over you can get
+    the colord
+    daemon to crash with an out-of-memory error.
+    To prevent this, limit the length of the metadata key to 128 bytes
+    and the
+    metadata value to 4k. Anything longer than that isn't really
+    metadata...
+
+    Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=1012832
+
+M	src/cd-common.h
+M	src/cd-device.c
+M	src/cd-profile.c
+
+commit 88e528278a4400766f2141e39427a0da99547c55
+Author: Conley Moorhous <conleymoorhous@gmail.com>
+Date:	2013-08-16
+
+    documentation: Add examples for system vendor/model
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	src/org.freedesktop.ColorManager.xml
+
+commit 6263d6dbeec76addfd078e4241521ddc4d2240e2
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-08-19
+
+    trivial: post release version bump
+
+M	RELEASE
+M	configure.ac
+
 commit 2f1b80313b6e9e10f02d1339dbafdde7796870bb
 Author: Richard Hughes <richard@hughsie.com>
-Date:   2013-08-19
+Date:	2013-08-19
 
     Release colord 1.0.3
 
