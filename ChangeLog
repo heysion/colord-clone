@@ -1,6 +1,112 @@
+commit 72c74a31bc946e6be94757bd6cb5100e59aff12d
+Author: Richard Hughes <richard@hughsie.com>
+Date:   2014-01-13
+
+    Release colord 1.0.6
+
+M	NEWS
+M	configure.ac
+
+commit e6cbc8c94c64d86b06de710f8d803bacfd875490
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-12-17
+
+    libcolord: Do not use G_GNUC_WARN_UNUSED_RESULT when uninhibiting
+
+    Clients don't need to know this has failed if a device was never
+    inhibited in
+    the first place.
+
+M	lib/colord/cd-device-sync.h
+M	lib/colord/cd-device.h
+
+commit f1f1e7717e95b3393956487d29ff7cf642b5e732
+Author: Christopher James Halse Rogers <raof@ubuntu.com>
+Date:	2013-12-19
+
+    libcolorhug: Handle failure to initialise GUsb in self-tests
+
+    This can fail, and does in my VMs and on the Ubuntu autopkgtest
+    infrastructure.
+    Since there are other tests of libcolorhug that can usefully be run,
+    handle this
+    like a failure to find a ColorHug on the USB bus, which is already
+    non-fatal.
+
+M	lib/colorhug/ch-self-test.c
+
+commit 044cba76c5da1a9e1f82e60494bf63030b04497f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2014-01-13
+
+    Use the corect sensor-kind values for GretagMacbeth sensors
+
+    Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=1000910
+
+M	rules/69-cd-sensors.rules.in
+
+commit b4c6e4cb83781945de06af1d1aeb947450d5b2d3
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-12-12
+
+    Fix the tag 'size' when viewing a profile in cd-iccdump with newer
+    lcms versions
+
+    Newer versions of lcms2 don't have the bug where they read the whole
+    tag out,
+    and now returns the size of the read (a good thing!).
+
+M	lib/colord/cd-icc.c
+
+commit 2a3e08638cfb0111d3d6d01a111a3206d6980f38
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-12-10
+
+    trivial: Add some run time checks for cd_color_rgb_array_interpolate()
+
+M	lib/colord/cd-color.c
+
+commit b4f3224f2a39afe22b8a284d8f85985358237e71
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-12-10
+
+    libcolord: Fix crash when cd_color_get_blackbody_rgb() with insane
+    values
+
+    Resolves: https://bugzilla.redhat.com/show_bug.cgi?id=986675
+
+M	lib/colord/cd-color.c
+
+commit 20efe8a9e6282333c962babe9b8480261ee19c2c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-12-10
+
+    session-helper: Do not crash when moving the sensor position
+
+    Hopefully fixes: https://bugzilla.redhat.com/show_bug.cgi?id=973792
+
+M	contrib/session-helper/cd-main.c
+
+commit b8b8a17e13280c8e8f225ef4ebc98e598838f54a
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-12-10
+
+    session-helper: Set the status to idle when resuming
+
+M	contrib/session-helper/cd-main.c
+
+commit a5b964fa5890c9c4bdaf007bc1e7c6434b17dc59
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2013-12-04
+
+    trivial: post release version bump
+
+M	RELEASE
+M	configure.ac
+
 commit 60c62b0712a480664161c84524a4af0114f52d81
 Author: Richard Hughes <richard@hughsie.com>
-Date:   2013-12-04
+Date:	2013-12-04
 
     Release colord 1.0.5
 
