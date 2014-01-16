@@ -24,7 +24,7 @@ Build-Depends:
  libsystemd-login-dev [linux-any],
  bash-completion,
  dh-systemd (>= 1.4),
-Standards-Version: 3.9.4
+Standards-Version: 3.9.5
 XS-Testsuite: autopkgtest
 Section: graphics
 Homepage: http://www.freedesktop.org/software/colord/
