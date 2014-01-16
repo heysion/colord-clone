@@ -1,3 +1,10 @@
+colord (1.0.6-1) unstable; urgency=medium
+
+  * New upstream stable release 1.0.6
+  * Bump Standards-Version (no changes required)
+
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Thu, 16 Jan 2014 17:55:36 +1100
+
 colord (1.0.5-1) unstable; urgency=low
 
   * New upstream stable release (LP: #1219108)
