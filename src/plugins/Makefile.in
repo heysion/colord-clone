@@ -78,8 +78,8 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-@HAVE_GUDEV_TRUE@@HAVE_SANE_TRUE@am__append_1 = \
-@HAVE_GUDEV_TRUE@@HAVE_SANE_TRUE@	libcd_plugin_sane.la
+@HAVE_SANE_TRUE@@HAVE_UDEV_TRUE@am__append_1 = \
+@HAVE_SANE_TRUE@@HAVE_UDEV_TRUE@	libcd_plugin_sane.la
 
 subdir = src/plugins
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
@@ -133,11 +133,11 @@ am__uninstall_files_from_dir = { \
 am__installdirs = "$(DESTDIR)$(plugindir)"
 LTLIBRARIES = $(noinst_LTLIBRARIES) $(plugin_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-@HAVE_GUDEV_TRUE@libcd_plugin_camera_la_DEPENDENCIES =  \
-@HAVE_GUDEV_TRUE@	$(am__DEPENDENCIES_1)
+@HAVE_UDEV_TRUE@libcd_plugin_camera_la_DEPENDENCIES =  \
+@HAVE_UDEV_TRUE@	$(am__DEPENDENCIES_1)
 am__libcd_plugin_camera_la_SOURCES_DIST = cd-plugin-camera.c
-@HAVE_GUDEV_TRUE@am_libcd_plugin_camera_la_OBJECTS =  \
-@HAVE_GUDEV_TRUE@	libcd_plugin_camera_la-cd-plugin-camera.lo
+@HAVE_UDEV_TRUE@am_libcd_plugin_camera_la_OBJECTS =  \
+@HAVE_UDEV_TRUE@	libcd_plugin_camera_la-cd-plugin-camera.lo
 libcd_plugin_camera_la_OBJECTS = $(am_libcd_plugin_camera_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -147,7 +147,7 @@ libcd_plugin_camera_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(libcd_plugin_camera_la_CFLAGS) $(CFLAGS) \
 	$(libcd_plugin_camera_la_LDFLAGS) $(LDFLAGS) -o $@
-@HAVE_GUDEV_TRUE@am_libcd_plugin_camera_la_rpath = -rpath $(plugindir)
+@HAVE_UDEV_TRUE@am_libcd_plugin_camera_la_rpath = -rpath $(plugindir)
 libcd_plugin_example_la_DEPENDENCIES =
 am_libcd_plugin_example_la_OBJECTS =  \
 	libcd_plugin_example_la-cd-plugin-example.lo
@@ -157,30 +157,29 @@ libcd_plugin_example_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(libcd_plugin_example_la_CFLAGS) $(CFLAGS) \
 	$(libcd_plugin_example_la_LDFLAGS) $(LDFLAGS) -o $@
-@HAVE_GUDEV_TRUE@@HAVE_SANE_TRUE@libcd_plugin_sane_la_DEPENDENCIES =  \
-@HAVE_GUDEV_TRUE@@HAVE_SANE_TRUE@	$(am__DEPENDENCIES_1)
+@HAVE_SANE_TRUE@@HAVE_UDEV_TRUE@libcd_plugin_sane_la_DEPENDENCIES =  \
+@HAVE_SANE_TRUE@@HAVE_UDEV_TRUE@	$(am__DEPENDENCIES_1)
 am__libcd_plugin_sane_la_SOURCES_DIST = cd-plugin-sane.c
-@HAVE_GUDEV_TRUE@@HAVE_SANE_TRUE@am_libcd_plugin_sane_la_OBJECTS = libcd_plugin_sane_la-cd-plugin-sane.lo
+@HAVE_SANE_TRUE@@HAVE_UDEV_TRUE@am_libcd_plugin_sane_la_OBJECTS = libcd_plugin_sane_la-cd-plugin-sane.lo
 libcd_plugin_sane_la_OBJECTS = $(am_libcd_plugin_sane_la_OBJECTS)
 libcd_plugin_sane_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(libcd_plugin_sane_la_CFLAGS) $(CFLAGS) \
 	$(libcd_plugin_sane_la_LDFLAGS) $(LDFLAGS) -o $@
-@HAVE_GUDEV_TRUE@@HAVE_SANE_TRUE@am_libcd_plugin_sane_la_rpath =  \
-@HAVE_GUDEV_TRUE@@HAVE_SANE_TRUE@	-rpath $(plugindir)
-@HAVE_GUDEV_TRUE@libcd_plugin_scanner_la_DEPENDENCIES =  \
-@HAVE_GUDEV_TRUE@	$(am__DEPENDENCIES_1)
+@HAVE_SANE_TRUE@@HAVE_UDEV_TRUE@am_libcd_plugin_sane_la_rpath =  \
+@HAVE_SANE_TRUE@@HAVE_UDEV_TRUE@	-rpath $(plugindir)
+@HAVE_UDEV_TRUE@libcd_plugin_scanner_la_DEPENDENCIES =  \
+@HAVE_UDEV_TRUE@	$(am__DEPENDENCIES_1)
 am__libcd_plugin_scanner_la_SOURCES_DIST = cd-plugin-scanner.c
-@HAVE_GUDEV_TRUE@am_libcd_plugin_scanner_la_OBJECTS =  \
-@HAVE_GUDEV_TRUE@	libcd_plugin_scanner_la-cd-plugin-scanner.lo
+@HAVE_UDEV_TRUE@am_libcd_plugin_scanner_la_OBJECTS =  \
+@HAVE_UDEV_TRUE@	libcd_plugin_scanner_la-cd-plugin-scanner.lo
 libcd_plugin_scanner_la_OBJECTS =  \
 	$(am_libcd_plugin_scanner_la_OBJECTS)
 libcd_plugin_scanner_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(libcd_plugin_scanner_la_CFLAGS) $(CFLAGS) \
 	$(libcd_plugin_scanner_la_LDFLAGS) $(LDFLAGS) -o $@
-@HAVE_GUDEV_TRUE@am_libcd_plugin_scanner_la_rpath = -rpath \
-@HAVE_GUDEV_TRUE@	$(plugindir)
+@HAVE_UDEV_TRUE@am_libcd_plugin_scanner_la_rpath = -rpath $(plugindir)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -269,6 +268,7 @@ CD_SYSTEM_PROFILES_DIR = @CD_SYSTEM_PROFILES_DIR@
 CFLAGS = @CFLAGS@
 COLORD_GTK_CFLAGS = @COLORD_GTK_CFLAGS@
 COLORD_GTK_LIBS = @COLORD_GTK_LIBS@
+COLORD_REQUIRES_PRIVATE = @COLORD_REQUIRES_PRIVATE@
 COLPROF = @COLPROF@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
@@ -286,7 +286,6 @@ ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
 EGREP = @EGREP@
-ENABLE_VOLUME_SEARCH = @ENABLE_VOLUME_SEARCH@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
 GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
@@ -392,6 +391,8 @@ SHELL = @SHELL@
 SQLITE_CFLAGS = @SQLITE_CFLAGS@
 SQLITE_LIBS = @SQLITE_LIBS@
 STRIP = @STRIP@
+UDEV_CFLAGS = @UDEV_CFLAGS@
+UDEV_LIBS = @UDEV_LIBS@
 USE_NLS = @USE_NLS@
 VAPIGEN = @VAPIGEN@
 VERSION = @VERSION@
@@ -485,20 +486,20 @@ libcd_plugin_example_la_SOURCES = cd-plugin-example.c
 libcd_plugin_example_la_LIBADD = $(CD_PLUGIN_LIBS)
 libcd_plugin_example_la_LDFLAGS = -module -avoid-version
 libcd_plugin_example_la_CFLAGS = $(CD_PLUGIN_CFLAGS) $(WARNINGFLAGS_C)
-@HAVE_GUDEV_TRUE@plugin_LTLIBRARIES = libcd_plugin_camera.la \
-@HAVE_GUDEV_TRUE@	libcd_plugin_scanner.la $(am__append_1)
-@HAVE_GUDEV_TRUE@libcd_plugin_camera_la_SOURCES = cd-plugin-camera.c
-@HAVE_GUDEV_TRUE@libcd_plugin_camera_la_LIBADD = $(GUDEV_LIBS)
-@HAVE_GUDEV_TRUE@libcd_plugin_camera_la_LDFLAGS = -module -avoid-version
-@HAVE_GUDEV_TRUE@libcd_plugin_camera_la_CFLAGS = $(GUDEV_CFLAGS) $(WARNINGFLAGS_C)
-@HAVE_GUDEV_TRUE@libcd_plugin_scanner_la_SOURCES = cd-plugin-scanner.c
-@HAVE_GUDEV_TRUE@libcd_plugin_scanner_la_LIBADD = $(GUDEV_LIBS)
-@HAVE_GUDEV_TRUE@libcd_plugin_scanner_la_LDFLAGS = -module -avoid-version
-@HAVE_GUDEV_TRUE@libcd_plugin_scanner_la_CFLAGS = $(GUDEV_CFLAGS) $(WARNINGFLAGS_C)
-@HAVE_GUDEV_TRUE@@HAVE_SANE_TRUE@libcd_plugin_sane_la_SOURCES = cd-plugin-sane.c
-@HAVE_GUDEV_TRUE@@HAVE_SANE_TRUE@libcd_plugin_sane_la_LIBADD = $(GUDEV_LIBS)
-@HAVE_GUDEV_TRUE@@HAVE_SANE_TRUE@libcd_plugin_sane_la_LDFLAGS = -module -avoid-version
-@HAVE_GUDEV_TRUE@@HAVE_SANE_TRUE@libcd_plugin_sane_la_CFLAGS = $(GUDEV_CFLAGS) $(WARNINGFLAGS_C)
+@HAVE_UDEV_TRUE@plugin_LTLIBRARIES = libcd_plugin_camera.la \
+@HAVE_UDEV_TRUE@	libcd_plugin_scanner.la $(am__append_1)
+@HAVE_UDEV_TRUE@libcd_plugin_camera_la_SOURCES = cd-plugin-camera.c
+@HAVE_UDEV_TRUE@libcd_plugin_camera_la_LIBADD = $(GUDEV_LIBS)
+@HAVE_UDEV_TRUE@libcd_plugin_camera_la_LDFLAGS = -module -avoid-version
+@HAVE_UDEV_TRUE@libcd_plugin_camera_la_CFLAGS = $(GUDEV_CFLAGS) $(WARNINGFLAGS_C)
+@HAVE_UDEV_TRUE@libcd_plugin_scanner_la_SOURCES = cd-plugin-scanner.c
+@HAVE_UDEV_TRUE@libcd_plugin_scanner_la_LIBADD = $(GUDEV_LIBS)
+@HAVE_UDEV_TRUE@libcd_plugin_scanner_la_LDFLAGS = -module -avoid-version
+@HAVE_UDEV_TRUE@libcd_plugin_scanner_la_CFLAGS = $(GUDEV_CFLAGS) $(WARNINGFLAGS_C)
+@HAVE_SANE_TRUE@@HAVE_UDEV_TRUE@libcd_plugin_sane_la_SOURCES = cd-plugin-sane.c
+@HAVE_SANE_TRUE@@HAVE_UDEV_TRUE@libcd_plugin_sane_la_LIBADD = $(GUDEV_LIBS)
+@HAVE_SANE_TRUE@@HAVE_UDEV_TRUE@libcd_plugin_sane_la_LDFLAGS = -module -avoid-version
+@HAVE_SANE_TRUE@@HAVE_UDEV_TRUE@libcd_plugin_sane_la_CFLAGS = $(GUDEV_CFLAGS) $(WARNINGFLAGS_C)
 all: all-am
 
 .SUFFIXES:

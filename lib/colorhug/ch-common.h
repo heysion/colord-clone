@@ -35,8 +35,8 @@ G_BEGIN_DECLS
 #define	CH_USB_VID				0x273f
 #define	CH_USB_PID_BOOTLOADER			0x1000
 #define	CH_USB_PID_FIRMWARE			0x1001
-#define	CH_USB_PID_FIRMWARE_SPECTRO		0x1002
-#define	CH_USB_PID_BOOTLOADER_SPECTRO		0x1003
+#define	CH_USB_PID_FIRMWARE_PLUS		0x1002
+#define	CH_USB_PID_BOOTLOADER_PLUS		0x1003
 #define	CH_USB_CONFIG				0x0001
 #define	CH_USB_INTERFACE			0x0000
 #define	CH_USB_HID_EP				0x0001
@@ -355,7 +355,7 @@ G_BEGIN_DECLS
  *
  * Take a raw reading.
  *
- * IN:  [1:cmd][1:sensor-kind]
+ * IN:  [1:cmd]
  * OUT: [1:retval][1:cmd][4:count]
  *
  * This command is only available in firmware mode.
@@ -372,7 +372,7 @@ G_BEGIN_DECLS
  *
  * This command is useful if you want to do an ambient reading.
  *
- * IN:  [1:cmd][1:sensor-kind]
+ * IN:  [1:cmd]
  * OUT: [1:retval][1:cmd][4:red][4:green][4:blue]
  *
  * This command is only available in firmware mode.
@@ -395,7 +395,7 @@ G_BEGIN_DECLS
  * spectral hardware is used if it is available. The CIE 1931 luminosity
  * function data is used by default.
  *
- * IN:  [1:cmd][2:calibration-index][1:sensor-kind]
+ * IN:  [1:cmd][2:calibration-index]
  * OUT: [1:retval][1:cmd][4:red][4:green][4:blue]
  *
  * This command is only available in firmware mode.
@@ -686,7 +686,7 @@ G_BEGIN_DECLS
  * The hardware versions are as follows:
  * 0x00		= Pre-production hardware
  * 0x01		= ColorHug
- * 0x02		= ColorHug Spectro
+ * 0x02		= ColorHug+
  * 0x03-0x0f	= Reserved for future use
  *
  * IN:  [1:cmd]
@@ -859,6 +859,34 @@ G_BEGIN_DECLS
 #define	CH_CMD_GET_TEMPERATURE			0x3b
 
 /**
+ * CH_CMD_GET_DAC_VALUE:
+ *
+ * Get the DAC value. @scale is a packed float, where 1.0f is 3.3V
+ *
+ * IN:  [1:cmd]
+ * OUT: [1:retval][1:cmd][4:value]
+ *
+ * This command is only available in firmware mode.
+ *
+ * Since: 1.1.6
+ **/
+#define	CH_CMD_GET_DAC_VALUE			0x3c
+
+/**
+ * CH_CMD_SET_DAC_VALUE:
+ *
+ * Set the DAC value. @scale is a packed float, where 1.0f is 3.3V
+ *
+ * IN:  [1:cmd][4:value]
+ * OUT: [1:retval][1:cmd]
+ *
+ * This command is only available in firmware mode.
+ *
+ * Since: 1.1.6
+ **/
+#define	CH_CMD_SET_DAC_VALUE			0x3d
+
+/**
  * CH_CMD_SELF_TEST:
  *
  * Tests the device by trying to get a non-zero reading from each
@@ -990,14 +1018,6 @@ typedef enum {
 	CH_MEASURE_MODE_DURATION
 } ChMeasureMode;
 
-/* the sensor to use */
-typedef enum {
-	CH_SENSOR_KIND_MAIN,
-	CH_SENSOR_KIND_AMBIENT,
-	CH_SENSOR_KIND_CCD,
-	CH_SENSOR_KIND_LAST
-} ChSensorKind;
-
 /* any problems with the PCB */
 typedef enum {
 	CH_PCB_ERRATA_NONE		= 0,
@@ -1011,8 +1031,8 @@ typedef enum {
 	CH_DEVICE_MODE_LEGACY,
 	CH_DEVICE_MODE_BOOTLOADER,
 	CH_DEVICE_MODE_FIRMWARE,
-	CH_DEVICE_MODE_BOOTLOADER_SPECTRO,
-	CH_DEVICE_MODE_FIRMWARE_SPECTRO,
+	CH_DEVICE_MODE_BOOTLOADER_PLUS,
+	CH_DEVICE_MODE_FIRMWARE_PLUS,
 	CH_DEVICE_MODE_LAST
 } ChDeviceMode;
 

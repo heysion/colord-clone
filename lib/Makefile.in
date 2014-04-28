@@ -77,7 +77,10 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-@HAVE_GUSB_TRUE@am__append_1 = \
+@BUILD_LIBCOLORDCOMPAT_TRUE@am__append_1 = \
+@BUILD_LIBCOLORDCOMPAT_TRUE@	compat
+
+@HAVE_GUSB_TRUE@am__append_2 = \
 @HAVE_GUSB_TRUE@	colorhug					\
 @HAVE_GUSB_TRUE@	dtp94						\
 @HAVE_GUSB_TRUE@	huey						\
@@ -158,7 +161,7 @@ am__define_uniq_tagged_files = \
   done | $(am__uniquify_input)`
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = colord colorhug dtp94 huey munki
+DIST_SUBDIRS = colord compat colorhug dtp94 huey munki
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 am__relativize = \
   dir0=`pwd`; \
@@ -206,6 +209,7 @@ CD_SYSTEM_PROFILES_DIR = @CD_SYSTEM_PROFILES_DIR@
 CFLAGS = @CFLAGS@
 COLORD_GTK_CFLAGS = @COLORD_GTK_CFLAGS@
 COLORD_GTK_LIBS = @COLORD_GTK_LIBS@
+COLORD_REQUIRES_PRIVATE = @COLORD_REQUIRES_PRIVATE@
 COLPROF = @COLPROF@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
@@ -223,7 +227,6 @@ ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
 EGREP = @EGREP@
-ENABLE_VOLUME_SEARCH = @ENABLE_VOLUME_SEARCH@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
 GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
@@ -329,6 +332,8 @@ SHELL = @SHELL@
 SQLITE_CFLAGS = @SQLITE_CFLAGS@
 SQLITE_LIBS = @SQLITE_LIBS@
 STRIP = @STRIP@
+UDEV_CFLAGS = @UDEV_CFLAGS@
+UDEV_LIBS = @UDEV_LIBS@
 USE_NLS = @USE_NLS@
 VAPIGEN = @VAPIGEN@
 VERSION = @VERSION@
@@ -395,7 +400,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 udevrulesdir = @udevrulesdir@
-SUBDIRS = colord $(am__append_1)
+SUBDIRS = colord $(am__append_1) $(am__append_2)
 all: all-recursive
 
 .SUFFIXES:

@@ -33,7 +33,9 @@
 #include "cd-profile.h"
 #include "cd-resources.h"
 
-static void     cd_profile_finalize	(GObject     *object);
+static void	cd_profile_finalize	(GObject	*object);
+static void	cd_profile_set_filename	(CdProfile	*profile,
+					 const gchar	*filename);
 
 #define CD_PROFILE_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), CD_TYPE_PROFILE, CdProfilePrivate))
 
@@ -537,6 +539,7 @@ cd_profile_set_property_internal (CdProfile *profile,
 				  GError **error)
 {
 	gboolean ret = TRUE;
+
 	CdProfilePrivate *priv = profile->priv;
 
 	/* sanity check the length of the key and value */
@@ -558,11 +561,10 @@ cd_profile_set_property_internal (CdProfile *profile,
 	}
 
 	if (g_strcmp0 (property, CD_PROFILE_PROPERTY_FILENAME) == 0) {
-		ret = cd_profile_set_filename (profile,
-					       value,
-					       error);
-		if (!ret)
-			goto out;
+		cd_profile_set_filename (profile, value);
+		cd_profile_dbus_emit_property_changed (profile,
+						       property,
+						       g_variant_new_string (value));
 	} else if (g_strcmp0 (property, CD_PROFILE_PROPERTY_QUALIFIER) == 0) {
 		cd_profile_set_qualifier (profile, value);
 		cd_profile_dbus_emit_property_changed (profile,
@@ -821,32 +823,6 @@ out:
 }
 
 /**
- * cd_profile_get_fake_md5:
- *
- * this is a complete hack to work around the lack of DICT
- * support, and to give gnome-color-manager something to key on
- **/
-static gchar *
-cd_profile_get_fake_md5 (const gchar *filename)
-{
-	gchar *basename;
-	gchar *md5 = NULL;
-
-	basename = g_path_get_basename (filename);
-	if (!g_str_has_prefix (basename, "edid-"))
-		goto out;
-	if (strlen (basename) != 41)
-		goto out;
-
-	/* parse edid-f467c2e85a0abdef9415d5028e240631.icc */
-	basename[37] = '\0';
-	md5 = g_strdup (&basename[5]);
-out:
-	g_free (basename);
-	return md5;
-}
-
-/**
  * cd_profile_fixup_title:
  **/
 static gchar *
@@ -1033,155 +1009,36 @@ cd_profile_emit_parsed_property_changed (CdProfile *profile)
 }
 
 /**
- * cd_profile_set_filename:
+ * cd_profile_load_from_icc:
  **/
 gboolean
-cd_profile_set_filename (CdProfile *profile,
-			 const gchar *filename,
-			 GError **error)
+cd_profile_load_from_icc (CdProfile *profile, CdIcc *icc, GError **error)
 {
-	CdProfilePrivate *priv = profile->priv;
-	CdIcc *icc = NULL;
-	const gchar *tmp;
 	gboolean ret = FALSE;
-	GError *error_local = NULL;
-	GFile *file = NULL;
-	GBytes *gdata = NULL;
-	gchar *data = NULL;
-	gchar *fake_md5 = NULL;
-	gsize len;
 
 	g_return_val_if_fail (CD_IS_PROFILE (profile), FALSE);
 
 	/* save filename */
-	g_free (priv->filename);
-	priv->filename = g_strdup (filename);
-
-	/* if we didn't get the metadata from the DICT tag then
-	 * guess it from the filename.
-	 * we can delete this hack when lcms2 >= 2.2 is a hard dep */
-	tmp = g_hash_table_lookup (priv->metadata, CD_PROFILE_METADATA_EDID_MD5);
-	if (tmp == NULL) {
-		fake_md5 = cd_profile_get_fake_md5 (priv->filename);
-		if (fake_md5 != NULL) {
-			g_hash_table_insert (priv->metadata,
-					     g_strdup (CD_PROFILE_METADATA_EDID_MD5),
-					     g_strdup (fake_md5));
-			cd_profile_dbus_emit_property_changed (profile,
-							       CD_PROFILE_PROPERTY_METADATA,
-							       cd_profile_get_metadata_as_variant (profile));
-		}
-	}
-
-	/* check we're not already set using the fd */
-	if (priv->kind != CD_PROFILE_KIND_UNKNOWN) {
-		ret = TRUE;
-		g_debug ("profile '%s' already set",
-			 priv->object_path);
-		goto out;
-	} else if (!priv->is_system_wide) {
-#ifndef HAVE_FD_FALLBACK
-		/* we're not allowing the dameon to open the file */
-		ret = FALSE;
-		g_set_error (error,
-			     CD_PROFILE_ERROR,
-			     CD_PROFILE_ERROR_INTERNAL,
-			     "Failed to open %s as client did not send FD and "
-			     "daemon is not compiled with --enable-fd-fallback",
-			     filename);
-		goto out;
-#endif
-	}
-
-	/* find out if we have a GResource copy */
-	if (g_str_has_prefix (filename, "/usr/share/color/icc/colord/")) {
-		data = g_build_filename ("/org/freedesktop/colord",
-					 "profiles",
-					 filename + 28,
-					 NULL);
-		gdata = g_resource_lookup_data (cd_get_resource (),
-						data,
-						G_RESOURCE_LOOKUP_FLAGS_NONE,
-						NULL);
-	}
-
-	/* load the ICC file using lcms */
-	icc = cd_icc_new ();
-	if (gdata != NULL) {
-		g_debug ("Using built-in %s", data);
-		ret = cd_icc_load_data (icc,
-					g_bytes_get_data (gdata, NULL),
-					g_bytes_get_size (gdata),
-					CD_ICC_LOAD_FLAGS_METADATA,
-					&error_local);
-	} else {
-		file = g_file_new_for_path (filename);
-		ret = cd_icc_load_file (icc,
-					file,
-					CD_ICC_LOAD_FLAGS_METADATA,
-					NULL,
-					&error_local);
-	}
-	if (!ret) {
-		g_set_error_literal (error,
-				     CD_PROFILE_ERROR,
-				     CD_PROFILE_ERROR_FAILED_TO_PARSE,
-				     error_local->message);
-		g_error_free (error_local);
-		goto out;
-	}
+	cd_profile_set_filename (profile, cd_icc_get_filename (icc));
 
 	/* set the virtual profile from the lcms profile */
 	ret = cd_profile_set_from_profile (profile, icc, error);
 	if (!ret)
 		goto out;
 
-	/* try the metadata if available */
-	if (priv->checksum == NULL) {
-		tmp = g_hash_table_lookup (profile->priv->metadata,
-					   CD_PROFILE_METADATA_FILE_CHECKSUM);
-		if (tmp != NULL &&
-		    strlen (tmp) == 32) {
-			priv->checksum = g_strdup (tmp);
-		}
-	}
-
-	/* fall back to calculating it ourselves */
-	if (priv->checksum == NULL) {
-		g_debug ("%s has no profile-id nor %s, falling back "
-			 "to slow MD5",
-			 priv->filename,
-			 CD_PROFILE_METADATA_FILE_CHECKSUM);
-		ret = g_file_get_contents (priv->filename,
-					   &data, &len, error);
-		if (!ret)
-			goto out;
-		priv->checksum = g_compute_checksum_for_data (G_CHECKSUM_MD5,
-							      (const guchar *) data,
-							      len);
-	}
-
 	/* emit all the things that could have changed */
 	cd_profile_emit_parsed_property_changed (profile);
 out:
-	g_free (data);
-	g_free (fake_md5);
-	if (gdata != NULL)
-		g_bytes_unref (gdata);
-	if (icc != NULL)
-		g_object_unref (icc);
-	if (file != NULL)
-		g_object_unref (file);
 	return ret;
 }
 
 /**
- * cd_profile_set_fd:
+ * cd_profile_load_from_fd:
  **/
 gboolean
-cd_profile_set_fd (CdProfile *profile,
-		   gint fd,
-		   GError **error)
+cd_profile_load_from_fd (CdProfile *profile,
+			 gint fd,
+			 GError **error)
 {
 	CdIcc *icc = NULL;
 	GError *error_local = NULL;
@@ -1240,6 +1097,75 @@ out:
 }
 
 /**
+ * cd_profile_load_from_filename:
+ **/
+gboolean
+cd_profile_load_from_filename (CdProfile *profile,
+			 const gchar *filename,
+			 GError **error)
+{
+	CdIcc *icc = NULL;
+	GError *error_local = NULL;
+	CdProfilePrivate *priv = profile->priv;
+	gboolean ret = FALSE;
+	GFile *file = NULL;
+
+	g_return_val_if_fail (CD_IS_PROFILE (profile), FALSE);
+
+	/* check we're not already set */
+	if (priv->kind != CD_PROFILE_KIND_UNKNOWN) {
+		g_set_error (error,
+			     CD_PROFILE_ERROR,
+			     CD_PROFILE_ERROR_INTERNAL,
+			     "profile '%s' already set",
+			     priv->object_path);
+		goto out;
+	}
+
+	/* open fd and parse the file */
+	icc = cd_icc_new ();
+	file = g_file_new_for_path (filename);
+	ret = cd_icc_load_file (icc,
+				file,
+				CD_ICC_LOAD_FLAGS_METADATA,
+				NULL,
+				&error_local);
+	if (!ret) {
+		g_set_error_literal (error,
+				     CD_PROFILE_ERROR,
+				     CD_PROFILE_ERROR_FAILED_TO_READ,
+				     error_local->message);
+		g_error_free (error_local);
+		goto out;
+	}
+
+	/* create a mapped file */
+	priv->mapped_file = g_mapped_file_new (filename, FALSE, error);
+	if (priv->mapped_file == NULL) {
+		g_set_error (error,
+			     CD_PROFILE_ERROR,
+			     CD_PROFILE_ERROR_FAILED_TO_READ,
+			     "failed to create mapped file from filname %s",
+			     filename);
+		goto out;
+	}
+
+	/* set the virtual profile from the lcms profile */
+	ret = cd_profile_set_from_profile (profile, icc, error);
+	if (!ret)
+		goto out;
+
+	/* emit all the things that could have changed */
+	cd_profile_emit_parsed_property_changed (profile);
+out:
+	if (icc != NULL)
+		g_object_unref (icc);
+	if (file != NULL)
+		g_object_unref (file);
+	return ret;
+}
+
+/**
  * cd_profile_get_qualifier:
  **/
 const gchar *
@@ -1269,6 +1195,17 @@ cd_profile_set_format (CdProfile *profile, const gchar *format)
 	g_return_if_fail (CD_IS_PROFILE (profile));
 	g_free (profile->priv->format);
 	profile->priv->format = g_strdup (format);
+}
+
+/**
+ * cd_profile_set_filename:
+ **/
+static void
+cd_profile_set_filename (CdProfile *profile, const gchar *filename)
+{
+	g_return_if_fail (CD_IS_PROFILE (profile));
+	g_free (profile->priv->filename);
+	profile->priv->filename = g_strdup (filename);
 }
 
 /**

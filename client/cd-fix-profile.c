@@ -36,6 +36,7 @@ typedef struct {
 	CdClient		*client;
 	CdIcc			*icc;
 	gchar			*locale;
+	gboolean		 rewrite_file;
 } CdUtilPrivate;
 
 typedef gboolean (*CdUtilPrivateCb)	(CdUtilPrivate	*util,
@@ -322,26 +323,6 @@ out:
 	return filename;
 }
 
-typedef struct {
-	guint			 idx;
-	cmsFloat32Number	*data;
-} CdUtilGamutCdeckHelper;
-
-/**
- * cd_util_get_coverage_sample_cb:
- **/
-static cmsInt32Number
-cd_util_get_coverage_sample_cb (const cmsFloat32Number in[],
-				cmsFloat32Number out[],
-				void *user_data)
-{
-	CdUtilGamutCdeckHelper *helper = (CdUtilGamutCdeckHelper *) user_data;
-	helper->data[helper->idx++] = in[0];
-	helper->data[helper->idx++] = in[1];
-	helper->data[helper->idx++] = in[2];
-	return 1;
-}
-
 /**
  * cd_util_get_coverage:
  * @profile: A valid #CdUtil
@@ -357,83 +338,37 @@ cd_util_get_coverage (cmsHPROFILE profile_proof,
 		      const gchar *filename_in,
 		      GError **error)
 {
-	const guint cube_size = 33;
-	cmsFloat32Number *data = NULL;
-	cmsHPROFILE profile_in = NULL;
-	cmsHPROFILE profile_null = NULL;
-	cmsHTRANSFORM transform = NULL;
-	cmsUInt16Number *alarm_codes = NULL;
-	cmsUInt32Number dimensions[] = { cube_size, cube_size, cube_size };
-	CdUtilGamutCdeckHelper helper;
-	gboolean ret;
 	gdouble coverage = -1.0;
-	guint cnt = 0;
-	guint data_len = cube_size * cube_size * cube_size;
-	guint i;
+	gboolean ret;
+	GFile *file = NULL;
+	CdIcc *icc = NULL;
+	CdIcc *icc_ref;
 
-	/* load profiles into lcms */
-	profile_null = cmsCreateNULLProfile ();
-	profile_in = cmsOpenProfileFromFile (filename_in, "r");
-	if (profile_in == NULL) {
-		g_set_error (error, 1, 0, "Failed to open %s", filename_in);
+	/* load proofing profile */
+	icc_ref = cd_icc_new ();
+	ret = cd_icc_load_handle (icc_ref, profile_proof,
+				  CD_ICC_LOAD_FLAGS_NONE, error);
+	if (!ret)
 		goto out;
-	}
 
-	/* create a proofing transform with gamut check */
-	transform = cmsCreateProofingTransform (profile_in,
-						TYPE_RGB_FLT,
-						profile_null,
-						TYPE_GRAY_FLT,
-						profile_proof,
-						INTENT_ABSOLUTE_COLORIMETRIC,
-						INTENT_ABSOLUTE_COLORIMETRIC,
-						cmsFLAGS_GAMUTCHECK |
-						cmsFLAGS_SOFTPROOFING);
-	if (transform == NULL) {
-		g_set_error (error, 1, 0,
-			     "Failed to setup transform for %s",
-			     filename_in);
+	/* load target profile */
+	icc = cd_icc_new ();
+	file = g_file_new_for_path (filename_in);
+	ret = cd_icc_load_file (icc, file, CD_ICC_LOAD_FLAGS_NONE, NULL, error);
+	if (!ret)
 		goto out;
-	}
 
-	/* set gamut alarm to 0xffff */
-	alarm_codes = g_new0 (cmsUInt16Number, cmsMAXCHANNELS);
-	alarm_codes[0] = 0xffff;
-	cmsSetAlarmCodes (alarm_codes);
-
-	/* slice profile in regular intevals */
-	data = g_new0 (cmsFloat32Number, data_len * 3);
-	helper.data = data;
-	helper.idx = 0;
-	ret = cmsSliceSpaceFloat (3, dimensions,
-				  cd_util_get_coverage_sample_cb,
-				  &helper);
-	if (!ret) {
-		g_set_error_literal (error, 1, 0, "Failed to slice data");
+	/* get coverage */
+	ret = cd_icc_utils_get_coverage (icc, icc_ref, &coverage, error);
+	if (!ret)
 		goto out;
-	}
-
-	/* transform each one of those nodes across the proofing transform */
-	cmsDoTransform (transform, helper.data, helper.data, data_len);
-
-	/* count the nodes that gives you zero and divide by total number */
-	for (i = 0; i < data_len; i++) {
-		if (helper.data[i] == 0.0)
-			cnt++;
-	}
-
-	/* success */
-	coverage = (gdouble) cnt / (gdouble) data_len;
-	g_assert (coverage >= 0.0);
 out:
-	g_free (data);
-	if (transform != NULL)
-		cmsDeleteTransform (transform);
-	if (profile_null != NULL)
-		cmsCloseProfile (profile_null);
-	if (profile_in != NULL)
-		cmsCloseProfile (profile_in);
-	return coverage;
+	if (file != NULL)
+		g_object_unref (file);
+	if (icc != NULL)
+		g_object_unref (icc);
+	g_object_unref (icc_ref);
+	return ret;
 }
 
 /**
@@ -506,6 +441,48 @@ out:
 }
 
 /**
+ * cd_util_export_tag_data:
+ **/
+static gboolean
+cd_util_export_tag_data (CdUtilPrivate *priv, gchar **values, GError **error)
+{
+	gboolean ret = TRUE;
+	GBytes *data = NULL;
+	gchar *out_fn = NULL;
+
+	/* check arguments */
+	if (g_strv_length (values) != 2) {
+		ret = FALSE;
+		g_set_error_literal (error, 1, 0,
+				     "invalid input, expect 'filename' 'tag'");
+		goto out;
+	}
+
+	/* get data */
+	data = cd_icc_get_tag_data (priv->icc, values[1], error);
+	if (data == NULL) {
+		ret = FALSE;
+		goto out;
+	}
+
+	/* save to file */
+	out_fn = g_strdup_printf ("./%s.bin", values[1]);
+	ret = g_file_set_contents (out_fn,
+				   g_bytes_get_data (data, NULL),
+				   g_bytes_get_size (data),
+				   error);
+	if (!ret)
+		goto out;
+	g_print ("Wrote %s\n", out_fn);
+	priv->rewrite_file = FALSE;
+out:
+	if (data != NULL)
+		g_bytes_unref (data);
+	g_free (out_fn);
+	return ret;
+}
+
+/**
  * cd_util_set_fix_metadata:
  **/
 static gboolean
@@ -549,7 +526,7 @@ cd_util_set_fix_metadata (CdUtilPrivate *priv, gchar **values, GError **error)
 			ret = FALSE;
 			goto out;
 		}
-		coverage_tmp = g_strdup_printf ("%f", coverage);
+		coverage_tmp = g_strdup_printf ("%.2f", coverage);
 		cd_icc_add_metadata (priv->icc,
 				     "GAMUT_coverage(srgb)",
 				     coverage_tmp);
@@ -640,10 +617,10 @@ out:
 }
 
 /**
- * cd_util_generate_vcgt:
+ * cd_util_extract_vcgt:
  **/
 static gboolean
-cd_util_generate_vcgt (CdUtilPrivate *priv, gchar **values, GError **error)
+cd_util_extract_vcgt (CdUtilPrivate *priv, gchar **values, GError **error)
 {
 	cmsFloat32Number in;
 	cmsHPROFILE lcms_profile;
@@ -690,6 +667,7 @@ cd_util_generate_vcgt (CdUtilPrivate *priv, gchar **values, GError **error)
 	}
 
 	/* success */
+	priv->rewrite_file = FALSE;
 	ret = TRUE;
 out:
 	return ret;
@@ -748,6 +726,7 @@ main (int argc, char *argv[])
 
 	/* create helper object */
 	priv = g_new0 (CdUtilPrivate, 1);
+	priv->rewrite_file = TRUE;
 	priv->client = cd_client_new ();
 
 	/* add commands */
@@ -756,7 +735,7 @@ main (int argc, char *argv[])
 		     "extract-vcgt",
 		     /* TRANSLATORS: command description */
 		     _("Generate the VCGT calibration of a given size"),
-		     cd_util_generate_vcgt);
+		     cd_util_extract_vcgt);
 	cd_util_add (priv->cmd_array,
 		     "md-clear",
 		     /* TRANSLATORS: command description */
@@ -807,6 +786,11 @@ main (int argc, char *argv[])
 		     /* TRANSLATORS: command description */
 		     _("Set the ICC profile version"),
 		     cd_util_set_version);
+	cd_util_add (priv->cmd_array,
+		     "export-tag-data",
+		     /* TRANSLATORS: command description */
+		     _("Export the tag data"),
+		     cd_util_export_tag_data);
 
 	/* sort by command name */
 	g_ptr_array_sort (priv->cmd_array,
@@ -870,15 +854,17 @@ main (int argc, char *argv[])
 	}
 
 	/* save file */
-	ret = cd_icc_save_file (priv->icc,
-				file,
-				CD_ICC_SAVE_FLAGS_NONE,
-				NULL,
-				&error);
-	if (!ret) {
-		g_print ("%s\n", error->message);
-		g_error_free (error);
-		goto out;
+	if (priv->rewrite_file) {
+		ret = cd_icc_save_file (priv->icc,
+					file,
+					CD_ICC_SAVE_FLAGS_NONE,
+					NULL,
+					&error);
+		if (!ret) {
+			g_print ("%s\n", error->message);
+			g_error_free (error);
+			goto out;
+		}
 	}
 
 	/* success */

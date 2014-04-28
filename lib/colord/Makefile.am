@@ -8,11 +8,13 @@ endif
 AM_CPPFLAGS = \
 	$(GLIB_CFLAGS)						\
 	$(LCMS_CFLAGS)						\
+	$(UDEV_CFLAGS)						\
 	-I$(top_srcdir)						\
 	-I$(top_srcdir)/lib					\
 	-DCD_COMPILATION					\
 	-DG_LOG_DOMAIN=\"libcolord\"				\
 	-DTESTDATADIR=\""$(top_srcdir)/data/tests"\"		\
+	-DLIBEXECDIR=\""$(libexecdir)"\"			\
 	-DCD_SYSTEM_PROFILES_DIR="\"$(CD_SYSTEM_PROFILES_DIR)"\" \
 	-DPACKAGE_DATA_DIR=\""$(datadir)"\"
 
@@ -31,13 +33,14 @@ libcolordbase_include_HEADERS =					\
 	cd-client.h						\
 	cd-client-sync.h					\
 	cd-color.h						\
-	cd-deprecated.h						\
 	cd-device.h						\
 	cd-device-sync.h					\
 	cd-dom.h						\
+	cd-edid.h						\
 	cd-enum.h						\
 	cd-icc.h						\
 	cd-icc-store.h						\
+	cd-icc-utils.h						\
 	cd-interp-akima.h					\
 	cd-interp-linear.h					\
 	cd-interp.h						\
@@ -49,16 +52,21 @@ libcolordbase_include_HEADERS =					\
 	cd-quirk.h						\
 	cd-sensor.h						\
 	cd-sensor-sync.h					\
+	cd-spectrum.h						\
 	cd-transform.h						\
 	cd-version.h
 
 libcolordprivate_la_SOURCES =					\
+	cd-context-lcms.c					\
+	cd-context-lcms.h					\
 	cd-buffer.c						\
 	cd-color.c						\
 	cd-dom.c						\
+	cd-edid.c						\
 	cd-enum.c						\
 	cd-icc.c						\
 	cd-icc-store.c						\
+	cd-icc-utils.c						\
 	cd-interp-akima.c					\
 	cd-interp-linear.c					\
 	cd-interp.c						\
@@ -66,9 +74,11 @@ libcolordprivate_la_SOURCES =					\
 	cd-it8-utils.c						\
 	cd-math.c						\
 	cd-quirk.c						\
+	cd-spectrum.c						\
 	cd-transform.c
 libcolordprivate_la_LIBADD =					\
 	$(LIBM)							\
+	$(UDEV_LIBS)						\
 	$(LCMS_LIBS)						\
 	$(GLIB_LIBS)
 libcolordprivate_la_LDFLAGS =					\
@@ -82,7 +92,6 @@ libcolordprivate_la_CFLAGS =					\
 libcolord_la_SOURCES =						\
 	cd-client.c						\
 	cd-client-sync.c					\
-	cd-deprecated.c						\
 	cd-device.c						\
 	cd-device-sync.c					\
 	cd-profile.c						\
@@ -90,6 +99,7 @@ libcolord_la_SOURCES =						\
 	cd-sensor.c						\
 	cd-sensor-sync.c
 libcolord_la_LIBADD =						\
+	$(UDEV_LIBS)						\
 	$(GLIB_LIBS)						\
 	libcolordprivate.la
 libcolord_la_LDFLAGS =						\
@@ -109,23 +119,54 @@ TESTS_ENVIRONMENT =						\
 	--leak-check=full					\
 	--show-possibly-lost=no
 
-check_PROGRAMS =						\
-	cd-self-test
+TESTS =								\
+	cd-test-daemon						\
+	cd-test-private
 
-cd_self_test_SOURCES =						\
-	cd-self-test.c
+check_PROGRAMS = $(TESTS)
 
-cd_self_test_LDADD =						\
+cd_test_daemon_SOURCES =					\
+	cd-test-shared.h					\
+	cd-test-shared.c					\
+	cd-test-daemon.c
+
+cd_test_daemon_LDADD =						\
 	$(GLIB_LIBS)						\
 	$(lib_LTLIBRARIES)
 
-cd_self_test_CFLAGS = $(WARNINGFLAGS_C)
+cd_test_daemon_CFLAGS = $(WARNINGFLAGS_C)
 
-TESTS = cd-self-test
+cd_test_private_SOURCES =					\
+	cd-test-shared.h					\
+	cd-test-shared.c					\
+	cd-test-private.c
+
+cd_test_private_LDADD =						\
+	$(GLIB_LIBS)						\
+	$(UDEV_LIBS)						\
+	$(lib_LTLIBRARIES)
+
+cd_test_private_CFLAGS = $(WARNINGFLAGS_C)
+
+if BUILDOPT_INSTALL_TESTS
+insttestdir = $(libexecdir)/installed-tests/$(PACKAGE)
+insttest_PROGRAMS = $(TESTS)
+testmetadir = $(datadir)/installed-tests/$(PACKAGE)
+testmeta_in_files =						\
+	colord-daemon.test.in					\
+	colord-private.test.in
+testmeta_DATA = $(testmeta_in_files:.test.in=.test)
+colord-daemon.test: colord-daemon.test.in Makefile
+	@sed -e "s|\@libexecdir\@|$(libexecdir)|g" $< > $@
+colord-private.test: colord-private.test.in Makefile
+	@sed -e "s|\@libexecdir\@|$(libexecdir)|g" $< > $@
+endif
 
 EXTRA_DIST =							\
 	cd-version.h.in						\
-	colord.pc.in
+	colord-daemon.test.in					\
+	colord.pc.in						\
+	colord-private.test.in
 
 MAINTAINERCLEANFILES =						\
 	$(noinst_LIBRARIES)
@@ -157,7 +198,7 @@ gir_DATA = $(INTROSPECTION_GIRS)
 typelibdir = $(libdir)/girepository-1.0
 typelib_DATA = $(INTROSPECTION_GIRS:.gir=.typelib)
 
-CLEANFILES += $(gir_DATA) $(typelib_DATA)
+CLEANFILES += $(gir_DATA) $(typelib_DATA) *.log *.trs *.test
 
 if HAVE_VAPIGEN
 colord.vapi: Colord-1.0.gir

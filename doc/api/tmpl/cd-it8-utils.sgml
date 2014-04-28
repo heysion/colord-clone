@@ -9,12 +9,10 @@ cd-it8-utils
 
 </para>
 
-
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
-
 
 <!-- ##### SECTION Stability_Level ##### -->
 
@@ -30,6 +28,34 @@ cd-it8-utils
 @it8_reference: 
 @it8_measured: 
 @it8_ccmx: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_it8_utils_calculate_xyz_from_cmf ##### -->
+<para>
+
+</para>
+
+@cmf: 
+@illuminant: 
+@spectrum: 
+@value: 
+@resolution: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_it8_utils_calculate_cri_from_cmf ##### -->
+<para>
+
+</para>
+
+@cmf: 
+@tcs: 
+@illuminant: 
+@value: 
+@resolution: 
 @error: 
 @Returns: 
 

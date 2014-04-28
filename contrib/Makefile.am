@@ -1,4 +1,4 @@
-SUBDIRS = 						\
+SUBDIRS =						\
 	session-helper
 
 if HAVE_SANE

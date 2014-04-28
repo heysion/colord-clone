@@ -2,8 +2,8 @@
 AC_PREREQ(2.63)
 
 m4_define([cd_major_version], [1])
-m4_define([cd_minor_version], [0])
-m4_define([cd_micro_version], [6])
+m4_define([cd_minor_version], [2])
+m4_define([cd_micro_version], [0])
 m4_define([cd_version],
           [cd_major_version.cd_minor_version.cd_micro_version])
 
@@ -37,8 +37,8 @@ AC_SUBST(CD_MICRO_VERSION)
 # CURRENT	If the API or ABI interface has changed (reset REVISION to 0)
 # REVISION	If the API and ABI remains the same, but bugs are fixed.
 # AGE		Don't use.
-LT_CURRENT=1
-LT_REVISION=23
+LT_CURRENT=2
+LT_REVISION=1
 LT_AGE=0
 AC_SUBST(LT_CURRENT)
 AC_SUBST(LT_REVISION)
@@ -139,6 +139,7 @@ AC_SUBST([RELRO_LDFLAGS])
 dnl ---------------------------------------------------------------------------
 dnl - Check library dependencies
 dnl ---------------------------------------------------------------------------
+COLORD_REQUIRES_PRIVATE="lcms2"
 PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.36.0 gobject-2.0 gthread-2.0 gio-2.0 >= 2.25.9 gio-unix-2.0 gmodule-2.0)
 AC_ARG_ENABLE(gusb, AS_HELP_STRING([--enable-gusb],[Enable GUSB support]),
 	      enable_gusb=$enableval, enable_gusb=yes)
@@ -148,30 +149,32 @@ if test x$enable_gusb != xno; then
 fi
 AM_CONDITIONAL(HAVE_GUSB, test x$enable_gusb = xyes)
 
-PKG_CHECK_MODULES(LCMS, lcms2 >= 2.2)
+PKG_CHECK_MODULES(LCMS, lcms2 >= 2.4)
 AC_CHECK_LIB(lcms2, cmsGetHeaderCreator, have_lcms_creator=yes)
 if test x$have_lcms_creator != x; then
 	AC_DEFINE(HAVE_LCMS_GET_HEADER_CREATOR,1,[cmsGetHeaderCreator is available])
-fi
-AC_CHECK_LIB(lcms2, cmsGetToneCurveEstimatedTableEntries, have_lcms_table_entries=yes)
-if test x$have_lcms_table_entries != x; then
-	AC_DEFINE(HAVE_LCMS_GET_TABLE_ENTRIES,1,[cmsGetToneCurveEstimatedTableEntries is available])
 fi
 AC_CHECK_LIB(lcms2, cmsMLUtranslationsCount, have_lcms_mlu_translations_count=yes)
 if test x$have_lcms_mlu_translations_count != x; then
 	AC_DEFINE(HAVE_LCMS_MLU_TRANSLATIONS_COUNT,1,[cmsMLUtranslationsCount is available])
 fi
+AC_CHECK_LIB(lcms2, cmsCreateContext, have_lcms_create_context=yes)
+if test x$have_lcms_create_context != x; then
+	AC_DEFINE(HAVE_LCMS_CREATE_CONTEXT,1,[cmsCreateContext is available])
+fi
 
 PKG_CHECK_MODULES(SQLITE, sqlite3)
 
-dnl **** Check for GUDEV ****
-AC_ARG_ENABLE(gudev, AS_HELP_STRING([--enable-gudev],[Enable GUDEV support]),
-	      enable_gudev=$enableval, enable_gudev=yes)
-if test x$enable_gudev != xno; then
+dnl **** Check for UDEV ****
+AC_ARG_ENABLE(udev, AS_HELP_STRING([--enable-udev],[Enable GUDEV support]),
+	      enable_udev=$enableval, enable_udev=yes)
+if test x$enable_udev != xno; then
+	PKG_CHECK_MODULES(UDEV, libudev)
 	PKG_CHECK_MODULES(GUDEV, gudev-1.0)
-	AC_DEFINE(HAVE_GUDEV,1,[Use GUDEV support for hardware])
+	COLORD_REQUIRES_PRIVATE+=", libudev"
+	AC_DEFINE(HAVE_UDEV,1,[Use UDEV support])
 fi
-AM_CONDITIONAL(HAVE_GUDEV, test x$enable_gudev = xyes)
+AM_CONDITIONAL(HAVE_UDEV, test x$enable_udev = xyes)
 
 dnl **** Bash completion ****
 AC_ARG_ENABLE(bash_completion, AS_HELP_STRING([--enable-bash-completion],[Enable bash completion]),
@@ -216,7 +219,14 @@ if test "x$with_systemdsystemunitdir" != "xno"; then
 fi
 AM_CONDITIONAL(HAVE_SYSTEMD, [test -n "$systemdsystemunitdir"])
 
-
+dnl **** Check if we should build libcolordcompat ****
+AC_ARG_ENABLE(libcolordcompat, AS_HELP_STRING([--enable-libcolordcompat],
+					      [Enable libcolordcompat.so which is used by ArgyllCMS]),
+	      build_libcolordcompat=$enableval, build_libcolordcompat=no)
+if test x$build_libcolordcompat != xno; then
+	AC_DEFINE(BUILD_LIBCOLORDCOMPAT,1,[Build libcolordcompat.so])
+fi
+AM_CONDITIONAL(BUILD_LIBCOLORDCOMPAT, test x$build_libcolordcompat = xyes)
 
 dnl ---------------------------------------------------------------------------
 dnl - Use libsystemd-login to track the process seat
@@ -280,12 +290,12 @@ if test x$enable_sane != xno; then
 		fi
 
 	fi
-	if test x$enable_gudev != xyes; then
+	if test x$enable_udev != xyes; then
 		has_sane=no
 		if test x$enable_sane = xyes; then
-			AC_MSG_ERROR([--enable-sane was specified and SANE requires gudev support, not found])
+			AC_MSG_ERROR([--enable-sane was specified and SANE requires udev support, not found])
 		fi
-		AC_MSG_WARN([gudev not found, SANE support will not be enabled])
+		AC_MSG_WARN([udev not found, SANE support will not be enabled])
 	fi
 	if test x$have_dbus != xyes; then
 		has_sane=no
@@ -299,23 +309,6 @@ AM_CONDITIONAL(HAVE_SANE, test x$has_sane = xyes)
 if test x$has_sane = xyes; then
 	AC_DEFINE(HAVE_SANE,1,[Use SANE support for detecting scanners])
 fi
-
-dnl **** Daemon is allowed to do FD fallback  ****
-AC_ARG_ENABLE(fd_fallback, AS_HELP_STRING([--enable-fd-fallback],[Enable file descriptor fallback]),
-	      enable_fd_fallback=$enableval, enable_fd_fallback=yes)
-if test x$enable_fd_fallback != xno; then
-	AC_DEFINE(HAVE_FD_FALLBACK,1,[Use FD fallback])
-fi
-
-dnl **** Daemon is allowed to do search external volumes for profiles ****
-AC_ARG_ENABLE(volume_search, AS_HELP_STRING([--enable-volume-search],[Enable profile volume search]),
-	      enable_volume_search=$enableval, enable_volume_search=yes)
-tmp="false"
-if test x$enable_volume_search != xno; then
-	tmp="true"
-fi
-AC_DEFINE_UNQUOTED(ENABLE_VOLUME_SEARCH, "$tmp", [enable volume search])
-AC_SUBST(ENABLE_VOLUME_SEARCH, "$tmp")
 
 # custom daemon user
 AC_ARG_WITH(
@@ -374,15 +367,23 @@ if test x$enable_print_profiles != xno; then
 	AC_DEFINE_UNQUOTED([TOOL_COLPROF], ["$COLPROF"], [Full path of colprof binary])
 fi
 
+AC_ARG_ENABLE(installed_tests,
+	      AS_HELP_STRING([--enable-installed-tests],
+			     [Install test programs (default: no)]),,
+			     [enable_installed_tests=no])
+AM_CONDITIONAL(BUILDOPT_INSTALL_TESTS, test x$enable_installed_tests = xyes)
+
 # per-machine directory
 AC_SUBST(CD_SYSTEM_PROFILES_DIR, "\$(localstatedir)/lib/colord/icc")
+
+# only include the colord.pc Requires.private of the libraries we actually use
+AC_SUBST(COLORD_REQUIRES_PRIVATE)
 
 dnl ---------------------------------------------------------------------------
 dnl - Makefiles, etc.
 dnl ---------------------------------------------------------------------------
 AC_CONFIG_FILES([
 Makefile
-etc/Makefile
 contrib/Makefile
 contrib/session-helper/Makefile
 contrib/colord-sane/Makefile
@@ -393,8 +394,11 @@ doc/api/Makefile
 doc/api/dbus/Makefile
 doc/api/version.xml
 data/Makefile
+data/cmf/Makefile
+data/illuminant/Makefile
 data/figures/Makefile
 data/profiles/Makefile
+data/ref/Makefile
 data/ti1/Makefile
 data/org.freedesktop.ColorManager.conf
 data/tests/Makefile
@@ -413,6 +417,7 @@ lib/colord/Makefile
 lib/colorhug/Makefile
 lib/colorhug/colorhug.pc
 lib/colorhug/ch-version.h
+lib/compat/Makefile
 lib/dtp94/Makefile
 lib/huey/Makefile
 lib/munki/Makefile
@@ -432,13 +437,13 @@ echo "
         gobject-introspection:     ${found_introspection}
         PolicyKit support:         ${enable_polkit}
         Reverse engineering tools: ${enable_reverse}
-        File descriptor fallback:  ${enable_fd_fallback}
-        External volume searching: ${enable_volume_search}
         BASH completion support:   ${enable_bash_completion}
         SANE support:              ${has_sane}
-        GUdev support:             ${enable_gudev}
+        Udev support:              ${enable_udev}
         GUsb support:              ${enable_gusb}
         Extra print profiles:      ${enable_print_profiles}
+        Install tests:             ${enable_installed_tests}
+        Building libcolordcompat:  ${build_libcolordcompat}
         Vala API generator:        ${has_vapigen}
         Daemon user:               ${daemon_user}
         udev rules.d dir:          ${with_udevrulesdir}

@@ -302,7 +302,6 @@ cd_icc_store_created_query_info_cb (GObject *source_object,
 		g_warning ("failed to search file: %s",
 			   error->message);
 		g_error_free (error);
-		return;
 	}
 	g_free (path);
 	g_object_unref (info);
@@ -537,6 +536,7 @@ cd_icc_store_search_path (CdIccStore *store,
 						      depth,
 						      cancellable,
 						      error);
+		g_object_unref (info);
 		if (!ret)
 			goto out;
 	}
@@ -674,11 +674,11 @@ cd_icc_store_search_kind (CdIccStore *store,
 						    search_flags,
 						    cancellable,
 						    error);
-                /* only create the first location */
-		search_flags &= ~CD_ICC_STORE_SEARCH_FLAGS_CREATE_LOCATION;
-
 		if (!ret)
 			goto out;
+
+		/* only create the first location */
+		search_flags &= ~CD_ICC_STORE_SEARCH_FLAGS_CREATE_LOCATION;
 	}
 out:
 	g_ptr_array_unref (locations);

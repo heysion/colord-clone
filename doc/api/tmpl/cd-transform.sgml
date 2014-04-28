@@ -9,12 +9,10 @@ cd-transform
 
 </para>
 
-
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
-
 
 <!-- ##### SECTION Stability_Level ##### -->
 
@@ -245,6 +243,24 @@ cd-transform
 
 
 <!-- ##### FUNCTION cd_transform_get_bpc ##### -->
+<para>
+
+</para>
+
+@transform: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_transform_set_max_threads ##### -->
+<para>
+
+</para>
+
+@transform: 
+@max_threads: 
+
+
+<!-- ##### FUNCTION cd_transform_get_max_threads ##### -->
 <para>
 
 </para>

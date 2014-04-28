@@ -78,7 +78,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-noinst_PROGRAMS = cd-find-broken$(EXEEXT)
+noinst_PROGRAMS = cd-it8$(EXEEXT) cd-find-broken$(EXEEXT)
 bin_PROGRAMS = colormgr$(EXEEXT) cd-create-profile$(EXEEXT) \
 	cd-iccdump$(EXEEXT) cd-fix-profile$(EXEEXT)
 subdir = client
@@ -141,6 +141,13 @@ cd_iccdump_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
 cd_iccdump_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(cd_iccdump_CFLAGS) \
 	$(CFLAGS) $(cd_iccdump_LDFLAGS) $(LDFLAGS) -o $@
+am_cd_it8_OBJECTS = cd_it8-cd-it8.$(OBJEXT)
+cd_it8_OBJECTS = $(am_cd_it8_OBJECTS)
+cd_it8_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(COLORD_LIBS)
+cd_it8_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
+	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(cd_it8_CFLAGS) $(CFLAGS) \
+	$(cd_it8_LDFLAGS) $(LDFLAGS) -o $@
 am_colormgr_OBJECTS = colormgr-cd-util.$(OBJEXT)
 colormgr_OBJECTS = $(am_colormgr_OBJECTS)
 colormgr_DEPENDENCIES = $(COLORD_LIBS) $(am__DEPENDENCIES_1)
@@ -183,10 +190,10 @@ am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
 SOURCES = $(cd_create_profile_SOURCES) $(cd_find_broken_SOURCES) \
 	$(cd_fix_profile_SOURCES) $(cd_iccdump_SOURCES) \
-	$(colormgr_SOURCES)
+	$(cd_it8_SOURCES) $(colormgr_SOURCES)
 DIST_SOURCES = $(cd_create_profile_SOURCES) $(cd_find_broken_SOURCES) \
 	$(cd_fix_profile_SOURCES) $(cd_iccdump_SOURCES) \
-	$(colormgr_SOURCES)
+	$(cd_it8_SOURCES) $(colormgr_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -233,6 +240,7 @@ CD_SYSTEM_PROFILES_DIR = @CD_SYSTEM_PROFILES_DIR@
 CFLAGS = @CFLAGS@
 COLORD_GTK_CFLAGS = @COLORD_GTK_CFLAGS@
 COLORD_GTK_LIBS = @COLORD_GTK_LIBS@
+COLORD_REQUIRES_PRIVATE = @COLORD_REQUIRES_PRIVATE@
 COLPROF = @COLPROF@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
@@ -250,7 +258,6 @@ ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
 EGREP = @EGREP@
-ENABLE_VOLUME_SEARCH = @ENABLE_VOLUME_SEARCH@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
 GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
@@ -356,6 +363,8 @@ SHELL = @SHELL@
 SQLITE_CFLAGS = @SQLITE_CFLAGS@
 SQLITE_LIBS = @SQLITE_LIBS@
 STRIP = @STRIP@
+UDEV_CFLAGS = @UDEV_CFLAGS@
+UDEV_LIBS = @UDEV_LIBS@
 USE_NLS = @USE_NLS@
 VAPIGEN = @VAPIGEN@
 VERSION = @VERSION@
@@ -499,6 +508,21 @@ cd_iccdump_LDFLAGS = \
 cd_iccdump_CFLAGS = \
 	$(WARNINGFLAGS_C)
 
+cd_it8_SOURCES = \
+	cd-it8.c
+
+cd_it8_LDADD = \
+	$(GLIB_LIBS)					\
+	$(LCMS_LIBS)					\
+	$(COLORD_LIBS)					\
+	-lm
+
+cd_it8_LDFLAGS = \
+	$(PIE_LDFLAGS)
+
+cd_it8_CFLAGS = \
+	$(WARNINGFLAGS_C)
+
 cd_create_profile_SOURCES = \
 	cd-create-profile.c
 
@@ -624,6 +648,10 @@ cd-iccdump$(EXEEXT): $(cd_iccdump_OBJECTS) $(cd_iccdump_DEPENDENCIES) $(EXTRA_cd
 	@rm -f cd-iccdump$(EXEEXT)
 	$(AM_V_CCLD)$(cd_iccdump_LINK) $(cd_iccdump_OBJECTS) $(cd_iccdump_LDADD) $(LIBS)
 
+cd-it8$(EXEEXT): $(cd_it8_OBJECTS) $(cd_it8_DEPENDENCIES) $(EXTRA_cd_it8_DEPENDENCIES) 
+	@rm -f cd-it8$(EXEEXT)
+	$(AM_V_CCLD)$(cd_it8_LINK) $(cd_it8_OBJECTS) $(cd_it8_LDADD) $(LIBS)
+
 colormgr$(EXEEXT): $(colormgr_OBJECTS) $(colormgr_DEPENDENCIES) $(EXTRA_colormgr_DEPENDENCIES) 
 	@rm -f colormgr$(EXEEXT)
 	$(AM_V_CCLD)$(colormgr_LINK) $(colormgr_OBJECTS) $(colormgr_LDADD) $(LIBS)
@@ -638,6 +666,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd_find_broken-cd-find-broken.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd_fix_profile-cd-fix-profile.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd_iccdump-cd-iccdump.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cd_it8-cd-it8.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/colormgr-cd-util.Po@am__quote@
 
 .c.o:
@@ -716,6 +745,20 @@ cd_iccdump-cd-iccdump.obj: cd-iccdump.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-iccdump.c' object='cd_iccdump-cd-iccdump.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_iccdump_CFLAGS) $(CFLAGS) -c -o cd_iccdump-cd-iccdump.obj `if test -f 'cd-iccdump.c'; then $(CYGPATH_W) 'cd-iccdump.c'; else $(CYGPATH_W) '$(srcdir)/cd-iccdump.c'; fi`
+
+cd_it8-cd-it8.o: cd-it8.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_it8_CFLAGS) $(CFLAGS) -MT cd_it8-cd-it8.o -MD -MP -MF $(DEPDIR)/cd_it8-cd-it8.Tpo -c -o cd_it8-cd-it8.o `test -f 'cd-it8.c' || echo '$(srcdir)/'`cd-it8.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cd_it8-cd-it8.Tpo $(DEPDIR)/cd_it8-cd-it8.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-it8.c' object='cd_it8-cd-it8.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_it8_CFLAGS) $(CFLAGS) -c -o cd_it8-cd-it8.o `test -f 'cd-it8.c' || echo '$(srcdir)/'`cd-it8.c
+
+cd_it8-cd-it8.obj: cd-it8.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_it8_CFLAGS) $(CFLAGS) -MT cd_it8-cd-it8.obj -MD -MP -MF $(DEPDIR)/cd_it8-cd-it8.Tpo -c -o cd_it8-cd-it8.obj `if test -f 'cd-it8.c'; then $(CYGPATH_W) 'cd-it8.c'; else $(CYGPATH_W) '$(srcdir)/cd-it8.c'; fi`
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/cd_it8-cd-it8.Tpo $(DEPDIR)/cd_it8-cd-it8.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='cd-it8.c' object='cd_it8-cd-it8.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cd_it8_CFLAGS) $(CFLAGS) -c -o cd_it8-cd-it8.obj `if test -f 'cd-it8.c'; then $(CYGPATH_W) 'cd-it8.c'; else $(CYGPATH_W) '$(srcdir)/cd-it8.c'; fi`
 
 colormgr-cd-util.o: cd-util.c
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(colormgr_CFLAGS) $(CFLAGS) -MT colormgr-cd-util.o -MD -MP -MF $(DEPDIR)/colormgr-cd-util.Tpo -c -o colormgr-cd-util.o `test -f 'cd-util.c' || echo '$(srcdir)/'`cd-util.c

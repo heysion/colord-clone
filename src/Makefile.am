@@ -64,8 +64,6 @@ libexec_PROGRAMS =					\
 colord_SOURCES =					\
 	cd-common.c					\
 	cd-common.h					\
-	cd-config.c					\
-	cd-config.h					\
 	cd-debug.c					\
 	cd-debug.h					\
 	cd-resources.c					\
@@ -86,13 +84,11 @@ colord_SOURCES =					\
 	cd-profile-array.h				\
 	cd-profile.c					\
 	cd-profile.h					\
-	cd-profile-store.c				\
-	cd-profile-store.h				\
 	cd-sensor.c					\
 	cd-sensor.h					\
 	cd-main.c
 
-if HAVE_GUDEV
+if HAVE_UDEV
 colord_SOURCES +=					\
 	cd-sensor-client.c				\
 	cd-sensor-client.h
