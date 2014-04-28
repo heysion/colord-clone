@@ -33,7 +33,6 @@
 #endif
 
 #include "cd-common.h"
-#include "cd-config.h"
 #include "cd-debug.h"
 #include "cd-device-array.h"
 #include "cd-device-db.h"
@@ -42,7 +41,7 @@
 #include "cd-plugin.h"
 #include "cd-profile-array.h"
 #include "cd-profile.h"
-#include "cd-profile-store.h"
+#include "cd-icc-store.h"
 #include "cd-resources.h"
 #include "cd-sensor-client.h"
 
@@ -54,17 +53,18 @@ typedef struct {
 	GDBusNodeInfo		*introspection_sensor;
 	CdDeviceArray		*devices_array;
 	CdProfileArray		*profiles_array;
-	CdProfileStore		*profile_store;
+	CdIccStore		*icc_store;
 	CdMappingDb		*mapping_db;
 	CdDeviceDb		*device_db;
-#ifdef HAVE_GUDEV
+#ifdef HAVE_UDEV
 	CdSensorClient		*sensor_client;
 #endif
-	CdConfig		*config;
 	GPtrArray		*sensors;
 	GHashTable		*standard_spaces;
 	GPtrArray		*plugins;
 	GMainLoop		*loop;
+	gboolean		 create_dummy_sensor;
+	gboolean		 always_use_xrandr_name;
 	gchar			*system_vendor;
 	gchar			*system_model;
 } CdMainPrivate;
@@ -791,12 +791,19 @@ out:
 		g_object_unref (device);
 }
 
+typedef enum {
+	CD_LOGGING_FLAG_NONE		= 0,
+	CD_LOGGING_FLAG_SYSLOG		= 1,
+	CD_LOGGING_FLAG_LAST
+} CdLoggingFlags;
+
 /**
  * cd_main_profile_register_on_bus:
  **/
 static gboolean
 cd_main_profile_register_on_bus (CdMainPrivate *priv,
 				 CdProfile *profile,
+				 CdLoggingFlags logging,
 				 GError **error)
 {
 	gboolean ret;
@@ -812,8 +819,10 @@ cd_main_profile_register_on_bus (CdMainPrivate *priv,
 	/* emit signal */
 	g_debug ("CdMain: Emitting ProfileAdded(%s)",
 		 cd_profile_get_object_path (profile));
-	syslog (LOG_INFO, "Profile added: %s",
-		cd_profile_get_id (profile));
+	if ((logging & CD_LOGGING_FLAG_SYSLOG) > 0) {
+		syslog (LOG_INFO, "Profile added: %s",
+			cd_profile_get_id (profile));
+	}
 	g_dbus_connection_emit_signal (priv->connection,
 				       NULL,
 				       COLORD_DBUS_PATH,
@@ -966,6 +975,7 @@ cd_main_daemon_method_call (GDBusConnection *connection, const gchar *sender,
 	const gchar *device_id = NULL;
 	const gchar *scope_tmp = NULL;
 	gchar *cmdline = NULL;
+	gchar *filename = NULL;
 	gchar *device_id_fallback = NULL;
 	GError *error = NULL;
 	GPtrArray *array = NULL;
@@ -1303,14 +1313,14 @@ cd_main_daemon_method_call (GDBusConnection *connection, const gchar *sender,
 
 		/* are we using the XRANDR_name property rather than the
 		 * sent device-id? */
-		if (cd_config_get_boolean (priv->config, "AlwaysUseXrandrName") &&
+		if (priv->always_use_xrandr_name &&
 		    device_kind == CD_DEVICE_KIND_DISPLAY) {
 			device_id_fallback = cd_main_get_display_fallback_id (dict);
 			if (device_id_fallback == NULL) {
 				g_dbus_method_invocation_return_error (invocation,
 								       CD_CLIENT_ERROR,
 								       CD_CLIENT_ERROR_INPUT_INVALID,
-								       "AlwaysUseXrandrName used and %s unset",
+								       "AlwaysUseXrandrName mode enabled and %s unset",
 								       CD_DEVICE_METADATA_XRANDR_NAME);
 				goto out;
 			}
@@ -1600,6 +1610,22 @@ cd_main_daemon_method_call (GDBusConnection *connection, const gchar *sender,
 			goto out;
 		}
 
+		/* set the properties */
+		while (g_variant_iter_next (iter, "{&s&s}",
+					    &prop_key, &prop_value)) {
+			if (g_strcmp0 (prop_key, CD_PROFILE_PROPERTY_FILENAME) == 0)
+				filename = g_strdup (prop_value);
+			ret = cd_profile_set_property_internal (profile,
+								prop_key,
+								prop_value,
+								&error);
+			if (!ret) {
+				g_dbus_method_invocation_return_gerror (invocation,
+									error);
+				goto out;
+			}
+		}
+
 		/* get any file descriptor in the message */
 		message = g_dbus_method_invocation_get_message (invocation);
 		fd_list = g_dbus_message_get_unix_fd_list (message);
@@ -1615,7 +1641,7 @@ cd_main_daemon_method_call (GDBusConnection *connection, const gchar *sender,
 			}
 
 			/* read from a fd, avoiding open() */
-			ret = cd_profile_set_fd (profile, fd, &error);
+			ret = cd_profile_load_from_fd (profile, fd, &error);
 			if (!ret) {
 				g_warning ("CdMain: failed to profile from fd: %s",
 					   error->message);
@@ -1624,20 +1650,16 @@ cd_main_daemon_method_call (GDBusConnection *connection, const gchar *sender,
 				g_error_free (error);
 				goto out;
 			}
-		}
 
-		/* set the properties */
-		while (g_variant_iter_next (iter, "{&s&s}",
-					    &prop_key, &prop_value)) {
-			ret = cd_profile_set_property_internal (profile,
-								prop_key,
-								prop_value,
-								&error);
+		/* clients like CUPS do not use FD passing */
+		} else if (filename != NULL) {
+			ret = cd_profile_load_from_filename (profile,
+							     filename,
+							     &error);
 			if (!ret) {
-				g_warning ("CdMain: failed to set property on profile: %s",
+				g_warning ("CdMain: failed to profile from filename: %s",
 					   error->message);
-				g_dbus_method_invocation_return_gerror (invocation,
-									error);
+				g_dbus_method_invocation_return_gerror (invocation, error);
 				g_error_free (error);
 				goto out;
 			}
@@ -1648,7 +1670,10 @@ cd_main_daemon_method_call (GDBusConnection *connection, const gchar *sender,
 		cd_main_profile_auto_add_from_md (priv, profile);
 
 		/* register on bus */
-		ret = cd_main_profile_register_on_bus (priv, profile, &error);
+		ret = cd_main_profile_register_on_bus (priv,
+						       profile,
+						       CD_LOGGING_FLAG_SYSLOG,
+						       &error);
 		if (!ret) {
 			g_dbus_method_invocation_return_gerror (invocation,
 								error);
@@ -1668,6 +1693,7 @@ cd_main_daemon_method_call (GDBusConnection *connection, const gchar *sender,
 out:
 	g_free (cmdline);
 	g_free (device_id_fallback);
+	g_free (filename);
 	if (iter != NULL)
 		g_variant_iter_free (iter);
 	if (dict != NULL)
@@ -1744,21 +1770,46 @@ cd_main_on_bus_acquired_cb (GDBusConnection *connection,
 }
 
 /**
- * cd_main_profile_store_added_cb:
+ * cd_main_icc_store_added_cb:
  **/
 static void
-cd_main_profile_store_added_cb (CdProfileStore *profile_store,
-				CdProfile *profile,
-				gpointer user_data)
+cd_main_icc_store_added_cb (CdIccStore *icc_store,
+			    CdIcc *icc,
+			    gpointer user_data)
 {
 	CdMainPrivate *priv = (CdMainPrivate *) user_data;
 	gboolean ret;
-	gchar *profile_id;
+	gchar *profile_id = NULL;
 	GError *error = NULL;
+	CdProfile *profile;
+	const gchar *filename;
+	const gchar *checksum;
+
+	/* create profile */
+	profile = cd_profile_new ();
+	filename = cd_icc_get_filename (icc);
+	if (g_str_has_prefix (filename, "/usr/share/color") ||
+	    g_str_has_prefix (filename, "/var/lib/color"))
+		cd_profile_set_is_system_wide (profile, TRUE);
+
+	/* parse the profile name */
+	ret = cd_profile_load_from_icc (profile, icc, &error);
+	if (!ret) {
+		g_warning ("CdIccStore: failed to add profile '%s': %s",
+			   filename, error->message);
+		g_error_free (error);
+		goto out;
+	}
+
+	/* ensure profiles have the checksum metadata item */
+	checksum = cd_profile_get_checksum (profile);
+	cd_profile_set_property_internal (profile,
+					  CD_PROFILE_METADATA_FILE_CHECKSUM,
+					  checksum,
+					  NULL);
 
 	/* just add it to the bus with the title as the ID */
-	profile_id = g_strdup_printf ("icc-%s",
-				      cd_profile_get_checksum (profile));
+	profile_id = g_strdup_printf ("icc-%s", cd_icc_get_checksum (icc));
 	cd_profile_set_id (profile, profile_id);
 	ret = cd_main_add_profile (priv, profile, &error);
 	if (!ret) {
@@ -1769,7 +1820,10 @@ cd_main_profile_store_added_cb (CdProfileStore *profile_store,
 	}
 
 	/* register on bus */
-	ret = cd_main_profile_register_on_bus (priv, profile, &error);
+	ret = cd_main_profile_register_on_bus (priv,
+					       profile,
+					       CD_LOGGING_FLAG_NONE,
+					       &error);
 	if (!ret) {
 		g_warning ("CdMain: failed to emit ProfileAdded: %s",
 			   error->message);
@@ -1777,18 +1831,28 @@ cd_main_profile_store_added_cb (CdProfileStore *profile_store,
 		goto out;
 	}
 out:
+	g_object_unref (profile);
 	g_free (profile_id);
 }
 
 /**
- * cd_main_profile_store_removed_cb:
+ * cd_main_icc_store_removed_cb:
  **/
 static void
-cd_main_profile_store_removed_cb (CdProfileStore *_profile_store,
-				  CdProfile *profile,
-				  gpointer user_data)
+cd_main_icc_store_removed_cb (CdIccStore *icc_store,
+			      CdIcc *icc,
+			      gpointer user_data)
 {
+	CdMainPrivate *priv = (CdMainPrivate *) user_data;
+	CdProfile *profile;
+
 	/* check the profile should be invalidated automatically */
+	profile = cd_profile_array_get_by_filename (priv->profiles_array,
+						    cd_icc_get_filename (icc));
+	if (profile == NULL)
+		return;
+	g_debug ("%s removed, so invalidating", cd_icc_get_filename (icc));
+	cd_profile_array_remove (priv->profiles_array, profile);
 }
 
 /**
@@ -1941,81 +2005,6 @@ out:
 }
 
 /**
- * cd_main_setup_standard_space:
- **/
-static void
-cd_main_setup_standard_space (CdMainPrivate *priv,
-			      const gchar *space,
-			      const gchar *search)
-{
-	CdProfile *profile = NULL;
-
-	/* depending on the prefix, find the profile */
-	if (g_str_has_prefix (search, "icc_")) {
-		profile = cd_profile_array_get_by_id_owner (priv->profiles_array,
-							    search,
-							    0);
-	} else if (g_str_has_prefix (search, "/")) {
-		profile = cd_profile_array_get_by_filename (priv->profiles_array,
-							    search);
-	} else  {
-		g_warning ("unknown prefix for override search: %s",
-			   search);
-		goto out;
-	}
-	if (profile == NULL) {
-		g_warning ("failed to find profile %s for override",
-			   search);
-		goto out;
-	}
-
-	/* add override */
-	g_debug ("CdMain: adding profile override %s=%s",
-		 space, search);
-	g_hash_table_insert (priv->standard_spaces,
-			     g_strdup (space),
-			     g_object_ref (profile));
-out:
-	if (profile != NULL)
-		g_object_unref (profile);
-}
-
-/**
- * cd_main_setup_standard_spaces:
- **/
-static void
-cd_main_setup_standard_spaces (CdMainPrivate *priv)
-{
-	gchar **spaces;
-	gchar **split;
-	guint i;
-
-	/* get overrides */
-	spaces = cd_config_get_strv (priv->config, "StandardSpaces");
-	if (spaces == NULL) {
-		g_debug ("no standard space overrides");
-		goto out;
-	}
-
-	/* parse them */
-	for (i = 0; spaces[i] != NULL; i++) {
-		split = g_strsplit (spaces[i], ":", 2);
-		if (g_strv_length (split) == 2) {
-			cd_main_setup_standard_space (priv,
-						      split[0],
-						      split[1]);
-		} else {
-			g_warning ("invalid spaces override '%s', "
-				   "expected name:value",
-				   spaces[i]);
-		}
-		g_strfreev (split);
-	}
-out:
-	g_strfreev (spaces);
-}
-
-/**
  * cd_main_plugin_phase:
  **/
 static void
@@ -2072,7 +2061,6 @@ cd_main_on_name_acquired_cb (GDBusConnection *connection,
 			     gpointer user_data)
 {
 	CdMainPrivate *priv = (CdMainPrivate *) user_data;
-	CdProfileSearchFlags flags;
 	CdSensor *sensor = NULL;
 	const gchar *device_id;
 	gboolean ret;
@@ -2083,21 +2071,39 @@ cd_main_on_name_acquired_cb (GDBusConnection *connection,
 	g_debug ("CdMain: acquired name: %s", name);
 
 	/* add system profiles */
-	priv->profile_store = cd_profile_store_new ();
-	g_signal_connect (priv->profile_store, "added",
-			  G_CALLBACK (cd_main_profile_store_added_cb),
+	priv->icc_store = cd_icc_store_new ();
+	cd_icc_store_set_load_flags (priv->icc_store, CD_ICC_LOAD_FLAGS_FALLBACK_MD5);
+	cd_icc_store_set_cache (priv->icc_store, cd_get_resource ());
+	g_signal_connect (priv->icc_store, "added",
+			  G_CALLBACK (cd_main_icc_store_added_cb),
 			  user_data);
-	g_signal_connect (priv->profile_store, "removed",
-			  G_CALLBACK (cd_main_profile_store_removed_cb),
+	g_signal_connect (priv->icc_store, "removed",
+			  G_CALLBACK (cd_main_icc_store_removed_cb),
 			  user_data);
 
-	/* search locations specified in the config file */
-	flags = CD_PROFILE_STORE_SEARCH_SYSTEM |
-		CD_PROFILE_STORE_SEARCH_MACHINE;
-	ret = cd_config_get_boolean (priv->config, "SearchVolumes");
-	if (ret)
-		flags |= CD_PROFILE_STORE_SEARCH_VOLUMES;
-	cd_profile_store_search (priv->profile_store, flags);
+	/* search locations for ICC profiles */
+	ret = cd_icc_store_search_kind (priv->icc_store,
+					CD_ICC_STORE_SEARCH_KIND_SYSTEM,
+					CD_ICC_STORE_SEARCH_FLAGS_NONE,
+					NULL,
+					&error);
+	if (!ret) {
+		g_warning ("CdMain: failed to search system directories: %s",
+			    error->message);
+		g_error_free (error);
+		goto out;
+	}
+	ret = cd_icc_store_search_kind (priv->icc_store,
+					CD_ICC_STORE_SEARCH_KIND_MACHINE,
+					CD_ICC_STORE_SEARCH_FLAGS_NONE,
+					NULL,
+					&error);
+	if (!ret) {
+		g_warning ("CdMain: failed to search machine directories: %s",
+			    error->message);
+		g_error_free (error);
+		goto out;
+	}
 
 	/* add disk devices */
 	array_devices = cd_device_db_get_devices (priv->device_db, &error);
@@ -2112,7 +2118,7 @@ cd_main_on_name_acquired_cb (GDBusConnection *connection,
 		cd_main_add_disk_device (priv, device_id);
 	}
 
-#ifdef HAVE_GUDEV
+#ifdef HAVE_UDEV
 	/* add sensor devices */
 	cd_sensor_client_coldplug (priv->sensor_client);
 #endif
@@ -2121,8 +2127,7 @@ cd_main_on_name_acquired_cb (GDBusConnection *connection,
 	cd_main_plugin_phase (priv, CD_PLUGIN_PHASE_COLDPLUG);
 
 	/* add dummy sensor */
-	ret = cd_config_get_boolean (priv->config, "CreateDummySensor");
-	if (ret) {
+	if (priv->create_dummy_sensor) {
 		sensor = cd_sensor_new ();
 		cd_sensor_set_kind (sensor, CD_SENSOR_KIND_DUMMY);
 		ret = cd_sensor_load (sensor, &error);
@@ -2134,9 +2139,6 @@ cd_main_on_name_acquired_cb (GDBusConnection *connection,
 			cd_main_add_sensor (priv, sensor);
 		}
 	}
-
-	/* now we've got the profiles, setup the overrides */
-	cd_main_setup_standard_spaces (priv);
 out:
 	if (array_devices != NULL)
 		g_ptr_array_unref (array_devices);
@@ -2157,7 +2159,7 @@ cd_main_on_name_lost_cb (GDBusConnection *connection,
 	g_main_loop_quit (priv->loop);
 }
 
-#ifdef HAVE_GUDEV
+#ifdef HAVE_UDEV
 
 /**
  * cd_main_client_sensor_added_cb:
@@ -2304,7 +2306,7 @@ cd_main_load_plugin (CdMainPrivate *priv,
 		     const gchar *filename,
 		     GError **error)
 {
-	CdPluginConfigEnabledFunc plugin_config_enabled = NULL;
+	CdPluginEnabledFunc plugin_enabled = NULL;
 	CdPluginGetDescFunc plugin_desc = NULL;
 	CdPlugin *plugin;
 	gboolean ret = FALSE;
@@ -2336,10 +2338,10 @@ cd_main_load_plugin (CdMainPrivate *priv,
 
 	/* give the module the option to opt-out */
 	ret = g_module_symbol (module,
-			       "cd_plugin_config_enabled",
-			       (gpointer *) &plugin_config_enabled);
+			       "cd_plugin_enabled",
+			       (gpointer *) &plugin_enabled);
 	if (ret) {
-		if (!plugin_config_enabled (priv->config)) {
+		if (!plugin_enabled ()) {
 			ret = FALSE;
 			g_set_error_literal (error,
 					     CD_CLIENT_ERROR,
@@ -2428,6 +2430,105 @@ out:
 }
 
 /**
+ * cd_main_check_duplicate_edids_for_output:
+ **/
+static gchar *
+cd_main_check_duplicate_edids_for_output (const gchar *output_name)
+{
+	gboolean ret;
+	gchar *checksum = NULL;
+	gchar *edid_data = NULL;
+	gchar *edid_fn = NULL;
+	gchar *enabled_data = NULL;
+	gchar *enabled_fn = NULL;
+	GError *error = NULL;
+	gsize len = 0;
+
+	/* check output is actually an output */
+	enabled_fn = g_build_filename ("/sys/class/drm",
+				       output_name,
+				       "enabled",
+				       NULL);
+	ret = g_file_test (enabled_fn, G_FILE_TEST_EXISTS);
+	if (!ret)
+		goto out;
+
+	/* check output is enabled */
+	ret = g_file_get_contents (enabled_fn, &enabled_data, NULL, &error);
+	if (!ret) {
+		g_warning ("failed to get enabled data: %s", error->message);
+		g_error_free (error);
+		goto out;
+	}
+	g_strdelimit (enabled_data, "\n", '\0');
+	if (g_strcmp0 (enabled_data, "enabled") != 0)
+		goto out;
+
+	/* get EDID data */
+	edid_fn = g_build_filename ("/sys/class/drm",
+				    output_name,
+				    "edid",
+				    NULL);
+	ret = g_file_get_contents (edid_fn, &edid_data, &len, &error);
+	if (!ret) {
+		g_warning ("failed to get edid data: %s", error->message);
+		g_error_free (error);
+		goto out;
+	}
+
+	/* simple MD5 checksum */
+	checksum = g_compute_checksum_for_data (G_CHECKSUM_MD5,
+						(const guchar *) edid_data,
+						len);
+out:
+	g_free (enabled_fn);
+	g_free (enabled_data);
+	g_free (edid_fn);
+	g_free (edid_data);
+	return checksum;
+}
+
+/**
+ * cd_main_check_duplicate_edids:
+ **/
+static gboolean
+cd_main_check_duplicate_edids (void)
+{
+	const gchar *fn;
+	const gchar *old_output;
+	gboolean use_xrandr_mode = FALSE;
+	gchar *checksum;
+	GDir *dir;
+	GHashTable *hash = NULL;
+
+	dir = g_dir_open ("/sys/class/drm", 0, NULL);
+	if (dir == NULL)
+		goto out;
+
+	/* read all the outputs in /sys/class/drm and search for duplicates */
+	hash = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
+	while (!use_xrandr_mode && (fn = g_dir_read_name (dir)) != NULL) {
+		checksum = cd_main_check_duplicate_edids_for_output (fn);
+		if (checksum == NULL)
+			continue;
+		g_debug ("display %s has EDID %s", fn, checksum);
+		old_output = g_hash_table_lookup (hash, checksum);
+		if (old_output != NULL) {
+			g_debug ("output %s and %s have duplicate EDID",
+				 old_output, fn);
+			use_xrandr_mode = TRUE;
+		}
+		g_hash_table_insert (hash, checksum, g_strdup (fn));
+	}
+out:
+	if (dir != NULL)
+		g_dir_close (dir);
+	if (hash != NULL)
+		g_hash_table_unref (hash);
+	return use_xrandr_mode;
+}
+
+/**
  * cd_main_dmi_get_from_filename:
  **/
 static gchar *
@@ -2479,6 +2580,7 @@ cd_main_dmi_get_from_filenames (const gchar * const * filenames)
 	}
 	return tmp;
 }
+
 
 /**
  * cd_main_dmi_get_vendor:
@@ -2552,8 +2654,9 @@ cd_main_dmi_setup (CdMainPrivate *priv)
 int
 main (int argc, char *argv[])
 {
-	CdMainPrivate *priv;
+	CdMainPrivate *priv = NULL;
 	gboolean immediate_exit = FALSE;
+	gboolean create_dummy_sensor = FALSE;
 	gboolean ret;
 	gboolean timed_exit = FALSE;
 	GError *error = NULL;
@@ -2567,6 +2670,9 @@ main (int argc, char *argv[])
 		{ "immediate-exit", '\0', 0, G_OPTION_ARG_NONE, &immediate_exit,
 		  /* TRANSLATORS: exit straight away, used for automatic profiling */
 		  _("Exit after the engine has loaded"), NULL },
+		{ "create-dummy-sensor", '\0', 0, G_OPTION_ARG_NONE, &create_dummy_sensor,
+		  /* TRANSLATORS: exit straight away, used for automatic profiling */
+		  _("Create a dummy sensor for testing"), NULL },
 		{ NULL}
 	};
 
@@ -2577,22 +2683,23 @@ main (int argc, char *argv[])
 	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 	textdomain (GETTEXT_PACKAGE);
 
-	g_type_init ();
-	priv = g_new0 (CdMainPrivate, 1);
-
 	/* TRANSLATORS: program name */
 	g_set_application_name (_("Color Management"));
 	context = g_option_context_new (NULL);
 	g_option_context_add_main_entries (context, options, NULL);
 	g_option_context_add_group (context, cd_debug_get_option_group ());
 	g_option_context_set_summary (context, _("Color Management D-Bus Service"));
-	g_option_context_parse (context, &argc, &argv, NULL);
-	g_option_context_free (context);
-
-	/* get from config */
-	priv->config = cd_config_new ();
+	ret = g_option_context_parse (context, &argc, &argv, &error);
+	if (!ret) {
+		g_warning ("CdMain: failed to parse command line arguments: %s",
+			   error->message);
+		g_error_free (error);
+		goto out;
+	}
 
 	/* create new objects */
+	priv = g_new0 (CdMainPrivate, 1);
+	priv->create_dummy_sensor = create_dummy_sensor;
 	priv->loop = g_main_loop_new (NULL, FALSE);
 	priv->devices_array = cd_device_array_new ();
 	priv->profiles_array = cd_profile_array_new ();
@@ -2601,7 +2708,7 @@ main (int argc, char *argv[])
 						 g_str_equal,
 						 g_free,
 						 (GDestroyNotify) g_object_unref);
-#ifdef HAVE_GUDEV
+#ifdef HAVE_UDEV
 	priv->sensor_client = cd_sensor_client_new ();
 	g_signal_connect (priv->sensor_client, "sensor-added",
 			  G_CALLBACK (cd_main_client_sensor_added_cb),
@@ -2686,6 +2793,16 @@ main (int argc, char *argv[])
 	else if (timed_exit)
 		g_timeout_add_seconds (5, cd_main_timed_exit_cb, priv->loop);
 
+	/* If the user has two or more outputs attached with identical EDID data
+	 * then the client tools cannot tell them apart. By setting this value
+	 * the 'xrandr-' style device-id is always used and the monitors will
+	 * show up as seporate instances.
+	 * This does of course mean that the calibration is referenced to the
+	 * xrandr output name, rather than the monitor itself. This means that
+	 * if the monitor cables are swapped then the wrong profile would be
+	 * used. */
+	priv->always_use_xrandr_name = cd_main_check_duplicate_edids ();
+
 	/* load plugins */
 	priv->plugins = g_ptr_array_new_with_free_func ((GDestroyNotify) cd_main_plugin_free);
 	cd_main_load_plugins (priv);
@@ -2707,44 +2824,45 @@ main (int argc, char *argv[])
 	/* success */
 	retval = 0;
 out:
+	g_option_context_free (context);
 	if (owner_id > 0)
 		g_bus_unown_name (owner_id);
-	if (priv->loop != NULL)
-		g_main_loop_unref (priv->loop);
-	if (priv->sensors != NULL)
-		g_ptr_array_unref (priv->sensors);
-	if (priv->plugins != NULL)
-		g_ptr_array_unref (priv->plugins);
-	g_hash_table_destroy (priv->standard_spaces);
-#ifdef HAVE_GUDEV
-	if (priv->sensor_client != NULL)
-		g_object_unref (priv->sensor_client);
+	if (priv != NULL) {
+		if (priv->loop != NULL)
+			g_main_loop_unref (priv->loop);
+		if (priv->sensors != NULL)
+			g_ptr_array_unref (priv->sensors);
+		if (priv->plugins != NULL)
+			g_ptr_array_unref (priv->plugins);
+		g_hash_table_destroy (priv->standard_spaces);
+#ifdef HAVE_UDEV
+		if (priv->sensor_client != NULL)
+			g_object_unref (priv->sensor_client);
 #endif
-	if (priv->config != NULL)
-		g_object_unref (priv->config);
-	if (priv->profile_store != NULL)
-		g_object_unref (priv->profile_store);
-	if (priv->mapping_db != NULL)
-		g_object_unref (priv->mapping_db);
-	if (priv->device_db != NULL)
-		g_object_unref (priv->device_db);
-	if (priv->devices_array != NULL)
-		g_object_unref (priv->devices_array);
-	if (priv->profiles_array != NULL)
-		g_object_unref (priv->profiles_array);
-	if (priv->connection != NULL)
-		g_object_unref (priv->connection);
-	if (priv->introspection_daemon != NULL)
-		g_dbus_node_info_unref (priv->introspection_daemon);
-	if (priv->introspection_device != NULL)
-		g_dbus_node_info_unref (priv->introspection_device);
-	if (priv->introspection_profile != NULL)
-		g_dbus_node_info_unref (priv->introspection_profile);
-	if (priv->introspection_sensor != NULL)
-		g_dbus_node_info_unref (priv->introspection_sensor);
-	g_free (priv->system_vendor);
-	g_free (priv->system_model);
-	g_free (priv);
+		if (priv->icc_store != NULL)
+			g_object_unref (priv->icc_store);
+		if (priv->mapping_db != NULL)
+			g_object_unref (priv->mapping_db);
+		if (priv->device_db != NULL)
+			g_object_unref (priv->device_db);
+		if (priv->devices_array != NULL)
+			g_object_unref (priv->devices_array);
+		if (priv->profiles_array != NULL)
+			g_object_unref (priv->profiles_array);
+		if (priv->connection != NULL)
+			g_object_unref (priv->connection);
+		if (priv->introspection_daemon != NULL)
+			g_dbus_node_info_unref (priv->introspection_daemon);
+		if (priv->introspection_device != NULL)
+			g_dbus_node_info_unref (priv->introspection_device);
+		if (priv->introspection_profile != NULL)
+			g_dbus_node_info_unref (priv->introspection_profile);
+		if (priv->introspection_sensor != NULL)
+			g_dbus_node_info_unref (priv->introspection_sensor);
+		g_free (priv->system_vendor);
+		g_free (priv->system_model);
+		g_free (priv);
+	}
 	return retval;
 }
 

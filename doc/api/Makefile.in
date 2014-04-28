@@ -207,6 +207,7 @@ CD_SYSTEM_PROFILES_DIR = @CD_SYSTEM_PROFILES_DIR@
 CFLAGS = @CFLAGS@
 COLORD_GTK_CFLAGS = @COLORD_GTK_CFLAGS@
 COLORD_GTK_LIBS = @COLORD_GTK_LIBS@
+COLORD_REQUIRES_PRIVATE = @COLORD_REQUIRES_PRIVATE@
 COLPROF = @COLPROF@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
@@ -224,7 +225,6 @@ ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
 EGREP = @EGREP@
-ENABLE_VOLUME_SEARCH = @ENABLE_VOLUME_SEARCH@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
 GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
@@ -330,6 +330,8 @@ SHELL = @SHELL@
 SQLITE_CFLAGS = @SQLITE_CFLAGS@
 SQLITE_LIBS = @SQLITE_LIBS@
 STRIP = @STRIP@
+UDEV_CFLAGS = @UDEV_CFLAGS@
+UDEV_LIBS = @UDEV_LIBS@
 USE_NLS = @USE_NLS@
 VAPIGEN = @VAPIGEN@
 VERSION = @VERSION@
@@ -790,11 +792,11 @@ maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
 	-test -z "$(MAINTAINERCLEANFILES)" || rm -f $(MAINTAINERCLEANFILES)
+@ENABLE_GTK_DOC_FALSE@maintainer-clean-local:
 @ENABLE_GTK_DOC_FALSE@clean-local:
 @ENABLE_GTK_DOC_FALSE@uninstall-local:
-@ENABLE_GTK_DOC_FALSE@maintainer-clean-local:
-@ENABLE_GTK_DOC_FALSE@distclean-local:
 @ENABLE_GTK_DOC_FALSE@install-data-local:
+@ENABLE_GTK_DOC_FALSE@distclean-local:
 clean: clean-recursive
 
 clean-am: clean-generic clean-libtool clean-local mostlyclean-am

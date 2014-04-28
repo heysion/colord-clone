@@ -9,12 +9,10 @@ cd-client
 
 </para>
 
-
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
-
 
 <!-- ##### SECTION Stability_Level ##### -->
 
@@ -269,6 +267,30 @@ cd-client
 
 
 <!-- ##### FUNCTION cd_client_create_profile_finish ##### -->
+<para>
+
+</para>
+
+@client: 
+@res: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_client_create_profile_for_icc ##### -->
+<para>
+
+</para>
+
+@client: 
+@icc: 
+@scope: 
+@cancellable: 
+@callback: 
+@user_data: 
+
+
+<!-- ##### FUNCTION cd_client_create_profile_for_icc_finish ##### -->
 <para>
 
 </para>

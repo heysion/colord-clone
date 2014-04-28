@@ -2189,7 +2189,6 @@ main (int argc, char *argv[])
 
 	setlocale (LC_ALL, "");
 
-	g_type_init ();
 	priv = g_new0 (CdMainPrivate, 1);
 	priv->gamma_scale_factor = 10.0f;
 	priv->status = CD_SESSION_STATUS_IDLE;

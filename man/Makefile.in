@@ -171,6 +171,7 @@ CD_SYSTEM_PROFILES_DIR = @CD_SYSTEM_PROFILES_DIR@
 CFLAGS = @CFLAGS@
 COLORD_GTK_CFLAGS = @COLORD_GTK_CFLAGS@
 COLORD_GTK_LIBS = @COLORD_GTK_LIBS@
+COLORD_REQUIRES_PRIVATE = @COLORD_REQUIRES_PRIVATE@
 COLPROF = @COLPROF@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
@@ -188,7 +189,6 @@ ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
 EGREP = @EGREP@
-ENABLE_VOLUME_SEARCH = @ENABLE_VOLUME_SEARCH@
 EXEEXT = @EXEEXT@
 FGREP = @FGREP@
 GETTEXT_MACRO_VERSION = @GETTEXT_MACRO_VERSION@
@@ -294,6 +294,8 @@ SHELL = @SHELL@
 SQLITE_CFLAGS = @SQLITE_CFLAGS@
 SQLITE_LIBS = @SQLITE_LIBS@
 STRIP = @STRIP@
+UDEV_CFLAGS = @UDEV_CFLAGS@
+UDEV_LIBS = @UDEV_LIBS@
 USE_NLS = @USE_NLS@
 VAPIGEN = @VAPIGEN@
 VERSION = @VERSION@
@@ -363,14 +365,12 @@ udevrulesdir = @udevrulesdir@
 man_MANS_DIST = \
 	colormgr.1					\
 	cd-create-profile.1				\
-	colord.conf.1					\
 	cd-fix-profile.1
 
 EXTRA_DIST = \
 	colormgr.sgml					\
 	cd-create-profile.sgml				\
 	cd-fix-profile.sgml				\
-	colord.conf.sgml				\
 	$(man_MANS_DIST)
 
 @HAVE_DOCBOOK2MAN_TRUE@man_MANS = \
@@ -630,9 +630,6 @@ uninstall-man: uninstall-man1
 @HAVE_DOCBOOK2MAN_TRUE@	$(AM_V_GEN)					\
 @HAVE_DOCBOOK2MAN_TRUE@	docbook2man $? > /dev/null
 @HAVE_DOCBOOK2MAN_TRUE@cd-fix-profile.1: cd-fix-profile.sgml
-@HAVE_DOCBOOK2MAN_TRUE@	$(AM_V_GEN)					\
-@HAVE_DOCBOOK2MAN_TRUE@	docbook2man $? > /dev/null
-@HAVE_DOCBOOK2MAN_TRUE@colord.conf.1: colord.conf.sgml
 @HAVE_DOCBOOK2MAN_TRUE@	$(AM_V_GEN)					\
 @HAVE_DOCBOOK2MAN_TRUE@	docbook2man $? > /dev/null
 

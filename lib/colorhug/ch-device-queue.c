@@ -1494,6 +1494,78 @@ ch_device_queue_get_temperature (ChDeviceQueue *device_queue,
 }
 
 /**
+ * ch_device_queue_get_dac_value:
+ * @device_queue:	A #ChDeviceQueue
+ * @device:		A #GUsbDevice
+ * @dac_value:		value between 0.0 and 0.99
+ *
+ * Gets the DAC value.
+ *
+ * NOTE: This command is available on hardware version: 2
+ *
+ * Since: 1.1.6
+ **/
+void
+ch_device_queue_get_dac_value (ChDeviceQueue *device_queue,
+			       GUsbDevice *device,
+			       gdouble *dac_value)
+{
+	guint8 *buffer;
+
+	g_return_if_fail (CH_IS_DEVICE_QUEUE (device_queue));
+	g_return_if_fail (G_USB_IS_DEVICE (device));
+	g_return_if_fail (dac_value != NULL);
+
+	*dac_value = 0.0f;
+	buffer = g_new0 (guint8, sizeof (ChPackedFloat));
+	ch_device_queue_add_internal (device_queue,
+				     device,
+				     CH_CMD_GET_DAC_VALUE,
+				     NULL,
+				     0,
+				     buffer,
+				     sizeof(ChPackedFloat),
+				     g_free,
+				     ch_device_queue_buffer_to_double_cb,
+				     dac_value,
+				     NULL);
+}
+
+/**
+ * ch_device_queue_set_dac_value:
+ * @device_queue:	A #ChDeviceQueue
+ * @device:		A #GUsbDevice
+ * @dac_value:		The DAC value
+ *
+ * Sets the post scale value.
+ *
+ * NOTE: This command is available on hardware version: 1 & 2
+ *
+ * Since: 1.1.6
+ **/
+void
+ch_device_queue_set_dac_value (ChDeviceQueue *device_queue,
+				GUsbDevice *device,
+				gdouble dac_value)
+{
+	ChPackedFloat buffer;
+
+	g_return_if_fail (CH_IS_DEVICE_QUEUE (device_queue));
+	g_return_if_fail (G_USB_IS_DEVICE (device));
+
+	/* convert from float to signed value */
+	ch_double_to_packed_float (dac_value, &buffer);
+
+	ch_device_queue_add (device_queue,
+			     device,
+			     CH_CMD_SET_DAC_VALUE,
+			     (guint8 *) &buffer,
+			     sizeof(buffer),
+			     NULL,
+			     0);
+}
+
+/**
  * ch_device_queue_get_adc_vref_pos:
  * @device_queue:	A #ChDeviceQueue
  * @device:		A #GUsbDevice
@@ -2151,31 +2223,6 @@ ch_device_queue_take_reading_raw (ChDeviceQueue *device_queue,
 				  GUsbDevice *device,
 				  guint32 *take_reading)
 {
-	ch_device_queue_take_reading_full (device_queue,
-					   device,
-					   CH_SENSOR_KIND_MAIN,
-					   take_reading);
-}
-
-/**
- * ch_device_queue_take_reading_full:
- * @device_queue:	A #ChDeviceQueue
- * @device:		A #GUsbDevice
- * @sensor_kind:	A #ChSensorKind, e.g. %CH_SENSOR_KIND_AMBIENT
- * @take_reading:	A raw reading value
- *
- * Take a raw reading from the sensor.
- *
- * NOTE: This command is available on hardware version: 1 & 2
- *
- * Since: 0.1.29
- **/
-void
-ch_device_queue_take_reading_full (ChDeviceQueue *device_queue,
-				   GUsbDevice *device,
-				   ChSensorKind sensor_kind,
-				   guint32 *take_reading)
-{
 	g_return_if_fail (CH_IS_DEVICE_QUEUE (device_queue));
 	g_return_if_fail (G_USB_IS_DEVICE (device));
 	g_return_if_fail (take_reading != NULL);
@@ -2183,8 +2230,8 @@ ch_device_queue_take_reading_full (ChDeviceQueue *device_queue,
 	ch_device_queue_add_internal (device_queue,
 				      device,
 				      CH_CMD_TAKE_READING_RAW,
-				      (const guint8 *) &sensor_kind,
-				      sizeof(guint8),
+				      NULL,
+				      0,
 				      (guint8 *) take_reading,
 				      sizeof(guint32),
 				      NULL,
@@ -2244,31 +2291,6 @@ ch_device_queue_take_readings (ChDeviceQueue *device_queue,
 			       GUsbDevice *device,
 			       CdColorRGB *value)
 {
-	ch_device_queue_take_readings_full (device_queue,
-					    device,
-					    CH_SENSOR_KIND_MAIN,
-					    value);
-}
-
-/**
- * ch_device_queue_take_readings_full:
- * @device_queue:	A #ChDeviceQueue
- * @device:		A #GUsbDevice
- * @value:		The #CdColorRGB of the raw reading
- *
- * Take a RGB triplet of readings from the sensor without applying the
- * calibration matrix.
- *
- * NOTE: This command is available on hardware version: 1 & 2
- *
- * Since: 0.1.31
- **/
-void
-ch_device_queue_take_readings_full (ChDeviceQueue *device_queue,
-				    GUsbDevice *device,
-				    ChSensorKind sensor_kind,
-				    CdColorRGB *value)
-{
 	guint8 *buffer;
 
 	g_return_if_fail (CH_IS_DEVICE_QUEUE (device_queue));
@@ -2279,8 +2301,8 @@ ch_device_queue_take_readings_full (ChDeviceQueue *device_queue,
 	ch_device_queue_add_internal (device_queue,
 				      device,
 				      CH_CMD_TAKE_READINGS,
-				      (const guint8 *) &sensor_kind,
-				      sizeof (guint8),
+				      NULL,
+				      0,
 				      buffer,
 				      sizeof(ChPackedFloat) * 3,
 				      g_free,
@@ -2340,51 +2362,18 @@ ch_device_queue_take_readings_xyz (ChDeviceQueue *device_queue,
 				   guint16 calibration_index,
 				   CdColorXYZ *value)
 {
-	ch_device_queue_take_readings_xyz_full (device_queue,
-						device,
-						calibration_index,
-						CH_SENSOR_KIND_MAIN,
-						value);
-}
-
-/**
- * ch_device_queue_take_readings_xyz_full:
- * @device_queue:	A #ChDeviceQueue
- * @device:		A #GUsbDevice
- * @calibration_index:	A calibration index
- * @sensor_kind:	A #ChSensorKind, e.g. %CH_SENSOR_KIND_AMBIENT
- * @value:		The #CdColorXYZ for a given calibration slot
- *
- * Take an XYZ fully cooked reading from the sensor.
- *
- * NOTE: This command is available on hardware version: 1 & 2
- *
- * Since: 0.1.31
- **/
-void
-ch_device_queue_take_readings_xyz_full (ChDeviceQueue *device_queue,
-					GUsbDevice *device,
-					guint16 calibration_index,
-					ChSensorKind sensor_kind,
-					CdColorXYZ *value)
-{
 	guint8 *buffer;
-	guint8 buffer_tx[3];
 
 	g_return_if_fail (CH_IS_DEVICE_QUEUE (device_queue));
 	g_return_if_fail (G_USB_IS_DEVICE (device));
 	g_return_if_fail (value != NULL);
 
-	/* create TX buffer */
-	memcpy (buffer_tx + 0, &calibration_index, 2);
-	buffer_tx[2] = sensor_kind;
-
 	buffer = g_new0 (guint8, sizeof(ChPackedFloat) * 3);
 	ch_device_queue_add_internal (device_queue,
 				     device,
 				     CH_CMD_TAKE_READING_XYZ,
-				     (const guint8 *) buffer_tx,
-				     sizeof(guint16) + sizeof(guint8),
+				     (guint8 *) &calibration_index,
+				     sizeof(guint16),
 				     buffer,
 				     sizeof(ChPackedFloat) * 3,
 				     g_free,

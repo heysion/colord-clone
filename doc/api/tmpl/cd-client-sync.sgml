@@ -9,12 +9,10 @@ cd-client-sync
 
 </para>
 
-
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
-
 
 <!-- ##### SECTION Stability_Level ##### -->
 
@@ -90,6 +88,19 @@ cd-client-sync
 @id: 
 @scope: 
 @properties: 
+@cancellable: 
+@error: 
+@Returns: 
+
+
+<!-- ##### FUNCTION cd_client_create_profile_for_icc_sync ##### -->
+<para>
+
+</para>
+
+@client: 
+@icc: 
+@scope: 
 @cancellable: 
 @error: 
 @Returns: 
