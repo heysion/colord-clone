@@ -35,7 +35,7 @@ Package: libcolord-dev
 Section: libdevel
 Architecture: any
 Depends: 
- libcolord1 (= ${binary:Version}),
+ libcolord2 (= ${binary:Version}),
  liblcms2-dev,
  libglib2.0-dev,
  libdbus-1-dev,
@@ -50,7 +50,7 @@ Description: system service to manage device colour profiles -- development file
  This package contains the development files required to build programs against
  the libcolord library.
 
-Package: libcolord1
+Package: libcolord2
 Section: libs
 Architecture: any
 Depends: 
@@ -105,7 +105,7 @@ Package: libcolorhug-dev
 Section: libdevel
 Architecture: linux-any
 Depends: 
- libcolorhug1 (= ${binary:Version}),
+ libcolorhug2 (= ${binary:Version}),
  libglib2.0-dev,
  libgusb-dev,
  libcolord-dev,
@@ -121,7 +121,7 @@ Description: library to access the ColorHug colourimeter -- development files
  This package contains the development files required to build programs against
  the libcolorhug library.
 
-Package: libcolorhug1
+Package: libcolorhug2
 Section: libs
 Architecture: linux-any
 Depends: 

@@ -1,4 +1,4 @@
-libcolorhug.so.1 libcolorhug1 #MINVER#
+libcolorhug.so.2 libcolorhug2 #MINVER#
  ch_color_select_to_string@Base 0.1.30
  ch_command_to_string@Base 0.1.30
  ch_device_error_quark@Base 0.1.30
@@ -16,6 +16,7 @@ libcolorhug.so.1 libcolorhug1 #MINVER#
  ch_device_queue_get_calibration_map@Base 0.1.30
  ch_device_queue_get_ccd_calibration@Base 0.1.31
  ch_device_queue_get_color_select@Base 0.1.30
+ ch_device_queue_get_dac_value@Base 1.2.0
  ch_device_queue_get_dark_offsets@Base 0.1.30
  ch_device_queue_get_firmware_ver@Base 0.1.30
  ch_device_queue_get_hardware_version@Base 0.1.30
@@ -45,6 +46,7 @@ libcolorhug.so.1 libcolorhug1 #MINVER#
  ch_device_queue_set_calibration_map@Base 0.1.30
  ch_device_queue_set_ccd_calibration@Base 0.1.31
  ch_device_queue_set_color_select@Base 0.1.30
+ ch_device_queue_set_dac_value@Base 1.2.0
  ch_device_queue_set_dark_offsets@Base 0.1.30
  ch_device_queue_set_flash_success@Base 0.1.30
  ch_device_queue_set_integral_time@Base 0.1.30
@@ -59,13 +61,10 @@ libcolorhug.so.1 libcolorhug1 #MINVER#
  ch_device_queue_set_remote_hash@Base 0.1.30
  ch_device_queue_set_serial_number@Base 0.1.30
  ch_device_queue_take_reading_array@Base 0.1.30
- ch_device_queue_take_reading_full@Base 0.1.31
  ch_device_queue_take_reading_raw@Base 0.1.30
  ch_device_queue_take_reading_spectral@Base 0.1.31
  ch_device_queue_take_readings@Base 0.1.30
- ch_device_queue_take_readings_full@Base 0.1.31
  ch_device_queue_take_readings_xyz@Base 0.1.30
- ch_device_queue_take_readings_xyz_full@Base 0.1.31
  ch_device_queue_verify_firmware@Base 0.1.30
  ch_device_queue_verify_flash@Base 0.1.30
  ch_device_queue_write_eeprom@Base 0.1.30
