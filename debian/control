@@ -8,6 +8,7 @@ Build-Depends:
  libglib2.0-dev,
  liblcms2-dev,
  libgudev-1.0-dev [linux-any],
+ libudev-dev [linux-any],
  libsqlite3-dev,
  docbook-utils,
  libusb-1.0-0-dev [linux-any],
