@@ -26,6 +26,11 @@ confflags = \
  --disable-silent-rules \
  --enable-print-profiles
 
+# Disabled; Needs Argyll >= 1.6 (not yet in Debian) to be useful
+# Installs plugin into global search path; we'll probably need to patch
+# Argyll to look in a private directory for its plugins instead.
+# --enable-libcolordcompat
+
 ifeq ($(DEB_HOST_ARCH_OS),linux)
 	confflags += --enable-gudev --enable-sane --enable-gusb --enable-systemd-login
 else

@@ -91,6 +91,25 @@ Description: system service to manage device colour profiles -- system daemon
  .
  This package contains the dbus-activated colord system daemon.
 
+# Package: colord-argyll-plugin
+# Architecture: any
+# Depends:
+#  ${shlibs:Depends},
+#  ${misc:Depends},
+#  colord,
+# Pre-Depends: ${misc:Pre-Depends}
+# Multi-Arch: same
+# Enhances: argyll (>= 1.6)
+# Description: system service to manage device colour profiles -- argyll integration
+#  colord is a system service that makes it easy to manage, install and generate
+#  colour profiles to accurately colour manage input and output devices.
+#  .
+#  It provides a D-Bus API for system frameworks to query, a persistent data
+#  store, and a mechanism for session applications to set system policy.
+#  .
+#  This package contains an Argyll integration plugin, allowing Argyll tools to
+#  lookup, load, and store profiles using colord.
+
 Package: colord-data
 Architecture: all
 Depends:
