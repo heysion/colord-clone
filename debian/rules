@@ -23,7 +23,8 @@ confflags = \
  --with-systemdsystemunitdir=/lib/systemd/system \
  --with-udevrulesdir=/lib/udev/rules.d \
  --enable-vala \
- --disable-silent-rules
+ --disable-silent-rules \
+ --enable-print-profiles
 
 ifeq ($(DEB_HOST_ARCH_OS),linux)
 	confflags += --enable-gudev --enable-sane --enable-gusb --enable-systemd-login

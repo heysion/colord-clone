@@ -25,6 +25,7 @@ Build-Depends:
  libsystemd-login-dev [linux-any],
  bash-completion,
  dh-systemd (>= 1.4),
+ argyll,
 Standards-Version: 3.9.5
 XS-Testsuite: autopkgtest
 Section: graphics
