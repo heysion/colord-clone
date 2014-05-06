@@ -14,6 +14,8 @@ colord (1.2.0-1) UNRELEASED; urgency=medium
   * Add new libudev-dev build-depends on Linux
   * Build extra print profiles, adding required argyl build-dependancy
   * Use dh_install --fail-missing
+  * Drop no-longer-supported gudev and volume-search configure flags
+  * Remove no-longer-needed gudev build-dependancy
 
  -- Christopher James Halse Rogers <raof@ubuntu.com>  Tue, 06 May 2014 10:13:33 +1000
 
