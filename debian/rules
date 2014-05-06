@@ -18,7 +18,6 @@ confflags = \
  --libexecdir=/usr/lib/colord \
  --disable-examples \
  --disable-static \
- --disable-volume-search \
  --with-daemon-user=colord \
  --with-systemdsystemunitdir=/lib/systemd/system \
  --with-udevrulesdir=/lib/udev/rules.d \
@@ -32,9 +31,9 @@ confflags = \
 # --enable-libcolordcompat
 
 ifeq ($(DEB_HOST_ARCH_OS),linux)
-	confflags += --enable-gudev --enable-sane --enable-gusb --enable-systemd-login
+	confflags += --enable-sane --enable-gusb --enable-systemd-login
 else
-	confflags += --disable-gudev --disable-sane --disable-gusb --disable-systemd-login
+	confflags += --disable-sane --disable-gusb --disable-systemd-login
 endif
 
 override_dh_auto_configure:
