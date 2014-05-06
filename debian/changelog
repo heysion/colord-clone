@@ -1,9 +1,21 @@
-colord (1.0.6-2) UNRELEASED; urgency=medium
+colord (1.2.0-1) UNRELEASED; urgency=medium
 
+  [ Martin Pitt ]
   * Add missing @buildddeps@ and build-essential test dependencies, as the
     test partially builds colord.
 
- -- Martin Pitt <mpitt@debian.org>  Sun, 27 Apr 2014 23:03:43 +0200
+  [ Christopher James Halse Rogers ]
+  * New upstream stable release, first of the 1.2 series
+  * Refresh .symbols and library .install for new SOVER
+  * Remove test-for-usb-db-before-running-it.patch
+  * Update copyright file for new profiles data
+  * Install bash-completion data
+  * Split out a colord-data package
+  * Add new libudev-dev build-depends on Linux
+  * Build extra print profiles, adding required argyl build-dependancy
+  * Use dh_install --fail-missing
+
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Tue, 06 May 2014 10:13:33 +1000
 
 colord (1.0.6-1) unstable; urgency=medium
 
