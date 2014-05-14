@@ -1,4 +1,4 @@
-colord (1.2.0-1) UNRELEASED; urgency=medium
+colord (1.2.0-1) experimental; urgency=medium
 
   [ Martin Pitt ]
   * Add missing @buildddeps@ and build-essential test dependencies, as the
