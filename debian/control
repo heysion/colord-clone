@@ -114,6 +114,8 @@ Package: colord-data
 Architecture: all
 Depends:
  ${misc:Depends},
+Replaces: colord (<< 1.2.0-2)
+Breaks: colord (<< 1.2.0-2)
 Description: system service to manage device colour profiles -- data files
  colord is a system service that makes it easy to manage, install and generate
  colour profiles to accurately colour manage input and output devices.
