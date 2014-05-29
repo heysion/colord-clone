@@ -22,8 +22,7 @@ confflags = \
  --with-systemdsystemunitdir=/lib/systemd/system \
  --with-udevrulesdir=/lib/udev/rules.d \
  --enable-vala \
- --disable-silent-rules \
- --enable-print-profiles
+ --disable-silent-rules
 
 # Disabled; Needs Argyll >= 1.6 (not yet in Debian) to be useful
 # Installs plugin into global search path; we'll probably need to patch
@@ -34,6 +33,12 @@ ifeq ($(DEB_HOST_ARCH_OS),linux)
 	confflags += --enable-sane --enable-gusb --enable-systemd-login --enable-udev
 else
 	confflags += --disable-sane --disable-gusb --disable-systemd-login --disable-udev
+endif
+
+ifeq ($(DEB_HOST_ARCH_OS),hurd)
+	confflags += --disable-print-profiles
+else
+	confflags += --enable-print-profiles
 endif
 
 override_dh_auto_configure:
