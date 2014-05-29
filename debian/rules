@@ -31,9 +31,9 @@ confflags = \
 # --enable-libcolordcompat
 
 ifeq ($(DEB_HOST_ARCH_OS),linux)
-	confflags += --enable-sane --enable-gusb --enable-systemd-login
+	confflags += --enable-sane --enable-gusb --enable-systemd-login --enable-udev
 else
-	confflags += --disable-sane --disable-gusb --disable-systemd-login
+	confflags += --disable-sane --disable-gusb --disable-systemd-login --disable-udev
 endif
 
 override_dh_auto_configure:
