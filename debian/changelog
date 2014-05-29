@@ -1,3 +1,9 @@
+colord (1.2.0-3) UNRELEASED; urgency=medium
+
+  * Actually upload to unstable. Yay sponsors who don't pay enough attention.
+
+ -- Martin Pitt <mpitt@debian.org>  Thu, 29 May 2014 14:40:05 +0200
+
 colord (1.2.0-2) unstable; urgency=medium
 
   * Fix Replaces/Breaks for files moved from colord to colord-data
