@@ -818,7 +818,8 @@ namespace Cd {
 		FAILED_TO_PARSE,
 		FAILED_TO_READ,
 		FAILED_TO_AUTHENTICATE,
-		PROPERTY_INVALID
+		PROPERTY_INVALID,
+		FAILED_TO_GET_UID
 	}
 	[CCode (cheader_filename = "colord.h", cprefix = "CD_PROFILE_KIND_", has_type_id = false)]
 	public enum ProfileKind {

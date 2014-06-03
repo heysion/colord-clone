@@ -181,12 +181,6 @@
     <keyword type="function" name="cd_color_rgb_array_is_monotonic ()" link="colord-cd-color.html#cd-color-rgb-array-is-monotonic" since="0.1.31"/>
     <keyword type="function" name="cd_color_rgb_array_interpolate ()" link="colord-cd-color.html#cd-color-rgb-array-interpolate" since="0.1.31"/>
     <keyword type="struct" name="CdColorRGB8" link="colord-cd-color.html#CdColorRGB8"/>
-    <keyword type="struct" name="CdColorLab" link="colord-cd-color.html#CdColorLab-struct"/>
-    <keyword type="struct" name="CdColorYxy" link="colord-cd-color.html#CdColorYxy-struct"/>
-    <keyword type="struct" name="CdColorXYZ" link="colord-cd-color.html#CdColorXYZ-struct"/>
-    <keyword type="struct" name="CdColorRGB" link="colord-cd-color.html#CdColorRGB-struct"/>
-    <keyword type="struct" name="CdColorUVW" link="colord-cd-color.html#CdColorUVW-struct"/>
-    <keyword type="struct" name="CdColorSwatch" link="colord-cd-color.html#CdColorSwatch-struct"/>
     <keyword type="function" name="_cd_dom_reserved1 ()" link="colord-cd-dom.html#cd-dom-reserved1"/>
     <keyword type="function" name="_cd_dom_reserved2 ()" link="colord-cd-dom.html#cd-dom-reserved2"/>
     <keyword type="function" name="_cd_dom_reserved3 ()" link="colord-cd-dom.html#cd-dom-reserved3"/>
@@ -229,8 +223,6 @@
     <keyword type="function" name="cd_edid_get_blue ()" link="CdEdid.html#cd-edid-get-blue" since="1.1.2"/>
     <keyword type="function" name="cd_edid_get_white ()" link="CdEdid.html#cd-edid-get-white" since="1.1.2"/>
     <keyword type="macro" name="CD_EDID_ERROR" link="CdEdid.html#CD-EDID-ERROR:CAPS"/>
-    <keyword type="struct" name="struct CdEdid" link="CdEdid.html#CdEdid-struct"/>
-    <keyword type="struct" name="struct CdEdidClass" link="CdEdid.html#CdEdidClass"/>
     <keyword type="function" name="_cd_icc_reserved1 ()" link="colord-cd-icc.html#cd-icc-reserved1"/>
     <keyword type="function" name="_cd_icc_reserved2 ()" link="colord-cd-icc.html#cd-icc-reserved2"/>
     <keyword type="function" name="_cd_icc_reserved3 ()" link="colord-cd-icc.html#cd-icc-reserved3"/>
@@ -311,8 +303,6 @@
     <keyword type="function" name="cd_icc_store_get_all ()" link="CdIccStore.html#cd-icc-store-get-all" since="1.0.2"/>
     <keyword type="function" name="cd_icc_store_find_by_filename ()" link="CdIccStore.html#cd-icc-store-find-by-filename" since="1.0.2"/>
     <keyword type="function" name="cd_icc_store_find_by_checksum ()" link="CdIccStore.html#cd-icc-store-find-by-checksum" since="1.0.2"/>
-    <keyword type="struct" name="struct CdIccStore" link="CdIccStore.html#CdIccStore-struct"/>
-    <keyword type="struct" name="struct CdIccStoreClass" link="CdIccStore.html#CdIccStoreClass"/>
     <keyword type="enum" name="enum CdIccStoreSearchFlags" link="CdIccStore.html#CdIccStoreSearchFlags" since="1.1.1"/>
     <keyword type="enum" name="enum CdIccStoreSearchKind" link="CdIccStore.html#CdIccStoreSearchKind" since="1.1.1"/>
     <keyword type="signal" name="The “added” signal" link="CdIccStore.html#CdIccStore-added"/>
@@ -466,7 +456,6 @@
     <keyword type="function" name="cd_spectrum_set_norm ()" link="colord-cd-spectrum.html#cd-spectrum-set-norm" since="1.1.6"/>
     <keyword type="function" name="cd_spectrum_add_value ()" link="colord-cd-spectrum.html#cd-spectrum-add-value" since="1.1.6"/>
     <keyword type="function" name="cd_spectrum_multiply ()" link="colord-cd-spectrum.html#cd-spectrum-multiply" since="1.1.6"/>
-    <keyword type="struct" name="CdSpectrum" link="colord-cd-spectrum.html#CdSpectrum-struct"/>
     <keyword type="macro" name="CD_CHECK_VERSION()" link="colord-cd-version.html#CD-CHECK-VERSION:CAPS"/>
     <keyword type="macro" name="CD_MAJOR_VERSION" link="colord-cd-version.html#CD-MAJOR-VERSION:CAPS"/>
     <keyword type="macro" name="CD_MINOR_VERSION" link="colord-cd-version.html#CD-MINOR-VERSION:CAPS"/>

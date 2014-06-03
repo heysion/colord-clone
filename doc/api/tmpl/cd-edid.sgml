@@ -9,10 +9,12 @@ CdEdid
 
 </para>
 
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
+
 
 <!-- ##### SECTION Stability_Level ##### -->
 
@@ -26,19 +28,6 @@ CdEdid
 </para>
 
 
-
-<!-- ##### STRUCT CdEdid ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### STRUCT CdEdidClass ##### -->
-<para>
-
-</para>
-
-@parent_class: 
 
 <!-- ##### FUNCTION cd_edid_error_quark ##### -->
 <para>

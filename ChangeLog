@@ -1,6 +1,180 @@
+commit c64a2fff93ab154a142419a37d3b2f01fe3ec91e
+Author: Richard Hughes <richard@hughsie.com>
+Date:   2014-05-23
+
+    Release colord 1.2.1
+
+M	NEWS
+M	doc/website/download.html
+M	po/cs.po
+M	po/da_DK.po
+M	po/de.po
+M	po/el.po
+M	po/en_GB.po
+M	po/eo.po
+M	po/es.po
+M	po/eu.po
+M	po/fi.po
+M	po/fr.po
+M	po/gl.po
+M	po/he.po
+M	po/hu.po
+M	po/id.po
+M	po/it.po
+M	po/ja.po
+M	po/kk.po
+M	po/ko.po
+M	po/lv.po
+M	po/nb_NO.po
+M	po/nl.po
+M	po/nn_NO.po
+M	po/pl.po
+M	po/pt_BR.po
+M	po/pt_PT.po
+M	po/ro.po
+M	po/ru.po
+M	po/sk.po
+M	po/sl.po
+M	po/sr.po
+M	po/sv.po
+M	po/tr.po
+M	po/uk.po
+M	po/zh_CN.po
+M	po/zh_TW.po
+
+commit c0f7ed73692fa6b522e52eeac6d7431e620871d2
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2014-05-21
+
+    Allow users to rename session and system ICC profiles
+
+    This does not actually modify the ICC for several reasons:
+
+    * This may be a system profile that other users may have set up
+    mappings from
+
+    * Changing the ID or the MD5 of well-known profiles may break other
+    applications
+
+    * Different users may want more or less technical descriptions
+
+    * We only get a readonly mapped file when creating profiles from
+    the session
+
+    ...so instead use the existing storage.db sqlite database to define
+    per-uid
+    overrides for the 'Title' property. Users can 'modify' the title
+    shown in
+    applications using colord by calling something like this:
+
+    $ colormgr profile-set-property icc-c2d76 Title 'Sony TV'
+
+    For applications using lcms2 directly to parse the file, the original
+    description will be shown. Additionally, there is no authentication
+    step for
+    setting an overriden title on the profile, as it is only shown for
+    that one
+    specific user. Titles can only be between 3 and 4096 chars in length
+    and also
+    have to be valid UTF-8 strings.
+
+M	lib/colord/cd-enum.c
+M	lib/colord/cd-enum.h
+M	src/Makefile.am
+M	src/cd-main.c
+A	src/cd-profile-db.c
+A	src/cd-profile-db.h
+M	src/cd-profile.c
+M	src/cd-profile.h
+M	src/cd-self-test.c
+
+commit e93dc4b13817776c2bf40d6602170d6248c9cde2
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2014-05-08
+
+    trivial: Remove untrue doc statement
+
+M	src/org.freedesktop.ColorManager.xml
+
+commit 26dc57de3081d68d0743b187b0ca9fc5f4c2586c
+Author: Stef Walter <stefw@redhat.com>
+Date:	2014-05-06
+
+    Make colord polkit policy usable on servers
+
+    The polkit policy should allow admin users logged in via ssh or
+    Cockpit (for
+    example on a server) to perform the actions in question, although
+    requiring the
+    admin credentials.	The <allow_any> applies non local sessions.
+
+    Resolves: https://github.com/hughsie/colord/issues/5
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	policy/org.freedesktop.color.policy.in.in
+
+commit 332e12258cd0eb49b439c730beac5d6b9e11dfd2
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2014-05-06
+
+    Trim out the CUPS-supplied prefix for the printer serial number
+
+M	src/cd-device.c
+
+commit 919eda53dad3d635aa4b815c923bcd33f3258d3f
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2014-04-17
+
+    Fix building the CMF spectra on OpenBSD/sparc64
+
+    Do not cast gsize* to guint32* as this will not work when the size
+    is different.
+
+    Perhaps resolves: https://bugs.freedesktop.org/show_bug.cgi?id=77535
+
+M	lib/colord/cd-it8.c
+
+commit 70fbc28a76634fe1fb0328b0749077dc15f8af3a
+Author: Pascal de Bruijn <pmjdebruijn@pcode.nl>
+Date:	2014-04-09
+
+    lapoify hcfr-attach figure
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	data/figures/hcfr-attach.svg
+
+commit e5a6cf7cb50248c52064e07d2d04ebba68540ab3
+Author: Pascal de Bruijn <pmjdebruijn@pcode.nl>
+Date:	2014-04-09
+
+    lapoify i1-display3-attach figure
+
+    Signed-off-by: Richard Hughes <richard@hughsie.com>
+
+M	data/figures/i1-display3-attach.svg
+
+commit 1a18d0167a0eb975f917193a0af852766cabed3c
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2014-04-10
+
+    trivial: Add the last three releases to the website
+
+M	doc/website/download.html
+
+commit 2888c5f26bac2cad71a837f1451adcadc30cabab
+Author: Richard Hughes <richard@hughsie.com>
+Date:	2014-04-05
+
+    trivial: post release version bump
+
+M	RELEASE
+M	configure.ac
+
 commit 9cf9a2accf862104e2f4173792085f80280ce041
 Author: Richard Hughes <richard@hughsie.com>
-Date:   2014-04-05
+Date:	2014-04-05
 
     Release colord 1.2.0
 

@@ -219,19 +219,6 @@
 </table></div>
 </div>
 <a name="CdSpectrum"></a><div class="refsect1">
-<a name="colord-cd-spectrum.other"></a><h2>Types and Values</h2>
-<div class="informaltable"><table width="100%" border="0">
-<colgroup>
-<col width="150px" class="name">
-<col class="description">
-</colgroup>
-<tbody><tr>
-<td class="datatype_keyword"> </td>
-<td class="function_name"><a class="link" href="colord-cd-spectrum.html#CdSpectrum-struct" title="CdSpectrum">CdSpectrum</a></td>
-</tr></tbody>
-</table></div>
-</div>
-<div class="refsect1">
 <a name="colord-cd-spectrum.object-hierarchy"></a><h2>Object Hierarchy</h2>
 <pre class="screen">    GBoxed
     <span class="lineart">╰──</span> CdSpectrum
@@ -249,7 +236,7 @@
 cd_spectrum_new (<em class="parameter"><code><span class="type">void</span></code></em>);</pre>
 <p>Allocates a spectrum.</p>
 <div class="refsect3">
-<a name="id-1.3.16.8.2.5"></a><h4>Returns</h4>
+<a name="id-1.3.16.7.2.5"></a><h4>Returns</h4>
 <p> A newly allocated <a class="link" href="colord-cd-spectrum.html#CdSpectrum"><span class="type">CdSpectrum</span></a> object</p>
 <p></p>
 </div>
@@ -262,7 +249,7 @@ cd_spectrum_new (<em class="parameter"><code><span class="type">void</span></cod
 cd_spectrum_sized_new (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> reserved_size</code></em>);</pre>
 <p>Allocates a spectrum with a preallocated size.</p>
 <div class="refsect3">
-<a name="id-1.3.16.8.3.5"></a><h4>Parameters</h4>
+<a name="id-1.3.16.7.3.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -277,7 +264,7 @@ cd_spectrum_sized_new (<em class="parameter"><code><a href="http://library.gnome
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.16.8.3.6"></a><h4>Returns</h4>
+<a name="id-1.3.16.7.3.6"></a><h4>Returns</h4>
 <p> A newly allocated <a class="link" href="colord-cd-spectrum.html#CdSpectrum"><span class="type">CdSpectrum</span></a> object</p>
 <p></p>
 </div>
@@ -290,7 +277,7 @@ cd_spectrum_sized_new (<em class="parameter"><code><a href="http://library.gnome
 cd_spectrum_planckian_new (<em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> temperature</code></em>);</pre>
 <p>Allocates a Planckian spectrum at a specific temperature.</p>
 <div class="refsect3">
-<a name="id-1.3.16.8.4.5"></a><h4>Parameters</h4>
+<a name="id-1.3.16.7.4.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -305,7 +292,7 @@ cd_spectrum_planckian_new (<em class="parameter"><code><a href="http://library.g
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.16.8.4.6"></a><h4>Returns</h4>
+<a name="id-1.3.16.7.4.6"></a><h4>Returns</h4>
 <p> A newly allocated <a class="link" href="colord-cd-spectrum.html#CdSpectrum"><span class="type">CdSpectrum</span></a> object</p>
 <p></p>
 </div>
@@ -318,7 +305,7 @@ cd_spectrum_planckian_new (<em class="parameter"><code><a href="http://library.g
 cd_spectrum_free (<em class="parameter"><code><a class="link" href="colord-cd-spectrum.html#CdSpectrum"><span class="type">CdSpectrum</span></a> *spectrum</code></em>);</pre>
 <p>Deallocates a color spectrum.</p>
 <div class="refsect3">
-<a name="id-1.3.16.8.5.5"></a><h4>Parameters</h4>
+<a name="id-1.3.16.7.5.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -340,7 +327,7 @@ cd_spectrum_free (<em class="parameter"><code><a class="link" href="colord-cd-sp
 <pre class="programlisting"><a class="link" href="colord-cd-spectrum.html#CdSpectrum"><span class="returnvalue">CdSpectrum</span></a> *
 cd_spectrum_dup (<em class="parameter"><code>const <a class="link" href="colord-cd-spectrum.html#CdSpectrum"><span class="type">CdSpectrum</span></a> *spectrum</code></em>);</pre>
 <div class="refsect3">
-<a name="id-1.3.16.8.6.4"></a><h4>Parameters</h4>
+<a name="id-1.3.16.7.6.4"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -355,7 +342,7 @@ cd_spectrum_dup (<em class="parameter"><code>const <a class="link" href="colord-
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.16.8.6.5"></a><h4>Returns</h4>
+<a name="id-1.3.16.7.6.5"></a><h4>Returns</h4>
 <p></p>
 </div>
 <p class="since">Since 1.1.6</p>
@@ -369,7 +356,7 @@ cd_spectrum_normalize (<em class="parameter"><code><a class="link" href="colord-
                        <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> value</code></em>);</pre>
 <p>Normalizes a spectrum to a specific value at a specific wavelength.</p>
 <div class="refsect3">
-<a name="id-1.3.16.8.7.5"></a><h4>Parameters</h4>
+<a name="id-1.3.16.7.7.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -404,7 +391,7 @@ cd_spectrum_normalize (<em class="parameter"><code><a class="link" href="colord-
 cd_spectrum_get_id (<em class="parameter"><code>const <a class="link" href="colord-cd-spectrum.html#CdSpectrum"><span class="type">CdSpectrum</span></a> *spectrum</code></em>);</pre>
 <p>Gets the spectral data.</p>
 <div class="refsect3">
-<a name="id-1.3.16.8.8.5"></a><h4>Parameters</h4>
+<a name="id-1.3.16.7.8.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -419,7 +406,7 @@ cd_spectrum_get_id (<em class="parameter"><code>const <a class="link" href="colo
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.16.8.8.6"></a><h4>Returns</h4>
+<a name="id-1.3.16.7.8.6"></a><h4>Returns</h4>
 <p> the textual ID of the sample</p>
 <p></p>
 </div>
@@ -433,7 +420,7 @@ cd_spectrum_get_data (<em class="parameter"><code>const <a class="link" href="co
 <p>Gets the spectral data.
 NOTE: This is not normalized</p>
 <div class="refsect3">
-<a name="id-1.3.16.8.9.5"></a><h4>Parameters</h4>
+<a name="id-1.3.16.7.9.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -448,7 +435,7 @@ NOTE: This is not normalized</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.16.8.9.6"></a><h4>Returns</h4>
+<a name="id-1.3.16.7.9.6"></a><h4>Returns</h4>
 <p> spectral data. </p>
 <p><span class="annotation">[<acronym title="Don't free data after the code is done."><span class="acronym">transfer none</span></acronym>][<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> gdouble]</span></p>
 </div>
@@ -461,7 +448,7 @@ NOTE: This is not normalized</p>
 cd_spectrum_get_start (<em class="parameter"><code>const <a class="link" href="colord-cd-spectrum.html#CdSpectrum"><span class="type">CdSpectrum</span></a> *spectrum</code></em>);</pre>
 <p>Gets the start value of the spectral data.</p>
 <div class="refsect3">
-<a name="id-1.3.16.8.10.5"></a><h4>Parameters</h4>
+<a name="id-1.3.16.7.10.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -476,7 +463,7 @@ cd_spectrum_get_start (<em class="parameter"><code>const <a class="link" href="c
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.16.8.10.6"></a><h4>Returns</h4>
+<a name="id-1.3.16.7.10.6"></a><h4>Returns</h4>
 <p> the value in nm</p>
 <p></p>
 </div>
@@ -489,7 +476,7 @@ cd_spectrum_get_start (<em class="parameter"><code>const <a class="link" href="c
 cd_spectrum_get_end (<em class="parameter"><code>const <a class="link" href="colord-cd-spectrum.html#CdSpectrum"><span class="type">CdSpectrum</span></a> *spectrum</code></em>);</pre>
 <p>Gets the end value of the spectral data.</p>
 <div class="refsect3">
-<a name="id-1.3.16.8.11.5"></a><h4>Parameters</h4>
+<a name="id-1.3.16.7.11.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -504,7 +491,7 @@ cd_spectrum_get_end (<em class="parameter"><code>const <a class="link" href="col
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.16.8.11.6"></a><h4>Returns</h4>
+<a name="id-1.3.16.7.11.6"></a><h4>Returns</h4>
 <p> the value in nm</p>
 <p></p>
 </div>
@@ -518,7 +505,7 @@ cd_spectrum_get_norm (<em class="parameter"><code>const <a class="link" href="co
 <p>Gets the normalization value of the spectral data.
 NOTE: This affects every value in the spectrum.</p>
 <div class="refsect3">
-<a name="id-1.3.16.8.12.5"></a><h4>Parameters</h4>
+<a name="id-1.3.16.7.12.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -533,7 +520,7 @@ NOTE: This affects every value in the spectrum.</p>
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.16.8.12.6"></a><h4>Returns</h4>
+<a name="id-1.3.16.7.12.6"></a><h4>Returns</h4>
 <p> the value</p>
 <p></p>
 </div>
@@ -546,7 +533,7 @@ NOTE: This affects every value in the spectrum.</p>
 cd_spectrum_get_size (<em class="parameter"><code>const <a class="link" href="colord-cd-spectrum.html#CdSpectrum"><span class="type">CdSpectrum</span></a> *spectrum</code></em>);</pre>
 <p>Gets the size of the spectrum data.</p>
 <div class="refsect3">
-<a name="id-1.3.16.8.13.5"></a><h4>Parameters</h4>
+<a name="id-1.3.16.7.13.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -561,7 +548,7 @@ cd_spectrum_get_size (<em class="parameter"><code>const <a class="link" href="co
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.16.8.13.6"></a><h4>Returns</h4>
+<a name="id-1.3.16.7.13.6"></a><h4>Returns</h4>
 <p> number of data items in this spectrum</p>
 <p></p>
 </div>
@@ -575,7 +562,7 @@ cd_spectrum_get_value (<em class="parameter"><code>const <a class="link" href="c
                        <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> idx</code></em>);</pre>
 <p>Gets the spectrum data at a specified index.</p>
 <div class="refsect3">
-<a name="id-1.3.16.8.14.5"></a><h4>Parameters</h4>
+<a name="id-1.3.16.7.14.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -597,7 +584,7 @@ cd_spectrum_get_value (<em class="parameter"><code>const <a class="link" href="c
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.16.8.14.6"></a><h4>Returns</h4>
+<a name="id-1.3.16.7.14.6"></a><h4>Returns</h4>
 <p> spectral data value, or -1 for invalid</p>
 <p></p>
 </div>
@@ -611,7 +598,7 @@ cd_spectrum_get_wavelength (<em class="parameter"><code>const <a class="link" hr
                             <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#guint"><span class="type">guint</span></a> idx</code></em>);</pre>
 <p>Gets the wavelenth that corresponds to the specified index.</p>
 <div class="refsect3">
-<a name="id-1.3.16.8.15.5"></a><h4>Parameters</h4>
+<a name="id-1.3.16.7.15.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -633,7 +620,7 @@ cd_spectrum_get_wavelength (<em class="parameter"><code>const <a class="link" hr
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.16.8.15.6"></a><h4>Returns</h4>
+<a name="id-1.3.16.7.15.6"></a><h4>Returns</h4>
 <p> wavelenth value in nm, or -1 for invalid</p>
 <p></p>
 </div>
@@ -647,7 +634,7 @@ cd_spectrum_get_value_for_nm (<em class="parameter"><code>const <a class="link" 
                               <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> wavelength</code></em>);</pre>
 <p>Gets the value from the spectral data for a given wavelength.</p>
 <div class="refsect3">
-<a name="id-1.3.16.8.16.5"></a><h4>Parameters</h4>
+<a name="id-1.3.16.7.16.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -669,7 +656,7 @@ cd_spectrum_get_value_for_nm (<em class="parameter"><code>const <a class="link" 
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.16.8.16.6"></a><h4>Returns</h4>
+<a name="id-1.3.16.7.16.6"></a><h4>Returns</h4>
 <p> the value for the wavelength</p>
 <p></p>
 </div>
@@ -683,7 +670,7 @@ cd_spectrum_set_id (<em class="parameter"><code><a class="link" href="colord-cd-
                     <em class="parameter"><code>const <a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gchar"><span class="type">gchar</span></a> *id</code></em>);</pre>
 <p>Sets a spectrum id.</p>
 <div class="refsect3">
-<a name="id-1.3.16.8.17.5"></a><h4>Parameters</h4>
+<a name="id-1.3.16.7.17.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -714,7 +701,7 @@ cd_spectrum_set_data (<em class="parameter"><code><a class="link" href="colord-c
                       <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Arrays.html#GArray"><span class="type">GArray</span></a> *value</code></em>);</pre>
 <p>Sets the spectrum data.</p>
 <div class="refsect3">
-<a name="id-1.3.16.8.18.5"></a><h4>Parameters</h4>
+<a name="id-1.3.16.7.18.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -745,7 +732,7 @@ cd_spectrum_set_start (<em class="parameter"><code><a class="link" href="colord-
                        <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> start</code></em>);</pre>
 <p>Set the start value of the spectal data in nm.</p>
 <div class="refsect3">
-<a name="id-1.3.16.8.19.5"></a><h4>Parameters</h4>
+<a name="id-1.3.16.7.19.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -776,7 +763,7 @@ cd_spectrum_set_end (<em class="parameter"><code><a class="link" href="colord-cd
                      <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> end</code></em>);</pre>
 <p>Set the end value of the spectal data in nm.</p>
 <div class="refsect3">
-<a name="id-1.3.16.8.20.5"></a><h4>Parameters</h4>
+<a name="id-1.3.16.7.20.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -808,7 +795,7 @@ cd_spectrum_set_norm (<em class="parameter"><code><a class="link" href="colord-c
 <p>Set the normalization value of the spectrum.
 NOTE: This affects every value in the spectrum.</p>
 <div class="refsect3">
-<a name="id-1.3.16.8.21.5"></a><h4>Parameters</h4>
+<a name="id-1.3.16.7.21.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -839,7 +826,7 @@ cd_spectrum_add_value (<em class="parameter"><code><a class="link" href="colord-
                        <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> data</code></em>);</pre>
 <p>Adds a value in nm to the spectrum.</p>
 <div class="refsect3">
-<a name="id-1.3.16.8.22.5"></a><h4>Parameters</h4>
+<a name="id-1.3.16.7.22.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -864,7 +851,7 @@ cd_spectrum_multiply (<em class="parameter"><code><a class="link" href="colord-c
                       <em class="parameter"><code><a href="http://library.gnome.org/devel/glib/unstable/glib-Basic-Types.html#gdouble"><span class="type">gdouble</span></a> resolution</code></em>);</pre>
 <p>Multiplies two spectra together.</p>
 <div class="refsect3">
-<a name="id-1.3.16.8.23.5"></a><h4>Parameters</h4>
+<a name="id-1.3.16.7.23.5"></a><h4>Parameters</h4>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="parameters_name">
@@ -891,7 +878,7 @@ cd_spectrum_multiply (<em class="parameter"><code><a class="link" href="colord-c
 </table></div>
 </div>
 <div class="refsect3">
-<a name="id-1.3.16.8.23.6"></a><h4>Returns</h4>
+<a name="id-1.3.16.7.23.6"></a><h4>Returns</h4>
 <p> a <a class="link" href="colord-cd-spectrum.html#CdSpectrum"><span class="type">CdSpectrum</span></a> instance</p>
 <p></p>
 </div>
@@ -900,12 +887,6 @@ cd_spectrum_multiply (<em class="parameter"><code><a class="link" href="colord-c
 </div>
 <div class="refsect1">
 <a name="colord-cd-spectrum.other_details"></a><h2>Types and Values</h2>
-<div class="refsect2">
-<a name="CdSpectrum-struct"></a><h3>CdSpectrum</h3>
-<pre class="programlisting">typedef struct _CdSpectrum CdSpectrum;</pre>
-<p>
-</p>
-</div>
 </div>
 </div>
 <div class="footer">
