@@ -9,10 +9,12 @@ cd-enum
 
 </para>
 
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
+
 
 <!-- ##### SECTION Stability_Level ##### -->
 
@@ -102,6 +104,13 @@ cd-enum
 
 
 <!-- ##### MACRO CD_PIXEL_FORMAT_BGRA32 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO CD_PIXEL_FORMAT_RGBA32 ##### -->
 <para>
 
 </para>
@@ -269,6 +278,7 @@ cd-enum
 @CD_PROFILE_ERROR_FAILED_TO_READ: 
 @CD_PROFILE_ERROR_FAILED_TO_AUTHENTICATE: 
 @CD_PROFILE_ERROR_PROPERTY_INVALID: 
+@CD_PROFILE_ERROR_FAILED_TO_GET_UID: 
 
 <!-- ##### ENUM CdDeviceError ##### -->
 <para>

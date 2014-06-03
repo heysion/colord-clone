@@ -425,43 +425,17 @@
 </tbody>
 </table></div>
 </div>
-<a name="CdColorLab"></a><a name="CdColorYxy"></a><a name="CdColorXYZ"></a><a name="CdColorRGB"></a><a name="CdColorUVW"></a><a name="CdColorSwatch"></a><div class="refsect1">
+<a name="CdColorLab"></a><a name="CdColorRGB"></a><a name="CdColorSwatch"></a><a name="CdColorUVW"></a><a name="CdColorXYZ"></a><a name="CdColorYxy"></a><div class="refsect1">
 <a name="colord-cd-color.other"></a><h2>Types and Values</h2>
 <div class="informaltable"><table width="100%" border="0">
 <colgroup>
 <col width="150px" class="name">
 <col class="description">
 </colgroup>
-<tbody>
-<tr>
+<tbody><tr>
 <td class="datatype_keyword"> </td>
 <td class="function_name"><a class="link" href="colord-cd-color.html#CdColorRGB8" title="CdColorRGB8">CdColorRGB8</a></td>
-</tr>
-<tr>
-<td class="datatype_keyword"> </td>
-<td class="function_name"><a class="link" href="colord-cd-color.html#CdColorLab-struct" title="CdColorLab">CdColorLab</a></td>
-</tr>
-<tr>
-<td class="datatype_keyword"> </td>
-<td class="function_name"><a class="link" href="colord-cd-color.html#CdColorYxy-struct" title="CdColorYxy">CdColorYxy</a></td>
-</tr>
-<tr>
-<td class="datatype_keyword"> </td>
-<td class="function_name"><a class="link" href="colord-cd-color.html#CdColorXYZ-struct" title="CdColorXYZ">CdColorXYZ</a></td>
-</tr>
-<tr>
-<td class="datatype_keyword"> </td>
-<td class="function_name"><a class="link" href="colord-cd-color.html#CdColorRGB-struct" title="CdColorRGB">CdColorRGB</a></td>
-</tr>
-<tr>
-<td class="datatype_keyword"> </td>
-<td class="function_name"><a class="link" href="colord-cd-color.html#CdColorUVW-struct" title="CdColorUVW">CdColorUVW</a></td>
-</tr>
-<tr>
-<td class="datatype_keyword"> </td>
-<td class="function_name"><a class="link" href="colord-cd-color.html#CdColorSwatch-struct" title="CdColorSwatch">CdColorSwatch</a></td>
-</tr>
-</tbody>
+</tr></tbody>
 </table></div>
 </div>
 <div class="refsect1">
@@ -1681,7 +1655,7 @@ non-monotonic, in which case it falls back to linear interpolation.</p>
 <div class="refsect3">
 <a name="id-1.3.3.13.49.6"></a><h4>Returns</h4>
 <p> An array of size <em class="parameter"><code>new_length</code></em>
-or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p>
+or <a href="http://library.gnome.org/devel/glib/unstable/glib-Standard-Macros.html#NULL:CAPS"><code class="literal">NULL</code></a>. </p>
 <p><span class="annotation">[<acronym title="Generics and defining elements of containers and arrays."><span class="acronym">element-type</span></acronym> CdColorRGB][<acronym title="Free data after the code is done."><span class="acronym">transfer full</span></acronym>]</span></p>
 </div>
 <p class="since">Since 0.1.31</p>
@@ -1697,73 +1671,6 @@ or <a href="/usr/share/gtk-doc/html/liboil/liboil-liboiljunk.html#NULL:CAPS"><co
 	guint8	 B;
 } CdColorRGB8;
 </pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="CdColorLab-struct"></a><h3>CdColorLab</h3>
-<pre class="programlisting">typedef struct {
-	gdouble	 L;
-	gdouble	 a;
-	gdouble	 b;
-} CdColorLab;
-</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="CdColorYxy-struct"></a><h3>CdColorYxy</h3>
-<pre class="programlisting">typedef struct {
-	gdouble	 Y;
-	gdouble	 x;
-	gdouble	 y;
-} CdColorYxy;
-</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="CdColorXYZ-struct"></a><h3>CdColorXYZ</h3>
-<pre class="programlisting">typedef struct {
-	gdouble	 X;
-	gdouble	 Y;
-	gdouble	 Z;
-} CdColorXYZ;
-</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="CdColorRGB-struct"></a><h3>CdColorRGB</h3>
-<pre class="programlisting">typedef struct {
-	gdouble	 R;
-	gdouble	 G;
-	gdouble	 B;
-} CdColorRGB;
-</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="CdColorUVW-struct"></a><h3>CdColorUVW</h3>
-<pre class="programlisting">typedef struct {
-	gdouble	 U;
-	gdouble	 V;
-	gdouble	 W;
-} CdColorUVW;
-</pre>
-<p>
-</p>
-</div>
-<hr>
-<div class="refsect2">
-<a name="CdColorSwatch-struct"></a><h3>CdColorSwatch</h3>
-<pre class="programlisting">typedef struct _CdColorSwatch CdColorSwatch;</pre>
 <p>
 </p>
 </div>

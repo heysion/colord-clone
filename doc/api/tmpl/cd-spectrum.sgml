@@ -9,10 +9,12 @@ cd-spectrum
 
 </para>
 
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
+
 
 <!-- ##### SECTION Stability_Level ##### -->
 
@@ -221,11 +223,5 @@ cd-spectrum
 @s2: 
 @resolution: 
 @Returns: 
-
-
-<!-- ##### STRUCT CdSpectrum ##### -->
-<para>
-
-</para>
 
 

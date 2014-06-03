@@ -113,11 +113,6 @@ cd_client_find_sensor_sync
 <SECTION>
 <FILE>cd-color</FILE>
 CdColorRGB8
-CdColorLab
-CdColorYxy
-CdColorXYZ
-CdColorRGB
-CdColorUVW
 cd_color_swatch_get_name
 cd_color_swatch_get_value
 cd_color_xyz_new
@@ -166,7 +161,6 @@ cd_color_xyz_normalize
 cd_color_rgb_array_new
 cd_color_rgb_array_is_monotonic
 cd_color_rgb_array_interpolate
-CdColorSwatch
 <SUBSECTION Standard>
 CD_TYPE_COLOR_LAB
 CD_TYPE_COLOR_RGB
@@ -174,6 +168,12 @@ CD_TYPE_COLOR_SWATCH
 CD_TYPE_COLOR_UVW
 CD_TYPE_COLOR_XYZ
 CD_TYPE_COLOR_YXY
+CdColorLab
+CdColorRGB
+CdColorSwatch
+CdColorUVW
+CdColorXYZ
+CdColorYxy
 cd_color_lab_get_type
 cd_color_rgb_get_type
 cd_color_swatch_get_type
@@ -323,8 +323,6 @@ cd_dom_get_type
 <FILE>cd-edid</FILE>
 <TITLE>CdEdid</TITLE>
 CD_EDID_ERROR
-CdEdid
-CdEdidClass
 cd_edid_error_quark
 cd_edid_new
 cd_edid_reset
@@ -349,6 +347,8 @@ CD_EDID_GET_CLASS
 CD_IS_EDID
 CD_IS_EDID_CLASS
 CD_TYPE_EDID
+CdEdid
+CdEdidClass
 CdEdidPrivate
 cd_edid_get_type
 </SECTION>
@@ -365,6 +365,7 @@ CD_PIXEL_FORMAT_ARGB32
 CD_PIXEL_FORMAT_RGB24
 CD_PIXEL_FORMAT_CMYK32
 CD_PIXEL_FORMAT_BGRA32
+CD_PIXEL_FORMAT_RGBA32
 CdColorspace
 CdDeviceMode
 CdDeviceRelation
@@ -604,8 +605,6 @@ cd_icc_get_type
 <SECTION>
 <FILE>cd-icc-store</FILE>
 <TITLE>CdIccStore</TITLE>
-CdIccStore
-CdIccStoreClass
 CdIccStoreSearchFlags
 CdIccStoreSearchKind
 cd_icc_store_new
@@ -624,6 +623,8 @@ CD_ICC_STORE_GET_CLASS
 CD_IS_ICC_STORE
 CD_IS_ICC_STORE_CLASS
 CD_TYPE_ICC_STORE
+CdIccStore
+CdIccStoreClass
 CdIccStorePrivate
 cd_icc_store_get_type
 </SECTION>
@@ -948,9 +949,9 @@ cd_spectrum_set_end
 cd_spectrum_set_norm
 cd_spectrum_add_value
 cd_spectrum_multiply
-CdSpectrum
 <SUBSECTION Standard>
 CD_TYPE_SPECTRUM
+CdSpectrum
 cd_spectrum_get_type
 </SECTION>
 

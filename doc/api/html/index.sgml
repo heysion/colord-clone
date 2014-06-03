@@ -102,11 +102,11 @@
 <ANCHOR id="colord-cd-color" href="colord/colord-cd-color.html">
 <ANCHOR id="colord-cd-color.functions" href="colord/colord-cd-color.html#colord-cd-color.functions">
 <ANCHOR id="CdColorLab" href="colord/colord-cd-color.html#CdColorLab">
-<ANCHOR id="CdColorYxy" href="colord/colord-cd-color.html#CdColorYxy">
-<ANCHOR id="CdColorXYZ" href="colord/colord-cd-color.html#CdColorXYZ">
 <ANCHOR id="CdColorRGB" href="colord/colord-cd-color.html#CdColorRGB">
-<ANCHOR id="CdColorUVW" href="colord/colord-cd-color.html#CdColorUVW">
 <ANCHOR id="CdColorSwatch" href="colord/colord-cd-color.html#CdColorSwatch">
+<ANCHOR id="CdColorUVW" href="colord/colord-cd-color.html#CdColorUVW">
+<ANCHOR id="CdColorXYZ" href="colord/colord-cd-color.html#CdColorXYZ">
+<ANCHOR id="CdColorYxy" href="colord/colord-cd-color.html#CdColorYxy">
 <ANCHOR id="colord-cd-color.other" href="colord/colord-cd-color.html#colord-cd-color.other">
 <ANCHOR id="colord-cd-color.object-hierarchy" href="colord/colord-cd-color.html#colord-cd-color.object-hierarchy">
 <ANCHOR id="colord-cd-color.description" href="colord/colord-cd-color.html#colord-cd-color.description">
@@ -161,12 +161,6 @@
 <ANCHOR id="cd-color-rgb-array-interpolate" href="colord/colord-cd-color.html#cd-color-rgb-array-interpolate">
 <ANCHOR id="colord-cd-color.other_details" href="colord/colord-cd-color.html#colord-cd-color.other_details">
 <ANCHOR id="CdColorRGB8" href="colord/colord-cd-color.html#CdColorRGB8">
-<ANCHOR id="CdColorLab-struct" href="colord/colord-cd-color.html#CdColorLab-struct">
-<ANCHOR id="CdColorYxy-struct" href="colord/colord-cd-color.html#CdColorYxy-struct">
-<ANCHOR id="CdColorXYZ-struct" href="colord/colord-cd-color.html#CdColorXYZ-struct">
-<ANCHOR id="CdColorRGB-struct" href="colord/colord-cd-color.html#CdColorRGB-struct">
-<ANCHOR id="CdColorUVW-struct" href="colord/colord-cd-color.html#CdColorUVW-struct">
-<ANCHOR id="CdColorSwatch-struct" href="colord/colord-cd-color.html#CdColorSwatch-struct">
 <ANCHOR id="colord-cd-dom" href="colord/colord-cd-dom.html">
 <ANCHOR id="colord-cd-dom.functions" href="colord/colord-cd-dom.html#colord-cd-dom.functions">
 <ANCHOR id="colord-cd-dom.other" href="colord/colord-cd-dom.html#colord-cd-dom.other">
@@ -223,8 +217,6 @@
 <ANCHOR id="cd-edid-get-white" href="colord/CdEdid.html#cd-edid-get-white">
 <ANCHOR id="CdEdid.other_details" href="colord/CdEdid.html#CdEdid.other_details">
 <ANCHOR id="CD-EDID-ERROR:CAPS" href="colord/CdEdid.html#CD-EDID-ERROR:CAPS">
-<ANCHOR id="CdEdid-struct" href="colord/CdEdid.html#CdEdid-struct">
-<ANCHOR id="CdEdidClass" href="colord/CdEdid.html#CdEdidClass">
 <ANCHOR id="colord-cd-icc" href="colord/colord-cd-icc.html">
 <ANCHOR id="colord-cd-icc.functions" href="colord/colord-cd-icc.html#colord-cd-icc.functions">
 <ANCHOR id="colord-cd-icc.other" href="colord/colord-cd-icc.html#colord-cd-icc.other">
@@ -320,8 +312,6 @@
 <ANCHOR id="cd-icc-store-find-by-filename" href="colord/CdIccStore.html#cd-icc-store-find-by-filename">
 <ANCHOR id="cd-icc-store-find-by-checksum" href="colord/CdIccStore.html#cd-icc-store-find-by-checksum">
 <ANCHOR id="CdIccStore.other_details" href="colord/CdIccStore.html#CdIccStore.other_details">
-<ANCHOR id="CdIccStore-struct" href="colord/CdIccStore.html#CdIccStore-struct">
-<ANCHOR id="CdIccStoreClass" href="colord/CdIccStore.html#CdIccStoreClass">
 <ANCHOR id="CdIccStoreSearchFlags" href="colord/CdIccStore.html#CdIccStoreSearchFlags">
 <ANCHOR id="CdIccStoreSearchKind" href="colord/CdIccStore.html#CdIccStoreSearchKind">
 <ANCHOR id="CdIccStore.signal-details" href="colord/CdIccStore.html#CdIccStore.signal-details">
@@ -509,7 +499,6 @@
 <ANCHOR id="colord-cd-spectrum" href="colord/colord-cd-spectrum.html">
 <ANCHOR id="colord-cd-spectrum.functions" href="colord/colord-cd-spectrum.html#colord-cd-spectrum.functions">
 <ANCHOR id="CdSpectrum" href="colord/colord-cd-spectrum.html#CdSpectrum">
-<ANCHOR id="colord-cd-spectrum.other" href="colord/colord-cd-spectrum.html#colord-cd-spectrum.other">
 <ANCHOR id="colord-cd-spectrum.object-hierarchy" href="colord/colord-cd-spectrum.html#colord-cd-spectrum.object-hierarchy">
 <ANCHOR id="colord-cd-spectrum.description" href="colord/colord-cd-spectrum.html#colord-cd-spectrum.description">
 <ANCHOR id="colord-cd-spectrum.functions_details" href="colord/colord-cd-spectrum.html#colord-cd-spectrum.functions_details">
@@ -536,7 +525,6 @@
 <ANCHOR id="cd-spectrum-add-value" href="colord/colord-cd-spectrum.html#cd-spectrum-add-value">
 <ANCHOR id="cd-spectrum-multiply" href="colord/colord-cd-spectrum.html#cd-spectrum-multiply">
 <ANCHOR id="colord-cd-spectrum.other_details" href="colord/colord-cd-spectrum.html#colord-cd-spectrum.other_details">
-<ANCHOR id="CdSpectrum-struct" href="colord/colord-cd-spectrum.html#CdSpectrum-struct">
 <ANCHOR id="colord-cd-version" href="colord/colord-cd-version.html">
 <ANCHOR id="colord-cd-version.functions" href="colord/colord-cd-version.html#colord-cd-version.functions">
 <ANCHOR id="colord-cd-version.other" href="colord/colord-cd-version.html#colord-cd-version.other">

@@ -9,10 +9,12 @@ cd-color
 
 </para>
 
+
 <!-- ##### SECTION See_Also ##### -->
 <para>
 
 </para>
+
 
 <!-- ##### SECTION Stability_Level ##### -->
 
@@ -28,36 +30,6 @@ cd-color
 @R: 
 @G: 
 @B: 
-
-<!-- ##### STRUCT CdColorLab ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### STRUCT CdColorYxy ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### STRUCT CdColorXYZ ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### STRUCT CdColorRGB ##### -->
-<para>
-
-</para>
-
-
-<!-- ##### STRUCT CdColorUVW ##### -->
-<para>
-
-</para>
-
 
 <!-- ##### FUNCTION cd_color_swatch_get_name ##### -->
 <para>
@@ -499,11 +471,5 @@ cd-color
 @array: 
 @new_length: 
 @Returns: 
-
-
-<!-- ##### STRUCT CdColorSwatch ##### -->
-<para>
-
-</para>
 
 
