@@ -36,13 +36,16 @@ else
 endif
 
 ifeq ($(DEB_HOST_ARCH_OS),hurd)
-	confflags += --disable-print-profiles
+	indep_flags = --disable-print-profiles
 else
-	confflags += --enable-print-profiles
+	indep_flags = --enable-print-profiles
 endif
 
-override_dh_auto_configure:
+override_dh_auto_configure-arch:
 	dh_auto_configure -- $(confflags)
+
+override_dh_auto_configure-indep:
+	dh_auto_configure -- $(confflags) $(indep_flags)
 
 override_dh_install:
 	# The .la file(s) are entirely useless; kill them with fire.
