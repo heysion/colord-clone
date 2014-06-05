@@ -1,3 +1,12 @@
+colord (1.2.1-1) unstable; urgency=medium
+
+  * New upstream stable release. Fixes unsafe pointer cast, so
+    cd-create-profile no longer tries to allocate terabytes of
+    memory on 64bit big-endiane machines. (Closes: 750013)
+  * Move (very slow) print-profile generation to build-indep rule.
+
+ -- Christopher James Halse Rogers <raof@ubuntu.com>  Thu, 05 Jun 2014 13:49:39 +1000
+
 colord (1.2.0-3) unstable; urgency=medium
 
   * Actually upload to unstable. Yay sponsors who don't pay enough attention.
