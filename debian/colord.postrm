@@ -2,6 +2,9 @@
 
 set -e
 
+dpkg-maintscript-helper rm_conffile \
+    /etc/colord.conf 1.2.1-1~ colord -- "$@"
+
 case "$1" in
     purge)
 # We don't remove the colord and scanner users on purge.

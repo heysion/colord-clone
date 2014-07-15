@@ -2,6 +2,10 @@
 
 set -e
 
+dpkg-maintscript-helper rm_conffile \
+    /etc/colord.conf 1.2.1-1~ colord -- "$@"
+
+
 case "$1" in
     configure)
     
